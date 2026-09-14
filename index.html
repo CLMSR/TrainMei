@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#EEEAE1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Training Planner">
+<title>Training Planner</title>
+<style>
+  :root{
+    --ink:#161616;
+    --paper:#EEEAE1;
+    --paper-dim:#E2DDD1;
+    --line: rgba(22,22,22,0.18);
+    --line-strong: #161616;
+    --white:#FBFAF7;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  #app{ max-width:900px; margin:0 auto; padding:20px 18px 60px; }
+
+  .status-row{
+    display:flex; justify-content:flex-end; align-items:center;
+    height:18px; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:#6b6b63; margin-bottom:6px;
+  }
+
+  /* ---------- MONTH VIEW ---------- */
+  .month-head{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    border-bottom:3px solid var(--line-strong);
+    padding-bottom:10px; margin-bottom:4px;
+  }
+  .month-title{
+    font-weight:900; text-transform:uppercase;
+    font-size:clamp(2.1rem, 8vw, 3.4rem);
+    letter-spacing:-0.02em; line-height:0.9;
+  }
+  .month-nav{ display:flex; gap:8px; align-items:center; }
+  .nav-btn{
+    border:1px solid var(--line-strong); background:transparent; color:var(--ink);
+    width:34px; height:34px; font-size:16px; cursor:pointer; border-radius:0;
+  }
+  .nav-btn:hover{ background:var(--ink); color:var(--white); }
+  .today-btn{
+    border:1px solid var(--line-strong); background:transparent; color:var(--ink);
+    padding:0 12px; height:34px; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    cursor:pointer; margin-left:4px;
+  }
+  .today-btn:hover{ background:var(--ink); color:var(--white); }
+
+  .hint{ font-size:12px; color:#6b6b63; margin:10px 0 14px; }
+
+  .cal-weekdays{
+    display:grid; grid-template-columns:repeat(7,1fr);
+    border-top:1px solid var(--line-strong);
+    margin-top:8px;
+  }
+  .cal-weekdays div{
+    font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+    padding:6px 4px; color:#6b6b63; text-align:left;
+  }
+  .cal-grid{
+    display:grid; grid-template-columns:repeat(7,1fr);
+    border-left:1px solid var(--line); border-top:1px solid var(--line);
+  }
+  .cal-cell{
+    min-height:78px; border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:6px 6px; cursor:pointer; background:var(--paper); position:relative;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .cal-cell:hover{ background:var(--paper-dim); }
+  .cal-cell.empty{ cursor:default; background:transparent; }
+  .cal-cell.empty:hover{ background:transparent; }
+  .cal-daynum{ font-weight:700; font-size:13px; }
+  .cal-cell.today .cal-daynum{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:20px; height:20px; background:var(--ink); color:var(--white); font-size:11px;
+  }
+  .cal-focus{
+    font-size:10px; line-height:1.25; text-transform:uppercase; letter-spacing:0.02em;
+    color:var(--ink); overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
+  }
+
+  @media (max-width:520px){
+    .cal-cell{ min-height:60px; padding:4px; }
+    .cal-focus{ -webkit-line-clamp:2; font-size:9px; }
+  }
+
+  /* ---------- DAY VIEW ---------- */
+  .day-view{ display:none; }
+  .day-view.active{ display:block; }
+  #month-view.hidden{ display:none; }
+
+  .day-top{
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;
+  }
+  .back-btn{
+    border:none; background:none; cursor:pointer; font-size:12px; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--ink); padding:6px 0;
+  }
+  .back-btn:hover{ text-decoration:underline; }
+  .day-nav{ display:flex; gap:6px; }
+
+  .day-header{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:16px; padding-bottom:14px; border-bottom:4px solid var(--line-strong);
+  }
+  .day-name{
+    font-weight:900; text-transform:uppercase; line-height:0.82;
+    font-size:clamp(2.6rem, 11vw, 5.2rem); letter-spacing:-0.02em;
+  }
+  .day-date{ font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#6b6b63; margin-top:4px; }
+  .tagline-box{ text-align:right; max-width:230px; padding-top:6px; }
+  .tagline-input{
+    width:100%; text-align:right; border:none; background:transparent; resize:none;
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase; line-height:1.6;
+    color:var(--ink); font-family:inherit; font-weight:600;
+  }
+  .tagline-input::placeholder{ color:#9a968a; }
+  .tagline-rule{ border:none; border-top:1px solid var(--line-strong); margin:8px 0; }
+  .strap-input{
+    width:100%; text-align:right; border:none; background:transparent;
+    font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:#6b6b63;
+    font-family:inherit; font-style:italic;
+  }
+
+  .focus-row{ margin:14px 0 22px; }
+  .focus-input{
+    width:100%; border:none; background:transparent; font-weight:900; text-transform:uppercase;
+    letter-spacing:-0.01em; font-size:clamp(1.2rem,5vw,1.8rem); color:var(--ink);
+    font-family:inherit; padding:0;
+  }
+  .focus-input::placeholder{ color:#9a968a; }
+
+  .section{ margin-bottom:22px; }
+  .section-bar{
+    background:var(--ink); color:var(--white);
+    display:flex; align-items:center; gap:10px;
+    padding:9px 12px; font-weight:800; text-transform:uppercase; font-size:14px; letter-spacing:0.02em;
+  }
+  .section-bar .divider{ opacity:0.5; }
+  .section-sub-input{
+    flex:1; background:transparent; border:none; color:#d8d5cc; font-family:inherit;
+    font-size:12px; text-transform:none; letter-spacing:0; font-weight:400;
+  }
+  .section-sub-input::placeholder{ color:#8a8880; }
+
+  table.plan-table{ width:100%; border-collapse:collapse; background:var(--white); }
+  table.plan-table th{
+    text-align:left; font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+    color:#6b6b63; padding:8px 10px; border-bottom:1px solid var(--line-strong); font-weight:700;
+  }
+  table.plan-table td{
+    padding:0; border-bottom:1px solid var(--line);
+  }
+  table.plan-table td input{
+    width:100%; border:none; background:transparent; padding:9px 10px; font-family:inherit;
+    font-size:13.5px; color:var(--ink);
+  }
+  table.plan-table td input::placeholder{ color:#b3b0a6; }
+  .col-ex{ width:56%; } .col-sets{ width:16%; } .col-reps{ width:18%; } .col-rm{ width:10%; }
+  .rm-btn{
+    width:100%; height:100%; border:none; background:transparent; color:#b3423b; cursor:pointer;
+    font-size:16px; padding:9px 6px;
+  }
+  .rm-btn:hover{ background:#f4e2e0; }
+  .add-row-btn{
+    width:100%; text-align:left; border:1px dashed var(--line-strong); border-top:none;
+    background:var(--white); color:var(--ink); padding:9px 10px; font-size:12px;
+    letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; font-family:inherit;
+  }
+  .add-row-btn:hover{ background:var(--paper-dim); }
+
+  .recovery-body{
+    background:var(--white); border:1px solid var(--line); border-top:none; padding:14px;
+  }
+  .toggle-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .toggle-switch{
+    width:42px; height:22px; border:1px solid var(--line-strong); position:relative; cursor:pointer;
+    background:var(--paper); flex-shrink:0;
+  }
+  .toggle-knob{
+    position:absolute; top:1px; left:1px; width:18px; height:18px; background:var(--ink);
+    transition:left 0.15s ease;
+  }
+  .toggle-switch.on .toggle-knob{ left:21px; }
+  .toggle-label{ font-size:12px; text-transform:uppercase; letter-spacing:0.04em; font-weight:700; }
+  .recovery-textarea{
+    width:100%; min-height:80px; border:1px solid var(--line); background:var(--paper);
+    padding:10px; font-family:inherit; font-size:13px; line-height:1.5; color:var(--ink); resize:vertical;
+  }
+  .recovery-textarea::placeholder{ color:#9a968a; }
+
+  .notes-box{
+    background:var(--white); border:1px solid var(--line-strong); padding:12px;
+  }
+  .notes-textarea{
+    width:100%; min-height:90px; border:none; background:transparent; resize:vertical;
+    font-family:inherit; font-size:13.5px; line-height:1.55; color:var(--ink);
+  }
+  .notes-textarea::placeholder{ color:#9a968a; }
+
+  .footer-row{
+    display:flex; justify-content:space-between; align-items:center; margin-top:30px;
+    border-top:1px solid var(--line-strong); padding-top:12px;
+  }
+  .footer-label{ font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#6b6b63; }
+  .clear-btn{
+    border:none; background:none; color:#b3423b; font-size:11px; letter-spacing:0.05em;
+    text-transform:uppercase; cursor:pointer; font-family:inherit;
+  }
+  .clear-btn:hover{ text-decoration:underline; }
+
+  .icon-btn{
+    border:1px solid var(--line-strong); background:transparent; width:30px; height:30px;
+    cursor:pointer; font-size:14px; color:var(--ink);
+  }
+  .icon-btn:hover{ background:var(--ink); color:var(--white); }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="status-row" id="status-row"></div>
+
+  <div id="month-view">
+    <div class="month-head">
+      <div class="month-title" id="month-title">—</div>
+      <div class="month-nav">
+        <button class="nav-btn" id="prev-month">‹</button>
+        <button class="nav-btn" id="next-month">›</button>
+        <button class="today-btn" id="today-btn">Today</button>
+        <button class="today-btn" id="export-btn" title="Export a backup of your workouts">Backup</button>
+        <button class="today-btn" id="import-btn" title="Restore a backup">Restore</button>
+        <input type="file" id="import-file" accept="application/json" style="display:none">
+      </div>
+    </div>
+    <div class="hint">Tap a day to plan or edit its workout. Your data is saved automatically on this device.</div>
+    <div class="cal-weekdays">
+      <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+
+  <div class="day-view" id="day-view">
+    <div class="day-top">
+      <button class="back-btn" id="back-btn">‹ Back to month</button>
+      <div class="day-nav">
+        <button class="icon-btn" id="prev-day">‹</button>
+        <button class="icon-btn" id="next-day">›</button>
+      </div>
+    </div>
+
+    <div class="day-header">
+      <div>
+        <div class="day-name" id="day-name">—</div>
+        <div class="day-date" id="day-date">—</div>
+      </div>
+      <div class="tagline-box">
+        <textarea class="tagline-input" data-field="tagline" rows="3" placeholder="BUILD THE LEGS.&#10;PROTECT THE ENGINE.&#10;STAY DURABLE."></textarea>
+        <hr class="tagline-rule">
+        <input class="strap-input" data-field="strap" placeholder="Stronger for more tomorrows" />
+      </div>
+    </div>
+
+    <div class="focus-row">
+      <input class="focus-input" data-field="focus" placeholder="Session focus — e.g. Legs + Recovery" />
+    </div>
+
+    <div class="section">
+      <div class="section-bar">
+        Training <span class="divider">|</span>
+        <input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type" />
+      </div>
+      <table class="plan-table">
+        <thead><tr><th class="col-ex">Exercise</th><th class="col-sets">Sets</th><th class="col-reps">Reps</th><th class="col-rm"></th></tr></thead>
+        <tbody id="exercise-rows"></tbody>
+      </table>
+      <button class="add-row-btn" data-action="add-exercise">+ Add exercise</button>
+    </div>
+
+    <div class="section">
+      <div class="section-bar">
+        Recovery <span class="divider">|</span>
+        <input class="section-sub-input" data-field="recoveryLabel" placeholder="e.g. Off run day" />
+      </div>
+      <div class="recovery-body">
+        <div class="toggle-row">
+          <div class="toggle-switch" id="run-toggle" data-action="toggle-run"><div class="toggle-knob"></div></div>
+          <span class="toggle-label" id="run-toggle-label">Run day</span>
+        </div>
+        <textarea class="recovery-textarea" data-field="recoveryDetails" placeholder="8-10k steps. 15-20 min mobility. Recover hard so the next quality sessions hit."></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-bar">Nutrition <span class="divider">|</span> <span style="font-weight:400;font-size:12px;text-transform:none;color:#d8d5cc;">Recover. Refuel. Stay lean.</span></div>
+      <table class="plan-table">
+        <thead><tr><th style="width:22%">Meal</th><th style="width:68%">Notes</th><th class="col-rm"></th></tr></thead>
+        <tbody id="meal-rows"></tbody>
+      </table>
+      <button class="add-row-btn" data-action="add-meal">+ Add meal</button>
+    </div>
+
+    <div class="section">
+      <div class="section-bar">Notes</div>
+      <div class="notes-box">
+        <textarea class="notes-textarea" data-field="notes" placeholder="Anything else — how it felt, what to adjust next time, injuries to watch..."></textarea>
+      </div>
+    </div>
+
+    <div class="footer-row">
+      <div class="footer-label">Hybrid Training Week</div>
+      <button class="clear-btn" data-action="clear-day">Clear this day</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const WEEKDAY_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  let view = 'month'; // 'month' | 'day'
+  let monthCursor = new Date(); monthCursor.setDate(1);
+  let selectedDateKey = null;
+  let currentDay = null;
+  let monthIndicators = {};
+  let saveTimer = null;
+
+  const monthView = document.getElementById('month-view');
+  const dayView = document.getElementById('day-view');
+  const statusRow = document.getElementById('status-row');
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function dateKeyOf(y,m,d){ return `${y}-${pad(m+1)}-${pad(d)}`; }
+  function todayKey(){ const t=new Date(); return dateKeyOf(t.getFullYear(), t.getMonth(), t.getDate()); }
+
+  function defaultDayData(){
+    return {
+      tagline:'', strap:'', focus:'', trainingCategory:'',
+      exercises:[{name:'',sets:'',reps:''}],
+      isRunDay:true, recoveryLabel:'', recoveryDetails:'',
+      meals:[
+        {label:'Breakfast',content:''},
+        {label:'Snack',content:''},
+        {label:'Lunch',content:''},
+        {label:'Dinner',content:''},
+        {label:'Night snack',content:''}
+      ],
+      notes:''
+    };
+  }
+
+  function setStatus(text){ statusRow.textContent = text; }
+
+  /* ---------------- STORAGE ---------------- */
+  /*
+    STORAGE MODE
+    ------------
+    This version works immediately in a normal browser:
+      - Local mode: data is saved in localStorage and survives closing/reopening.
+      - Cloud mode: if you add your Supabase URL + anon key below, the same app
+        can sync data between Mac, iPhone, and other devices.
+
+    IMPORTANT:
+    A standalone HTML file cannot create a cloud database by itself. Cloud sync
+    requires a hosted database/service. The code below is deliberately written
+    so local mode works now and cloud mode can be enabled later.
+  */
+  const CLOUD_CONFIG = {
+    enabled: false,
+    supabaseUrl: '',
+    supabaseAnonKey: ''
+  };
+
+  const LOCAL_PREFIX = 'training-planner:';
+  const localStorageApi = {
+    async get(key){
+      const value = localStorage.getItem(LOCAL_PREFIX + key);
+      return value === null ? null : { value };
+    },
+    async set(key, value){
+      localStorage.setItem(LOCAL_PREFIX + key, value);
+      return true;
+    },
+    async list(prefix){
+      const fullPrefix = LOCAL_PREFIX + prefix;
+      const keys = [];
+      for(let i=0; i<localStorage.length; i++){
+        const k = localStorage.key(i);
+        if(k && k.startsWith(fullPrefix)) keys.push(k.slice(LOCAL_PREFIX.length));
+      }
+      return { keys };
+    }
+  };
+
+  // Use local browser storage by default. This replaces Claude's artifact-only
+  // storage API, which is not available when the HTML is opened normally.
+  const storage = {
+    get: (key) => localStorageApi.get(key),
+    set: (key, value) => localStorageApi.set(key, value),
+    list: (prefix) => localStorageApi.list(prefix)
+  };
+
+  async function fetchMonthIndicators(year, monthIdx){
+    const prefix = `workout:${year}-${pad(monthIdx+1)}`;
+    try{
+      const res = await storage.list(prefix);
+      const keys = (res && res.keys) ? res.keys : [];
+      const pairs = await Promise.all(keys.map(async k=>{
+        try{
+          const r = await storage.get(k);
+          if(!r) return null;
+          return [k.replace('workout:',''), JSON.parse(r.value)];
+        }catch(e){ return null; }
+      }));
+      const out = {};
+      pairs.filter(Boolean).forEach(([k,v])=>{ out[k]=v; });
+      return out;
+    }catch(e){
+      console.error('Failed to load month indicators', e);
+      return {};
+    }
+  }
+
+  async function loadDay(key){
+    try{
+      const r = await storage.get(`workout:${key}`);
+      if(r && r.value) return JSON.parse(r.value);
+    }catch(e){ /* not found or error, fall through */ }
+    return defaultDayData();
+  }
+
+  function scheduleSave(){
+    setStatus('Saving…');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveDay, 500);
+  }
+
+  async function saveDay(){
+    try{
+      const ok = await storage.set(`workout:${selectedDateKey}`, JSON.stringify(currentDay));
+      setStatus(ok ? 'Saved' : 'Could not save');
+      if(monthIndicators) monthIndicators[selectedDateKey] = currentDay;
+    }catch(e){
+      console.error('Save failed', e);
+      setStatus('Could not save — try again');
+    }
+  }
+
+  /* ---------------- BACKUP / RESTORE ---------------- */
+  function exportData(){
+    const data = {};
+    const prefix = LOCAL_PREFIX + 'workout:';
+    for(let i=0; i<localStorage.length; i++){
+      const k = localStorage.key(i);
+      if(k && k.startsWith(prefix)){
+        data[k.slice(LOCAL_PREFIX.length)] = localStorage.getItem(k);
+      }
+    }
+    const blob = new Blob([JSON.stringify({
+      app: 'Training Planner',
+      version: 2,
+      exportedAt: new Date().toISOString(),
+      data
+    }, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `training-planner-backup-${todayKey()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setStatus('Backup exported');
+  }
+
+  function importData(file){
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      try{
+        const payload = JSON.parse(reader.result);
+        if(!payload || typeof payload.data !== 'object') throw new Error('Invalid backup');
+        Object.entries(payload.data).forEach(([key,value])=>{
+          if(key.startsWith('workout:')) localStorage.setItem(LOCAL_PREFIX + key, value);
+        });
+        setStatus('Backup restored');
+        renderMonth();
+      }catch(e){
+        console.error(e);
+        setStatus('Invalid backup');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  /* ---------------- MONTH VIEW ---------------- */
+
+  async function renderMonth(){
+    view='month';
+    dayView.classList.remove('active');
+    monthView.classList.remove('hidden');
+
+    const y = monthCursor.getFullYear(), m = monthCursor.getMonth();
+    document.getElementById('month-title').textContent = `${MONTH_NAMES[m]} ${y}`;
+
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '<div style="padding:14px;font-size:12px;color:#6b6b63;">Loading…</div>';
+
+    monthIndicators = await fetchMonthIndicators(y,m);
+
+    const firstOfMonth = new Date(y,m,1);
+    let startOffset = firstOfMonth.getDay() - 1; // Monday=0
+    if(startOffset < 0) startOffset = 6;
+    const daysInMonth = new Date(y,m+1,0).getDate();
+    const tKey = todayKey();
+
+    let html = '';
+    for(let i=0;i<startOffset;i++){ html += '<div class="cal-cell empty"></div>'; }
+    for(let d=1; d<=daysInMonth; d++){
+      const key = dateKeyOf(y,m,d);
+      const entry = monthIndicators[key];
+      const isToday = key === tKey;
+      const focusText = entry ? (entry.focus || entry.trainingCategory || '') : '';
+      html += `<div class="cal-cell${isToday?' today':''}" data-key="${key}">
+          <div class="cal-daynum">${d}</div>
+          <div class="cal-focus">${escapeHtml(focusText)}</div>
+        </div>`;
+    }
+    const totalCells = startOffset + daysInMonth;
+    const trailing = (7 - (totalCells % 7)) % 7;
+    for(let i=0;i<trailing;i++){ html += '<div class="cal-cell empty"></div>'; }
+
+    grid.innerHTML = html;
+    grid.querySelectorAll('.cal-cell[data-key]').forEach(cell=>{
+      cell.addEventListener('click', ()=> openDay(cell.dataset.key));
+    });
+    setStatus('');
+  }
+
+  function escapeHtml(s){
+    return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  /* ---------------- DAY VIEW ---------------- */
+  async function openDay(key){
+    selectedDateKey = key;
+    view = 'day';
+    monthView.classList.add('hidden');
+    dayView.classList.add('active');
+    setStatus('Loading…');
+    currentDay = await loadDay(key);
+    renderDay();
+    setStatus('');
+  }
+
+  function renderDay(){
+    const [y,m,d] = selectedDateKey.split('-').map(Number);
+    const dt = new Date(y, m-1, d);
+    document.getElementById('day-name').textContent = WEEKDAY_NAMES[(dt.getDay()+6)%7];
+    document.getElementById('day-date').textContent = `${MONTH_NAMES[m-1]} ${d}, ${y}`;
+
+    setVal('[data-field="tagline"]', currentDay.tagline);
+    setVal('[data-field="strap"]', currentDay.strap);
+    setVal('[data-field="focus"]', currentDay.focus);
+    setVal('[data-field="trainingCategory"]', currentDay.trainingCategory);
+    setVal('[data-field="recoveryLabel"]', currentDay.recoveryLabel);
+    setVal('[data-field="recoveryDetails"]', currentDay.recoveryDetails);
+    setVal('[data-field="notes"]', currentDay.notes);
+
+    const toggle = document.getElementById('run-toggle');
+    toggle.classList.toggle('on', !!currentDay.isRunDay);
+    document.getElementById('run-toggle-label').textContent = currentDay.isRunDay ? 'Run day' : 'Off run day';
+
+    const exBody = document.getElementById('exercise-rows');
+    exBody.innerHTML = currentDay.exercises.map((ex,i)=>`
+      <tr>
+        <td><input data-ex-index="${i}" data-ex-key="name" value="${escapeAttr(ex.name)}" placeholder="e.g. Barbell Back Squat"></td>
+        <td><input data-ex-index="${i}" data-ex-key="sets" value="${escapeAttr(ex.sets)}" placeholder="4"></td>
+        <td><input data-ex-index="${i}" data-ex-key="reps" value="${escapeAttr(ex.reps)}" placeholder="6-8"></td>
+        <td><button class="rm-btn" data-action="remove-exercise" data-index="${i}" aria-label="Remove exercise">×</button></td>
+      </tr>`).join('');
+
+    const mealBody = document.getElementById('meal-rows');
+    mealBody.innerHTML = currentDay.meals.map((meal,i)=>`
+      <tr>
+        <td><input data-meal-index="${i}" data-meal-key="label" value="${escapeAttr(meal.label)}" placeholder="Meal"></td>
+        <td><input data-meal-index="${i}" data-meal-key="content" value="${escapeAttr(meal.content)}" placeholder="What you're eating"></td>
+        <td><button class="rm-btn" data-action="remove-meal" data-index="${i}" aria-label="Remove meal">×</button></td>
+      </tr>`).join('');
+  }
+
+  function setVal(sel, val){
+    const el = dayView.querySelector(sel);
+    if(el) el.value = val || '';
+  }
+  function escapeAttr(s){ return escapeHtml(s); }
+
+  /* ---------------- EVENTS ---------------- */
+  dayView.addEventListener('input', (e)=>{
+    const t = e.target;
+    if(t.dataset.field !== undefined && t.dataset.field !== ''){
+      currentDay[t.dataset.field] = t.value;
+      scheduleSave();
+    } else if(t.dataset.exIndex !== undefined){
+      currentDay.exercises[+t.dataset.exIndex][t.dataset.exKey] = t.value;
+      scheduleSave();
+    } else if(t.dataset.mealIndex !== undefined){
+      currentDay.meals[+t.dataset.mealIndex][t.dataset.mealKey] = t.value;
+      scheduleSave();
+    }
+  });
+
+  dayView.addEventListener('click', (e)=>{
+    const toggle = e.target.closest('#run-toggle');
+    if(toggle){
+      currentDay.isRunDay = !currentDay.isRunDay;
+      renderDay();
+      scheduleSave();
+      return;
+    }
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    const action = btn.dataset.action;
+    if(action === 'add-exercise'){
+      currentDay.exercises.push({name:'',sets:'',reps:''});
+      renderDay();
+    } else if(action === 'remove-exercise'){
+      currentDay.exercises.splice(+btn.dataset.index,1);
+      if(currentDay.exercises.length===0) currentDay.exercises.push({name:'',sets:'',reps:''});
+      renderDay(); scheduleSave();
+    } else if(action === 'add-meal'){
+      currentDay.meals.push({label:'',content:''});
+      renderDay();
+    } else if(action === 'remove-meal'){
+      currentDay.meals.splice(+btn.dataset.index,1);
+      renderDay(); scheduleSave();
+    } else if(action === 'clear-day'){
+      if(confirm('Clear all fields for this day? This cannot be undone.')){
+        currentDay = defaultDayData();
+        renderDay();
+        scheduleSave();
+      }
+    }
+  });
+
+  document.getElementById('back-btn').addEventListener('click', ()=>{
+    monthCursor = new Date(Number(selectedDateKey.split('-')[0]), Number(selectedDateKey.split('-')[1])-1, 1);
+    renderMonth();
+  });
+  document.getElementById('prev-day').addEventListener('click', ()=> navigateDay(-1));
+  document.getElementById('next-day').addEventListener('click', ()=> navigateDay(1));
+
+  function navigateDay(delta){
+    const [y,m,d] = selectedDateKey.split('-').map(Number);
+    const dt = new Date(y, m-1, d+delta);
+    openDay(dateKeyOf(dt.getFullYear(), dt.getMonth(), dt.getDate()));
+  }
+
+  document.getElementById('prev-month').addEventListener('click', ()=>{
+    monthCursor.setMonth(monthCursor.getMonth()-1);
+    renderMonth();
+  });
+  document.getElementById('next-month').addEventListener('click', ()=>{
+    monthCursor.setMonth(monthCursor.getMonth()+1);
+    renderMonth();
+  });
+  document.getElementById('today-btn').addEventListener('click', ()=>{
+    monthCursor = new Date(); monthCursor.setDate(1);
+    renderMonth();
+  });
+
+  document.getElementById('export-btn').addEventListener('click', exportData);
+  document.getElementById('import-btn').addEventListener('click', ()=>{
+    document.getElementById('import-file').click();
+  });
+  document.getElementById('import-file').addEventListener('change', (e)=>{
+    importData(e.target.files[0]);
+    e.target.value = '';
+  });
+
+  renderMonth();
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
+}
+</script>
+</body>
+</html>
