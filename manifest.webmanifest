@@ -2,8 +2,9 @@
   "name": "Training Planner",
   "short_name": "Training Planner",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#EEEAE1",
   "theme_color": "#EEEAE1",
-  "description": "Personal workout planning calendar"
+  "description": "Personal workout planner with Supabase sync."
 }

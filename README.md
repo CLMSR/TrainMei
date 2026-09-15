@@ -1,19 +1,25 @@
 # Training Planner
 
-## What this version fixes
-- The original file used `window.storage`, which is Claude Artifacts' storage API.
-- This version uses browser `localStorage`, so it works when opened normally in Chrome/Safari.
-- Data survives closing/reopening the browser on the same device/browser profile.
-- Includes JSON Backup/Restore buttons.
-- Includes PWA files (`manifest.webmanifest` and `sw.js`) so it can be installed as a web app once hosted over HTTPS.
+Static workout planner hosted on GitHub Pages, with Supabase authentication and cloud sync.
 
-## Important limitation
-LocalStorage does NOT sync between Mac and iPhone.
+## Files
+- `index.html` — app, login and Supabase sync
+- `manifest.webmanifest` — installable web-app metadata
+- `sw.js` — service worker for PWA/offline shell
 
-For true cross-device sync, the app needs a cloud database (for example Supabase) and authentication/security rules. The HTML is structured with a `CLOUD_CONFIG` section ready for that next step, but cloud sync is not enabled until a database is configured.
+## GitHub Pages
+Put all three files in the repository root, then:
+Repository → Settings → Pages → Deploy from a branch → `main` → `/ (root)` → Save.
 
-## PWA hosting
-Upload this folder to an HTTPS static host. Then open the URL on iPhone in Safari and use:
-Share -> Add to Home Screen.
+## Supabase
+The app uses the Supabase Project URL and Publishable Key in `index.html`. The publishable key is intended for browser use; never put a Supabase Secret Key in the frontend.
 
-Do not open the HTML directly from a `file://` URL if you want PWA installation/service-worker functionality.
+The database table is expected to be named `workouts` with:
+- `id` uuid primary key
+- `user_id` uuid referencing `auth.users(id)`
+- `date` date
+- `data` jsonb
+- `updated_at` timestamptz
+- unique constraint on `(user_id, date)`
+
+RLS must be enabled with policies restricting each user to their own `user_id`.

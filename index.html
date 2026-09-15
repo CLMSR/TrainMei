@@ -225,9 +225,35 @@
     cursor:pointer; font-size:14px; color:var(--ink);
   }
   .icon-btn:hover{ background:var(--ink); color:var(--white); }
+
+  .auth-overlay{position:fixed;inset:0;background:var(--paper);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;}
+  .auth-card{width:min(420px,100%);background:var(--white);border:2px solid var(--ink);padding:24px;}
+  .auth-title{font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:6px;}
+  .auth-sub{font-size:12px;color:#6b6b63;margin-bottom:20px;line-height:1.5;}
+  .auth-field{display:block;width:100%;border:1px solid var(--line-strong);background:var(--paper);padding:11px 10px;margin:7px 0 12px;font:inherit;font-size:14px;}
+  .auth-btn{width:100%;border:1px solid var(--ink);background:var(--ink);color:var(--white);padding:11px 12px;font:inherit;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;margin-top:5px;}
+  .auth-btn.secondary{background:transparent;color:var(--ink);margin-top:8px;}
+  .auth-msg{min-height:18px;font-size:12px;margin-top:12px;color:#6b6b63;line-height:1.4;}
+  .account-row{display:flex;align-items:center;gap:8px;font-size:10px;color:#6b6b63;text-transform:uppercase;letter-spacing:.06em;margin-left:4px;}
+  .account-email{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .signout-btn{border:1px solid var(--line-strong);background:transparent;padding:0 9px;height:30px;font:inherit;font-size:10px;text-transform:uppercase;cursor:pointer;}
+  .sync-btn{border:1px solid var(--line-strong);background:transparent;padding:0 10px;height:30px;font:inherit;font-size:10px;text-transform:uppercase;cursor:pointer;}
+  @media(max-width:650px){.account-row{display:none}.month-nav{flex-wrap:wrap;justify-content:flex-end}.month-head{align-items:flex-start}.month-title{font-size:2rem}}
 </style>
 </head>
 <body>
+
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-title">Training Planner</div>
+    <div class="auth-sub">Sign in to sync your workouts between your Mac, iPhone and any other device.</div>
+    <input class="auth-field" id="auth-email" type="email" autocomplete="email" placeholder="Email">
+    <input class="auth-field" id="auth-password" type="password" autocomplete="current-password" placeholder="Password (min. 6 characters)">
+    <button class="auth-btn" id="login-btn">Log in</button>
+    <button class="auth-btn secondary" id="signup-btn">Create account</button>
+    <div class="auth-msg" id="auth-msg"></div>
+  </div>
+</div>
 <div id="app">
   <div class="status-row" id="status-row"></div>
 
@@ -240,10 +266,12 @@
         <button class="today-btn" id="today-btn">Today</button>
         <button class="today-btn" id="export-btn" title="Export a backup of your workouts">Backup</button>
         <button class="today-btn" id="import-btn" title="Restore a backup">Restore</button>
+        <button class="sync-btn" id="sync-local-btn" title="Upload locally saved workouts to Supabase">Sync local</button>
+        <div class="account-row"><span class="account-email" id="account-email"></span><button class="signout-btn" id="signout-btn">Log out</button></div>
         <input type="file" id="import-file" accept="application/json" style="display:none">
       </div>
     </div>
-    <div class="hint">Tap a day to plan or edit its workout. Your data is saved automatically on this device.</div>
+    <div class="hint">Tap a day to plan or edit its workout. Your data is saved automatically and synced to your account.</div>
     <div class="cal-weekdays">
       <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
     </div>
@@ -324,21 +352,31 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
   const WEEKDAY_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
   const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-  let view = 'month'; // 'month' | 'day'
+  const SUPABASE_URL = 'https://vjgsezfjslevjbiotfoq.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_IzFrnMtQjVxTHQ3_BVmbLg_Ww2zzi2F';
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  let view = 'month';
   let monthCursor = new Date(); monthCursor.setDate(1);
   let selectedDateKey = null;
   let currentDay = null;
   let monthIndicators = {};
   let saveTimer = null;
+  let currentUser = null;
 
   const monthView = document.getElementById('month-view');
   const dayView = document.getElementById('day-view');
   const statusRow = document.getElementById('status-row');
+  const authOverlay = document.getElementById('auth-overlay');
+  const authMsg = document.getElementById('auth-msg');
+  const authEmail = document.getElementById('auth-email');
+  const authPassword = document.getElementById('auth-password');
 
   function pad(n){ return String(n).padStart(2,'0'); }
   function dateKeyOf(y,m,d){ return `${y}-${pad(m+1)}-${pad(d)}`; }
@@ -350,344 +388,259 @@
       exercises:[{name:'',sets:'',reps:''}],
       isRunDay:true, recoveryLabel:'', recoveryDetails:'',
       meals:[
-        {label:'Breakfast',content:''},
-        {label:'Snack',content:''},
-        {label:'Lunch',content:''},
-        {label:'Dinner',content:''},
-        {label:'Night snack',content:''}
+        {label:'Breakfast',content:''},{label:'Snack',content:''},{label:'Lunch',content:''},
+        {label:'Dinner',content:''},{label:'Night snack',content:''}
       ],
       notes:''
     };
   }
 
   function setStatus(text){ statusRow.textContent = text; }
-
-  /* ---------------- STORAGE ---------------- */
-  /*
-    STORAGE MODE
-    ------------
-    This version works immediately in a normal browser:
-      - Local mode: data is saved in localStorage and survives closing/reopening.
-      - Cloud mode: if you add your Supabase URL + anon key below, the same app
-        can sync data between Mac, iPhone, and other devices.
-
-    IMPORTANT:
-    A standalone HTML file cannot create a cloud database by itself. Cloud sync
-    requires a hosted database/service. The code below is deliberately written
-    so local mode works now and cloud mode can be enabled later.
-  */
-  const CLOUD_CONFIG = {
-    enabled: false,
-    supabaseUrl: '',
-    supabaseAnonKey: ''
-  };
+  function setAuthMsg(text){ authMsg.textContent = text; }
 
   const LOCAL_PREFIX = 'training-planner:';
   const localStorageApi = {
-    async get(key){
-      const value = localStorage.getItem(LOCAL_PREFIX + key);
-      return value === null ? null : { value };
-    },
-    async set(key, value){
-      localStorage.setItem(LOCAL_PREFIX + key, value);
-      return true;
-    },
-    async list(prefix){
-      const fullPrefix = LOCAL_PREFIX + prefix;
-      const keys = [];
-      for(let i=0; i<localStorage.length; i++){
-        const k = localStorage.key(i);
-        if(k && k.startsWith(fullPrefix)) keys.push(k.slice(LOCAL_PREFIX.length));
+    get(key){ const value = localStorage.getItem(LOCAL_PREFIX + key); return value === null ? null : { value }; },
+    set(key,value){ localStorage.setItem(LOCAL_PREFIX + key, value); return true; },
+    list(prefix){
+      const fullPrefix = LOCAL_PREFIX + prefix, keys=[];
+      for(let i=0;i<localStorage.length;i++){
+        const k=localStorage.key(i); if(k && k.startsWith(fullPrefix)) keys.push(k.slice(LOCAL_PREFIX.length));
       }
-      return { keys };
-    }
+      return {keys};
+    },
+    remove(key){ localStorage.removeItem(LOCAL_PREFIX + key); }
   };
 
-  // Use local browser storage by default. This replaces Claude's artifact-only
-  // storage API, which is not available when the HTML is opened normally.
-  const storage = {
-    get: (key) => localStorageApi.get(key),
-    set: (key, value) => localStorageApi.set(key, value),
-    list: (prefix) => localStorageApi.list(prefix)
-  };
+  function cacheDay(key, data){ localStorageApi.set(`workout:${key}`, JSON.stringify(data)); }
+  function clearCachedDay(key){ localStorageApi.remove(`workout:${key}`); }
 
   async function fetchMonthIndicators(year, monthIdx){
-    const prefix = `workout:${year}-${pad(monthIdx+1)}`;
+    if(!currentUser) return {};
+    const start = dateKeyOf(year, monthIdx, 1);
+    const end = dateKeyOf(year, monthIdx, new Date(year, monthIdx+1, 0).getDate());
     try{
-      const res = await storage.list(prefix);
-      const keys = (res && res.keys) ? res.keys : [];
-      const pairs = await Promise.all(keys.map(async k=>{
-        try{
-          const r = await storage.get(k);
-          if(!r) return null;
-          return [k.replace('workout:',''), JSON.parse(r.value)];
-        }catch(e){ return null; }
-      }));
-      const out = {};
-      pairs.filter(Boolean).forEach(([k,v])=>{ out[k]=v; });
+      const {data,error} = await supabaseClient.from('workouts').select('date,data').eq('user_id',currentUser.id).gte('date',start).lte('date',end);
+      if(error) throw error;
+      const out={};
+      (data||[]).forEach(row=>{ out[row.date]=row.data; cacheDay(row.date,row.data); });
       return out;
     }catch(e){
-      console.error('Failed to load month indicators', e);
-      return {};
+      console.error('Failed to load month from Supabase',e);
+      setStatus('Cloud load failed — showing local cache');
+      const prefix=`workout:${year}-${pad(monthIdx+1)}`;
+      const res=localStorageApi.list(prefix), out={};
+      res.keys.forEach(k=>{ try{ const r=localStorageApi.get(k); if(r) out[k.replace('workout:','')]=JSON.parse(r.value); }catch(_){} });
+      return out;
     }
   }
 
   async function loadDay(key){
+    if(!currentUser) return defaultDayData();
     try{
-      const r = await storage.get(`workout:${key}`);
-      if(r && r.value) return JSON.parse(r.value);
-    }catch(e){ /* not found or error, fall through */ }
+      const {data,error}=await supabaseClient.from('workouts').select('data').eq('user_id',currentUser.id).eq('date',key).maybeSingle();
+      if(error) throw error;
+      if(data && data.data){ cacheDay(key,data.data); return normalizeDay(data.data); }
+    }catch(e){
+      console.error('Load failed',e);
+      const local=localStorageApi.get(`workout:${key}`);
+      if(local) try{return normalizeDay(JSON.parse(local.value));}catch(_){}
+    }
+    const local=localStorageApi.get(`workout:${key}`);
+    if(local) try{return normalizeDay(JSON.parse(local.value));}catch(_){}
     return defaultDayData();
+  }
+
+  function normalizeDay(data){
+    const d=defaultDayData();
+    return Object.assign(d,data||{}, {
+      exercises:Array.isArray(data?.exercises)&&data.exercises.length?data.exercises:d.exercises,
+      meals:Array.isArray(data?.meals)&&data.meals.length?data.meals:d.meals
+    });
   }
 
   function scheduleSave(){
     setStatus('Saving…');
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(saveDay, 500);
+    saveTimer=setTimeout(saveDay,500);
   }
 
   async function saveDay(){
+    if(!currentUser || !selectedDateKey || !currentDay) return;
+    const snapshot=JSON.parse(JSON.stringify(currentDay));
+    cacheDay(selectedDateKey,snapshot);
     try{
-      const ok = await storage.set(`workout:${selectedDateKey}`, JSON.stringify(currentDay));
-      setStatus(ok ? 'Saved' : 'Could not save');
-      if(monthIndicators) monthIndicators[selectedDateKey] = currentDay;
+      const {error}=await supabaseClient.from('workouts').upsert({
+        user_id:currentUser.id,date:selectedDateKey,data:snapshot,updated_at:new Date().toISOString()
+      },{onConflict:'user_id,date'});
+      if(error) throw error;
+      setStatus('Saved & synced');
+      if(monthIndicators) monthIndicators[selectedDateKey]=snapshot;
     }catch(e){
-      console.error('Save failed', e);
-      setStatus('Could not save — try again');
+      console.error('Save failed',e);
+      setStatus('Saved locally — cloud sync failed');
     }
   }
 
-  /* ---------------- BACKUP / RESTORE ---------------- */
+  async function clearDayFromCloud(){
+    if(!currentUser || !selectedDateKey) return;
+    const {error}=await supabaseClient.from('workouts').delete().eq('user_id',currentUser.id).eq('date',selectedDateKey);
+    if(error) throw error;
+  }
+
   function exportData(){
-    const data = {};
-    const prefix = LOCAL_PREFIX + 'workout:';
-    for(let i=0; i<localStorage.length; i++){
-      const k = localStorage.key(i);
-      if(k && k.startsWith(prefix)){
-        data[k.slice(LOCAL_PREFIX.length)] = localStorage.getItem(k);
-      }
+    const data={};
+    const prefix=LOCAL_PREFIX+'workout:';
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k&&k.startsWith(prefix)) data[k.slice(LOCAL_PREFIX.length)]=localStorage.getItem(k);
     }
-    const blob = new Blob([JSON.stringify({
-      app: 'Training Planner',
-      version: 2,
-      exportedAt: new Date().toISOString(),
-      data
-    }, null, 2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `training-planner-backup-${todayKey()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const blob=new Blob([JSON.stringify({app:'Training Planner',version:3,exportedAt:new Date().toISOString(),data},null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob), a=document.createElement('a');
+    a.href=url; a.download=`training-planner-backup-${todayKey()}.json`; a.click(); URL.revokeObjectURL(url);
     setStatus('Backup exported');
   }
 
   function importData(file){
     if(!file) return;
-    const reader = new FileReader();
-    reader.onload = ()=>{
+    const reader=new FileReader();
+    reader.onload=()=>{
       try{
-        const payload = JSON.parse(reader.result);
-        if(!payload || typeof payload.data !== 'object') throw new Error('Invalid backup');
-        Object.entries(payload.data).forEach(([key,value])=>{
-          if(key.startsWith('workout:')) localStorage.setItem(LOCAL_PREFIX + key, value);
-        });
-        setStatus('Backup restored');
-        renderMonth();
-      }catch(e){
-        console.error(e);
-        setStatus('Invalid backup');
-      }
+        const payload=JSON.parse(reader.result);
+        if(!payload||typeof payload.data!=='object') throw new Error('Invalid backup');
+        Object.entries(payload.data).forEach(([key,value])=>{ if(key.startsWith('workout:')) localStorage.setItem(LOCAL_PREFIX+key,value); });
+        setStatus('Backup restored locally. Use “Sync local” to upload it.'); renderMonth();
+      }catch(e){console.error(e);setStatus('Invalid backup');}
     };
     reader.readAsText(file);
   }
 
-  /* ---------------- MONTH VIEW ---------------- */
+  async function syncLocalToCloud(){
+    if(!currentUser) return;
+    if(!confirm('Upload all workouts currently stored on this browser to your cloud account? Existing cloud rows for the same dates will be replaced.')) return;
+    setStatus('Syncing local data…');
+    const entries=[];
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(!k||!k.startsWith(LOCAL_PREFIX+'workout:')) continue;
+      const date=k.slice((LOCAL_PREFIX+'workout:').length);
+      try{ entries.push({user_id:currentUser.id,date,data:JSON.parse(localStorage.getItem(k)),updated_at:new Date().toISOString()}); }catch(_){}
+    }
+    if(!entries.length){ setStatus('No local workouts to sync'); return; }
+    try{
+      const {error}=await supabaseClient.from('workouts').upsert(entries,{onConflict:'user_id,date'});
+      if(error) throw error;
+      setStatus(`${entries.length} workout(s) synced`); renderMonth();
+    }catch(e){ console.error(e); setStatus('Local sync failed'); }
+  }
 
   async function renderMonth(){
-    view='month';
-    dayView.classList.remove('active');
-    monthView.classList.remove('hidden');
-
-    const y = monthCursor.getFullYear(), m = monthCursor.getMonth();
-    document.getElementById('month-title').textContent = `${MONTH_NAMES[m]} ${y}`;
-
-    const grid = document.getElementById('cal-grid');
-    grid.innerHTML = '<div style="padding:14px;font-size:12px;color:#6b6b63;">Loading…</div>';
-
-    monthIndicators = await fetchMonthIndicators(y,m);
-
-    const firstOfMonth = new Date(y,m,1);
-    let startOffset = firstOfMonth.getDay() - 1; // Monday=0
-    if(startOffset < 0) startOffset = 6;
-    const daysInMonth = new Date(y,m+1,0).getDate();
-    const tKey = todayKey();
-
-    let html = '';
-    for(let i=0;i<startOffset;i++){ html += '<div class="cal-cell empty"></div>'; }
-    for(let d=1; d<=daysInMonth; d++){
-      const key = dateKeyOf(y,m,d);
-      const entry = monthIndicators[key];
-      const isToday = key === tKey;
-      const focusText = entry ? (entry.focus || entry.trainingCategory || '') : '';
-      html += `<div class="cal-cell${isToday?' today':''}" data-key="${key}">
-          <div class="cal-daynum">${d}</div>
-          <div class="cal-focus">${escapeHtml(focusText)}</div>
-        </div>`;
+    view='month'; dayView.classList.remove('active'); monthView.classList.remove('hidden');
+    const y=monthCursor.getFullYear(),m=monthCursor.getMonth();
+    document.getElementById('month-title').textContent=`${MONTH_NAMES[m]} ${y}`;
+    const grid=document.getElementById('cal-grid'); grid.innerHTML='<div style="padding:14px;font-size:12px;color:#6b6b63;">Loading…</div>';
+    monthIndicators=await fetchMonthIndicators(y,m);
+    const firstOfMonth=new Date(y,m,1); let startOffset=firstOfMonth.getDay()-1; if(startOffset<0)startOffset=6;
+    const daysInMonth=new Date(y,m+1,0).getDate(),tKey=todayKey(); let html='';
+    for(let i=0;i<startOffset;i++)html+='<div class="cal-cell empty"></div>';
+    for(let d=1;d<=daysInMonth;d++){
+      const key=dateKeyOf(y,m,d),entry=monthIndicators[key],isToday=key===tKey;
+      const focusText=entry?(entry.focus||entry.trainingCategory||''):'';
+      html+=`<div class="cal-cell${isToday?' today':''}" data-key="${key}"><div class="cal-daynum">${d}</div><div class="cal-focus">${escapeHtml(focusText)}</div></div>`;
     }
-    const totalCells = startOffset + daysInMonth;
-    const trailing = (7 - (totalCells % 7)) % 7;
-    for(let i=0;i<trailing;i++){ html += '<div class="cal-cell empty"></div>'; }
-
-    grid.innerHTML = html;
-    grid.querySelectorAll('.cal-cell[data-key]').forEach(cell=>{
-      cell.addEventListener('click', ()=> openDay(cell.dataset.key));
-    });
-    setStatus('');
+    const totalCells=startOffset+daysInMonth,trailing=(7-(totalCells%7))%7; for(let i=0;i<trailing;i++)html+='<div class="cal-cell empty"></div>';
+    grid.innerHTML=html; grid.querySelectorAll('.cal-cell[data-key]').forEach(cell=>cell.addEventListener('click',()=>openDay(cell.dataset.key)));
+    if(!statusRow.textContent.includes('failed')) setStatus('');
   }
 
-  function escapeHtml(s){
-    return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
+  function escapeHtml(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
-  /* ---------------- DAY VIEW ---------------- */
   async function openDay(key){
-    selectedDateKey = key;
-    view = 'day';
-    monthView.classList.add('hidden');
-    dayView.classList.add('active');
-    setStatus('Loading…');
-    currentDay = await loadDay(key);
-    renderDay();
-    setStatus('');
+    selectedDateKey=key; view='day'; monthView.classList.add('hidden'); dayView.classList.add('active'); setStatus('Loading…');
+    currentDay=await loadDay(key); renderDay(); setStatus('');
   }
 
   function renderDay(){
-    const [y,m,d] = selectedDateKey.split('-').map(Number);
-    const dt = new Date(y, m-1, d);
-    document.getElementById('day-name').textContent = WEEKDAY_NAMES[(dt.getDay()+6)%7];
-    document.getElementById('day-date').textContent = `${MONTH_NAMES[m-1]} ${d}, ${y}`;
-
-    setVal('[data-field="tagline"]', currentDay.tagline);
-    setVal('[data-field="strap"]', currentDay.strap);
-    setVal('[data-field="focus"]', currentDay.focus);
-    setVal('[data-field="trainingCategory"]', currentDay.trainingCategory);
-    setVal('[data-field="recoveryLabel"]', currentDay.recoveryLabel);
-    setVal('[data-field="recoveryDetails"]', currentDay.recoveryDetails);
-    setVal('[data-field="notes"]', currentDay.notes);
-
-    const toggle = document.getElementById('run-toggle');
-    toggle.classList.toggle('on', !!currentDay.isRunDay);
-    document.getElementById('run-toggle-label').textContent = currentDay.isRunDay ? 'Run day' : 'Off run day';
-
-    const exBody = document.getElementById('exercise-rows');
-    exBody.innerHTML = currentDay.exercises.map((ex,i)=>`
-      <tr>
-        <td><input data-ex-index="${i}" data-ex-key="name" value="${escapeAttr(ex.name)}" placeholder="e.g. Barbell Back Squat"></td>
-        <td><input data-ex-index="${i}" data-ex-key="sets" value="${escapeAttr(ex.sets)}" placeholder="4"></td>
-        <td><input data-ex-index="${i}" data-ex-key="reps" value="${escapeAttr(ex.reps)}" placeholder="6-8"></td>
-        <td><button class="rm-btn" data-action="remove-exercise" data-index="${i}" aria-label="Remove exercise">×</button></td>
-      </tr>`).join('');
-
-    const mealBody = document.getElementById('meal-rows');
-    mealBody.innerHTML = currentDay.meals.map((meal,i)=>`
-      <tr>
-        <td><input data-meal-index="${i}" data-meal-key="label" value="${escapeAttr(meal.label)}" placeholder="Meal"></td>
-        <td><input data-meal-index="${i}" data-meal-key="content" value="${escapeAttr(meal.content)}" placeholder="What you're eating"></td>
-        <td><button class="rm-btn" data-action="remove-meal" data-index="${i}" aria-label="Remove meal">×</button></td>
-      </tr>`).join('');
+    const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);
+    document.getElementById('day-name').textContent=WEEKDAY_NAMES[(dt.getDay()+6)%7];
+    document.getElementById('day-date').textContent=`${MONTH_NAMES[m-1]} ${d}, ${y}`;
+    setVal('[data-field="tagline"]',currentDay.tagline); setVal('[data-field="strap"]',currentDay.strap); setVal('[data-field="focus"]',currentDay.focus);
+    setVal('[data-field="trainingCategory"]',currentDay.trainingCategory); setVal('[data-field="recoveryLabel"]',currentDay.recoveryLabel); setVal('[data-field="recoveryDetails"]',currentDay.recoveryDetails); setVal('[data-field="notes"]',currentDay.notes);
+    const toggle=document.getElementById('run-toggle'); toggle.classList.toggle('on',!!currentDay.isRunDay); document.getElementById('run-toggle-label').textContent=currentDay.isRunDay?'Run day':'Off run day';
+    document.getElementById('exercise-rows').innerHTML=currentDay.exercises.map((ex,i)=>`<tr><td><input data-ex-index="${i}" data-ex-key="name" value="${escapeAttr(ex.name)}" placeholder="e.g. Barbell Back Squat"></td><td><input data-ex-index="${i}" data-ex-key="sets" value="${escapeAttr(ex.sets)}" placeholder="4"></td><td><input data-ex-index="${i}" data-ex-key="reps" value="${escapeAttr(ex.reps)}" placeholder="6-8"></td><td><button class="rm-btn" data-action="remove-exercise" data-index="${i}" aria-label="Remove exercise">×</button></td></tr>`).join('');
+    document.getElementById('meal-rows').innerHTML=currentDay.meals.map((meal,i)=>`<tr><td><input data-meal-index="${i}" data-meal-key="label" value="${escapeAttr(meal.label)}" placeholder="Meal"></td><td><input data-meal-index="${i}" data-meal-key="content" value="${escapeAttr(meal.content)}" placeholder="What you're eating"></td><td><button class="rm-btn" data-action="remove-meal" data-index="${i}" aria-label="Remove meal">×</button></td></tr>`).join('');
   }
 
-  function setVal(sel, val){
-    const el = dayView.querySelector(sel);
-    if(el) el.value = val || '';
-  }
-  function escapeAttr(s){ return escapeHtml(s); }
+  function setVal(sel,val){const el=dayView.querySelector(sel);if(el)el.value=val||'';}
+  function escapeAttr(s){return escapeHtml(s);}
 
-  /* ---------------- EVENTS ---------------- */
-  dayView.addEventListener('input', (e)=>{
-    const t = e.target;
-    if(t.dataset.field !== undefined && t.dataset.field !== ''){
-      currentDay[t.dataset.field] = t.value;
-      scheduleSave();
-    } else if(t.dataset.exIndex !== undefined){
-      currentDay.exercises[+t.dataset.exIndex][t.dataset.exKey] = t.value;
-      scheduleSave();
-    } else if(t.dataset.mealIndex !== undefined){
-      currentDay.meals[+t.dataset.mealIndex][t.dataset.mealKey] = t.value;
-      scheduleSave();
-    }
+  dayView.addEventListener('input',e=>{
+    const t=e.target;
+    if(t.dataset.field!==undefined&&t.dataset.field!==''){currentDay[t.dataset.field]=t.value;scheduleSave();}
+    else if(t.dataset.exIndex!==undefined){currentDay.exercises[+t.dataset.exIndex][t.dataset.exKey]=t.value;scheduleSave();}
+    else if(t.dataset.mealIndex!==undefined){currentDay.meals[+t.dataset.mealIndex][t.dataset.mealKey]=t.value;scheduleSave();}
   });
 
-  dayView.addEventListener('click', (e)=>{
-    const toggle = e.target.closest('#run-toggle');
-    if(toggle){
-      currentDay.isRunDay = !currentDay.isRunDay;
-      renderDay();
-      scheduleSave();
-      return;
-    }
-    const btn = e.target.closest('button');
-    if(!btn) return;
-    const action = btn.dataset.action;
-    if(action === 'add-exercise'){
-      currentDay.exercises.push({name:'',sets:'',reps:''});
-      renderDay();
-    } else if(action === 'remove-exercise'){
-      currentDay.exercises.splice(+btn.dataset.index,1);
-      if(currentDay.exercises.length===0) currentDay.exercises.push({name:'',sets:'',reps:''});
-      renderDay(); scheduleSave();
-    } else if(action === 'add-meal'){
-      currentDay.meals.push({label:'',content:''});
-      renderDay();
-    } else if(action === 'remove-meal'){
-      currentDay.meals.splice(+btn.dataset.index,1);
-      renderDay(); scheduleSave();
-    } else if(action === 'clear-day'){
-      if(confirm('Clear all fields for this day? This cannot be undone.')){
-        currentDay = defaultDayData();
-        renderDay();
-        scheduleSave();
+  dayView.addEventListener('click',e=>{
+    const toggle=e.target.closest('#run-toggle');
+    if(toggle){currentDay.isRunDay=!currentDay.isRunDay;renderDay();scheduleSave();return;}
+    const btn=e.target.closest('button');if(!btn)return;const action=btn.dataset.action;
+    if(action==='add-exercise'){currentDay.exercises.push({name:'',sets:'',reps:''});renderDay();}
+    else if(action==='remove-exercise'){currentDay.exercises.splice(+btn.dataset.index,1);if(!currentDay.exercises.length)currentDay.exercises.push({name:'',sets:'',reps:''});renderDay();scheduleSave();}
+    else if(action==='add-meal'){currentDay.meals.push({label:'',content:''});renderDay();}
+    else if(action==='remove-meal'){currentDay.meals.splice(+btn.dataset.index,1);renderDay();scheduleSave();}
+    else if(action==='clear-day'){
+      if(confirm('Clear all fields for this day? This will also remove the cloud entry.')){
+        clearTimeout(saveTimer); currentDay=defaultDayData(); renderDay(); setStatus('Clearing…');
+        clearDayFromCloud().then(()=>{clearCachedDay(selectedDateKey);monthIndicators[selectedDateKey]=undefined;setStatus('Day cleared');}).catch(err=>{console.error(err);setStatus('Cloud clear failed');});
       }
     }
   });
 
-  document.getElementById('back-btn').addEventListener('click', ()=>{
-    monthCursor = new Date(Number(selectedDateKey.split('-')[0]), Number(selectedDateKey.split('-')[1])-1, 1);
-    renderMonth();
-  });
-  document.getElementById('prev-day').addEventListener('click', ()=> navigateDay(-1));
-  document.getElementById('next-day').addEventListener('click', ()=> navigateDay(1));
+  document.getElementById('back-btn').addEventListener('click',()=>{monthCursor=new Date(Number(selectedDateKey.split('-')[0]),Number(selectedDateKey.split('-')[1])-1,1);renderMonth();});
+  document.getElementById('prev-day').addEventListener('click',()=>navigateDay(-1));
+  document.getElementById('next-day').addEventListener('click',()=>navigateDay(1));
+  function navigateDay(delta){const [y,m,d]=selectedDateKey.split('-').map(Number);const dt=new Date(y,m-1,d+delta);openDay(dateKeyOf(dt.getFullYear(),dt.getMonth(),dt.getDate()));}
+  document.getElementById('prev-month').addEventListener('click',()=>{monthCursor.setMonth(monthCursor.getMonth()-1);renderMonth();});
+  document.getElementById('next-month').addEventListener('click',()=>{monthCursor.setMonth(monthCursor.getMonth()+1);renderMonth();});
+  document.getElementById('today-btn').addEventListener('click',()=>{monthCursor=new Date();monthCursor.setDate(1);renderMonth();});
+  document.getElementById('export-btn').addEventListener('click',exportData);
+  document.getElementById('import-btn').addEventListener('click',()=>document.getElementById('import-file').click());
+  document.getElementById('import-file').addEventListener('change',e=>{importData(e.target.files[0]);e.target.value='';});
+  document.getElementById('sync-local-btn').addEventListener('click',syncLocalToCloud);
+  document.getElementById('signout-btn').addEventListener('click',async()=>{await supabaseClient.auth.signOut();});
 
-  function navigateDay(delta){
-    const [y,m,d] = selectedDateKey.split('-').map(Number);
-    const dt = new Date(y, m-1, d+delta);
-    openDay(dateKeyOf(dt.getFullYear(), dt.getMonth(), dt.getDate()));
+  async function login(){
+    const email=authEmail.value.trim(),password=authPassword.value;
+    if(!email||!password){setAuthMsg('Enter your email and password.');return;}
+    setAuthMsg('Logging in…');
+    const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+    if(error)setAuthMsg(error.message);
+  }
+  async function signup(){
+    const email=authEmail.value.trim(),password=authPassword.value;
+    if(!email||password.length<6){setAuthMsg('Use a valid email and a password of at least 6 characters.');return;}
+    setAuthMsg('Creating account…');
+    const {data,error}=await supabaseClient.auth.signUp({email,password});
+    if(error){setAuthMsg(error.message);return;}
+    if(data.session){setAuthMsg('Account created.');}
+    else setAuthMsg('Account created. Check your email to confirm the account, then log in.');
+  }
+  document.getElementById('login-btn').addEventListener('click',login);
+  document.getElementById('signup-btn').addEventListener('click',signup);
+  authPassword.addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+
+  async function startApp(session){
+    currentUser=session?.user||null;
+    if(!currentUser){authOverlay.style.display='flex';return;}
+    authOverlay.style.display='none';
+    document.getElementById('account-email').textContent=currentUser.email||'';
+    setStatus('Loading your workouts…');
+    await renderMonth();
   }
 
-  document.getElementById('prev-month').addEventListener('click', ()=>{
-    monthCursor.setMonth(monthCursor.getMonth()-1);
-    renderMonth();
-  });
-  document.getElementById('next-month').addEventListener('click', ()=>{
-    monthCursor.setMonth(monthCursor.getMonth()+1);
-    renderMonth();
-  });
-  document.getElementById('today-btn').addEventListener('click', ()=>{
-    monthCursor = new Date(); monthCursor.setDate(1);
-    renderMonth();
-  });
-
-  document.getElementById('export-btn').addEventListener('click', exportData);
-  document.getElementById('import-btn').addEventListener('click', ()=>{
-    document.getElementById('import-file').click();
-  });
-  document.getElementById('import-file').addEventListener('change', (e)=>{
-    importData(e.target.files[0]);
-    e.target.value = '';
-  });
-
-  renderMonth();
+  supabaseClient.auth.onAuthStateChange((_event,session)=>{setTimeout(()=>startApp(session),0);});
+  supabaseClient.auth.getSession().then(({data})=>startApp(data.session));
 })();
 </script>
 <script>
