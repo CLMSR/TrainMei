@@ -4,649 +4,178 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#EEEAE1">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Training Planner">
 <title>Training Planner</title>
 <style>
-  :root{
-    --ink:#161616;
-    --paper:#EEEAE1;
-    --paper-dim:#E2DDD1;
-    --line: rgba(22,22,22,0.18);
-    --line-strong: #161616;
-    --white:#FBFAF7;
-  }
-  *{ box-sizing:border-box; }
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  #app{ max-width:900px; margin:0 auto; padding:20px 18px 60px; }
-
-  .status-row{
-    display:flex; justify-content:flex-end; align-items:center;
-    height:18px; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
-    color:#6b6b63; margin-bottom:6px;
-  }
-
-  /* ---------- MONTH VIEW ---------- */
-  .month-head{
-    display:flex; align-items:flex-end; justify-content:space-between;
-    border-bottom:3px solid var(--line-strong);
-    padding-bottom:10px; margin-bottom:4px;
-  }
-  .month-title{
-    font-weight:900; text-transform:uppercase;
-    font-size:clamp(2.1rem, 8vw, 3.4rem);
-    letter-spacing:-0.02em; line-height:0.9;
-  }
-  .month-nav{ display:flex; gap:8px; align-items:center; }
-  .nav-btn{
-    border:1px solid var(--line-strong); background:transparent; color:var(--ink);
-    width:34px; height:34px; font-size:16px; cursor:pointer; border-radius:0;
-  }
-  .nav-btn:hover{ background:var(--ink); color:var(--white); }
-  .today-btn{
-    border:1px solid var(--line-strong); background:transparent; color:var(--ink);
-    padding:0 12px; height:34px; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
-    cursor:pointer; margin-left:4px;
-  }
-  .today-btn:hover{ background:var(--ink); color:var(--white); }
-
-  .hint{ font-size:12px; color:#6b6b63; margin:10px 0 14px; }
-
-  .cal-weekdays{
-    display:grid; grid-template-columns:repeat(7,1fr);
-    border-top:1px solid var(--line-strong);
-    margin-top:8px;
-  }
-  .cal-weekdays div{
-    font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
-    padding:6px 4px; color:#6b6b63; text-align:left;
-  }
-  .cal-grid{
-    display:grid; grid-template-columns:repeat(7,1fr);
-    border-left:1px solid var(--line); border-top:1px solid var(--line);
-  }
-  .cal-cell{
-    min-height:78px; border-right:1px solid var(--line); border-bottom:1px solid var(--line);
-    padding:6px 6px; cursor:pointer; background:var(--paper); position:relative;
-    display:flex; flex-direction:column; gap:4px;
-  }
-  .cal-cell:hover{ background:var(--paper-dim); }
-  .cal-cell.empty{ cursor:default; background:transparent; }
-  .cal-cell.empty:hover{ background:transparent; }
-  .cal-daynum{ font-weight:700; font-size:13px; }
-  .cal-cell.today .cal-daynum{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:20px; height:20px; background:var(--ink); color:var(--white); font-size:11px;
-  }
-  .cal-focus{
-    font-size:10px; line-height:1.25; text-transform:uppercase; letter-spacing:0.02em;
-    color:var(--ink); overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
-  }
-
-  @media (max-width:520px){
-    .cal-cell{ min-height:60px; padding:4px; }
-    .cal-focus{ -webkit-line-clamp:2; font-size:9px; }
-  }
-
-  /* ---------- DAY VIEW ---------- */
-  .day-view{ display:none; }
-  .day-view.active{ display:block; }
-  #month-view.hidden{ display:none; }
-
-  .day-top{
-    display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;
-  }
-  .back-btn{
-    border:none; background:none; cursor:pointer; font-size:12px; letter-spacing:0.06em;
-    text-transform:uppercase; color:var(--ink); padding:6px 0;
-  }
-  .back-btn:hover{ text-decoration:underline; }
-  .day-nav{ display:flex; gap:6px; }
-
-  .day-header{
-    display:flex; justify-content:space-between; align-items:flex-start;
-    gap:16px; padding-bottom:14px; border-bottom:4px solid var(--line-strong);
-  }
-  .day-name{
-    font-weight:900; text-transform:uppercase; line-height:0.82;
-    font-size:clamp(2.6rem, 11vw, 5.2rem); letter-spacing:-0.02em;
-  }
-  .day-date{ font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#6b6b63; margin-top:4px; }
-  .tagline-box{ text-align:right; max-width:230px; padding-top:6px; }
-  .tagline-input{
-    width:100%; text-align:right; border:none; background:transparent; resize:none;
-    font-size:11px; letter-spacing:0.08em; text-transform:uppercase; line-height:1.6;
-    color:var(--ink); font-family:inherit; font-weight:600;
-  }
-  .tagline-input::placeholder{ color:#9a968a; }
-  .tagline-rule{ border:none; border-top:1px solid var(--line-strong); margin:8px 0; }
-  .strap-input{
-    width:100%; text-align:right; border:none; background:transparent;
-    font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:#6b6b63;
-    font-family:inherit; font-style:italic;
-  }
-
-  .focus-row{ margin:14px 0 22px; }
-  .focus-input{
-    width:100%; border:none; background:transparent; font-weight:900; text-transform:uppercase;
-    letter-spacing:-0.01em; font-size:clamp(1.2rem,5vw,1.8rem); color:var(--ink);
-    font-family:inherit; padding:0;
-  }
-  .focus-input::placeholder{ color:#9a968a; }
-
-  .section{ margin-bottom:22px; }
-  .section-bar{
-    background:var(--ink); color:var(--white);
-    display:flex; align-items:center; gap:10px;
-    padding:9px 12px; font-weight:800; text-transform:uppercase; font-size:14px; letter-spacing:0.02em;
-  }
-  .section-bar .divider{ opacity:0.5; }
-  .section-sub-input{
-    flex:1; background:transparent; border:none; color:#d8d5cc; font-family:inherit;
-    font-size:12px; text-transform:none; letter-spacing:0; font-weight:400;
-  }
-  .section-sub-input::placeholder{ color:#8a8880; }
-
-  table.plan-table{ width:100%; border-collapse:collapse; background:var(--white); }
-  table.plan-table th{
-    text-align:left; font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
-    color:#6b6b63; padding:8px 10px; border-bottom:1px solid var(--line-strong); font-weight:700;
-  }
-  table.plan-table td{
-    padding:0; border-bottom:1px solid var(--line);
-  }
-  table.plan-table td input{
-    width:100%; border:none; background:transparent; padding:9px 10px; font-family:inherit;
-    font-size:13.5px; color:var(--ink);
-  }
-  table.plan-table td input::placeholder{ color:#b3b0a6; }
-  .col-ex{ width:56%; } .col-sets{ width:16%; } .col-reps{ width:18%; } .col-rm{ width:10%; }
-  .rm-btn{
-    width:100%; height:100%; border:none; background:transparent; color:#b3423b; cursor:pointer;
-    font-size:16px; padding:9px 6px;
-  }
-  .rm-btn:hover{ background:#f4e2e0; }
-  .add-row-btn{
-    width:100%; text-align:left; border:1px dashed var(--line-strong); border-top:none;
-    background:var(--white); color:var(--ink); padding:9px 10px; font-size:12px;
-    letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; font-family:inherit;
-  }
-  .add-row-btn:hover{ background:var(--paper-dim); }
-
-  .recovery-body{
-    background:var(--white); border:1px solid var(--line); border-top:none; padding:14px;
-  }
-  .toggle-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-  .toggle-switch{
-    width:42px; height:22px; border:1px solid var(--line-strong); position:relative; cursor:pointer;
-    background:var(--paper); flex-shrink:0;
-  }
-  .toggle-knob{
-    position:absolute; top:1px; left:1px; width:18px; height:18px; background:var(--ink);
-    transition:left 0.15s ease;
-  }
-  .toggle-switch.on .toggle-knob{ left:21px; }
-  .toggle-label{ font-size:12px; text-transform:uppercase; letter-spacing:0.04em; font-weight:700; }
-  .recovery-textarea{
-    width:100%; min-height:80px; border:1px solid var(--line); background:var(--paper);
-    padding:10px; font-family:inherit; font-size:13px; line-height:1.5; color:var(--ink); resize:vertical;
-  }
-  .recovery-textarea::placeholder{ color:#9a968a; }
-
-  .notes-box{
-    background:var(--white); border:1px solid var(--line-strong); padding:12px;
-  }
-  .notes-textarea{
-    width:100%; min-height:90px; border:none; background:transparent; resize:vertical;
-    font-family:inherit; font-size:13.5px; line-height:1.55; color:var(--ink);
-  }
-  .notes-textarea::placeholder{ color:#9a968a; }
-
-  .footer-row{
-    display:flex; justify-content:space-between; align-items:center; margin-top:30px;
-    border-top:1px solid var(--line-strong); padding-top:12px;
-  }
-  .footer-label{ font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#6b6b63; }
-  .clear-btn{
-    border:none; background:none; color:#b3423b; font-size:11px; letter-spacing:0.05em;
-    text-transform:uppercase; cursor:pointer; font-family:inherit;
-  }
-  .clear-btn:hover{ text-decoration:underline; }
-
-  .icon-btn{
-    border:1px solid var(--line-strong); background:transparent; width:30px; height:30px;
-    cursor:pointer; font-size:14px; color:var(--ink);
-  }
-  .icon-btn:hover{ background:var(--ink); color:var(--white); }
-
-  .auth-overlay{position:fixed;inset:0;background:var(--paper);display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000;}
-  .auth-card{width:min(420px,100%);background:var(--white);border:2px solid var(--ink);padding:24px;}
-  .auth-title{font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:6px;}
-  .auth-sub{font-size:12px;color:#6b6b63;margin-bottom:20px;line-height:1.5;}
-  .auth-field{display:block;width:100%;border:1px solid var(--line-strong);background:var(--paper);padding:11px 10px;margin:7px 0 12px;font:inherit;font-size:14px;}
-  .auth-btn{width:100%;border:1px solid var(--ink);background:var(--ink);color:var(--white);padding:11px 12px;font:inherit;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;margin-top:5px;}
-  .auth-btn.secondary{background:transparent;color:var(--ink);margin-top:8px;}
-  .auth-msg{min-height:18px;font-size:12px;margin-top:12px;color:#6b6b63;line-height:1.4;}
-  .account-row{display:flex;align-items:center;gap:8px;font-size:10px;color:#6b6b63;text-transform:uppercase;letter-spacing:.06em;margin-left:4px;}
-  .account-email{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .signout-btn{border:1px solid var(--line-strong);background:transparent;padding:0 9px;height:30px;font:inherit;font-size:10px;text-transform:uppercase;cursor:pointer;}
-  .sync-btn{border:1px solid var(--line-strong);background:transparent;padding:0 10px;height:30px;font:inherit;font-size:10px;text-transform:uppercase;cursor:pointer;}
-  @media(max-width:650px){.account-row{display:none}.month-nav{flex-wrap:wrap;justify-content:flex-end}.month-head{align-items:flex-start}.month-title{font-size:2rem}}
+:root{--ink:#161616;--paper:#EEEAE1;--paper-dim:#E2DDD1;--line:rgba(22,22,22,.18);--line-strong:#161616;--white:#FBFAF7;--muted:#6b6b63;--danger:#b3423b}
+*{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit} button{cursor:pointer}
+#app{max-width:1080px;margin:0 auto;padding:18px 18px 60px}.hidden{display:none!important}.status-row{display:flex;justify-content:flex-end;height:18px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.topbar{display:flex;justify-content:space-between;align-items:end;border-bottom:3px solid var(--ink);padding-bottom:10px;margin-bottom:10px;gap:12px}.brand{font-weight:900;text-transform:uppercase;font-size:clamp(2rem,7vw,3.2rem);line-height:.9}.top-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.btn{border:1px solid var(--ink);background:transparent;color:var(--ink);padding:8px 11px;font-size:11px;letter-spacing:.06em;text-transform:uppercase}.btn:hover,.btn.active{background:var(--ink);color:var(--white)}.btn.danger{color:var(--danger);border-color:var(--danger)}
+.page{display:none}.page.active{display:block}.hint{font-size:12px;color:var(--muted);margin:10px 0 14px}
+.month-head{display:flex;align-items:end;justify-content:space-between;border-bottom:3px solid var(--ink);padding-bottom:10px;margin-bottom:4px}.month-title{font-weight:900;text-transform:uppercase;font-size:clamp(2.1rem,8vw,3.4rem);letter-spacing:-.02em;line-height:.9}.month-nav{display:flex;gap:8px;align-items:center}.nav-btn{border:1px solid var(--ink);background:transparent;width:34px;height:34px;font-size:16px}.nav-btn:hover{background:var(--ink);color:var(--white)}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--ink);margin-top:8px}.cal-weekdays div{font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:6px 4px;color:var(--muted)}.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid var(--line);border-top:1px solid var(--line)}.cal-cell{min-height:85px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px;cursor:pointer;background:var(--paper);display:flex;flex-direction:column;gap:4px}.cal-cell:hover{background:var(--paper-dim)}.cal-cell.empty{cursor:default;background:transparent}.cal-daynum{font-weight:700;font-size:13px}.cal-cell.today .cal-daynum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--ink);color:var(--white);font-size:11px}.cal-focus{font-size:10px;line-height:1.25;text-transform:uppercase;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}.cal-metric{margin-top:auto;font-size:9px;color:var(--muted)}
+.day-view{display:none}.day-view.active{display:block}.day-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.back-btn{border:none;background:none;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:6px 0}.day-nav{display:flex;gap:6px}.icon-btn{border:1px solid var(--ink);background:transparent;width:30px;height:30px}.icon-btn:hover{background:var(--ink);color:var(--white)}
+.day-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding-bottom:14px;border-bottom:4px solid var(--ink)}.day-name{font-weight:900;text-transform:uppercase;line-height:.82;font-size:clamp(2.6rem,11vw,5.2rem)}.day-date{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:4px}.tagline-box{text-align:right;max-width:300px;padding-top:6px}.tagline-input,.strap-input{width:100%;text-align:right;border:none;background:transparent;color:var(--ink);font-family:inherit}.tagline-input{resize:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;line-height:1.6;font-weight:600}.strap-input{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-style:italic}.tagline-rule{border:none;border-top:1px solid var(--ink);margin:8px 0}
+.focus-row{margin:14px 0 22px}.focus-label{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}.focus-input{width:100%;border:none;background:transparent;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;font-size:clamp(1.2rem,5vw,1.8rem);padding:0}.focus-input::placeholder{color:#9a968a}
+.section{margin-bottom:22px}.section-bar{background:var(--ink);color:var(--white);display:flex;align-items:center;gap:10px;padding:9px 12px;font-weight:800;text-transform:uppercase;font-size:14px}.divider{opacity:.5}.section-sub-input{flex:1;background:transparent;border:none;color:#d8d5cc;font-size:12px}.section-sub-input::placeholder{color:#8a8880}
+table.plan-table{width:100%;border-collapse:collapse;background:var(--white)}table.plan-table th{text-align:left;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:8px 9px;border-bottom:1px solid var(--ink)}table.plan-table td{padding:0;border-bottom:1px solid var(--line)}table.plan-table td input{width:100%;border:none;background:transparent;padding:9px;font-size:13px}.col-order{width:8%}.col-ex{width:42%}.col-sets{width:10%}.col-reps{width:12%}.col-weight{width:13%}.col-move{width:15%}.move-wrap{display:flex;justify-content:center;gap:3px;padding:6px}.mini-btn{border:1px solid var(--ink);background:transparent;width:26px;height:26px}.mini-btn:hover{background:var(--ink);color:var(--white)}.mini-btn:disabled{opacity:.25;cursor:default}.rm-btn{border:none;background:transparent;color:var(--danger);font-size:16px;padding:9px}.add-row-btn{width:100%;text-align:left;border:1px dashed var(--ink);border-top:none;background:var(--white);padding:9px 10px;font-size:12px;letter-spacing:.04em;text-transform:uppercase}.add-row-btn:hover{background:var(--paper-dim)}
+.rr-grid{display:grid;grid-template-columns:repeat(3,1fr);background:var(--white);border:1px solid var(--line)}.rr-card{padding:12px;border-right:1px solid var(--line)}.rr-card:last-child{border-right:none}.rr-card label,.field label,.stat-label{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;font-weight:700}.rr-card textarea{width:100%;min-height:120px;border:1px solid var(--line);background:var(--paper);padding:10px;resize:vertical}.metrics-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;background:var(--white);padding:12px;border:1px solid var(--line)}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--paper);padding:9px}.field textarea{resize:vertical;min-height:70px}.notes-box{background:var(--white);border:1px solid var(--ink);padding:12px}.notes-textarea{width:100%;min-height:90px;border:none;background:transparent;resize:vertical;font-size:13.5px}.footer-row{display:flex;justify-content:space-between;align-items:center;margin-top:30px;border-top:1px solid var(--ink);padding-top:12px}.footer-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+/* dashboard */
+.dashboard-head,.plan-head{display:flex;justify-content:space-between;align-items:end;gap:10px;border-bottom:3px solid var(--ink);padding-bottom:10px;margin-bottom:14px}.dashboard-title,.plan-title{font-weight:900;font-size:clamp(2.1rem,8vw,3.4rem);text-transform:uppercase;line-height:.9}.filters{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.filters input,.filters select{border:1px solid var(--ink);background:transparent;padding:7px;font-size:11px;text-transform:uppercase}.stat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:18px}.stat-card{background:var(--white);border:1px solid var(--line-strong);padding:12px}.stat-value{font-weight:900;font-size:25px;line-height:1}.stat-unit{font-size:10px;color:var(--muted);text-transform:uppercase}.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.chart-card{background:var(--white);border:1px solid var(--line);padding:12px}.chart-title{font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.06em;margin-bottom:8px}.chart{width:100%;height:220px;display:block;border-top:1px solid var(--line)}.pr-table{width:100%;border-collapse:collapse}.pr-table th,.pr-table td{text-align:left;padding:8px;border-bottom:1px solid var(--line);font-size:12px}.empty-state{padding:20px;background:var(--white);border:1px solid var(--line);color:var(--muted);font-size:12px}
+/* planning */
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.plan-card{background:var(--white);border:1px solid var(--line);padding:14px}.plan-card.full{grid-column:1/-1}.plan-card h3{margin:0 0 10px;text-transform:uppercase;font-size:13px}.goal-list,.block-list{display:grid;gap:8px}.plan-row{display:grid;grid-template-columns:1fr 130px 34px;gap:7px;align-items:center}.plan-row input,.plan-row select{border:1px solid var(--line);background:var(--paper);padding:8px}.plan-period{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}.plan-row button{border:none;background:transparent;color:var(--danger);font-size:16px}.period-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.period-card{border:1px solid var(--line);padding:10px;background:var(--paper)}.period-card strong{display:block;font-size:11px;text-transform:uppercase;margin-bottom:4px}.plan-save{margin-top:12px}.timeline{overflow:auto}.timeline-inner{min-width:850px;border-top:2px solid var(--ink);padding-top:10px}.timeline-row{display:grid;grid-template-columns:140px repeat(12,minmax(55px,1fr));gap:3px;align-items:stretch;margin-bottom:3px}.timeline-row>div{min-height:35px;border:1px solid var(--line);padding:5px;font-size:9px}.timeline-row .axis{font-weight:800;text-transform:uppercase}.period-cell{background:var(--white);font-size:9px}.period-cell small{display:block;color:var(--muted)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modal-backdrop.show{display:flex}.modal{width:min(720px,100%);max-height:85vh;overflow:auto;background:var(--paper);border:2px solid var(--ink);padding:16px}.modal-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--ink);padding-bottom:9px;margin-bottom:12px}.modal-title{font-size:18px;font-weight:900;text-transform:uppercase}.template-grid{display:grid;gap:8px}.template-card{background:var(--white);border:1px solid var(--line);padding:11px;display:grid;grid-template-columns:1fr auto;gap:10px}.template-actions{display:flex;gap:5px;align-items:center}.template-meta{font-size:10px;color:var(--muted);text-transform:uppercase}.auth-overlay{position:fixed;inset:0;background:rgba(238,234,225,.97);display:flex;align-items:center;justify-content:center;padding:20px;z-index:30}.auth-box{width:min(420px,100%);border:2px solid var(--ink);background:var(--white);padding:22px}.auth-box h1{font-size:34px;margin:0 0 8px;text-transform:uppercase}.auth-box p{font-size:12px;color:var(--muted)}.auth-box input{width:100%;padding:10px;border:1px solid var(--line);margin-bottom:8px;background:var(--paper)}.auth-actions{display:flex;gap:8px}.auth-msg{font-size:11px;color:var(--danger);min-height:16px;margin:6px 0}
+@media(max-width:850px){.stat-grid{grid-template-columns:repeat(3,1fr)}.metrics-grid{grid-template-columns:repeat(3,1fr)}.rr-grid,.chart-grid,.plan-grid{grid-template-columns:1fr}.period-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){#app{padding:14px 10px 45px}.topbar{align-items:flex-start;flex-direction:column}.top-actions{justify-content:flex-start}.month-head,.dashboard-head,.plan-head{flex-direction:column;align-items:flex-start}.cal-cell{min-height:65px;padding:4px}.cal-focus{font-size:9px;-webkit-line-clamp:2}.day-header{flex-direction:column}.tagline-box{max-width:none;width:100%;text-align:left}.tagline-input,.strap-input{text-align:left}.metrics-grid{grid-template-columns:repeat(2,1fr)}table.plan-table{font-size:12px}.col-ex{width:34%}.col-move{width:18%}.rr-grid{grid-template-columns:1fr}.rr-card{border-right:none;border-bottom:1px solid var(--line)}.rr-card:last-child{border-bottom:none}.stat-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
-
-<div class="auth-overlay" id="auth-overlay">
-  <div class="auth-card">
-    <div class="auth-title">Training Planner</div>
-    <div class="auth-sub">Sign in to sync your workouts between your Mac, iPhone and any other device.</div>
-    <input class="auth-field" id="auth-email" type="email" autocomplete="email" placeholder="Email">
-    <input class="auth-field" id="auth-password" type="password" autocomplete="current-password" placeholder="Password (min. 6 characters)">
-    <button class="auth-btn" id="login-btn">Log in</button>
-    <button class="auth-btn secondary" id="signup-btn">Create account</button>
+<div id="auth-overlay" class="auth-overlay">
+  <div class="auth-box">
+    <h1>Training Planner</h1><p>Sign in to keep your training data synced across devices.</p>
+    <input id="auth-email" type="email" placeholder="Email">
+    <input id="auth-password" type="password" placeholder="Password">
     <div class="auth-msg" id="auth-msg"></div>
+    <div class="auth-actions"><button class="btn" id="login-btn">Log in</button><button class="btn" id="signup-btn">Sign up</button></div>
   </div>
 </div>
 <div id="app">
   <div class="status-row" id="status-row"></div>
+  <header class="topbar">
+    <div class="brand">Training Planner</div>
+    <div class="top-actions" id="main-nav">
+      <button class="btn active" data-page="calendar-page">Calendar</button>
+      <button class="btn" data-page="analytics-page">Dashboard</button>
+      <button class="btn" data-page="plan-page">Plan</button>
+      <button class="btn" id="templates-btn">Templates</button>
+      <button class="btn" id="export-btn">Backup</button>
+      <button class="btn" id="import-btn">Restore</button>
+      <input type="file" id="import-file" accept="application/json" style="display:none">
+      <button class="btn" id="sync-btn">Sync</button>
+      <button class="btn" id="logout-btn">Log out</button>
+    </div>
+  </header>
 
-  <div id="month-view">
-    <div class="month-head">
-      <div class="month-title" id="month-title">—</div>
-      <div class="month-nav">
-        <button class="nav-btn" id="prev-month">‹</button>
-        <button class="nav-btn" id="next-month">›</button>
-        <button class="today-btn" id="today-btn">Today</button>
-        <button class="today-btn" id="export-btn" title="Export a backup of your workouts">Backup</button>
-        <button class="today-btn" id="import-btn" title="Restore a backup">Restore</button>
-        <button class="sync-btn" id="sync-local-btn" title="Upload locally saved workouts to Supabase">Sync local</button>
-        <div class="account-row"><span class="account-email" id="account-email"></span><button class="signout-btn" id="signout-btn">Log out</button></div>
-        <input type="file" id="import-file" accept="application/json" style="display:none">
-      </div>
-    </div>
-    <div class="hint">Tap a day to plan or edit its workout. Your data is saved automatically and synced to your account.</div>
-    <div class="cal-weekdays">
-      <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
-    </div>
+  <section id="calendar-page" class="page active">
+    <div class="month-head"><div class="month-title" id="month-title">—</div><div class="month-nav"><button class="nav-btn" id="prev-month">‹</button><button class="nav-btn" id="next-month">›</button><button class="btn" id="today-btn">Today</button></div></div>
+    <div class="hint">Open a day to plan or edit. Everything saves automatically.</div>
+    <div class="cal-weekdays"><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div></div>
     <div class="cal-grid" id="cal-grid"></div>
-  </div>
+  </section>
 
-  <div class="day-view" id="day-view">
-    <div class="day-top">
-      <button class="back-btn" id="back-btn">‹ Back to month</button>
-      <div class="day-nav">
-        <button class="icon-btn" id="prev-day">‹</button>
-        <button class="icon-btn" id="next-day">›</button>
+  <section id="day-page" class="page">
+    <div class="day-view active">
+      <div class="day-top"><button class="back-btn" id="back-btn">‹ Back to month</button><div class="day-nav"><button class="icon-btn" id="prev-day">‹</button><button class="icon-btn" id="next-day">›</button></div></div>
+      <div class="day-header"><div><div class="day-name" id="day-name">—</div><div class="day-date" id="day-date">—</div></div><div class="tagline-box"><textarea class="tagline-input" data-field="tagline" rows="3" placeholder="BUILD THE LEGS.&#10;PROTECT THE ENGINE.&#10;STAY DURABLE."></textarea><hr class="tagline-rule"><input class="strap-input" data-field="strap" placeholder="Stronger for more tomorrows"></div></div>
+      <div class="focus-row"><div class="focus-label">Session focus</div><input id="focus-input" class="focus-input" data-field="focus" placeholder="E.G. LEGS + RECOVERY"></div>
+      <div class="section"><div class="section-bar">Training <span class="divider">|</span><input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type"></div>
+        <table class="plan-table"><thead><tr><th class="col-order">#</th><th class="col-ex">Exercise</th><th class="col-sets">Sets</th><th class="col-reps">Reps</th><th class="col-weight">Weight</th><th class="col-move">Move / Remove</th></tr></thead><tbody id="exercise-rows"></tbody></table><button class="add-row-btn" id="add-exercise">+ Add exercise</button>
       </div>
-    </div>
-
-    <div class="day-header">
-      <div>
-        <div class="day-name" id="day-name">—</div>
-        <div class="day-date" id="day-date">—</div>
-      </div>
-      <div class="tagline-box">
-        <textarea class="tagline-input" data-field="tagline" rows="3" placeholder="BUILD THE LEGS.&#10;PROTECT THE ENGINE.&#10;STAY DURABLE."></textarea>
-        <hr class="tagline-rule">
-        <input class="strap-input" data-field="strap" placeholder="Stronger for more tomorrows" />
-      </div>
-    </div>
-
-    <div class="focus-row">
-      <input class="focus-input" data-field="focus" placeholder="Session focus — e.g. Legs + Recovery" />
-    </div>
-
-    <div class="section">
-      <div class="section-bar">
-        Training <span class="divider">|</span>
-        <input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type" />
-      </div>
-      <table class="plan-table">
-        <thead><tr><th class="col-ex">Exercise</th><th class="col-sets">Sets</th><th class="col-reps">Reps</th><th class="col-rm"></th></tr></thead>
-        <tbody id="exercise-rows"></tbody>
-      </table>
-      <button class="add-row-btn" data-action="add-exercise">+ Add exercise</button>
-    </div>
-
-    <div class="section">
-      <div class="section-bar">
-        Recovery <span class="divider">|</span>
-        <input class="section-sub-input" data-field="recoveryLabel" placeholder="e.g. Off run day" />
-      </div>
-      <div class="recovery-body">
-        <div class="toggle-row">
-          <div class="toggle-switch" id="run-toggle" data-action="toggle-run"><div class="toggle-knob"></div></div>
-          <span class="toggle-label" id="run-toggle-label">Run day</span>
+      <div class="section"><div class="section-bar">Running / Rowing <span class="divider">|</span><span style="font-weight:400;font-size:12px;text-transform:none;color:#d8d5cc">Intervals / endurance work</span></div><div class="rr-grid">
+        <div class="rr-card"><label>Warm Up</label><textarea data-rr="warmUp" placeholder="10 min easy + drills"></textarea></div>
+        <div class="rr-card"><label>Main Set / Intervals</label><textarea data-rr="mainSet" placeholder="6 × 800 m @ threshold, 90 s recovery"></textarea></div>
+        <div class="rr-card"><label>Cool Down</label><textarea data-rr="coolDown" placeholder="10 min easy"></textarea></div>
+      </div></div>
+      <div class="section"><div class="section-bar">Session metrics <span class="divider">|</span><span style="font-weight:400;font-size:12px;text-transform:none;color:#d8d5cc">Feeds Analytics automatically</span></div>
+        <div class="metrics-grid">
+          <div class="field"><label>Distance (km)</label><input type="number" step="0.01" data-metric="distanceKm" placeholder="0"></div>
+          <div class="field"><label>Time (min)</label><input type="number" step="1" data-metric="timeMin" placeholder="0"></div>
+          <div class="field"><label>Volume</label><input type="number" step="1" data-metric="volume" placeholder="0"></div>
+          <div class="field"><label>Load</label><input type="number" step="1" data-metric="load" placeholder="0"></div>
+          <div class="field"><label>RPE (1–10)</label><input type="number" min="1" max="10" step="1" data-metric="rpe" placeholder="—"></div>
+          <div class="field"><label>PR</label><input type="text" data-metric="pr" placeholder="e.g. 5K / Back Squat"></div>
         </div>
-        <textarea class="recovery-textarea" data-field="recoveryDetails" placeholder="8-10k steps. 15-20 min mobility. Recover hard so the next quality sessions hit."></textarea>
       </div>
+      <div class="section"><div class="section-bar">Nutrition <span class="divider">|</span><span style="font-weight:400;font-size:12px;text-transform:none;color:#d8d5cc">Recover. Refuel. Stay lean.</span></div><table class="plan-table"><thead><tr><th style="width:22%">Meal</th><th style="width:68%">Notes</th><th class="col-rm"></th></tr></thead><tbody id="meal-rows"></tbody></table><button class="add-row-btn" id="add-meal">+ Add meal</button></div>
+      <div class="section"><div class="section-bar">Notes</div><div class="notes-box"><textarea class="notes-textarea" data-field="notes" placeholder="Anything else — how it felt, what to adjust next time..."></textarea></div></div>
+      <div class="footer-row"><div class="footer-label">Hybrid Training Week</div><button class="btn danger" id="clear-day">Clear this day</button></div>
     </div>
+  </section>
 
-    <div class="section">
-      <div class="section-bar">Nutrition <span class="divider">|</span> <span style="font-weight:400;font-size:12px;text-transform:none;color:#d8d5cc;">Recover. Refuel. Stay lean.</span></div>
-      <table class="plan-table">
-        <thead><tr><th style="width:22%">Meal</th><th style="width:68%">Notes</th><th class="col-rm"></th></tr></thead>
-        <tbody id="meal-rows"></tbody>
-      </table>
-      <button class="add-row-btn" data-action="add-meal">+ Add meal</button>
-    </div>
+  <section id="analytics-page" class="page">
+    <div class="dashboard-head"><div><div class="dashboard-title">Dashboard</div><div class="hint">Your training load, volume, distance, time and performance trends.</div></div><div class="filters"><input type="date" id="analytics-from"><input type="date" id="analytics-to"><select id="analytics-range"><option value="30">30 days</option><option value="90" selected>90 days</option><option value="180">180 days</option><option value="365">365 days</option><option value="all">All</option></select></div></div>
+    <div class="stat-grid" id="stat-grid"></div>
+    <div class="chart-grid"><div class="chart-card"><div class="chart-title">Distance</div><canvas class="chart" id="distance-chart"></canvas></div><div class="chart-card"><div class="chart-title">Time</div><canvas class="chart" id="time-chart"></canvas></div><div class="chart-card"><div class="chart-title">Volume</div><canvas class="chart" id="volume-chart"></canvas></div><div class="chart-card"><div class="chart-title">Load</div><canvas class="chart" id="load-chart"></canvas></div></div>
+    <div class="chart-card" style="margin-top:12px"><div class="chart-title">PRs</div><div id="prs-area"></div></div>
+  </section>
 
-    <div class="section">
-      <div class="section-bar">Notes</div>
-      <div class="notes-box">
-        <textarea class="notes-textarea" data-field="notes" placeholder="Anything else — how it felt, what to adjust next time, injuries to watch..."></textarea>
-      </div>
+  <section id="plan-page" class="page">
+    <div class="plan-head"><div><div class="plan-title">Plan</div><div class="hint">Goals → blocks → mesocycles → microcycles → periodization.</div></div><button class="btn" id="save-plan-btn">Save plan</button></div>
+    <div class="plan-grid">
+      <div class="plan-card"><h3>Objectives</h3><div id="goals-list" class="goal-list"></div><button class="add-row-btn" id="add-goal">+ Add objective</button></div>
+      <div class="plan-card"><h3>Blocks</h3><div id="blocks-list" class="block-list"></div><button class="add-row-btn" id="add-block">+ Add block</button></div>
+      <div class="plan-card full"><h3>Mesocycles</h3><div id="meso-list" class="block-list"></div><button class="add-row-btn" id="add-meso">+ Add mesocycle</button></div>
+      <div class="plan-card"><h3>Microcycles</h3><div id="micro-list" class="block-list"></div><button class="add-row-btn" id="add-micro">+ Add microcycle</button></div>
+      <div class="plan-card"><h3>Periodization</h3><div id="period-list" class="period-grid"></div><button class="add-row-btn" id="add-period">+ Add phase</button></div>
+      <div class="plan-card full"><h3>Full plan</h3><div class="timeline"><div class="timeline-inner" id="timeline"></div></div></div>
     </div>
-
-    <div class="footer-row">
-      <div class="footer-label">Hybrid Training Week</div>
-      <button class="clear-btn" data-action="clear-day">Clear this day</button>
-    </div>
-  </div>
+  </section>
 </div>
 
+<div class="modal-backdrop" id="templates-modal"><div class="modal"><div class="modal-head"><div class="modal-title">Templates</div><button class="icon-btn" id="close-templates">×</button></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn" id="save-template-btn">Save current day as template</button><input id="template-date" type="date" style="padding:7px;border:1px solid var(--ink);background:transparent"><button class="btn" id="apply-template-date-btn">Choose date</button></div><div id="template-list" class="template-grid"></div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(function(){
-  const WEEKDAY_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-  const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-
-  const SUPABASE_URL = 'https://vjgsezfjslevjbiotfoq.supabase.co';
-  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_IzFrnMtQjVxTHQ3_BVmbLg_Ww2zzi2F';
-  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-
-  let view = 'month';
-  let monthCursor = new Date(); monthCursor.setDate(1);
-  let selectedDateKey = null;
-  let currentDay = null;
-  let monthIndicators = {};
-  let saveTimer = null;
-  let currentUser = null;
-
-  const monthView = document.getElementById('month-view');
-  const dayView = document.getElementById('day-view');
-  const statusRow = document.getElementById('status-row');
-  const authOverlay = document.getElementById('auth-overlay');
-  const authMsg = document.getElementById('auth-msg');
-  const authEmail = document.getElementById('auth-email');
-  const authPassword = document.getElementById('auth-password');
-
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function dateKeyOf(y,m,d){ return `${y}-${pad(m+1)}-${pad(d)}`; }
-  function todayKey(){ const t=new Date(); return dateKeyOf(t.getFullYear(), t.getMonth(), t.getDate()); }
-
-  function defaultDayData(){
-    return {
-      tagline:'', strap:'', focus:'', trainingCategory:'',
-      exercises:[{name:'',sets:'',reps:''}],
-      isRunDay:true, recoveryLabel:'', recoveryDetails:'',
-      meals:[
-        {label:'Breakfast',content:''},{label:'Snack',content:''},{label:'Lunch',content:''},
-        {label:'Dinner',content:''},{label:'Night snack',content:''}
-      ],
-      notes:''
-    };
-  }
-
-  function setStatus(text){ statusRow.textContent = text; }
-  function setAuthMsg(text){ authMsg.textContent = text; }
-
-  const LOCAL_PREFIX = 'training-planner:';
-  const localStorageApi = {
-    get(key){ const value = localStorage.getItem(LOCAL_PREFIX + key); return value === null ? null : { value }; },
-    set(key,value){ localStorage.setItem(LOCAL_PREFIX + key, value); return true; },
-    list(prefix){
-      const fullPrefix = LOCAL_PREFIX + prefix, keys=[];
-      for(let i=0;i<localStorage.length;i++){
-        const k=localStorage.key(i); if(k && k.startsWith(fullPrefix)) keys.push(k.slice(LOCAL_PREFIX.length));
-      }
-      return {keys};
-    },
-    remove(key){ localStorage.removeItem(LOCAL_PREFIX + key); }
-  };
-
-  function cacheDay(key, data){ localStorageApi.set(`workout:${key}`, JSON.stringify(data)); }
-  function clearCachedDay(key){ localStorageApi.remove(`workout:${key}`); }
-
-  async function fetchMonthIndicators(year, monthIdx){
-    if(!currentUser) return {};
-    const start = dateKeyOf(year, monthIdx, 1);
-    const end = dateKeyOf(year, monthIdx, new Date(year, monthIdx+1, 0).getDate());
-    try{
-      const {data,error} = await supabaseClient.from('workouts').select('date,data').eq('user_id',currentUser.id).gte('date',start).lte('date',end);
-      if(error) throw error;
-      const out={};
-      (data||[]).forEach(row=>{ out[row.date]=row.data; cacheDay(row.date,row.data); });
-      return out;
-    }catch(e){
-      console.error('Failed to load month from Supabase',e);
-      setStatus('Cloud load failed — showing local cache');
-      const prefix=`workout:${year}-${pad(monthIdx+1)}`;
-      const res=localStorageApi.list(prefix), out={};
-      res.keys.forEach(k=>{ try{ const r=localStorageApi.get(k); if(r) out[k.replace('workout:','')]=JSON.parse(r.value); }catch(_){} });
-      return out;
-    }
-  }
-
-  async function loadDay(key){
-    if(!currentUser) return defaultDayData();
-    try{
-      const {data,error}=await supabaseClient.from('workouts').select('data').eq('user_id',currentUser.id).eq('date',key).maybeSingle();
-      if(error) throw error;
-      if(data && data.data){ cacheDay(key,data.data); return normalizeDay(data.data); }
-    }catch(e){
-      console.error('Load failed',e);
-      const local=localStorageApi.get(`workout:${key}`);
-      if(local) try{return normalizeDay(JSON.parse(local.value));}catch(_){}
-    }
-    const local=localStorageApi.get(`workout:${key}`);
-    if(local) try{return normalizeDay(JSON.parse(local.value));}catch(_){}
-    return defaultDayData();
-  }
-
-  function normalizeDay(data){
-    const d=defaultDayData();
-    return Object.assign(d,data||{}, {
-      exercises:Array.isArray(data?.exercises)&&data.exercises.length?data.exercises:d.exercises,
-      meals:Array.isArray(data?.meals)&&data.meals.length?data.meals:d.meals
-    });
-  }
-
-  function scheduleSave(){
-    setStatus('Saving…');
-    clearTimeout(saveTimer);
-    saveTimer=setTimeout(saveDay,500);
-  }
-
-  async function saveDay(){
-    if(!currentUser || !selectedDateKey || !currentDay) return;
-    const snapshot=JSON.parse(JSON.stringify(currentDay));
-    cacheDay(selectedDateKey,snapshot);
-    try{
-      const {error}=await supabaseClient.from('workouts').upsert({
-        user_id:currentUser.id,date:selectedDateKey,data:snapshot,updated_at:new Date().toISOString()
-      },{onConflict:'user_id,date'});
-      if(error) throw error;
-      setStatus('Saved & synced');
-      if(monthIndicators) monthIndicators[selectedDateKey]=snapshot;
-    }catch(e){
-      console.error('Save failed',e);
-      setStatus('Saved locally — cloud sync failed');
-    }
-  }
-
-  async function clearDayFromCloud(){
-    if(!currentUser || !selectedDateKey) return;
-    const {error}=await supabaseClient.from('workouts').delete().eq('user_id',currentUser.id).eq('date',selectedDateKey);
-    if(error) throw error;
-  }
-
-  function exportData(){
-    const data={};
-    const prefix=LOCAL_PREFIX+'workout:';
-    for(let i=0;i<localStorage.length;i++){
-      const k=localStorage.key(i);
-      if(k&&k.startsWith(prefix)) data[k.slice(LOCAL_PREFIX.length)]=localStorage.getItem(k);
-    }
-    const blob=new Blob([JSON.stringify({app:'Training Planner',version:3,exportedAt:new Date().toISOString(),data},null,2)],{type:'application/json'});
-    const url=URL.createObjectURL(blob), a=document.createElement('a');
-    a.href=url; a.download=`training-planner-backup-${todayKey()}.json`; a.click(); URL.revokeObjectURL(url);
-    setStatus('Backup exported');
-  }
-
-  function importData(file){
-    if(!file) return;
-    const reader=new FileReader();
-    reader.onload=()=>{
-      try{
-        const payload=JSON.parse(reader.result);
-        if(!payload||typeof payload.data!=='object') throw new Error('Invalid backup');
-        Object.entries(payload.data).forEach(([key,value])=>{ if(key.startsWith('workout:')) localStorage.setItem(LOCAL_PREFIX+key,value); });
-        setStatus('Backup restored locally. Use “Sync local” to upload it.'); renderMonth();
-      }catch(e){console.error(e);setStatus('Invalid backup');}
-    };
-    reader.readAsText(file);
-  }
-
-  async function syncLocalToCloud(){
-    if(!currentUser) return;
-    if(!confirm('Upload all workouts currently stored on this browser to your cloud account? Existing cloud rows for the same dates will be replaced.')) return;
-    setStatus('Syncing local data…');
-    const entries=[];
-    for(let i=0;i<localStorage.length;i++){
-      const k=localStorage.key(i);
-      if(!k||!k.startsWith(LOCAL_PREFIX+'workout:')) continue;
-      const date=k.slice((LOCAL_PREFIX+'workout:').length);
-      try{ entries.push({user_id:currentUser.id,date,data:JSON.parse(localStorage.getItem(k)),updated_at:new Date().toISOString()}); }catch(_){}
-    }
-    if(!entries.length){ setStatus('No local workouts to sync'); return; }
-    try{
-      const {error}=await supabaseClient.from('workouts').upsert(entries,{onConflict:'user_id,date'});
-      if(error) throw error;
-      setStatus(`${entries.length} workout(s) synced`); renderMonth();
-    }catch(e){ console.error(e); setStatus('Local sync failed'); }
-  }
-
-  async function renderMonth(){
-    view='month'; dayView.classList.remove('active'); monthView.classList.remove('hidden');
-    const y=monthCursor.getFullYear(),m=monthCursor.getMonth();
-    document.getElementById('month-title').textContent=`${MONTH_NAMES[m]} ${y}`;
-    const grid=document.getElementById('cal-grid'); grid.innerHTML='<div style="padding:14px;font-size:12px;color:#6b6b63;">Loading…</div>';
-    monthIndicators=await fetchMonthIndicators(y,m);
-    const firstOfMonth=new Date(y,m,1); let startOffset=firstOfMonth.getDay()-1; if(startOffset<0)startOffset=6;
-    const daysInMonth=new Date(y,m+1,0).getDate(),tKey=todayKey(); let html='';
-    for(let i=0;i<startOffset;i++)html+='<div class="cal-cell empty"></div>';
-    for(let d=1;d<=daysInMonth;d++){
-      const key=dateKeyOf(y,m,d),entry=monthIndicators[key],isToday=key===tKey;
-      const focusText=entry?(entry.focus||entry.trainingCategory||''):'';
-      html+=`<div class="cal-cell${isToday?' today':''}" data-key="${key}"><div class="cal-daynum">${d}</div><div class="cal-focus">${escapeHtml(focusText)}</div></div>`;
-    }
-    const totalCells=startOffset+daysInMonth,trailing=(7-(totalCells%7))%7; for(let i=0;i<trailing;i++)html+='<div class="cal-cell empty"></div>';
-    grid.innerHTML=html; grid.querySelectorAll('.cal-cell[data-key]').forEach(cell=>cell.addEventListener('click',()=>openDay(cell.dataset.key)));
-    if(!statusRow.textContent.includes('failed')) setStatus('');
-  }
-
-  function escapeHtml(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-
-  async function openDay(key){
-    selectedDateKey=key; view='day'; monthView.classList.add('hidden'); dayView.classList.add('active'); setStatus('Loading…');
-    currentDay=await loadDay(key); renderDay(); setStatus('');
-  }
-
-  function renderDay(){
-    const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);
-    document.getElementById('day-name').textContent=WEEKDAY_NAMES[(dt.getDay()+6)%7];
-    document.getElementById('day-date').textContent=`${MONTH_NAMES[m-1]} ${d}, ${y}`;
-    setVal('[data-field="tagline"]',currentDay.tagline); setVal('[data-field="strap"]',currentDay.strap); setVal('[data-field="focus"]',currentDay.focus);
-    setVal('[data-field="trainingCategory"]',currentDay.trainingCategory); setVal('[data-field="recoveryLabel"]',currentDay.recoveryLabel); setVal('[data-field="recoveryDetails"]',currentDay.recoveryDetails); setVal('[data-field="notes"]',currentDay.notes);
-    const toggle=document.getElementById('run-toggle'); toggle.classList.toggle('on',!!currentDay.isRunDay); document.getElementById('run-toggle-label').textContent=currentDay.isRunDay?'Run day':'Off run day';
-    document.getElementById('exercise-rows').innerHTML=currentDay.exercises.map((ex,i)=>`<tr><td><input data-ex-index="${i}" data-ex-key="name" value="${escapeAttr(ex.name)}" placeholder="e.g. Barbell Back Squat"></td><td><input data-ex-index="${i}" data-ex-key="sets" value="${escapeAttr(ex.sets)}" placeholder="4"></td><td><input data-ex-index="${i}" data-ex-key="reps" value="${escapeAttr(ex.reps)}" placeholder="6-8"></td><td><button class="rm-btn" data-action="remove-exercise" data-index="${i}" aria-label="Remove exercise">×</button></td></tr>`).join('');
-    document.getElementById('meal-rows').innerHTML=currentDay.meals.map((meal,i)=>`<tr><td><input data-meal-index="${i}" data-meal-key="label" value="${escapeAttr(meal.label)}" placeholder="Meal"></td><td><input data-meal-index="${i}" data-meal-key="content" value="${escapeAttr(meal.content)}" placeholder="What you're eating"></td><td><button class="rm-btn" data-action="remove-meal" data-index="${i}" aria-label="Remove meal">×</button></td></tr>`).join('');
-  }
-
-  function setVal(sel,val){const el=dayView.querySelector(sel);if(el)el.value=val||'';}
-  function escapeAttr(s){return escapeHtml(s);}
-
-  dayView.addEventListener('input',e=>{
-    const t=e.target;
-    if(t.dataset.field!==undefined&&t.dataset.field!==''){currentDay[t.dataset.field]=t.value;scheduleSave();}
-    else if(t.dataset.exIndex!==undefined){currentDay.exercises[+t.dataset.exIndex][t.dataset.exKey]=t.value;scheduleSave();}
-    else if(t.dataset.mealIndex!==undefined){currentDay.meals[+t.dataset.mealIndex][t.dataset.mealKey]=t.value;scheduleSave();}
-  });
-
-  dayView.addEventListener('click',e=>{
-    const toggle=e.target.closest('#run-toggle');
-    if(toggle){currentDay.isRunDay=!currentDay.isRunDay;renderDay();scheduleSave();return;}
-    const btn=e.target.closest('button');if(!btn)return;const action=btn.dataset.action;
-    if(action==='add-exercise'){currentDay.exercises.push({name:'',sets:'',reps:''});renderDay();}
-    else if(action==='remove-exercise'){currentDay.exercises.splice(+btn.dataset.index,1);if(!currentDay.exercises.length)currentDay.exercises.push({name:'',sets:'',reps:''});renderDay();scheduleSave();}
-    else if(action==='add-meal'){currentDay.meals.push({label:'',content:''});renderDay();}
-    else if(action==='remove-meal'){currentDay.meals.splice(+btn.dataset.index,1);renderDay();scheduleSave();}
-    else if(action==='clear-day'){
-      if(confirm('Clear all fields for this day? This will also remove the cloud entry.')){
-        clearTimeout(saveTimer); currentDay=defaultDayData(); renderDay(); setStatus('Clearing…');
-        clearDayFromCloud().then(()=>{clearCachedDay(selectedDateKey);monthIndicators[selectedDateKey]=undefined;setStatus('Day cleared');}).catch(err=>{console.error(err);setStatus('Cloud clear failed');});
-      }
-    }
-  });
-
-  document.getElementById('back-btn').addEventListener('click',()=>{monthCursor=new Date(Number(selectedDateKey.split('-')[0]),Number(selectedDateKey.split('-')[1])-1,1);renderMonth();});
-  document.getElementById('prev-day').addEventListener('click',()=>navigateDay(-1));
-  document.getElementById('next-day').addEventListener('click',()=>navigateDay(1));
-  function navigateDay(delta){const [y,m,d]=selectedDateKey.split('-').map(Number);const dt=new Date(y,m-1,d+delta);openDay(dateKeyOf(dt.getFullYear(),dt.getMonth(),dt.getDate()));}
-  document.getElementById('prev-month').addEventListener('click',()=>{monthCursor.setMonth(monthCursor.getMonth()-1);renderMonth();});
-  document.getElementById('next-month').addEventListener('click',()=>{monthCursor.setMonth(monthCursor.getMonth()+1);renderMonth();});
-  document.getElementById('today-btn').addEventListener('click',()=>{monthCursor=new Date();monthCursor.setDate(1);renderMonth();});
-  document.getElementById('export-btn').addEventListener('click',exportData);
-  document.getElementById('import-btn').addEventListener('click',()=>document.getElementById('import-file').click());
-  document.getElementById('import-file').addEventListener('change',e=>{importData(e.target.files[0]);e.target.value='';});
-  document.getElementById('sync-local-btn').addEventListener('click',syncLocalToCloud);
-  document.getElementById('signout-btn').addEventListener('click',async()=>{await supabaseClient.auth.signOut();});
-
-  async function login(){
-    const email=authEmail.value.trim(),password=authPassword.value;
-    if(!email||!password){setAuthMsg('Enter your email and password.');return;}
-    setAuthMsg('Logging in…');
-    const {error}=await supabaseClient.auth.signInWithPassword({email,password});
-    if(error)setAuthMsg(error.message);
-  }
-  async function signup(){
-    const email=authEmail.value.trim(),password=authPassword.value;
-    if(!email||password.length<6){setAuthMsg('Use a valid email and a password of at least 6 characters.');return;}
-    setAuthMsg('Creating account…');
-    const {data,error}=await supabaseClient.auth.signUp({email,password});
-    if(error){setAuthMsg(error.message);return;}
-    if(data.session){setAuthMsg('Account created.');}
-    else setAuthMsg('Account created. Check your email to confirm the account, then log in.');
-  }
-  document.getElementById('login-btn').addEventListener('click',login);
-  document.getElementById('signup-btn').addEventListener('click',signup);
-  authPassword.addEventListener('keydown',e=>{if(e.key==='Enter')login();});
-
-  async function startApp(session){
-    currentUser=session?.user||null;
-    if(!currentUser){authOverlay.style.display='flex';return;}
-    authOverlay.style.display='none';
-    document.getElementById('account-email').textContent=currentUser.email||'';
-    setStatus('Loading your workouts…');
-    await renderMonth();
-  }
-
-  supabaseClient.auth.onAuthStateChange((_event,session)=>{setTimeout(()=>startApp(session),0);});
-  supabaseClient.auth.getSession().then(({data})=>startApp(data.session));
+(()=>{
+const SUPABASE_URL='https://vjgsezfjslevjbiotfoq.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_IzFrnMtQjVxTHQ3_BVmbLg_Ww2zzi2F';
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const WEEKDAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const PREFIX='training-planner:';
+let currentUser=null, view='month', monthCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1), selectedDateKey=null, currentDay=null, monthIndicators={}, templatesCache=[], planData=defaultPlan(), saveTimer=null;
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+function setStatus(t){$('#status-row').textContent=t||''} function pad(n){return String(n).padStart(2,'0')} function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`} function todayKey(){const d=new Date();return dateKey(d.getFullYear(),d.getMonth(),d.getDate())}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function defaultDay(){return {tagline:'',strap:'',focus:'',trainingCategory:'',exercises:[{name:'',sets:'',reps:'',weight:''}],isRunDay:true,recoveryLabel:'',recoveryDetails:'',runningRowing:{warmUp:'',mainSet:'',coolDown:''},metrics:{distanceKm:'',timeMin:'',volume:'',load:'',rpe:'',pr:''},meals:[{label:'Breakfast',content:''},{label:'Snack',content:''},{label:'Lunch',content:''},{label:'Dinner',content:''},{label:'Night snack',content:''}],notes:''}}
+function normalizeDay(src){const base=defaultDay();src=src&&typeof src==='object'?src:{};const out={...base,...src};out.exercises=Array.isArray(src.exercises)&&src.exercises.length?src.exercises.map(e=>({name:e?.name??'',sets:e?.sets??'',reps:e?.reps??'',weight:e?.weight??''})):clone(base.exercises);out.runningRowing={warmUp:src.runningRowing?.warmUp??'',mainSet:src.runningRowing?.mainSet??src.recoveryDetails??'',coolDown:src.runningRowing?.coolDown??''};out.metrics={...base.metrics,...(src.metrics||{})};out.meals=Array.isArray(src.meals)?src.meals.map((m,i)=>({label:m?.label??base.meals[i]?.label??'',content:m?.content??''})):clone(base.meals);return out}
+function defaultPlan(){return {goals:[{title:'',target:'',deadline:''}],blocks:[{name:'',start:'',end:'',focus:''}],mesocycles:[{name:'',block:'',weeks:'',focus:''}],microcycles:[{name:'',week:'',focus:'',load:''}],periodization:[{phase:'',start:'',end:'',focus:'',priority:''}]}}
+function normalizePlan(p){const x={...defaultPlan(),...(p||{})};return x}
+const localApi={get(k){const v=localStorage.getItem(PREFIX+k);return v===null?null:{value:v}},set(k,v){localStorage.setItem(PREFIX+k,v);return true},list(prefix){return {keys:Object.keys(localStorage).filter(k=>k.startsWith(PREFIX+prefix)).map(k=>k.slice(PREFIX.length))}}};
+async function fetchMonth(year,month){const days=new Date(year,month+1,0).getDate(),from=dateKey(year,month,1),to=`${year}-${pad(month+1)}-${pad(days)}`; if(!currentUser)return {}; const {data,error}=await supabaseClient.from('workouts').select('date,data').eq('user_id',currentUser.id).gte('date',from).lte('date',to); if(error){console.warn(error);return fetchMonthLocal(year,month)} const o={};(data||[]).forEach(r=>o[r.date]=normalizeDay(r.data));return o}
+async function fetchMonthLocal(year,month){const o={};for(const k of localApi.list(`workout:${year}-${pad(month+1)}`).keys){try{o[k.replace('workout:','')]=normalizeDay(JSON.parse(localApi.get(k).value))}catch{}}return o}
+async function loadDay(key){if(currentUser){const {data,error}=await supabaseClient.from('workouts').select('data').eq('user_id',currentUser.id).eq('date',key).maybeSingle();if(!error&&data?.data)return normalizeDay(data.data)}try{const r=localApi.get('workout:'+key);if(r)return normalizeDay(JSON.parse(r.value))}catch{}return defaultDay()}
+function scheduleSave(){setStatus('Saving…');clearTimeout(saveTimer);saveTimer=setTimeout(saveDay,450)}
+async function saveDay(){if(!selectedDateKey||!currentDay)return;const normalized=normalizeDay(currentDay);currentDay=normalized;localApi.set('workout:'+selectedDateKey,JSON.stringify(normalized)); if(currentUser){const {error}=await supabaseClient.from('workouts').upsert({user_id:currentUser.id,date:selectedDateKey,data:normalized,updated_at:new Date().toISOString()},{onConflict:'user_id,date'});if(error){console.error(error);setStatus('Saved locally — cloud error');return}}monthIndicators[selectedDateKey]=normalized;setStatus('Saved')}
+async function syncLocal(){if(!currentUser)return;const rows=[];for(const k of localApi.list('workout:').keys){try{const date=k.replace('workout:','');rows.push({user_id:currentUser.id,date,data:normalizeDay(JSON.parse(localApi.get(k).value)),updated_at:new Date().toISOString()})}catch{}}if(!rows.length){setStatus('Nothing to sync');return}const {error}=await supabaseClient.from('workouts').upsert(rows,{onConflict:'user_id,date'});setStatus(error?'Sync failed':'Local workouts synced')}
+function exportData(){const data={};for(const k of localApi.list('workout:').keys)data[k]=localStorage.getItem(PREFIX+k);const payload={app:'Training Planner',version:3,exportedAt:new Date().toISOString(),data,plan:planData,templates:templatesCache};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));a.download=`training-planner-backup-${todayKey()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);setStatus('Backup exported')}
+function importData(file){if(!file)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);Object.entries(p.data||{}).forEach(([k,v])=>localStorage.setItem(PREFIX+k,v));if(p.plan)planData=normalizePlan(p.plan);renderMonth();renderPlan();setStatus('Backup restored')}catch{setStatus('Invalid backup')}};r.readAsText(file)}
+async function renderMonth(){view='month';showPage('calendar-page');const y=monthCursor.getFullYear(),m=monthCursor.getMonth();$('#month-title').textContent=`${MONTHS[m]} ${y}`;$('#cal-grid').innerHTML='<div style="padding:14px;font-size:12px;color:#6b6b63">Loading…</div>';monthIndicators=await fetchMonth(y,m);const first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();let h='';for(let i=0;i<start;i++)h+='<div class="cal-cell empty"></div>';for(let d=1;d<=days;d++){const k=dateKey(y,m,d),e=monthIndicators[k],is=k===todayKey(),focus=e?(e.focus||e.trainingCategory||''):'';const met=e?`${e.metrics?.distanceKm?e.metrics.distanceKm+' km':''}${e.metrics?.load?' · Load '+e.metrics.load:''}`:'';h+=`<div class="cal-cell${is?' today':''}" data-key="${k}"><div class="cal-daynum">${d}</div><div class="cal-focus">${esc(focus)}</div><div class="cal-metric">${esc(met)}</div></div>`}while((start+days+h.length*0)%7!==0)break;$('#cal-grid').innerHTML=h;$$('#cal-grid .cal-cell[data-key]').forEach(c=>c.onclick=()=>openDay(c.dataset.key));setStatus('')}
+async function openDay(k){selectedDateKey=k;currentDay=await loadDay(k);showPage('day-page');renderDay();setStatus('')}
+function setVal(sel,v){const el=$(sel);if(el)el.value=v??''}
+function renderDay(){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);$('#day-name').textContent=WEEKDAYS[(dt.getDay()+6)%7];$('#day-date').textContent=`${MONTHS[m-1]} ${d}, ${y}`;setVal('[data-field="tagline"]',currentDay.tagline);setVal('[data-field="strap"]',currentDay.strap);setVal('[data-field="focus"]',currentDay.focus);setVal('[data-field="trainingCategory"]',currentDay.trainingCategory);setVal('[data-field="notes"]',currentDay.notes);$$('[data-rr]').forEach(el=>el.value=currentDay.runningRowing[el.dataset.rr]||'');$$('[data-metric]').forEach(el=>el.value=currentDay.metrics[el.dataset.metric]??'');$('#exercise-rows').innerHTML=currentDay.exercises.map((e,i)=>`<tr><td style="padding:9px;text-align:center;font-size:12px;font-weight:800">${i+1}</td><td><input data-ex-index="${i}" data-ex-key="name" value="${esc(e.name)}" placeholder="e.g. Back Squat"></td><td><input data-ex-index="${i}" data-ex-key="sets" value="${esc(e.sets)}" placeholder="4"></td><td><input data-ex-index="${i}" data-ex-key="reps" value="${esc(e.reps)}" placeholder="6-8"></td><td><input data-ex-index="${i}" data-ex-key="weight" value="${esc(e.weight)}" placeholder="kg / BW"></td><td><div class="move-wrap"><button class="mini-btn" data-action="move-up" data-index="${i}" ${i===0?'disabled':''}>↑</button><button class="mini-btn" data-action="move-down" data-index="${i}" ${i===currentDay.exercises.length-1?'disabled':''}>↓</button><button class="rm-btn" data-action="remove-exercise" data-index="${i}">×</button></div></td></tr>`).join('');$('#meal-rows').innerHTML=currentDay.meals.map((m,i)=>`<tr><td><input data-meal-index="${i}" data-meal-key="label" value="${esc(m.label)}" placeholder="Meal"></td><td><input data-meal-index="${i}" data-meal-key="content" value="${esc(m.content)}" placeholder="What you're eating"></td><td><button class="rm-btn" data-action="remove-meal" data-index="${i}">×</button></td></tr>`).join('')}
+function showPage(id){$$('.page').forEach(p=>p.classList.remove('active'));$('#'+id).classList.add('active');$$('#main-nav .btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='analytics-page')renderAnalytics();if(id==='plan-page')renderPlan()}
+function addToArray(arr,blank){arr.push(blank);renderDay()}
+function moveExercise(i,dir){const j=dir==='up'?i-1:i+1;if(j<0||j>=currentDay.exercises.length)return;[currentDay.exercises[i],currentDay.exercises[j]]=[currentDay.exercises[j],currentDay.exercises[i]];renderDay();scheduleSave()}
+function numeric(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function allWorkoutRows(){const rows=[];Object.keys(localStorage).filter(k=>k.startsWith(PREFIX+'workout:')).forEach(k=>{try{const date=k.slice((PREFIX+'workout:').length);rows.push({date,data:normalizeDay(JSON.parse(localStorage.getItem(k)))})}catch{}});Object.entries(monthIndicators||{}).forEach(([date,data])=>{const idx=rows.findIndex(r=>r.date===date);if(idx>=0)rows[idx]={date,data:normalizeDay(data)};else rows.push({date,data:normalizeDay(data)})});return rows.sort((a,b)=>a.date.localeCompare(b.date))}
+async function getAnalyticsRows(from,to){if(currentUser){const {data,error}=await supabaseClient.from('workouts').select('date,data').eq('user_id',currentUser.id).gte('date',from).lte('date',to);if(!error)return (data||[]).map(r=>({date:r.date,data:normalizeDay(r.data)}))}return allWorkoutRows().filter(r=>r.date>=from&&r.date<=to)}
+function rangeDates(){const range=$('#analytics-range').value;let to=new Date(),from=new Date(to);if(range!=='all')from.setDate(from.getDate()-Number(range));else from=new Date(2000,0,1);if($('#analytics-from').value)from=new Date($('#analytics-from').value+'T00:00:00');if($('#analytics-to').value)to=new Date($('#analytics-to').value+'T00:00:00');return {from:dateKey(to.getFullYear(),to.getMonth(),to.getDate()),to:dateKey(from.getFullYear(),from.getMonth(),from.getDate())}}
+async function renderAnalytics(){const range=$('#analytics-range').value;let to=new Date(),from=new Date(to);if(range==='all')from=new Date(2000,0,1);else from.setDate(from.getDate()-Number(range));if($('#analytics-from').value)from=new Date($('#analytics-from').value+'T00:00:00');if($('#analytics-to').value)to=new Date($('#analytics-to').value+'T00:00:00');const rows=await getAnalyticsRows(dateKey(from.getFullYear(),from.getMonth(),from.getDate()),dateKey(to.getFullYear(),to.getMonth(),to.getDate()));const stats={sessions:rows.length,distance:rows.reduce((s,r)=>s+numeric(r.data.metrics.distanceKm),0),time:rows.reduce((s,r)=>s+numeric(r.data.metrics.timeMin),0),volume:rows.reduce((s,r)=>s+numeric(r.data.metrics.volume),0),load:rows.reduce((s,r)=>s+numeric(r.data.metrics.load),0),prs:rows.filter(r=>String(r.data.metrics.pr||'').trim()).length};$('#stat-grid').innerHTML=[['Sessions',stats.sessions,''],['Distance',stats.distance.toFixed(1),'km'],['Time',Math.round(stats.time),'min'],['Volume',Math.round(stats.volume), ''],['Load',Math.round(stats.load), ''],['PRs',stats.prs,'']].map(x=>`<div class="stat-card"><div class="stat-label">${x[0]}</div><div class="stat-value">${x[1]}</div><div class="stat-unit">${x[2]}</div></div>`).join('');const series=(key)=>rows.map(r=>({label:r.date,value:numeric(r.data.metrics[key])}));drawChart($('#distance-chart'),series('distanceKm'),'km');drawChart($('#time-chart'),series('timeMin'),'min');drawChart($('#volume-chart'),series('volume'),'');drawChart($('#load-chart'),series('load'),'');const prs=rows.filter(r=>String(r.data.metrics.pr||'').trim()).sort((a,b)=>b.date.localeCompare(a.date));$('#prs-area').innerHTML=prs.length?`<table class="pr-table"><thead><tr><th>Date</th><th>PR</th><th>Session</th></tr></thead><tbody>${prs.map(r=>`<tr><td>${esc(r.date)}</td><td>${esc(r.data.metrics.pr)}</td><td>${esc(r.data.focus||r.data.trainingCategory||'')}</td></tr>`).join('')}</tbody></table>`:'<div class="empty-state">No PRs recorded in this period yet.</div>'}
+function drawChart(canvas,data,unit){const w=canvas.clientWidth||500,h=220,dpr=window.devicePixelRatio||1;canvas.width=w*dpr;canvas.height=h*dpr;const c=canvas.getContext('2d');c.scale(dpr,dpr);c.clearRect(0,0,w,h);const vals=data.map(x=>x.value);const max=Math.max(1,...vals);const padX=28,padY=22,plotW=w-padX*2,plotH=h-padY*2;c.strokeStyle='rgba(22,22,22,.18)';c.lineWidth=1;for(let i=0;i<4;i++){const y=padY+i*plotH/3;c.beginPath();c.moveTo(padX,y);c.lineTo(w-padX,y);c.stroke()}if(!data.length)return;c.strokeStyle='#161616';c.lineWidth=2;c.beginPath();data.forEach((p,i)=>{const x=padX+(data.length===1?plotW/2:i*(plotW/(data.length-1)));const y=padY+plotH-(p.value/max)*plotH;if(i===0)c.moveTo(x,y);else c.lineTo(x,y)});c.stroke();c.fillStyle='#161616';data.forEach((p,i)=>{const x=padX+(data.length===1?plotW/2:i*(plotW/(data.length-1)));const y=padY+plotH-(p.value/max)*plotH;c.beginPath();c.arc(x,y,2.5,0,Math.PI*2);c.fill()});c.fillStyle='#6b6b63';c.font='10px sans-serif';c.fillText(`${max.toFixed(max%1?1:0)} ${unit}`.trim(),padX,12);if(data.length){c.fillText(data[0].label,padX,h-5);c.textAlign='right';c.fillText(data[data.length-1].label,w-padX,h-5);c.textAlign='left'}}
+function renderList(containerId,arr,fields,labels){const c=$('#'+containerId);c.innerHTML=arr.map((obj,i)=>`<div class="plan-row">${fields.map((f,j)=>`<input data-plan-array="${containerId}" data-index="${i}" data-field="${f}" value="${esc(obj[f]??'')}" placeholder="${esc(labels[j]||'')}">`).join('')}<button data-plan-remove="${containerId}" data-index="${i}">×</button></div>`).join('')}
+function renderPlan(){renderList('goals-list',planData.goals,['title','target','deadline'],['Objective','Target','Deadline']);renderList('blocks-list',planData.blocks,['name','start','end','focus'],['Block','Start','End','Focus']);renderList('meso-list',planData.mesocycles,['name','block','weeks','focus'],['Mesocycle','Block','Weeks','Focus']);renderList('micro-list',planData.microcycles,['name','week','focus','load'],['Microcycle','Week','Focus','Load']);$('#period-list').innerHTML=planData.periodization.map((p,i)=>`<div class="period-card"><strong>${esc(p.phase||'Phase')}</strong><input data-plan-array="period-list" data-index="${i}" data-field="phase" value="${esc(p.phase)}" placeholder="Phase"><input data-plan-array="period-list" data-index="${i}" data-field="start" value="${esc(p.start)}" placeholder="Start"><input data-plan-array="period-list" data-index="${i}" data-field="end" value="${esc(p.end)}" placeholder="End"><input data-plan-array="period-list" data-index="${i}" data-field="focus" value="${esc(p.focus)}" placeholder="Focus"><input data-plan-array="period-list" data-index="${i}" data-field="priority" value="${esc(p.priority)}" placeholder="Priority"><button data-plan-remove="period-list" data-index="${i}">× Remove</button></div>`).join('');renderTimeline()}
+function renderTimeline(){const cells=[];for(let i=1;i<=12;i++)cells.push(`<div class="axis">W${i}</div>`);let h=`<div class="timeline-row"><div class="axis">PHASE</div>${cells.join('')}</div>`;planData.periodization.forEach(p=>{h+=`<div class="timeline-row"><div class="axis">${esc(p.phase||'Phase')}</div>${Array.from({length:12},(_,i)=>`<div class="period-cell"><strong>${esc(p.focus||'')}</strong><small>${i+1}</small></div>`).join('')}</div>`});$('#timeline').innerHTML=h}
+async function loadTemplates(){if(!currentUser){templatesCache=[];renderTemplates();return}const {data,error}=await supabaseClient.from('workout_templates').select('*').eq('user_id',currentUser.id).order('updated_at',{ascending:false});if(!error)templatesCache=data||[];else templatesCache=[];renderTemplates()}
+function renderTemplates(){const c=$('#template-list');if(!templatesCache.length){c.innerHTML='<div class="empty-state">No templates yet. Open a workout day and save it as a template.</div>';return}c.innerHTML=templatesCache.map(t=>`<div class="template-card"><div><strong>${esc(t.name)}</strong><div class="template-meta">${esc(t.category||'')}</div></div><div class="template-actions"><button class="btn" data-template-use="${t.id}">Use</button><button class="btn" data-template-edit="${t.id}">Edit</button><button class="btn danger" data-template-delete="${t.id}">Delete</button></div></div>`).join('')}
+async function saveCurrentAsTemplate(){if(!currentDay||!currentUser){alert('Open a day and log in first.');return}const name=prompt('Template name:',currentDay.focus||'My workout');if(!name)return;const {error}=await supabaseClient.from('workout_templates').insert({user_id:currentUser.id,name:name.trim(),category:currentDay.trainingCategory||null,data:normalizeDay(currentDay),updated_at:new Date().toISOString()});if(error){alert(error.message);return}await loadTemplates();setStatus('Template saved')}
+async function useTemplate(id){const t=templatesCache.find(x=>x.id===id);if(!t)return;const date=prompt('Apply template to date (YYYY-MM-DD):',selectedDateKey||todayKey());if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return;selectedDateKey=date;currentDay=normalizeDay(t.data);await saveDay();await openDay(date);$('#templates-modal').classList.remove('show')}
+async function editTemplate(id){const t=templatesCache.find(x=>x.id===id);if(!t)return;const name=prompt('Template name:',t.name);if(name===null)return;const {error}=await supabaseClient.from('workout_templates').update({name:name.trim(),updated_at:new Date().toISOString()}).eq('id',id).eq('user_id',currentUser.id);if(error)alert(error.message);else loadTemplates()}
+async function deleteTemplate(id){if(!confirm('Delete this template?'))return;const {error}=await supabaseClient.from('workout_templates').delete().eq('id',id).eq('user_id',currentUser.id);if(error)alert(error.message);else loadTemplates()}
+async function savePlanCloud(){localStorage.setItem(PREFIX+'plan',JSON.stringify(planData));if(!currentUser){setStatus('Plan saved locally');return}const {error}=await supabaseClient.from('training_plans').upsert({user_id:currentUser.id,data:planData,updated_at:new Date().toISOString()},{onConflict:'user_id'});setStatus(error?'Plan saved locally — cloud table missing or unavailable':'Plan saved')}
+async function loadPlanCloud(){planData=normalizePlan(JSON.parse(localStorage.getItem(PREFIX+'plan')||'null'));if(currentUser){const {data,error}=await supabaseClient.from('training_plans').select('data').eq('user_id',currentUser.id).maybeSingle();if(!error&&data?.data)planData=normalizePlan(data.data)}renderPlan()}
+function showAuth(msg=''){if(msg)$('#auth-msg').textContent=msg;$('#auth-overlay').style.display='flex'}
+async function startApp(){const {data}=await supabaseClient.auth.getSession();currentUser=data.session?.user||null;if(!currentUser){showAuth();return}$('#auth-overlay').style.display='none';await loadTemplates();await loadPlanCloud();await renderMonth()}
+$('#login-btn').onclick=async()=>{const {error}=await supabaseClient.auth.signInWithPassword({email:$('#auth-email').value.trim(),password:$('#auth-password').value});if(error)showAuth(error.message);else startApp()};$('#signup-btn').onclick=async()=>{const {error}=await supabaseClient.auth.signUp({email:$('#auth-email').value.trim(),password:$('#auth-password').value});if(error)showAuth(error.message);else showAuth('Account created. Check your email if confirmation is enabled.');};$('#logout-btn').onclick=()=>supabaseClient.auth.signOut();supabaseClient.auth.onAuthStateChange(()=>startApp());
+$('#main-nav').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)showPage(b.dataset.page)});$('#prev-month').onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()-1);renderMonth()};$('#next-month').onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()+1);renderMonth()};$('#today-btn').onclick=()=>{const d=new Date();monthCursor=new Date(d.getFullYear(),d.getMonth(),1);renderMonth()};$('#back-btn').onclick=()=>renderMonth();$('#prev-day').onclick=()=>navigateDay(-1);$('#next-day').onclick=()=>navigateDay(1);function navigateDay(delta){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d+delta);openDay(dateKey(dt.getFullYear(),dt.getMonth(),dt.getDate()))}
+$('#day-page').addEventListener('input',e=>{if(!currentDay)return;const t=e.target;if(t.dataset.field)currentDay[t.dataset.field]=t.value;else if(t.dataset.exIndex!==undefined)currentDay.exercises[+t.dataset.exIndex][t.dataset.exKey]=t.value;else if(t.dataset.mealIndex!==undefined)currentDay.meals[+t.dataset.mealIndex][t.dataset.mealKey]=t.value;else if(t.dataset.rr)currentDay.runningRowing[t.dataset.rr]=t.value;else if(t.dataset.metric)currentDay.metrics[t.dataset.metric]=t.value;scheduleSave()});$('#day-page').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const a=b.dataset.action;if(a==='move-up')moveExercise(+b.dataset.index,'up');if(a==='move-down')moveExercise(+b.dataset.index,'down');if(a==='remove-exercise'){currentDay.exercises.splice(+b.dataset.index,1);if(!currentDay.exercises.length)currentDay.exercises.push({name:'',sets:'',reps:'',weight:''});renderDay();scheduleSave()}if(a==='remove-meal'){currentDay.meals.splice(+b.dataset.index,1);renderDay();scheduleSave()}});$('#add-exercise').onclick=()=>{currentDay.exercises.push({name:'',sets:'',reps:'',weight:''});renderDay();scheduleSave()};$('#add-meal').onclick=()=>{currentDay.meals.push({label:'',content:''});renderDay();scheduleSave()};$('#clear-day').onclick=async()=>{if(confirm('Clear all fields for this day? This cannot be undone.')){currentDay=defaultDay();renderDay();scheduleSave()}};
+$$('#analytics-range').forEach(x=>x.onchange=renderAnalytics);$('#analytics-from').onchange=renderAnalytics;$('#analytics-to').onchange=renderAnalytics;$('#sync-btn').onclick=syncLocal;$('#export-btn').onclick=exportData;$('#import-btn').onclick=()=>$('#import-file').click();$('#import-file').onchange=e=>{importData(e.target.files[0]);e.target.value=''};
+$('#templates-btn').onclick=async()=>{$('#templates-modal').classList.add('show');await loadTemplates()};$('#close-templates').onclick=()=>$('#templates-modal').classList.remove('show');$('#save-template-btn').onclick=saveCurrentAsTemplate;$('#apply-template-date-btn').onclick=()=>{selectedDateKey=$('#template-date').value||selectedDateKey};$('#template-list').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.templateUse)useTemplate(b.dataset.templateUse);if(b.dataset.templateEdit)editTemplate(b.dataset.templateEdit);if(b.dataset.templateDelete)deleteTemplate(b.dataset.templateDelete)});
+function addPlan(type,obj){planData[type].push(obj);renderPlan()};$('#add-goal').onclick=()=>addPlan('goals',{title:'',target:'',deadline:''});$('#add-block').onclick=()=>addPlan('blocks',{name:'',start:'',end:'',focus:''});$('#add-meso').onclick=()=>addPlan('mesocycles',{name:'',block:'',weeks:'',focus:''});$('#add-micro').onclick=()=>addPlan('microcycles',{name:'',week:'',focus:'',load:''});$('#add-period').onclick=()=>addPlan('periodization',{phase:'',start:'',end:'',focus:'',priority:''});$('#save-plan-btn').onclick=savePlanCloud;$('#plan-page').addEventListener('input',e=>{const t=e.target;if(t.dataset.planArray){const map={'goals-list':'goals','blocks-list':'blocks','meso-list':'mesocycles','micro-list':'microcycles','period-list':'periodization'};const arr=planData[map[t.dataset.planArray]];if(arr)arr[+t.dataset.index][t.dataset.field]=t.value;renderTimeline()}});$('#plan-page').addEventListener('click',e=>{const b=e.target.closest('[data-plan-remove]');if(!b)return;const map={'goals-list':'goals','blocks-list':'blocks','meso-list':'mesocycles','micro-list':'microcycles','period-list':'periodization'};const arr=planData[map[b.dataset.planRemove]];arr.splice(+b.dataset.index,1);if(!arr.length)arr.push({phase:'',start:'',end:'',focus:'',priority:''});renderPlan()});
+window.addEventListener('resize',()=>{if($('#analytics-page').classList.contains('active'))renderAnalytics()});
+startApp();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();
 </script>
-<script>
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
-}
-</script>
-</body>
-</html>
+</body></html>
