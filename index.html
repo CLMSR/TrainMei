@@ -332,6 +332,174 @@ table.plan-table{width:100%;border-collapse:collapse;background:var(--white)}tab
 @media(max-width:560px){.day-workout-title{font-size:20px}.training-block{border-radius:14px}.block-table thead{display:none}.block-table tr{display:block;padding:10px 12px}.block-table td{display:inline-block;border:0}.block-table td:first-child{width:22px}.block-table td:nth-child(2){width:calc(100% - 27px)}.block-table td:nth-child(n+3){margin-left:22px}.block-table input{padding:2px 0;font-size:13px}.caffeine-box{display:block;border-radius:14px;border:0}.caffeine-mg{margin-top:12px}.run-meta-inline{justify-content:space-between;gap:10px}.caffeine-inline{flex:1}.run-distance-inline{justify-content:space-between}.run-distance-inline .simple-field{width:96px}.caffeine-inline-mg{width:60px!important}}
 
 .plan-snapshot{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 16px}.plan-snapshot-card{padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:var(--white)}.plan-snapshot-card span{display:block;font-size:9px;letter-spacing:.08em;font-weight:800;color:var(--muted);margin-bottom:6px}.plan-snapshot-card strong{font-size:17px}.plan-card h3{margin-bottom:12px}.plan-row{grid-template-columns:1.5fr 1.2fr 1fr 1.3fr auto}.plan-row input{min-width:0}@media(max-width:700px){.plan-snapshot{grid-template-columns:repeat(2,1fr)}.plan-row{grid-template-columns:1fr 1fr}.plan-row input:first-child{grid-column:1/-1}}
+
+/* ===== MOBILE PORTRAIT UI OVERRIDES — desktop untouched ===== */
+@media (max-width:560px) and (orientation:portrait){
+  /* Remove the bottom mobile navigation; the existing page/header controls remain. */
+  #app{padding-bottom:18px}
+  #ios-tabbar{display:none!important}
+
+  /* Calendar: clean 7-column iOS-style grid, visually matching the supplied reference. */
+  .ios-mobile-header{display:none}
+  .ios-mobile-header .eyebrow{display:none}
+  .ios-mobile-header .title{font-size:30px}
+  .month-head{padding:8px 24px 14px;align-items:center}
+  .month-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;width:100%;font-size:0;text-transform:none;letter-spacing:0;line-height:1}
+  .month-title .month-name{font-size:30px;font-weight:800;letter-spacing:-.035em}
+  .month-title .month-year{font-size:20px;font-weight:700;letter-spacing:-.02em;color:#3C3C43}
+  .month-nav{flex:0 0 auto}
+  .month-nav .nav-btn{width:30px;height:30px;font-size:18px;background:transparent}
+  .cal-weekdays{
+    direction:rtl;
+    margin:8px 22px 0;
+    padding:0;
+    border:1px solid #C7C7CC;
+    border-radius:15px;
+    overflow:hidden;
+    background:transparent;
+  }
+  .cal-weekdays div{
+    padding:9px 0;
+    font-size:10px;
+    font-weight:600;
+    color:#3C3C43;
+  }
+  .cal-grid{
+    direction:rtl;
+    margin:12px 22px 0;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:8px 5px;
+    border:0;
+    background:transparent;
+    overflow:visible;
+  }
+  .cal-cell{
+    direction:ltr;
+    min-width:0;
+    min-height:54px;
+    padding:0;
+    border:1px solid #BFC0C4;
+    border-radius:13px;
+    background:rgba(251,250,247,.45);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:0;
+  }
+  .cal-cell:hover{background:rgba(251,250,247,.45)}
+  .cal-cell.empty{border-color:transparent;background:transparent}
+  .cal-daynum{width:auto;height:auto;font-size:15px;font-weight:500}
+  .cal-cell.today{background:var(--ink);border-color:var(--ink)}
+  .cal-cell.today .cal-daynum{width:auto;height:auto;background:transparent;color:var(--white);font-size:15px}
+  .cal-focus,.cal-metric{display:none}
+
+  /* Smart Training navigation: keep every control on one compact, wrapping row. */
+  .smart-tool-dock{
+    width:100%;
+    margin:8px 0 14px;
+    padding:5px 4px;
+    display:block;
+    overflow:hidden;
+  }
+  .smart-tool-dock .tool-group{
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    grid-template-rows:auto auto;
+    align-items:stretch;
+    gap:3px;
+    width:100%;
+  }
+  .smart-tool-dock .tool-group-label{
+    grid-column:1/-1;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    padding:2px 6px 4px;
+    font-size:9px;
+    white-space:nowrap;
+  }
+  .smart-tool-dock .btn{
+    min-width:0;
+    padding:8px 3px;
+    font-size:9px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* Training blocks: preserve the desktop table concept, but make each exercise a true
+     horizontal mobile row: Exercise | Sets | Reps | Weight. */
+  .training-blocks{gap:10px}
+  .training-block{border-radius:14px}
+  .training-block-head{
+    display:grid;
+    grid-template-columns:18px minmax(0,1fr) auto;
+    gap:7px;
+    padding:10px 11px;
+  }
+  .block-handle{font-size:13px}
+  .block-title{min-width:0;font-size:14px}
+  .block-category{max-width:96px;font-size:8px;padding:5px 4px}
+  .block-actions{gap:1px}
+  .block-actions button{font-size:14px;padding:3px 4px}
+  .block-table{
+    display:table!important;
+    width:100%;
+    table-layout:fixed;
+    border-collapse:collapse;
+    background:#fff;
+    overflow:visible;
+    box-shadow:none;
+    border-radius:0;
+  }
+  .block-table thead{display:table-header-group!important}
+  .block-table tbody{display:table-row-group!important}
+  .block-table tr{display:table-row!important;padding:0!important}
+  .block-table th,.block-table td{display:table-cell!important;vertical-align:middle;border-bottom:1px solid #E5E5EA}
+  .block-table th{
+    padding:7px 5px;
+    font-size:8px;
+    letter-spacing:.04em;
+  }
+  .block-table td{padding:0}
+  .block-table th:first-child,.block-table td:first-child{width:20px;text-align:center}
+  .block-table th:nth-child(2),.block-table td:nth-child(2){width:auto}
+  .block-table th:nth-child(3),.block-table td:nth-child(3){width:38px}
+  .block-table th:nth-child(4),.block-table td:nth-child(4){width:44px}
+  .block-table th:nth-child(5),.block-table td:nth-child(5){width:58px}
+  .block-table th:nth-child(6),.block-table td:nth-child(6){width:26px}
+  .block-table input{
+    width:100%;
+    min-width:0;
+    padding:9px 4px;
+    font-size:13px;
+    line-height:1.1;
+    background:transparent;
+    border:0;
+  }
+  .block-table td:nth-child(3) input,
+  .block-table td:nth-child(4) input,
+  .block-table td:nth-child(5) input{
+    min-width:0;
+    width:100%;
+    color:var(--ink);
+    font-size:12px;
+    text-align:center;
+  }
+  .block-table .exercise-name-input{font-size:13px;font-weight:800}
+  .block-table .exercise-handle{font-size:9px;color:#8E8E93}
+  .block-table .rm-btn{font-size:17px;padding:4px;color:#8E8E93}
+  .block-add{padding:10px 12px;font-size:11px;color:#007AFF;background:#fff;text-transform:none}
+
+  /* Keep caffeine and run distance compact on one line. */
+  .run-meta-inline{gap:8px}
+  .caffeine-inline,.run-distance-inline{min-width:0}
+  .caffeine-inline{flex:1}
+  .run-distance-inline{flex:1}
+  .caffeine-inline-mg{width:54px!important}
+  .run-distance-inline .simple-field{width:72px}
+}
+
 </style>
 </head>
 <body>
@@ -461,7 +629,7 @@ async function saveDay(){if(!selectedDateKey||!currentDay)return;const normalize
 async function syncLocal(){if(!currentUser)return;const rows=[];for(const k of localApi.list('workout:').keys){try{const date=k.replace('workout:','');rows.push({user_id:currentUser.id,date,data:normalizeDay(JSON.parse(localApi.get(k).value)),updated_at:new Date().toISOString()})}catch{}}if(!rows.length){setStatus('Nothing to sync');return}const {error}=await supabaseClient.from('workouts').upsert(rows,{onConflict:'user_id,date'});setStatus(error?'Sync failed':'Local workouts synced')}
 function exportData(){const data={};for(const k of localApi.list('workout:').keys)data[k]=localStorage.getItem(PREFIX+k);const payload={app:'Training Planner',version:3,exportedAt:new Date().toISOString(),data,plan:planData,templates:templatesCache};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));a.download=`training-planner-backup-${todayKey()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);setStatus('Backup exported')}
 function importData(file){if(!file)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);Object.entries(p.data||{}).forEach(([k,v])=>localStorage.setItem(PREFIX+k,v));if(p.plan)planData=normalizePlan(p.plan);renderMonth();renderPlan();setStatus('Backup restored')}catch{setStatus('Invalid backup')}};r.readAsText(file)}
-async function renderMonth(){view='month';showPage('calendar-page');const y=monthCursor.getFullYear(),m=monthCursor.getMonth();$('#month-title').textContent=`${MONTHS[m]} ${y}`;$('#cal-grid').innerHTML='<div style="padding:14px;font-size:12px;color:#6b6b63">Loading…</div>';monthIndicators=await fetchMonth(y,m);const first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();let h='';for(let i=0;i<start;i++)h+='<div class="cal-cell empty"></div>';for(let d=1;d<=days;d++){const k=dateKey(y,m,d),e=monthIndicators[k],is=k===todayKey(),title=e?.focus||e?.trainingCategory||'',dist=e?.metrics?.distanceKm?e.metrics.distanceKm+' km':'';h+=`<div class="cal-cell${is?' today':''}" data-key="${k}"><div class="cal-daynum">${d}</div><div class="cal-focus"><strong>${esc(title)}</strong></div><div class="cal-metric">${esc(dist)}</div></div>`}$('#cal-grid').innerHTML=h;$$('#cal-grid .cal-cell[data-key]').forEach(c=>c.onclick=()=>openDay(c.dataset.key));setStatus('')}
+async function renderMonth(){view='month';showPage('calendar-page');const y=monthCursor.getFullYear(),m=monthCursor.getMonth();$('#month-title').innerHTML=`<span class="month-name">${MONTHS[m]}</span><span class="month-year">${y}</span>`;$('#cal-grid').innerHTML='<div style="padding:14px;font-size:12px;color:#6b6b63">Loading…</div>';monthIndicators=await fetchMonth(y,m);const first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();let h='';for(let i=0;i<start;i++)h+='<div class="cal-cell empty"></div>';for(let d=1;d<=days;d++){const k=dateKey(y,m,d),e=monthIndicators[k],is=k===todayKey(),title=e?.focus||e?.trainingCategory||'',dist=e?.metrics?.distanceKm?e.metrics.distanceKm+' km':'';h+=`<div class="cal-cell${is?' today':''}" data-key="${k}"><div class="cal-daynum">${d}</div><div class="cal-focus"><strong>${esc(title)}</strong></div><div class="cal-metric">${esc(dist)}</div></div>`}$('#cal-grid').innerHTML=h;$$('#cal-grid .cal-cell[data-key]').forEach(c=>c.onclick=()=>openDay(c.dataset.key));setStatus('')}
 async function openDay(k){selectedDateKey=k;currentDay=await loadDay(k);showPage('day-page');renderDay();setStatus('')}
 function setVal(sel,v){const el=$(sel);if(el)el.value=v??''}
 function renderDay(){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);$('#day-name').textContent=WEEKDAYS[(dt.getDay()+6)%7];$('#day-date').textContent=`${MONTHS[m-1]} ${d}, ${y}`;setVal('[data-field="tagline"]',currentDay.tagline);setVal('[data-field="strap"]',currentDay.strap);setVal('[data-field="focus"]',currentDay.focus);setVal('[data-field="trainingCategory"]',currentDay.trainingCategory);setVal('[data-field="notes"]',currentDay.notes);$$('[data-rr]').forEach(el=>el.value=currentDay.runningRowing[el.dataset.rr]||'');setVal('[data-metric="distanceKm"]',currentDay.metrics.distanceKm||'');$('#caffeine-toggle').checked=!!currentDay.caffeine.taken;setVal('[data-caffeine-mg]',currentDay.caffeine.mg);renderTrainingBlocks();$$('[data-note-tag]').forEach(b=>b.classList.toggle('active',currentDay.noteTags.includes(b.dataset.noteTag)))}
