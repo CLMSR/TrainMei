@@ -1,0 +1,15 @@
+{
+  "name": "TrainMei",
+  "short_name": "TrainMei",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "icons": [
+    {
+      "src": "icons/trainmei-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
