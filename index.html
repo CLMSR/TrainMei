@@ -5,7 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#EEEAE1">
 <title>Training Planner</title>
+
+
+
+
+
+
+
+
+
+
 <style>
+
 :root{--ink:#161616;--paper:#EEEAE1;--paper-dim:#E2DDD1;--line:rgba(22,22,22,.18);--line-strong:#161616;--white:#FBFAF7;--muted:#6b6b63;--danger:#b3423b}
 *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 button,input,textarea,select{font:inherit} button{cursor:pointer}
@@ -57,7 +68,7 @@ table.plan-table{width:100%;border-collapse:collapse;background:var(--white)}tab
   .cal-weekdays{border-top:0;margin-top:0;padding:0 6px;}
   .cal-weekdays div{padding:8px 8px;font-size:9px;}
   .cal-grid{border:1px solid rgba(22,22,22,.11);border-radius:16px;overflow:hidden;background:rgba(251,250,247,.55);}
-  .cal-cell{min-height:112px;padding:10px;background:rgba(251,250,247,.72);border-right:1px solid rgba(22,22,22,.08);border-bottom:1px solid rgba(22,22,22,.08);}
+  .cal-cell{min-height:0;height:auto;aspect-ratio:1 / 1;padding:8px;background:rgba(251,250,247,.72);border-right:1px solid rgba(22,22,22,.08);border-bottom:1px solid rgba(22,22,22,.08);}
   .cal-cell:hover{background:#E8E5DE;}
   .cal-cell.today .cal-daynum{width:26px;height:26px;border-radius:50%;}
   .cal-focus{font-size:10px;line-height:1.35;}
@@ -334,20 +345,21 @@ table.plan-table{width:100%;border-collapse:collapse;background:var(--white)}tab
 
 
 /* ===== SET TYPE + DESKTOP TABLE ALIGNMENT ===== */
-.set-group-row{grid-template-columns:24px 68px 68px 92px 70px 22px;max-width:520px}
+.set-group-row{grid-template-columns:22px 24px 68px 68px 92px 70px;max-width:520px}
+.set-group-add-row{display:grid;grid-template-columns:22px 30px minmax(78px,1fr) minmax(78px,1fr) minmax(105px,1.2fr) 86px;gap:7px;width:100%;margin-top:2px}.set-group-add-row .set-group-add{grid-column:6;justify-self:start;padding:3px 4px;font-size:9px}
 .set-type-select{width:70px;border:1px solid transparent;background:transparent;padding:4px 3px;font:inherit;font-size:9px;color:var(--muted);text-align:center;text-align-last:center;cursor:pointer}
 .set-type-select:focus{outline:1px solid rgba(0,122,255,.35);background:var(--white)}
 @media(min-width:561px){
   /* Let set values use the full row instead of stopping early and leaving a large empty area. */
   .exercise-sets-wrap{margin-left:31px;width:calc(100% - 31px);max-width:none}
-  .set-group-row{width:100%;max-width:none;grid-template-columns:30px minmax(78px,1fr) minmax(78px,1fr) minmax(105px,1.2fr) 86px 22px;gap:7px;justify-content:stretch}
+  .set-group-row{width:100%;max-width:none;grid-template-columns:22px 30px minmax(78px,1fr) minmax(78px,1fr) minmax(105px,1.2fr) 86px;gap:7px;justify-content:stretch}
   .block-table th,.block-table td{padding-left:5px;padding-right:5px}
   .block-table .exercise-row td{padding-left:7px;padding-right:7px}
 }
 @media(max-width:560px){
   /* Portrait: keep the complete set row inside the phone width and distribute the free space. */
   .block-table .exercise-sets-wrap{margin:0 0 0 28px;width:calc(100% - 28px);max-width:none}
-  .block-table .set-group-row{width:100%;grid-template-columns:18px minmax(0,.95fr) minmax(0,.95fr) minmax(0,1.15fr) 58px 18px;gap:3px}
+  .block-table .set-group-row{width:100%;grid-template-columns:16px 16px minmax(0,.82fr) minmax(0,.82fr) minmax(0,1fr) 54px;gap:2px;padding-right:6px}
   .block-table .set-type-select{width:58px;font-size:8.5px;padding:4px 1px}
 }
 
@@ -356,8 +368,8 @@ table.plan-table{width:100%;border-collapse:collapse;background:var(--white)}tab
 @media(max-width:560px){.day-workout-title{font-size:20px}.training-block{border-radius:14px}.block-table thead{display:none}.block-table tr{display:block;padding:10px 12px}.block-table td{display:inline-block;border:0}.block-table td:first-child{width:22px}.block-table td:nth-child(2){width:calc(100% - 27px)}.block-table td:nth-child(n+3){margin-left:22px}.block-table input{padding:2px 0;font-size:13px}.caffeine-box{display:block;border-radius:14px;border:0}.caffeine-mg{margin-top:12px}.run-meta-inline{justify-content:space-between;gap:10px}.caffeine-inline{flex:1}.run-distance-inline{justify-content:space-between}.run-distance-inline .simple-field{width:96px}.caffeine-inline-mg{width:60px!important}}
 
 /* ===== MULTI-SET EXERCISE GROUPS ===== */
-.exercise-row td{padding:5px 8px 5px;background:#FFFFFF;border-top:1px solid var(--line);position:relative}.exercise-main-line{display:flex;align-items:center;gap:4px;min-height:24px;padding-right:24px}.exercise-handle{display:inline-block;margin-right:2px;font-size:9px;flex:0 0 auto}.exercise-number{display:inline-block;min-width:25px;font-size:9px;font-weight:900;color:var(--muted);flex:0 0 auto}.exercise-name-input{flex:0 1 420px;width:auto;min-width:80px;max-width:420px;vertical-align:middle;font-size:11px!important;font-weight:700!important;padding:4px 3px!important}.exercise-remove{position:absolute;right:6px;top:7px}.exercise-sets-wrap{margin:1px 0 0 31px;max-width:620px}.set-group-row{display:grid;grid-template-columns:24px 72px 72px 105px 22px;align-items:center;gap:5px;min-height:27px}.set-group-row .set-group-index{font-size:8px;color:var(--muted);text-align:right;padding-right:2px}.set-group-row input{width:100%;box-sizing:border-box;border:1px solid transparent;background:transparent;padding:4px 5px;font:inherit;font-size:10px}.set-group-row input:focus{outline:1px solid rgba(0,122,255,.35);background:var(--white)}.set-group-row .rm-btn{font-size:13px;color:var(--muted);padding:1px 3px}.set-group-row .rm-btn:hover{color:var(--ink)}.set-group-add-row{padding-top:1px}.set-group-add{border:0;background:transparent;color:#007AFF;font-size:9px;padding:3px 2px}
-@media(max-width:560px){.exercise-expand{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex:0 0 24px}.block-table .exercise-main-line{cursor:pointer}.block-table .exercise-sets-wrap{display:none}.block-table .exercise-row.is-expanded .exercise-sets-wrap{display:block}.block-quick-actions{padding:6px 9px}.block-quick-actions button{min-height:32px}.block-table{table-layout:fixed}.block-table thead{display:none}.block-table .exercise-row{display:table-row}.block-table .exercise-row td{display:table-cell;padding:5px 6px 6px}.block-table .exercise-main-line{gap:3px;padding-right:20px}.block-table .exercise-name-input{font-size:10.5px!important;flex:1;min-width:0;max-width:none;padding:3px 2px!important}.block-table .exercise-number{min-width:24px;font-size:8.5px}.block-table .exercise-handle{font-size:8px}.block-table .exercise-remove{right:4px;top:6px}.block-table .exercise-sets-wrap{margin:0 0 0 28px;max-width:none}.block-table .set-group-row{grid-template-columns:19px minmax(42px,1fr) minmax(42px,1fr) minmax(54px,1.15fr) 18px;gap:3px;min-height:26px}.block-table .set-group-row input{font-size:9.5px;padding:4px 3px}.block-table .set-group-row .set-group-index{font-size:7.5px}.block-table .set-group-row .rm-btn{padding:1px;font-size:11px}.block-table .set-group-add{font-size:8.5px;padding:3px 0}}
+.exercise-row td{padding:5px 8px 5px;background:#FFFFFF;border-top:1px solid var(--line);position:relative}.exercise-main-line{display:flex;align-items:center;gap:4px;min-height:24px;padding-right:24px}.exercise-handle{display:inline-block;margin-right:2px;font-size:9px;flex:0 0 auto}.exercise-number{display:inline-block;min-width:25px;font-size:9px;font-weight:900;color:var(--muted);flex:0 0 auto}.exercise-name-input{flex:0 1 420px;width:auto;min-width:80px;max-width:420px;vertical-align:middle;font-size:11px!important;font-weight:700!important;padding:4px 3px!important}.exercise-remove{position:absolute;right:6px;top:7px}.exercise-sets-wrap{margin:1px 0 0 31px;max-width:620px}.set-group-row{display:grid;grid-template-columns:24px 72px 72px 105px 22px;align-items:center;gap:5px;min-height:27px}.set-group-row input{width:100%;box-sizing:border-box;border:1px solid transparent;background:transparent;padding:4px 5px;font:inherit;font-size:10px}.set-group-row input:focus{outline:1px solid rgba(0,122,255,.35);background:var(--white)}.set-group-row .rm-btn{font-size:13px;color:var(--muted);padding:1px 3px}.set-group-row .rm-btn:hover{color:var(--ink)}.set-group-add-row{padding-top:1px}.set-group-add{border:0;background:transparent;color:#007AFF;font-size:9px;padding:3px 2px}
+@media(max-width:560px){.exercise-expand{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex:0 0 24px}.block-table .exercise-main-line{cursor:pointer}.block-table .exercise-sets-wrap{display:none}.block-table .exercise-row.is-expanded .exercise-sets-wrap{display:block}.block-quick-actions{padding:6px 9px}.block-quick-actions button{min-height:32px}.block-table{table-layout:fixed}.block-table thead{display:none}.block-table .exercise-row{display:table-row}.block-table .exercise-row td{display:table-cell;padding:5px 6px 6px}.block-table .exercise-main-line{gap:3px;padding-right:20px}.block-table .exercise-name-input{font-size:10.5px!important;flex:1;min-width:0;max-width:none;padding:3px 2px!important}.block-table .exercise-number{min-width:24px;font-size:8.5px}.block-table .exercise-handle{font-size:8px}.block-table .exercise-remove{right:4px;top:6px}.block-table .exercise-sets-wrap{margin:0 0 0 28px;max-width:none}.block-table .set-group-row{grid-template-columns:19px minmax(42px,1fr) minmax(42px,1fr) minmax(54px,1.15fr) 18px;gap:3px;min-height:26px}.block-table .set-group-row input{font-size:9.5px;padding:4px 3px}.block-table .set-group-row .rm-btn{padding:1px;font-size:11px}.block-table .set-group-add{font-size:8.5px;padding:3px 0}}
 
 /* ===== MOBILE PORTRAIT UI OVERRIDES — desktop untouched ===== */
 @media (max-width:560px) and (orientation:portrait){
@@ -691,7 +703,7 @@ body{color:var(--ink);}
   .month-head{border-bottom:1px solid rgba(60,60,67,.18);}
   .month-title,.dashboard-title,.plan-title{font-size:42px;text-transform:none;letter-spacing:-.045em;}
   .cal-grid{background:#FFFFFF;border:1px solid rgba(60,60,67,.14);border-radius:14px;overflow:hidden;}
-  .cal-cell{background:#FFFFFF;border-right:1px solid rgba(60,60,67,.10);border-bottom:1px solid rgba(60,60,67,.10);}
+  .cal-cell{min-height:0!important;height:auto;aspect-ratio:1 / 1;background:#FFFFFF;border-right:1px solid rgba(60,60,67,.10);border-bottom:1px solid rgba(60,60,67,.10);}
   .cal-cell:hover{background:#F5F5F7;}
   .cal-cell.today{background:#F2F2F7;}
   .cal-cell.today .cal-daynum{background:#1C1C1E;color:#FFFFFF;border-radius:50%;}
@@ -752,7 +764,18 @@ body{color:var(--ink);}
 /* Mobile landscape: keep the same top navigation, never a bottom tab bar. */
 @media (max-width:950px) and (max-height:600px) and (orientation:landscape){
   #app{padding:0 12px 18px!important;}
-  .topbar{margin:0 -12px 8px;padding:8px 12px;min-height:48px;}
+  .topbar{
+    margin:6px 8px 8px!important;
+    padding:6px 12px!important;
+    min-height:44px!important;
+    border-radius:12px!important;
+    border:1px solid rgba(60,60,67,.14)!important;
+    border-bottom:1px solid rgba(60,60,67,.14)!important;
+    box-shadow:0 2px 10px rgba(0,0,0,.04)!important;
+    width:auto!important;
+    left:auto!important;right:auto!important;
+    top:6px!important;
+  }
   .brand{font-size:15px;}
   .top-actions .btn{font-size:9px;padding:6px 7px;}
   .month-head{padding:8px 0 10px;}
@@ -827,13 +850,6 @@ body{color:var(--ink);}
     text-align-last:center!important;
     overflow:hidden;
   }
-  .block-table .set-group-row .set-group-index{
-    width:16px!important;
-    min-width:16px!important;
-    padding:0!important;
-    font-size:7px!important;
-    text-align:center!important;
-  }
   .block-table .set-group-row .rm-btn{
     position:static!important;
     width:18px!important;
@@ -887,10 +903,6 @@ body{color:var(--ink);}
     padding:3px 0!important;font-size:8px!important;
     text-align:center!important;text-align-last:center!important;
   }
-  .block-table .set-group-row .set-group-index{
-    width:16px!important;min-width:16px!important;padding:0!important;
-    font-size:7px!important;text-align:center!important;
-  }
   .block-table .set-group-row .rm-btn{
     position:static!important;width:18px!important;min-width:18px!important;max-width:18px!important;
     height:22px;padding:0!important;margin:0!important;
@@ -902,25 +914,62 @@ body{color:var(--ink);}
 
 /* Final mobile landscape refinements */
 @media (max-width:950px) and (max-height:600px) and (orientation:landscape){
+  /* Calendar: smaller, centered, square cells */
+  #calendar-page .calendar-desktop-layout{display:block!important;}
+  #calendar-page .cal-weekdays{
+    margin:4px 40px 0!important;
+    border:0!important;
+    background:transparent!important;
+    border-radius:0!important;
+  }
+  #calendar-page .cal-weekdays div{padding:4px 0!important;font-size:9px!important;text-align:center!important;}
+  #calendar-page .cal-grid{
+    margin:4px 40px 0!important;
+    gap:3px!important;
+    border:0!important;
+    background:transparent!important;
+    overflow:visible!important;
+  }
+  #calendar-page .cal-cell{
+    /* Square: use aspect-ratio and let width drive height */
+    min-height:0!important;
+    aspect-ratio:1 / 1!important;
+    padding:2px!important;
+    border-radius:8px!important;
+    align-items:center!important;
+    justify-content:center!important;
+    border:1px solid rgba(60,60,67,.14)!important;
+    background:#fff!important;
+  }
+  #calendar-page .cal-cell.empty{border-color:transparent!important;background:transparent!important;}
+  #calendar-page .cal-focus,#calendar-page .cal-metric{display:none!important;}
+  #calendar-page .cal-daynum{font-size:12px!important;font-weight:500!important;width:auto!important;height:auto!important;}
+  #calendar-page .cal-cell.today{background:#F2F2F7!important;}
+  #calendar-page .cal-cell.today .cal-daynum{width:24px!important;height:24px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;background:#1C1C1E!important;color:#fff!important;font-size:11px!important;}
+
+  /* Day view in landscape: remove back-to-month, show day name correctly */
   #day-page .day-top{
     position:sticky;
-    top:48px;
+    top:56px;
     margin:0 -8px;
-    padding:4px 8px 6px;
-    min-height:30px;
-    justify-content:flex-start;
+    padding:4px 8px 5px;
+    min-height:28px;
+    justify-content:flex-end;
     align-items:center;
+    background:#fff!important;
+    border-bottom:1px solid rgba(22,22,22,.10);
   }
-  #day-page .back-btn{
-    display:block;
-    margin:0;
-    padding:5px 0;
-  }
+  #day-page .back-btn{display:none!important;}
   #day-page .day-nav{
-    position:absolute;
-    right:8px;
-    top:4px;
+    display:flex;
+    gap:5px;
   }
+  /* Day header: show day name fully */
+  #day-page .day-name{font-size:28px!important;line-height:1!important;}
+  #day-page .tagline-box{max-width:200px;}
+  /* Right text (tagline) visible: ensure overflow and text are not clipped */
+  #day-page .tagline-input{font-size:10px!important;line-height:1.4!important;}
+  #day-page .strap-input{font-size:9px!important;}
 }
 
 /* ===== HOME DASHBOARD — isolated from Calendar and Plan ===== */
@@ -975,8 +1024,9 @@ body{color:var(--ink);}
 @media(max-width:850px){.smart-int-hero{grid-template-columns:1fr}.smart-int-mobile-only{display:block}}
 @media(max-width:560px){#integrations-page{padding:0 10px}.smart-int-wrap{margin-bottom:20px}.smart-int-hero{gap:9px}.smart-int-panel{padding:12px;border-radius:15px}.smart-drop{padding:15px 10px}.smart-review-modal{padding:10px 10px 20px;max-height:94vh}.smart-review-ex{grid-template-columns:minmax(0,1fr) 43px 43px 56px 55px 32px}.smart-review-labels{grid-template-columns:minmax(0,1fr) 43px 43px 56px 55px 32px}.smart-review-ex input,.smart-review-ex select{padding:7px 3px;font-size:10px}.smart-review-block{padding:9px}.smart-review-head .modal-title{font-size:15px}.smart-int-preview{max-height:250px}.smart-int-import{align-items:flex-start}.smart-int-import button{padding:7px 8px;font-size:9px}}
 @media(min-width:561px) and (max-width:900px) and (orientation:landscape){.smart-int-hero{grid-template-columns:1.15fr .85fr}.smart-int-panel{padding:13px}.smart-review-ex{grid-template-columns:minmax(150px,1fr) 52px 52px 68px 66px 34px}}
-</style>
-<style>
+
+
+
 
 /* ===== MOBILE DAY NAV: move Back + Prev/Next into the top navigation ===== */
 @media (max-width: 850px){
@@ -1065,9 +1115,9 @@ body{color:var(--ink);}
 .day-completion-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:7px 0;font-size:9px;color:#6E6E73;text-transform:uppercase;letter-spacing:.06em}.recovery-inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-left:8px;border-left:1px solid var(--line)}.recovery-title{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800}.recovery-row{display:flex;align-items:center;gap:3px;font-size:8px;color:var(--muted)}.recovery-dots{display:flex;gap:0}.recovery-dot{border:0;background:transparent;padding:0 1px;color:#C7C7CC;font-size:16px;line-height:1;cursor:pointer}.recovery-dot.active{color:#1C1C1E}.home-week-progress{display:none!important}
 @media(max-width:950px){.recovery-inline{width:100%;border-left:0;border-top:1px solid var(--line);padding:7px 0 0;margin-top:2px}.run-meta-inline{flex-wrap:wrap;justify-content:space-between}.recovery-row{flex:1;justify-content:center}.day-completion-row{justify-content:space-between}.exercise-row td{padding-top:5px!important;padding-bottom:5px!important}.block-table input{padding-top:4px!important;padding-bottom:4px!important}}
 @media(max-width:560px){.status-row{justify-content:center;margin:2px 0 4px}.home-month-overview{margin-top:6px;padding:8px 10px!important}.home-heatmap{grid-template-columns:repeat(7,16px);gap:2px}.home-heat-day{width:16px;height:16px;border-radius:3px}.home-heat-labels{grid-template-columns:repeat(7,16px);gap:2px}.recovery-inline{gap:5px}.recovery-title{width:100%}.recovery-row{justify-content:flex-start}.recovery-dot{font-size:15px}}
-</style>
 
-<style>
+
+
 /* ===== REQUESTED SMALL UI REFINEMENTS — scoped to Home / Calendar / Training ===== */
 @media (min-width:951px), (min-width:561px) and (max-width:950px) and (orientation:landscape){
   /* Home: keep the compact overview row as Heatmap · At a glance · Next Up. */
@@ -1160,46 +1210,1077 @@ body:has(#day-page.active) .caffeine-inline,body:has(#day-page.active) .run-dist
   body:has(#day-page.active) .set-group-row{grid-template-columns:20px minmax(48px,1fr) minmax(48px,1fr) minmax(58px,1.1fr) 55px 18px;gap:3px}
   body:has(#day-page.active) .set-type-select{width:55px;font-size:8px}
 }
-</style>
 
-<style>
-/* ===== FINAL UI FIXES v10 ===== */
-/* Home heatmap: use the complete width of its card. */
+
+
+/* ===== TRAINING TABLE + CONDITIONING REFINEMENT =====
+   Scoped only to the Day/Training editor. Calendar, Plan and Home are untouched. */
+.section-sub-select{flex:0 0 auto;background:transparent;border:0;color:#d8d5cc;font-size:12px;text-transform:uppercase;outline:none}
+.conditioning-editor{background:var(--white);border:1px solid var(--line)}
+.conditioning-phase-grid{display:grid;grid-template-columns:1fr 1.35fr 1fr}
+.conditioning-phase{padding:12px;border-right:1px solid var(--line);min-width:0}
+.conditioning-phase:last-child{border-right:0}
+.conditioning-phase-head label{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+.conditioning-phase textarea{width:100%;min-height:82px;border:1px solid var(--line);background:var(--paper);padding:9px;resize:vertical;font-size:11px}
+.conditioning-blocks{display:grid;gap:6px}
+.conditioning-block-row{display:grid;grid-template-columns:22px minmax(90px,.7fr) minmax(130px,1.3fr) 22px;gap:5px;align-items:start;border:1px solid var(--line);background:var(--paper);padding:6px}
+.conditioning-block-num{font-size:9px;color:var(--muted);padding-top:7px;text-align:center;font-weight:700}
+.conditioning-block-name,.conditioning-block-details{width:100%;min-width:0;border:1px solid var(--line);background:var(--white);padding:6px;font:inherit;font-size:10px}
+.conditioning-block-name{font-weight:700}
+.conditioning-block-details{min-height:32px;resize:vertical}
+.conditioning-remove{padding:2px!important;font-size:14px!important}
+.conditioning-add-block{width:100%;margin-top:6px;border:1px dashed var(--ink);background:transparent;padding:7px;font-size:9px;text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:950px){
+  body:has(#day-page.active) .conditioning-phase-grid{grid-template-columns:1fr}
+  body:has(#day-page.active) .conditioning-phase{border-right:0;border-bottom:1px solid var(--line);padding:9px}
+  body:has(#day-page.active) .conditioning-phase:last-child{border-bottom:0}
+  body:has(#day-page.active) .conditioning-phase textarea{min-height:58px}
+}
+@media(max-width:560px){
+  body:has(#day-page.active) .section-bar .section-sub-select{font-size:10px;max-width:78px}
+  body:has(#day-page.active) .conditioning-editor{border-radius:0}
+  body:has(#day-page.active) .conditioning-block-row{grid-template-columns:17px minmax(0,1fr) 18px;gap:4px;padding:5px}
+  body:has(#day-page.active) .conditioning-block-name{grid-column:2}
+  body:has(#day-page.active) .conditioning-block-details{grid-column:2}
+  body:has(#day-page.active) .conditioning-remove{grid-column:3;grid-row:1/3;align-self:center}
+  body:has(#day-page.active) .conditioning-block-num{padding-top:6px}
+}
+/* Compact vertical exercise rows: all controls remain visible without horizontal scrolling. */
+@media(max-width:560px){
+  body:has(#day-page.active) .training-block{border-radius:12px}
+  body:has(#day-page.active) .training-block-head{padding:7px 8px}
+  body:has(#day-page.active) .block-table .exercise-row td{padding:7px 8px!important}
+  body:has(#day-page.active) .exercise-main-line{gap:3px;padding-right:16px}
+  body:has(#day-page.active) .exercise-number{font-size:7px;flex:0 0 auto}
+  body:has(#day-page.active) .exercise-handle{font-size:9px;flex:0 0 auto}
+  body:has(#day-page.active) .exercise-name-input{font-size:11px!important;padding:3px 1px!important;height:25px}
+  body:has(#day-page.active) .exercise-remove{font-size:13px!important;padding:2px!important;flex:0 0 18px}
+  body:has(#day-page.active) .exercise-sets-wrap{margin:4px 0 0 20px;width:calc(100% - 20px)}
+  body:has(#day-page.active) .set-group-row{grid-template-columns:17px minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr) 54px 18px;gap:3px;min-height:27px}
+  body:has(#day-page.active) .set-group-row input{font-size:9px;padding:4px 2px;border-radius:4px}
+  body:has(#day-page.active) .set-group-row .set-type-select{width:54px;min-width:54px;max-width:54px;font-size:8px;padding:4px 0;border-radius:4px}
+  body:has(#day-page.active) .set-group-row .rm-btn{width:18px;min-width:18px;height:22px;font-size:12px;padding:0!important}
+  body:has(#day-page.active) .set-group-add{font-size:8px;padding:4px 0}
+}
+
+
+
+/* ===== PORTRAIT-ONLY DAY EDITOR REFINEMENT ===== */
+@media (max-width:560px) and (orientation:portrait){
+  body:has(#day-page.active) .training-block{border-radius:10px}
+  /* Keep table display so tr/td collapse logic works correctly */
+  body:has(#day-page.active) .block-table{display:table!important;width:100%!important;table-layout:fixed!important}
+  body:has(#day-page.active) .block-table thead{display:none!important}
+  body:has(#day-page.active) .block-table tbody{display:table-row-group!important}
+  body:has(#day-page.active) .block-table .exercise-row{display:table-row!important;padding:0!important}
+  body:has(#day-page.active) .block-table .exercise-row td{display:table-cell!important;width:100%!important;padding:6px 7px!important;box-sizing:border-box;vertical-align:top}
+  body:has(#day-page.active) .exercise-main-line{display:flex;align-items:center;gap:3px;padding-right:0!important;min-height:25px;cursor:default}
+  body:has(#day-page.active) .exercise-expand{display:inline-flex!important;align-items:center;justify-content:center;width:22px;height:22px;min-width:22px;border:0;background:transparent;color:var(--muted);font-size:12px;line-height:1;padding:0;cursor:pointer}
+  body:has(#day-page.active) .exercise-row.is-collapsed .exercise-expand{transform:rotate(-90deg)}
+  body:has(#day-page.active) .exercise-row:not(.is-collapsed) .exercise-expand{transform:rotate(0deg)}
+  body:has(#day-page.active) .exercise-handle{font-size:8px;flex:0 0 auto}
+  body:has(#day-page.active) .exercise-number{min-width:22px;font-size:8px;flex:0 0 auto}
+  body:has(#day-page.active) .exercise-name-input{font-size:12px!important;padding:2px 2px!important;height:24px;min-width:0;flex:1}
+  body:has(#day-page.active) .exercise-remove{position:static!important;flex:0 0 20px;width:20px;height:20px;padding:0!important;font-size:13px!important}
+  /* Sets wrap: visible by default, hidden when collapsed */
+  body:has(#day-page.active) .exercise-sets-wrap{display:block!important;margin:3px 0 0 22px!important;width:calc(100% - 22px)!important;max-width:none}
+  body:has(#day-page.active) .exercise-row.is-collapsed .exercise-sets-wrap{display:none!important}
+  body:has(#day-page.active) .set-group-row{grid-template-columns:18px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 50px 17px!important;gap:3px!important;min-height:25px!important;margin:2px 0}
+  body:has(#day-page.active) .set-group-row input{height:24px;font-size:9px!important;padding:3px!important;border:1px solid var(--line);background:var(--paper);border-radius:4px}
+  body:has(#day-page.active) .set-group-row input[data-set-key="weight"]{grid-column:3}
+  body:has(#day-page.active) .set-group-row input[data-set-key="reps"]{grid-column:4}
+  body:has(#day-page.active) .set-group-row input[data-set-key="sets"]{grid-column:2}
+  body:has(#day-page.active) .set-type-select{height:24px!important;width:50px!important;font-size:7.5px!important;padding:2px!important;border:1px solid var(--line);background:var(--paper);border-radius:4px}
+  body:has(#day-page.active) .set-group-row .rm-btn{font-size:11px!important;padding:0!important;width:17px;height:20px}
+  body:has(#day-page.active) .set-group-add-row{padding:1px 0 3px}
+  body:has(#day-page.active) .set-group-add{font-size:8px;padding:2px 0}
+
+  body:has(#day-page.active) .conditioning-phase-grid{grid-template-columns:1fr!important}
+  body:has(#day-page.active) .conditioning-phase{padding:8px!important}
+  body:has(#day-page.active) .conditioning-phase-head label{font-size:9px;margin-bottom:5px}
+  body:has(#day-page.active) .conditioning-fields{display:grid;grid-template-columns:82px minmax(0,1fr);gap:5px;align-items:start}
+  body:has(#day-page.active) .conditioning-fields label,.conditioning-block-fields label,.conditioning-details-label{display:grid;gap:3px;font-size:7.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:800}
+  body:has(#day-page.active) .conditioning-fields input,.conditioning-fields textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--paper);padding:5px;font:inherit;font-size:9px;text-transform:none;color:var(--ink);border-radius:4px}
+  body:has(#day-page.active) .conditioning-fields textarea{min-height:40px;resize:vertical}
+  body:has(#day-page.active) .conditioning-blocks{gap:4px}
+  body:has(#day-page.active) .conditioning-block-row{display:block!important;padding:5px!important;border-radius:6px}
+  body:has(#day-page.active) .conditioning-block-top{display:grid;grid-template-columns:17px minmax(0,1fr) 18px;gap:4px;align-items:center}
+  body:has(#day-page.active) .conditioning-block-num{font-size:8px;padding:0;text-align:center}
+  body:has(#day-page.active) .conditioning-block-name{height:23px;padding:4px;font-size:9px}
+  body:has(#day-page.active) .conditioning-remove{grid-column:3;grid-row:1;padding:0!important;width:18px;height:20px}
+  body:has(#day-page.active) .conditioning-block-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:4px 0}
+  body:has(#day-page.active) .conditioning-block-fields input{width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--white);padding:4px;font:inherit;font-size:8.5px;border-radius:4px}
+  body:has(#day-page.active) .conditioning-details-label{margin-top:2px}
+  body:has(#day-page.active) .conditioning-block-details{width:100%;min-height:34px;box-sizing:border-box;padding:5px;font:inherit;font-size:8.5px;border:1px solid var(--line);background:var(--white);resize:vertical;border-radius:4px}
+  body:has(#day-page.active) .conditioning-add-block{margin-top:4px;padding:5px;font-size:8px}
+}
+
+
+
+/* ===== REQUESTED LAYOUT REFINEMENTS ===== */
+/* Home heatmap fills the entire available panel on desktop and mobile landscape. */
 @media (min-width:561px){
-  #home-page .home-month-overview .home-heatmap{width:100%;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;justify-content:stretch}
-  #home-page .home-month-overview .home-heat-day{width:100%;height:auto;min-height:18px;aspect-ratio:1/1}
+  #home-page .home-month-overview{display:flex;flex-direction:column;min-height:100%;box-sizing:border-box}
+  #home-page .home-heatmap{width:100%;flex:1;grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:4px;justify-content:stretch;align-content:stretch}
+  #home-page .home-heat-labels{width:100%;grid-template-columns:repeat(7,minmax(0,1fr));justify-content:stretch}
+  #home-page .home-heat-day{width:100%;height:auto;min-height:0}
+}
+
+/* Conditioning sits above Training and can collapse without changing its contents. */
+.conditioning-collapse{margin-left:auto;border:0;background:transparent;font-size:15px;line-height:1;width:24px;height:24px;cursor:pointer;color:var(--muted)}
+.conditioning-section.is-collapsed .conditioning-section-body{display:none!important}
+.day-completion-tools{display:none}
+
+/* Calendar: the bottom Week & Month panel carries the complete session analysis. */
+.ios-week-chart,.ios-month-chart{margin-top:8px;padding-top:8px;border-top:1px solid rgba(60,60,67,.08)}
+.ios-chart-title{font-size:8px;text-transform:uppercase;letter-spacing:.07em;color:#6E6E73;font-weight:800;margin-bottom:6px}
+.ios-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;height:70px;align-items:end}
+.ios-bar-col{height:100%;display:grid;grid-template-rows:14px 1fr 13px;align-items:end;text-align:center;min-width:0}
+.ios-bar-col span,.ios-bar-col small{font-size:7px;color:#6E6E73}
+.ios-bar-track{height:48px;background:#F2F2F7;border-radius:5px 5px 2px 2px;display:flex;align-items:flex-end;overflow:hidden}
+.ios-bar-track i{display:block;width:100%;background:#1C1C1E;border-radius:4px 4px 0 0;min-height:4px}
+.ios-month-bars{display:grid;gap:4px}
+.ios-month-bar{display:grid;grid-template-columns:24px 1fr 16px;gap:5px;align-items:center;font-size:7px;color:#6E6E73}
+.ios-month-bar>div{height:6px;background:#F2F2F7;border-radius:5px;overflow:hidden}
+.ios-month-bar i{display:block;height:100%;background:#1C1C1E;border-radius:5px}
+.ios-month-bar b{text-align:right;font-size:7px;color:var(--ink)}
+
+/* Smart Training portrait: exactly four primary tools. Templates + Duplicate move beside completion. */
+@media (max-width:560px) and (orientation:portrait){
+  body:has(#day-page.active) .smart-tool-dock{display:block!important;padding:5px!important;margin:7px 10px 10px!important}
+  body:has(#day-page.active) #smart-training-nav .tool-group{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px!important}
+  body:has(#day-page.active) #smart-training-nav .tool-group-label{display:none!important}
+  body:has(#day-page.active) #smart-training-nav #open-templates-inline,
+  body:has(#day-page.active) #smart-training-nav #open-smart-duplicate-inline{display:none!important}
+  body:has(#day-page.active) #smart-training-nav .btn{width:100%;min-width:0;padding:7px 2px!important;font-size:8px!important;white-space:nowrap}
+  body:has(#day-page.active) .day-completion-row{display:flex!important;align-items:center;justify-content:space-between;gap:6px}
+  body:has(#day-page.active) .day-completion-tools{display:flex;align-items:center;gap:4px;margin-right:auto}
+  body:has(#day-page.active) .day-completion-tools .btn{font-size:7px;padding:5px 6px;white-space:nowrap}
+  /* One compact set line: × | SETS | REPS | WEIGHT | TYPE */
+  body:has(#day-page.active) .set-group-row{display:grid!important;grid-template-columns:17px minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr) 48px!important;gap:3px!important;align-items:center!important;min-height:22px!important;margin:2px 0!important}
+  body:has(#day-page.active) .set-group-row input{height:22px!important;min-width:0!important;font-size:8px!important;padding:2px!important;box-sizing:border-box}
+  body:has(#day-page.active) .set-group-row input[data-set-key="sets"]{grid-column:2}
+  body:has(#day-page.active) .set-group-row input[data-set-key="reps"]{grid-column:3}
+  body:has(#day-page.active) .set-group-row input[data-set-key="weight"]{grid-column:4}
+  body:has(#day-page.active) .set-group-row .set-type-select{grid-column:5;width:48px!important;min-width:48px!important;max-width:48px!important;height:22px!important;font-size:7px!important;padding:1px!important}
+  body:has(#day-page.active) .set-group-row .rm-btn{grid-column:1;grid-row:1;width:17px!important;min-width:17px!important;height:20px!important;font-size:11px!important;padding:0!important}
+}
+
+
+
+/* ==========================================================================
+   CLEAN REFINEMENTS
+   ========================================================================== */
+
+/* Training / Conditioning section headers are intentionally transparent on
+   desktop and mobile landscape. Mobile portrait already has its own header UI. */
+@media (min-width:561px){
+  body:has(#day-page.active) .section-bar{
+    background:var(--white);
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-bottom:0;
+  }
+  body:has(#day-page.active) .section-bar .section-sub-input{
+    color:var(--ink);
+  }
+  body:has(#day-page.active) .section-bar .section-sub-input::placeholder{
+    color:var(--muted);
+  }
+}
+
+/* Conditioning Main Set: structured, collapsible blocks. */
+.conditioning-block-row{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--white);
+  overflow:hidden;
+}
+.conditioning-block-top{
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr) 28px 28px;
+  gap:6px;
+  align-items:center;
+  padding:8px 9px;
+  background:#F7F5EF;
+  border-bottom:1px solid var(--line);
+}
+.conditioning-block-num{
+  font-size:9px;
+  color:var(--muted);
+  text-align:center;
+  font-weight:800;
+}
+.conditioning-block-name{
+  min-width:0;
+  width:100%;
+  border:0;
+  background:transparent;
+  padding:5px 3px;
+  font:inherit;
+  font-size:11px;
+  font-weight:800;
+}
+.conditioning-block-collapse{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  width:28px;
+  height:28px;
+  padding:0;
+  font-size:16px;
+  line-height:1;
+}
+.conditioning-block-collapse:hover{
+  background:var(--paper-dim);
+  color:var(--ink);
+  border-radius:8px;
+}
+.conditioning-block-body{
+  padding:8px;
+}
+.conditioning-block-row.is-collapsed .conditioning-block-body{
+  display:none;
+}
+.conditioning-block-row.is-collapsed .conditioning-block-top{
+  border-bottom:0;
+}
+.conditioning-block-fields{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+}
+.conditioning-block-fields label,
+.conditioning-details-label{
+  display:grid;
+  gap:4px;
+  font-size:9px;
+  font-weight:800;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.conditioning-block-fields input,
+.conditioning-block-details{
+  width:100%;
+  min-width:0;
+  border:1px solid var(--line);
+  background:var(--paper);
+  padding:7px;
+  font:inherit;
+  font-size:10px;
+}
+.conditioning-block-details{
+  min-height:48px;
+  resize:vertical;
+}
+.conditioning-details-label{
+  margin-top:7px;
+}
+.conditioning-remove{
+  width:28px;
+  height:28px;
+  padding:0!important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+@media (max-width:950px){
+  .conditioning-block-fields{
+    grid-template-columns:1fr;
+  }
 }
 @media (max-width:560px){
-  #home-page .home-month-overview .home-heatmap{width:100%;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;justify-content:stretch}
-  #home-page .home-month-overview .home-heat-day{width:100%;height:auto;min-height:16px;aspect-ratio:1/1}
+  body:has(#day-page.active) .conditioning-block-top{
+    grid-template-columns:20px minmax(0,1fr) 28px 28px;
+    padding:7px;
+  }
+  body:has(#day-page.active) .conditioning-block-body{
+    padding:7px;
+  }
+  body:has(#day-page.active) .conditioning-block-fields{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:4px;
+  }
+  body:has(#day-page.active) .conditioning-block-fields input,
+  body:has(#day-page.active) .conditioning-block-details{
+    font-size:9px;
+    padding:6px;
+  }
 }
-/* Calendar: the Week & Month summary is intentionally removed; the analysis block below remains the single analysis view. */
-#calendar-page .ios-week-month-summary{display:none!important}
-/* Day navigation: hide ONLY in portrait mobile. Desktop and landscape mobile retain Back to month + arrows. */
 @media (max-width:560px) and (orientation:portrait){
+  body:has(#day-page.active) .section-bar{
+    background:transparent;
+    border:0;
+  }
+}
+
+/* Set rows: × | Sets | Reps | Weight | Type — no numeric set index. */
+.set-group-row{
+  grid-template-columns:22px minmax(78px,1fr) minmax(78px,1fr) minmax(105px,1.2fr) 70px;
+}
+.set-group-row .set-remove-inline{
+  grid-column:1;
+}
+.set-group-row .set-type-select{
+  grid-column:5;
+}
+@media (min-width:561px){
+  .set-group-row{
+    width:100%;
+    max-width:none;
+    grid-template-columns:22px 30px minmax(78px,1fr) minmax(78px,1fr) minmax(105px,1.2fr) 86px;
+  }
+  .set-group-row .set-remove-inline{grid-column:1}
+  .set-group-row input[data-set-key="sets"]{grid-column:3}
+  .set-group-row input[data-set-key="reps"]{grid-column:4}
+  .set-group-row input[data-set-key="weight"]{grid-column:5}
+  .set-group-row .set-type-select{grid-column:6}
+}
+@media (max-width:560px){
+  body:has(#day-page.active) .set-group-row{
+    grid-template-columns:17px minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr) 48px!important;
+  }
+  body:has(#day-page.active) .set-group-row .set-remove-inline{
+    grid-column:1;
+  }
+  body:has(#day-page.active) .set-group-row input[data-set-key="sets"]{grid-column:2}
+  body:has(#day-page.active) .set-group-row input[data-set-key="reps"]{grid-column:3}
+  body:has(#day-page.active) .set-group-row input[data-set-key="weight"]{grid-column:4}
+  body:has(#day-page.active) .set-group-row .set-type-select{grid-column:5}
+}
+
+
+
+/* ===== FINAL PORTRAIT-ONLY FIXES ===== */
+/* Home heatmap: use the full width of its existing card. */
+#home-page .home-heatmap{
+  width:100%;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  justify-content:stretch;
+}
+#home-page .home-heat-labels{
+  width:100%;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  justify-content:stretch;
+}
+#home-page .home-heat-day{
+  width:100%;
+}
+
+/* Desktop + landscape: remove the extra dashboard summary card from Calendar. */
+@media (min-width:561px){
+  #calendar-page #smart-stats-card{display:none!important}
+}
+
+/* Portrait only: keep only the bottom analysis card; remove the duplicate Week & Month panel. */
+@media (max-width:560px) and (orientation:portrait){
+  #calendar-page .ios-week-month-summary{display:none!important}
+  #calendar-page #smart-stats-card{display:block!important}
+
+  /* Portrait Day: remove Back to Month + previous/next controls completely. */
   body:has(#day-page.active) .day-top{display:none!important}
   body:has(#day-page.active) #day-page{padding-top:0!important}
-  /* Keep the full exercise/set editor visible inside the portrait viewport. */
-  body:has(#day-page.active) .block-table{width:100%!important;table-layout:fixed!important;overflow:visible!important}
-  body:has(#day-page.active) .block-table .exercise-row td{display:table-cell!important;padding:5px 4px!important}
-  body:has(#day-page.active) .exercise-editor-row{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:3px!important;width:100%!important}
-  body:has(#day-page.active) .exercise-main-line{display:grid!important;grid-template-columns:18px 20px minmax(0,1fr)!important;align-items:center;gap:3px!important;padding:0!important;min-width:0}
-  body:has(#day-page.active) .exercise-main-line .exercise-remove{grid-column:1;grid-row:1;justify-self:start;margin:0!important;padding:0!important;font-size:13px!important}
-  body:has(#day-page.active) .exercise-main-line .exercise-handle{display:none!important}
-  body:has(#day-page.active) .exercise-main-line .exercise-number{grid-column:2;grid-row:1;font-size:8px;min-width:20px}
-  body:has(#day-page.active) .exercise-main-line .exercise-name-input{grid-column:3;grid-row:1;width:100%!important;min-width:0;font-size:9px!important;padding:3px 1px!important}
-  body:has(#day-page.active) .exercise-sets-wrap{display:flex!important;flex-direction:column!important;width:100%!important;margin:0!important;padding-left:0!important;min-width:0!important}
-  body:has(#day-page.active) .set-group-row{display:grid!important;grid-template-columns:18px minmax(25px,1fr) minmax(25px,1fr) minmax(38px,1.2fr) 42px!important;gap:2px!important;width:100%!important;max-width:none!important;min-width:0!important;min-height:24px!important;align-items:center}
-  body:has(#day-page.active) .set-group-row .rm-btn{grid-column:1;grid-row:1;justify-self:start;margin:0!important;padding:0!important;font-size:12px!important}
-  body:has(#day-page.active) .set-group-row .set-group-index{display:none!important}
-  body:has(#day-page.active) .set-group-row input:nth-of-type(1){grid-column:2;grid-row:1}
-  body:has(#day-page.active) .set-group-row input:nth-of-type(2){grid-column:3;grid-row:1}
-  body:has(#day-page.active) .set-group-row input:nth-of-type(3){grid-column:4;grid-row:1}
-  body:has(#day-page.active) .set-group-row .set-type-select{grid-column:5;grid-row:1;width:42px!important;font-size:7px!important}
-  body:has(#day-page.active) .set-group-row input{font-size:8px!important;padding:3px 2px!important;min-width:0!important;width:100%!important}
+
+  /* Exercise cards: one full-width header, then compact set rows. */
+  body:has(#day-page.active) .block-table .exercise-row td{
+    padding:4px 6px 5px!important;
+    overflow:visible!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-editor-row{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-main-line{
+    display:flex!important;
+    align-items:center!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:25px!important;
+    padding-right:0!important;
+    gap:3px!important;
+    overflow:visible!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-expand{
+    display:inline-flex!important;
+    flex:0 0 22px!important;
+    width:22px!important;
+    height:22px!important;
+    padding:0!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:12px!important;
+    line-height:1!important;
+    cursor:pointer!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-name-input{
+    flex:1 1 auto!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    font-size:10.5px!important;
+    padding:3px 2px!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    white-space:nowrap!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-remove{
+    position:static!important;
+    flex:0 0 20px!important;
+    width:20px!important;
+    height:22px!important;
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:13px!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-sets-wrap{
+    display:block!important;
+    width:calc(100% - 24px)!important;
+    max-width:none!important;
+    margin:1px 0 0 24px!important;
+    min-width:0!important;
+    overflow:visible!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-row.is-collapsed .exercise-sets-wrap{
+    display:none!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-row.is-collapsed .exercise-expand{
+    transform:rotate(-90deg)!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-row:not(.is-collapsed) .exercise-expand{
+    transform:rotate(0deg)!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    grid-template-columns:20px minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr) 52px 18px!important;
+    gap:2px!important;
+    min-height:24px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row input{
+    width:100%!important;
+    min-width:0!important;
+    padding:3px 2px!important;
+    font-size:9px!important;
+    text-align:center!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row .set-type-select{
+    width:52px!important;
+    min-width:52px!important;
+    max-width:52px!important;
+    padding:3px 0!important;
+    font-size:8px!important;
+    text-align:center!important;
+    text-align-last:center!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row .rm-btn{
+    position:static!important;
+    width:18px!important;
+    min-width:18px!important;
+    max-width:18px!important;
+    height:21px!important;
+    padding:0!important;
+    margin:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:11px!important;
+  }
 }
-</style>
-</head>
+
+
+
+/* ===== USER FIXES — PORTRAIT ONLY / NO DESKTOP OR LANDSCAPE CHANGES ===== */
+@media (max-width:560px) and (orientation:portrait){
+  /* Home heatmap: fill the entire width and available card area. */
+  #home-page .home-month-overview{
+    width:100%!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  #home-page .home-heat-labels{
+    width:100%!important;
+    grid-template-columns:repeat(7,minmax(0,1fr))!important;
+    gap:3px!important;
+  }
+  #home-page #home-month-heatmap{
+    width:100%!important;
+    flex:1 1 auto!important;
+    grid-template-columns:repeat(7,minmax(0,1fr))!important;
+    grid-auto-rows:minmax(24px,1fr)!important;
+    gap:4px!important;
+    justify-content:stretch!important;
+    align-content:stretch!important;
+    min-height:140px!important;
+  }
+  #home-page #home-month-heatmap .home-heat-day{
+    width:100%!important;
+    height:100%!important;
+    min-height:24px!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Day portrait: absolutely remove Back to Month + previous/next from layout. */
+  body:has(#day-page.active) .day-top{
+    display:none!important;
+    visibility:hidden!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:hidden!important;
+  }
+  body:has(#day-page.active) #day-page{
+    padding-top:0!important;
+  }
+
+  /* Exercise cards: exercise header on its own line, with full name visible. */
+  body:has(#day-page.active) .block-table .exercise-editor-row{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-main-line{
+    display:flex!important;
+    align-items:center!important;
+    width:100%!important;
+    min-width:0!important;
+    gap:2px!important;
+    padding:0!important;
+    min-height:24px!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-handle,
+  body:has(#day-page.active) .block-table .exercise-number{
+    display:none!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-expand{
+    display:inline-flex!important;
+    flex:0 0 20px!important;
+    width:20px!important;
+    height:20px!important;
+    margin:0!important;
+    padding:0!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:13px!important;
+    line-height:1!important;
+    transform:none!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-name-input{
+    flex:1 1 auto!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    padding:2px 1px!important;
+    font-size:9px!important;
+    line-height:1.15!important;
+    letter-spacing:0!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-remove{
+    position:static!important;
+    flex:0 0 18px!important;
+    width:18px!important;
+    height:20px!important;
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:12px!important;
+    line-height:1!important;
+  }
+
+  /* Sets: every field stays on one line, with the type selector always visible. */
+  body:has(#day-page.active) .block-table .exercise-sets-wrap{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:1px 0 0 20px!important;
+    min-width:0!important;
+    overflow:visible!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-row.is-collapsed .exercise-sets-wrap{
+    display:none!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-row.is-collapsed .exercise-expand{
+    transform:rotate(-90deg)!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-row:not(.is-collapsed) .exercise-expand{
+    transform:none!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row{
+    display:grid!important;
+    width:calc(100% - 2px)!important;
+    max-width:none!important;
+    min-width:0!important;
+    grid-template-columns:16px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 48px 16px!important;
+    gap:2px!important;
+    min-height:21px!important;
+    height:21px!important;
+    align-items:center!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row > *{
+    min-width:0!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row input{
+    width:100%!important;
+    min-width:0!important;
+    height:20px!important;
+    padding:1px 1px!important;
+    font-size:8px!important;
+    line-height:1!important;
+    text-align:center!important;
+    border:1px solid var(--line)!important;
+    border-radius:3px!important;
+    white-space:nowrap!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row .set-type-select{
+    width:48px!important;
+    min-width:48px!important;
+    max-width:48px!important;
+    height:20px!important;
+    padding:1px 0!important;
+    font-size:7px!important;
+    line-height:1!important;
+    text-align:center!important;
+    text-align-last:center!important;
+    border:1px solid var(--line)!important;
+    border-radius:3px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row .rm-btn{
+    position:static!important;
+    width:16px!important;
+    min-width:16px!important;
+    max-width:16px!important;
+    height:20px!important;
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:10px!important;
+    line-height:1!important;
+  }
+
+  /* Compact set-add control. */
+  body:has(#day-page.active) .block-table .set-group-add-row{padding:1px 0 0!important;}
+  body:has(#day-page.active) .block-table .set-group-add{padding:3px 0!important;font-size:7px!important;}
+}
+
+/* Desktop + landscape: remove the stray Week & Month overview text/card only. */
+@media (min-width:561px), (max-width:560px) and (orientation:landscape){
+  #calendar-page .ios-week-month-summary{display:none!important;}
+  #calendar-page #smart-stats-card{display:none!important;}
+}
+
+
+
+/* ===== REQUESTED MOBILE REFINEMENT ===== */
+/* Portrait workout values: smaller controls so SET | KG | REPS | TYPE | × stays compact. */
+@media (max-width:560px) and (orientation:portrait){
+  body:has(#day-page.active) .block-table .set-group-row{
+    grid-template-columns:14px minmax(28px,1fr) minmax(28px,1fr) minmax(38px,1fr) 42px 15px!important;
+    gap:1px!important;
+    min-height:21px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row input{
+    height:20px!important;
+    padding:2px 1px!important;
+    font-size:8px!important;
+    line-height:16px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row .set-type-select{
+    width:42px!important;
+    min-width:42px!important;
+    max-width:42px!important;
+    height:20px!important;
+    padding:1px 0!important;
+    font-size:7px!important;
+    line-height:16px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row .rm-btn{
+    width:15px!important;
+    min-width:15px!important;
+    max-width:15px!important;
+    height:20px!important;
+    font-size:9px!important;
+  }
+}
+
+/* Mobile Calendar: one Week & Month Overview panel at the very bottom. */
+@media (max-width:950px) and (orientation:portrait),
+       (max-width:950px) and (max-height:600px) and (orientation:landscape){
+  #calendar-page .ios-week-month-summary{display:none!important;}
+  #calendar-page #smart-stats-card{
+    display:block!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    margin:14px 0 0!important;
+  }
+  #calendar-page #smart-stats-card .smart-dashboard-title::after{
+    content:' Overview';
+  }
+}
+
+/* Keep the overview hidden outside mobile, as requested previously. */
+@media (min-width:951px),
+       (min-width:561px) and (max-height:600px){
+  #calendar-page .ios-week-month-summary{display:none!important;}
+  #calendar-page #smart-stats-card{display:none!important;}
+}
+
+@media (max-width:560px) and (orientation:portrait){
+  body:has(#day-page.active) .run-meta-inline{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    grid-template-rows:auto auto!important;
+    gap:8px 10px!important;
+    align-items:start!important;
+  }
+  body:has(#day-page.active) .caffeine-inline{
+    grid-column:1!important;grid-row:1!important;
+    width:100%!important;min-width:0!important;
+  }
+  body:has(#day-page.active) .run-distance-inline{
+    grid-column:2!important;grid-row:1!important;
+    width:100%!important;min-width:0!important;
+    justify-content:flex-start!important;
+  }
+  body:has(#day-page.active) .recovery-inline{
+    grid-column:1/-1!important;grid-row:2!important;
+    width:100%!important;
+    border-left:0!important;border-top:1px solid var(--line)!important;
+    padding:7px 0 0!important;margin-top:2px!important;
+  }
+}
+@media (min-width:951px){#plan-page{padding-left:24px;padding-right:24px}}
+@media (min-width:561px) and (max-width:950px) and (orientation:landscape){#plan-page{padding-left:18px;padding-right:18px}}
+/* Final set-row alignment: delete control first, then set number/values. */
+@media (min-width:561px){
+  body:has(#day-page.active) .block-table .set-group-row{display:grid!important;grid-template-columns:18px 24px minmax(60px,1fr) minmax(60px,1fr) minmax(75px,1.15fr) 72px!important;gap:5px!important;align-items:center!important;width:100%!important;max-width:none!important;min-height:24px!important}
+  body:has(#day-page.active) .block-table .set-group-row .set-remove-inline{grid-column:1!important;grid-row:1!important}
+  body:has(#day-page.active) .block-table .set-group-row [data-set-key="sets"]{grid-column:3!important;grid-row:1!important}
+  body:has(#day-page.active) .block-table .set-group-row [data-set-key="reps"]{grid-column:4!important;grid-row:1!important}
+  body:has(#day-page.active) .block-table .set-group-row [data-set-key="weight"]{grid-column:5!important;grid-row:1!important}
+  body:has(#day-page.active) .block-table .set-group-row .set-type-select{grid-column:6!important;grid-row:1!important;width:72px!important}
+  body:has(#day-page.active) .block-table .set-group-add-row{display:grid!important;grid-template-columns:18px 24px minmax(60px,1fr) minmax(60px,1fr) minmax(75px,1.15fr) 72px!important;gap:5px!important;width:100%!important}
+  body:has(#day-page.active) .block-table .set-group-add-row .set-group-add{grid-column:6!important;justify-self:start!important;margin:0!important}
+}
+@media (max-width:560px) and (orientation:portrait){
+  body:has(#day-page.active) .block-table .set-group-row{display:grid!important;grid-template-columns:16px 18px minmax(0,.82fr) minmax(0,.82fr) minmax(0,1fr) 50px!important;gap:2px!important;align-items:center!important;width:calc(100% - 6px)!important;margin-right:6px!important;min-height:22px!important}
+  body:has(#day-page.active) .block-table .set-group-row .set-remove-inline{grid-column:1!important;grid-row:1!important}
+  body:has(#day-page.active) .block-table .set-group-row [data-set-key="sets"]{grid-column:3!important;grid-row:1!important}
+  body:has(#day-page.active) .block-table .set-group-row [data-set-key="reps"]{grid-column:4!important;grid-row:1!important}
+  body:has(#day-page.active) .block-table .set-group-row [data-set-key="weight"]{grid-column:5!important;grid-row:1!important}
+  body:has(#day-page.active) .block-table .set-group-row .set-type-select{grid-column:6!important;grid-row:1!important;width:50px!important}
+}
+
+/* Requested final layout refinements: Plan gets comfortable side margins only on desktop/landscape;
+   set controls stay compact and the mobile portrait delete icon has breathing room on the right. */
+@media (min-width:951px){
+  #plan-page{padding-left:40px!important;padding-right:40px!important}
+}
+@media (min-width:561px) and (max-width:950px) and (orientation:landscape){
+  #plan-page{padding-left:28px!important;padding-right:28px!important}
+}
+@media (max-width:560px) and (orientation:portrait){
+  body:has(#day-page.active) .block-table .set-group-row{
+    width:calc(100% - 14px)!important;
+    margin-right:14px!important;
+  }
+}
+
+
+/* ===== LATEST REQUESTED REFINEMENTS ===== */
+
+/* Conditioning: only Main is rendered. Fill the full panel on desktop and landscape. */
+.conditioning-main-only{
+  width:100%;
+}
+@media (min-width:561px){
+  /* Hide "Main" section label — only the blocks matter */
+  body:has(#day-page.active) .conditioning-phase-head{display:none!important;}
+
+  /* Full-width: no centering, just fill the conditioning-editor panel */
+  body:has(#day-page.active) .conditioning-editor{width:100%!important;}
+  body:has(#day-page.active) .conditioning-phase-grid{grid-template-columns:1fr!important;}
+  body:has(#day-page.active) .conditioning-phase{border-right:0!important;border-bottom:0!important;}
+  body:has(#day-page.active) .conditioning-main-only{
+    max-width:none;
+    margin:0;
+    width:100%;
+  }
+  body:has(#day-page.active) .conditioning-blocks{
+    width:100%;
+    max-width:none;
+    margin:8px 0 0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  body:has(#day-page.active) .conditioning-block-row{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px 12px!important;
+    margin:0;
+  }
+  /* x | y | q | z = num | name | collapse | remove */
+  body:has(#day-page.active) .conditioning-block-top{
+    display:grid;
+    grid-template-columns:24px minmax(0,1fr) 30px 30px;
+    gap:8px;
+    align-items:center;
+  }
+  body:has(#day-page.active) .conditioning-block-num{font-size:10px;text-align:center;}
+  body:has(#day-page.active) .conditioning-block-name{
+    width:100%;
+    min-width:0;
+    height:34px;
+    box-sizing:border-box;
+    padding:6px 9px;
+    font-size:12px;
+  }
+  body:has(#day-page.active) .conditioning-block-collapse,
+  body:has(#day-page.active) .conditioning-remove{
+    width:30px!important;
+    height:30px!important;
+  }
+  body:has(#day-page.active) .conditioning-block-body{padding-top:8px;}
+  body:has(#day-page.active) .conditioning-block-fields{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:8px;
+    margin:0 0 8px;
+  }
+  body:has(#day-page.active) .conditioning-block-fields input{
+    min-height:32px;
+    padding:6px 8px;
+    font-size:11px;
+  }
+  body:has(#day-page.active) .conditioning-block-details{
+    min-height:48px;
+    padding:7px 8px;
+    font-size:11px;
+  }
+  body:has(#day-page.active) .conditioning-add-block{
+    display:block;
+    margin:8px 0 2px;
+    padding:7px 12px;
+    font-size:11px;
+  }
+}
+
+/* Training exercise header: the collapse control is immediately to the left of ×.
+   The inline Add Set is only exposed in portrait; desktop/landscape keep the
+   existing lower Add Set control. */
+body:has(#day-page.active) .set-group-add-inline{
+  display:none;
+}
+
+@media (max-width:560px) and (orientation:portrait){
+  body:has(#day-page.active) .block-table .exercise-main-line{
+    display:flex!important;
+    align-items:center!important;
+    gap:4px!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-name-input{
+    flex:1 1 auto!important;
+    min-width:0!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-expand{
+    order:2!important;
+    flex:0 0 20px!important;
+    width:20px!important;
+    height:20px!important;
+    margin:0!important;
+    padding:0!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:13px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-add-inline{
+    order:3!important;
+    flex:0 0 auto!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    height:20px!important;
+    padding:2px 5px!important;
+    margin:0!important;
+    white-space:nowrap!important;
+    font-size:7px!important;
+    line-height:1!important;
+    border:1px solid var(--line)!important;
+    border-radius:3px!important;
+    background:var(--paper)!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-remove{
+    order:4!important;
+    flex:0 0 18px!important;
+    width:18px!important;
+    height:20px!important;
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-sets-wrap{
+    margin-top:2px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-add-row{
+    display:none!important;
+  }
+}
+
+/* Desktop only: keep the exercise delete icon directly beside the name/header
+   controls, while giving the set columns a little more centered breathing room.
+   Landscape mobile is deliberately excluded. */
+@media (min-width:951px){
+  body:has(#day-page.active) .block-table{
+    width:100%;
+  }
+  body:has(#day-page.active) .block-table .exercise-main-line{
+    width:min(100%,860px)!important;
+    margin:0 auto!important;
+    gap:6px!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-name-input{
+    flex:1 1 auto!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row{
+    width:min(100%,860px)!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    grid-template-columns:20px minmax(80px,1fr) minmax(80px,1fr) minmax(110px,1.15fr) 78px!important;
+    gap:7px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row .set-remove-inline{
+    grid-column:1!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row [data-set-key="sets"]{
+    grid-column:2!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row [data-set-key="reps"]{
+    grid-column:3!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row [data-set-key="weight"]{
+    grid-column:4!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-row .set-type-select{
+    grid-column:5!important;
+    width:78px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-add-row{
+    width:min(100%,860px)!important;
+    margin:0 auto!important;
+    grid-template-columns:20px minmax(80px,1fr) minmax(80px,1fr) minmax(110px,1.15fr) 78px!important;
+    gap:7px!important;
+  }
+  body:has(#day-page.active) .block-table .set-group-add-row .set-group-add{
+    grid-column:5!important;
+  }
+}
+
+/* Training / Conditioning headings: slightly larger on desktop and landscape. */
+@media (min-width:561px){
+  body:has(#day-page.active) .conditioning-section .section-bar,
+  body:has(#day-page.active) .training-section .section-bar{
+    font-size:13px;
+  }
+}
+
+/* ===== FINAL AUTHORITATIVE PORTRAIT EXERCISE COLLAPSE =====
+   These rules must come last to override all prior table-display overrides. */
+@media (max-width:560px) and (orientation:portrait){
+  /* Exercise sets: visible by default, hidden when row has is-collapsed */
+  body:has(#day-page.active) .block-table .exercise-row:not(.is-collapsed) .exercise-sets-wrap{
+    display:block!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-row.is-collapsed .exercise-sets-wrap{
+    display:none!important;
+  }
+  /* Collapse chevron rotation */
+  body:has(#day-page.active) .block-table .exercise-row.is-collapsed .exercise-expand{
+    transform:rotate(-90deg)!important;
+  }
+  body:has(#day-page.active) .block-table .exercise-row:not(.is-collapsed) .exercise-expand{
+    transform:rotate(0deg)!important;
+  }
+  /* Ensure expand button is always visible */
+  body:has(#day-page.active) .block-table .exercise-expand{
+    display:inline-flex!important;
+    flex:0 0 20px!important;
+    width:20px!important;
+    height:20px!important;
+    align-items:center!important;
+    justify-content:center!important;
+    cursor:pointer!important;
+  }
+}
+
+/* ===== FINAL PORTRAIT RUN-DISTANCE LAYOUT =====
+   Caffeine left | Run Distance right on same row, Recovery below. */
+@media (max-width:560px) and (orientation:portrait){
+  body:has(#day-page.active) .run-meta-inline{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    grid-template-rows:auto auto!important;
+    gap:8px 12px!important;
+    align-items:start!important;
+  }
+  body:has(#day-page.active) .caffeine-inline{
+    grid-column:1!important;
+    grid-row:1!important;
+    min-width:0!important;
+    width:100%!important;
+  }
+  body:has(#day-page.active) .run-distance-inline{
+    grid-column:2!important;
+    grid-row:1!important;
+    min-width:0!important;
+    width:100%!important;
+    justify-content:flex-start!important;
+  }
+  body:has(#day-page.active) .recovery-inline{
+    grid-column:1 / -1!important;
+    grid-row:2!important;
+    width:100%!important;
+    order:unset!important;
+    border-left:0!important;
+    border-top:1px solid var(--line)!important;
+    padding-top:8px!important;
+    margin-top:0!important;
+  }
+}
+
+
+/* ===== V5 CLEAN FEATURE LAYER ===== */
+.tp-v5-panel{margin-top:14px;padding:14px;background:rgba(251,250,247,.78);border:1px solid rgba(22,22,22,.10);border-radius:16px;box-shadow:0 5px 18px rgba(22,22,22,.04)}
+.tp-v5-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:12px}.tp-v5-kicker{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;margin-bottom:3px}.tp-v5-head strong{font-size:15px}.tp-v5-summary{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;font-size:9px;color:var(--muted);text-transform:uppercase}.tp-v5-summary b{color:var(--ink)}
+.tp-v5-week-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.tp-v5-day{min-width:0;border:1px solid var(--line);background:var(--white);border-radius:11px;padding:8px;text-align:left;display:flex;flex-direction:column;gap:5px;cursor:pointer;color:var(--ink)}.tp-v5-day:hover{background:var(--paper-dim)}.tp-v5-day-top{display:flex;justify-content:space-between;gap:3px;align-items:baseline}.tp-v5-day-top b{font-size:10px;text-transform:uppercase}.tp-v5-day-top small{font-size:8px;color:var(--muted)}.tp-v5-day>strong{font-size:9px;line-height:1.2;min-height:22px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.tp-v5-day>small{font-size:8px;color:var(--muted)}.tp-v5-load-track{height:58px;display:flex;align-items:flex-end;background:var(--paper);border-radius:7px;padding:3px}.tp-v5-load-track i{display:block;width:100%;background:var(--ink);border-radius:5px;min-height:2px}.tp-v5-day.done{border-color:var(--ink)}.tp-v5-day.empty{opacity:.62}.tp-v5-legend{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:9px;font-size:8px;color:var(--muted);text-transform:uppercase}.tp-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--line-strong);margin-right:3px}.tp-dot.empty{background:#C7C7CC}.tp-dot.planned{background:#8E8E93}.tp-v5-note{margin-left:auto;text-transform:none}
+.tp-v5-chart-wrap{position:relative;height:175px;background:var(--white);border:1px solid var(--line);border-radius:11px;padding:5px 24px 4px 0}.tp-v5-chart{width:100%;height:100%;color:var(--ink)}.tp-v5-chart line{stroke:rgba(22,22,22,.12);stroke-width:1}.tp-v5-ylabels{position:absolute;left:4px;top:9px;bottom:7px;display:flex;flex-direction:column;justify-content:space-between;font-size:8px;color:var(--muted)}.tp-v5-recovery-note{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:8px;color:var(--muted)}
+.tp-run-block{border:1px solid var(--line);border-radius:12px;background:var(--white);overflow:hidden;margin-bottom:7px}.tp-run-block-head{display:grid;grid-template-columns:20px minmax(90px,1fr) 125px 25px;gap:6px;align-items:center;padding:8px;border-bottom:1px solid var(--line);background:#E7E3DA}.tp-run-num{font-size:9px;color:var(--muted);font-weight:800;text-align:center}.tp-run-block-head input,.tp-run-block-head select,.tp-run-grid input,.tp-run-details textarea{width:100%;border:1px solid var(--line);background:var(--paper);padding:7px;font:inherit;font-size:10px}.tp-run-block-head input{font-weight:800}.tp-run-block-head select{font-size:9px}.tp-run-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;padding:8px}.tp-run-grid label,.tp-run-details{font-size:8px;text-transform:uppercase;color:var(--muted);font-weight:800}.tp-run-details{display:block;padding:0 8px 8px}.tp-run-details textarea{min-height:48px;resize:vertical;text-transform:none;font-weight:400;color:var(--ink)}
+.tp-loop-panel{margin-top:12px;padding:14px;background:var(--white);border:1px solid var(--line);border-radius:14px}.tp-loop-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.tp-loop-head strong{font-size:15px}.tp-loop-badge{font-size:8px;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:5px 7px;border-radius:999px}.tp-loop-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}.tp-loop-grid label{font-size:9px;text-transform:uppercase;color:var(--muted);font-weight:800}.tp-loop-grid textarea,.tp-loop-grid input{display:block;width:100%;margin-top:5px;border:1px solid var(--line);background:var(--paper);padding:9px;font:inherit;font-size:11px}.tp-loop-grid textarea{min-height:78px;resize:vertical}.tp-loop-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tp-loop-tag{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 9px;font-size:9px}.tp-loop-tag.active{background:var(--ink);color:var(--white)}.tp-previous-feedback{margin-top:10px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}.tp-previous-feedback div{display:flex;justify-content:space-between;gap:8px;font-size:9px}.tp-previous-feedback div span{color:var(--muted)}.tp-previous-feedback p{font-size:11px;margin:7px 0 3px;line-height:1.4}.tp-previous-feedback small{font-size:9px;color:var(--muted)}
+.tp-v5-empty{font-size:11px;color:var(--muted);margin:0}
+@media(max-width:850px){.tp-v5-week-grid{grid-template-columns:repeat(7,minmax(52px,1fr));overflow:auto;padding-bottom:2px}.tp-v5-day{min-width:52px}.tp-v5-summary{justify-content:flex-start}.tp-run-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tp-loop-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.tp-v5-panel{margin:12px 0;padding:11px;border-radius:14px}.tp-v5-head{align-items:flex-start;flex-direction:column;gap:7px}.tp-v5-summary{justify-content:flex-start}.tp-v5-week-grid{gap:4px;overflow-x:auto}.tp-v5-day{min-width:70px;padding:7px}.tp-v5-load-track{height:46px}.tp-v5-note{width:100%;margin-left:0}.tp-v5-chart-wrap{height:145px}.tp-v5-recovery-note{flex-direction:column}.tp-run-block-head{grid-template-columns:17px minmax(0,1fr) 86px 20px;padding:6px}.tp-run-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:7px}.tp-run-grid input{padding:7px 5px;font-size:10px}.tp-run-details{padding:0 7px 7px}.tp-loop-panel{padding:11px}.tp-loop-grid{grid-template-columns:1fr}.tp-loop-grid textarea{min-height:65px}}
+
+</style></head>
 <body>
 <div id="auth-overlay" class="auth-overlay">
   <div class="auth-box">
@@ -1282,6 +2363,28 @@ body:has(#day-page.active) .caffeine-inline,body:has(#day-page.active) .run-dist
         <div class="month-head"><div class="month-title" id="month-title">—</div><div class="month-nav"><button class="nav-btn" id="prev-month">‹</button><button class="nav-btn" id="next-month">›</button><button class="btn" id="today-btn">Today</button></div></div>
         <div class="cal-weekdays"><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div></div>
         <div class="cal-grid" id="cal-grid"></div>
+        <div class="ios-week-month-summary">
+          <div class="ios-summary-head"><span>Week &amp; Month</span><span>Overview</span></div>
+          <div class="ios-week-month-row">
+            <div class="ios-week-month-label">Week</div>
+            <div class="ios-summary-stats">
+              <div class="ios-stat"><strong id="ios-week-workouts">—</strong><span>Workouts</span></div>
+              <div class="ios-stat"><strong id="ios-week-distance">—</strong><span>km</span></div>
+              <div class="ios-stat"><strong id="ios-week-time">—</strong><span>Minutes</span></div>
+            </div>
+          </div>
+          <div class="ios-summary-note" id="ios-week-note">Your week at a glance.</div>
+          <div class="ios-week-chart" id="ios-week-chart" aria-label="Week session analysis"></div>
+          <div class="ios-week-month-row ios-week-month-month">
+            <div class="ios-week-month-label">Month</div>
+            <div class="ios-summary-stats">
+              <div class="ios-stat"><strong id="ios-month-workouts">—</strong><span>Workouts</span></div>
+              <div class="ios-stat"><strong id="ios-month-distance">—</strong><span>km</span></div>
+              <div class="ios-stat"><strong id="ios-month-load">—</strong><span>Load</span></div>
+            </div>
+          </div>
+          <div class="ios-month-chart" id="ios-month-chart" aria-label="Month session analysis"></div>
+        </div>
       </div>
       <aside id="calendar-quick-view" class="calendar-quick-view" aria-label="Quick workout view"></aside>
     </div>
@@ -1290,10 +2393,11 @@ body:has(#day-page.active) .caffeine-inline,body:has(#day-page.active) .run-dist
   <section id="day-page" class="page">
     <div class="day-view active">
       <div class="day-top"><button class="back-btn" id="back-btn">‹ Back to month</button><div class="day-nav"><button class="icon-btn" id="prev-day">‹</button><button class="icon-btn" id="next-day">›</button></div></div>
-      <div class="day-header"><div class="day-title-wrap"><div class="day-name" id="day-name">—</div><div class="day-date" id="day-date">—</div><input class="day-workout-title" data-field="focus" placeholder="WORKOUT TITLE"></div><div class="tagline-box"><textarea class="tagline-input" data-field="tagline" rows="3" placeholder="BUILD THE LEGS. PROTECT THE ENGINE. STAY DURABLE"></textarea><hr class="tagline-rule"><input class="strap-input" data-field="strap" placeholder="Stronger for more tomorrows"></div></div>
-      <div class="day-completion-row"><span>Workout completed</span><label class="switch-row"><input type="checkbox" id="day-completed-toggle"><span class="switch-ui"></span></label></div>
-      <div class="section"><div class="section-bar">Training <span class="divider">|</span><input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type"></div><div id="training-blocks" class="training-blocks"></div><button class="add-row-btn" id="add-block-inline">+ Add block</button></div>
-      <div class="section"><div class="section-bar">Running / Rowing <span class="divider">|</span><span style="font-weight:400;font-size:12px;text-transform:none;color:#d8d5cc">Intervals / endurance work</span></div><div class="rr-grid"><div class="rr-card"><label>Warm Up</label><textarea data-rr="warmUp" placeholder="10 min easy + drills"></textarea></div><div class="rr-card"><label>Main Set / Intervals</label><textarea data-rr="mainSet" placeholder="6 × 800 m @ threshold, 90 s recovery"></textarea></div><div class="rr-card"><label>Cool Down</label><textarea data-rr="coolDown" placeholder="10 min easy"></textarea></div></div><div class="run-meta-inline"><div class="caffeine-inline"><span>Caffeine</span><label class="switch-row"><input type="checkbox" id="caffeine-toggle"><span class="switch-ui"></span></label><input class="simple-field caffeine-inline-mg" type="number" min="0" step="1" data-caffeine-mg placeholder="mg"></div><div class="recovery-inline"><span class="recovery-title">Recovery</span><div class="recovery-row"><span>Sleep</span><div class="recovery-dots" data-recovery-group="sleep"></div></div><div class="recovery-row"><span>Energy</span><div class="recovery-dots" data-recovery-group="energy"></div></div><div class="recovery-row"><span>Soreness</span><div class="recovery-dots" data-recovery-group="soreness"></div></div></div><div class="run-distance-inline"><span>Run distance</span><input class="simple-field" type="number" step="0.01" data-metric="distanceKm" placeholder="km"></div></div><div class="notes-under-caffeine"><div class="note-label">Workout Notes</div><div class="note-tags" id="note-tags"><button type="button" class="note-tag" data-note-tag="Strong">Strong</button><button type="button" class="note-tag" data-note-tag="Normal">Normal</button><button type="button" class="note-tag" data-note-tag="Hard">Hard</button><button type="button" class="note-tag" data-note-tag="Low energy">Low energy</button><button type="button" class="note-tag" data-note-tag="Great">Great</button><button type="button" class="note-tag" data-note-tag="Adjust next time">Adjust next time</button></div><textarea class="notes-textarea" data-field="notes" placeholder="How it felt, what to adjust next time..."></textarea></div></div>
+      <div class="day-header"><div class="day-title-wrap"><div class="day-name" id="day-name">—</div><div class="day-date" id="day-date">—</div><input class="day-workout-title" data-field="focus" placeholder="WORKOUT TITLE"></div><div class="tagline-box"><textarea class="tagline-input" data-field="tagline" rows="3" placeholder="BUILD THE LEGS.\nPROTECT THE ENGINE.\nSTAY DURABLE."></textarea><hr class="tagline-rule"><input class="strap-input" data-field="strap" placeholder="Stronger for more tomorrows"></div></div>
+      <div class="day-completion-row"><div class="day-completion-tools" id="day-completion-tools"></div><span>Workout completed</span><label class="switch-row"><input type="checkbox" id="day-completed-toggle"><span class="switch-ui"></span></label></div>
+      <div class="section conditioning-section"><div class="section-bar"><span>Conditioning</span> <span class="divider">|</span><select class="section-sub-select" id="conditioning-type"><option>Run</option><option>Row</option><option>Bike</option><option>Other</option></select><button type="button" class="conditioning-collapse" id="conditioning-collapse" aria-label="Collapse conditioning">⌃</button></div><div class="conditioning-section-body"><div class="conditioning-editor"><div class="conditioning-phase-grid"><div class="conditioning-phase conditioning-main-only"><div class="conditioning-phase-head"><label>Main</label></div><div id="conditioning-blocks" class="conditioning-blocks"></div><button type="button" class="conditioning-add-block" id="add-conditioning-block">+ Add block</button></div></div></div></div>      <div class="section training-section"><div class="section-bar">Training <span class="divider">|</span><input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type"></div><div id="training-blocks" class="training-blocks"></div><button class="add-row-btn" id="add-block-inline">+ Add block</button></div>
+      <div class="run-meta-inline"><div class="caffeine-inline"><span>Caffeine</span><label class="switch-row"><input type="checkbox" id="caffeine-toggle"><span class="switch-ui"></span></label><input class="simple-field caffeine-inline-mg" type="number" min="0" step="1" data-caffeine-mg placeholder="mg"></div><div class="recovery-inline"><span class="recovery-title">Recovery</span><div class="recovery-row"><span>Sleep</span><div class="recovery-dots" data-recovery-group="sleep"></div></div><div class="recovery-row"><span>Energy</span><div class="recovery-dots" data-recovery-group="energy"></div></div><div class="recovery-row"><span>Soreness</span><div class="recovery-dots" data-recovery-group="soreness"></div></div></div><div class="run-distance-inline"><span>Run distance</span><input class="simple-field" type="number" step="0.01" data-metric="distanceKm" placeholder="km"></div></div><div class="notes-under-caffeine"><div class="note-label">Workout Notes</div><div class="note-tags" id="note-tags"><button type="button" class="note-tag" data-note-tag="Strong">Strong</button><button type="button" class="note-tag" data-note-tag="Normal">Normal</button><button type="button" class="note-tag" data-note-tag="Hard">Hard</button><button type="button" class="note-tag" data-note-tag="Low energy">Low energy</button><button type="button" class="note-tag" data-note-tag="Great">Great</button><button type="button" class="note-tag" data-note-tag="Adjust next time">Adjust next time</button></div><textarea class="notes-textarea" data-field="notes" placeholder="How it felt, what to adjust next time..."></textarea></div></div>
+      </div>
       <div class="footer-row"><div class="footer-label">Hybrid Training Week</div><button class="btn danger" id="clear-day">Clear this day</button></div>
     </div>
   </section>
@@ -1358,6 +2462,8 @@ body:has(#day-page.active) .caffeine-inline,body:has(#day-page.active) .run-dist
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (()=>{
+/* Training Planner — refactored structure: state → storage → renderers → interactions.
+   UI refinements are isolated at the end of the stylesheet to keep behavior/data intact. */
 const SUPABASE_URL='https://vjgsezfjslevjbiotfoq.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_IzFrnMtQjVxTHQ3_BVmbLg_Ww2zzi2F';
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
@@ -1369,7 +2475,7 @@ const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll
 function setStatus(t){$('#status-row').textContent=t||''} function pad(n){return String(n).padStart(2,'0')} function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`} function todayKey(){const d=new Date();return dateKey(d.getFullYear(),d.getMonth(),d.getDate())}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function clone(x){return JSON.parse(JSON.stringify(x))}
-function defaultDay(){return {tagline:'',strap:'',focus:'',trainingCategory:'',blocks:[{id:'blk_'+Date.now(),name:'Block 1',category:'Strength',exercises:[{name:'',setGroups:[{sets:'',reps:'',weight:'',type:'Aprox'}],sets:'',reps:'',weight:''}]}],isRunDay:true,runningRowing:{warmUp:'',mainSet:'',coolDown:''},metrics:{distanceKm:''},caffeine:{taken:false,mg:''},recovery:{sleep:0,energy:0,soreness:0},completed:false,notes:'',noteTags:[]}}
+function defaultDay(){return {tagline:'',strap:'',focus:'',trainingCategory:'',blocks:[{id:'blk_'+Date.now(),name:'Block 1',category:'Strength',exercises:[{name:'',setGroups:[{sets:'',reps:'',weight:'',type:'Aprox'}],sets:'',reps:'',weight:''}]}],isRunDay:false,runningRowing:{type:'Run',warmUp:{duration:'',details:''},mainSet:'',coolDown:{duration:'',details:''},blocks:[{id:'run_'+Date.now(),name:'Main',kind:'interval',reps:'',distance:'',duration:'',pace:'',target:'',recovery:'',effort:'',surface:'',details:''}]},metrics:{distanceKm:'',timeMin:'',pace:'',rpe:'',load:''},caffeine:{taken:false,mg:''},recovery:{sleep:0,energy:0,soreness:0},completed:false,notes:'',noteTags:[],sessionFeedback:{feelings:'',adjustNextTime:'',nextFocus:'',tags:[]},previousFeedback:null}} 
 function normalizeSetGroup(g){return {sets:g?.sets??'',reps:g?.reps??'',weight:g?.weight??'',type:g?.type??'Aprox'}}
 function normalizeExercise(e){const raw=e&&typeof e==='object'?e:{};let groups=Array.isArray(raw.setGroups)?raw.setGroups.map(normalizeSetGroup):[];if(!groups.length)groups=[normalizeSetGroup({sets:raw.sets??'',reps:raw.reps??'',weight:raw.weight??''})];const first=groups[0]||normalizeSetGroup({});return {name:raw.name??'',setGroups:groups,sets:first.sets??'',reps:first.reps??'',weight:first.weight??''}}
 function syncExerciseLegacyFields(e){const first=Array.isArray(e?.setGroups)?e.setGroups[0]:null;if(first&&e){e.sets=first.sets??'';e.reps=first.reps??'';e.weight=first.weight??''}return e}
@@ -1377,7 +2483,13 @@ function exerciseSetGroups(e){return Array.isArray(e?.setGroups)&&e.setGroups.le
 function exerciseSetText(e){return exerciseSetGroups(e).map(g=>[g.sets,g.reps,g.weight].filter(Boolean).join(' ')).filter(Boolean).join(' · ')}
 function totalExerciseSets(e){return exerciseSetGroups(e).reduce((n,g)=>n+(parseFloat(g.sets)||0),0)}
 function totalExerciseReps(e){return exerciseSetGroups(e).reduce((n,g)=>n+(parseFloat(g.reps)||0),0)}
-function normalizeDay(src){const base=defaultDay();src=src&&typeof src==='object'?src:{};const out={...base,...src};let blocks=Array.isArray(src.blocks)?src.blocks:[];if(!blocks.length&&Array.isArray(src.exercises))blocks=[{id:'blk_legacy',name:'Block 1',category:'Strength',exercises:src.exercises}];if(!blocks.length)blocks=clone(base.blocks);out.blocks=blocks.map((b,i)=>({id:b?.id||'blk_'+Date.now()+'_'+i,name:b?.name||`Block ${i+1}`,category:b?.category||'Strength',exercises:Array.isArray(b?.exercises)?b.exercises.map(normalizeExercise):[]}));out.exercises=out.blocks.flatMap(b=>b.exercises);out.runningRowing={warmUp:src.runningRowing?.warmUp??'',mainSet:src.runningRowing?.mainSet??'',coolDown:src.runningRowing?.coolDown??''};out.metrics={distanceKm:src.metrics?.distanceKm??''};out.caffeine={taken:!!src.caffeine?.taken,mg:src.caffeine?.mg??''};out.recovery={sleep:Math.min(5,Math.max(0,Number(src.recovery?.sleep)||0)),energy:Math.min(5,Math.max(0,Number(src.recovery?.energy)||0)),soreness:Math.min(5,Math.max(0,Number(src.recovery?.soreness)||0))};out.completed=!!src.completed;out.noteTags=Array.isArray(src.noteTags)?src.noteTags:[];return out}
+function normalizeDay(src){const base=defaultDay();src=src&&typeof src==='object'?src:{};const out={...base,...src};let blocks=Array.isArray(src.blocks)?src.blocks:[];if(!blocks.length&&Array.isArray(src.exercises))blocks=[{id:'blk_legacy',name:'Block 1',category:'Strength',exercises:src.exercises}];if(!blocks.length)blocks=clone(base.blocks);out.blocks=blocks.map((b,i)=>({id:b?.id||'blk_'+Date.now()+'_'+i,name:b?.name||`Block ${i+1}`,category:b?.category||'Strength',exercises:Array.isArray(b?.exercises)?b.exercises.map(normalizeExercise):[]}));out.exercises=out.blocks.flatMap(b=>b.exercises);
+const rr=src.runningRowing||{};const phase=x=>typeof x==='object'&&x!==null?{duration:x.duration??'',details:x.details??''}:{duration:'',details:x??''};const runBlock=(b,i)=>({id:b?.id||'run_'+Date.now()+'_'+i,name:b?.name||`Block ${i+1}`,kind:b?.kind||'interval',reps:b?.reps??'',distance:b?.distance??b?.duration??'',duration:b?.duration??'',pace:b?.pace??b?.target??'',target:b?.target??'',recovery:b?.recovery??'',effort:b?.effort??'',surface:b?.surface??'',details:b?.details??''});
+out.runningRowing={type:rr.type||'Run',warmUp:phase(rr.warmUp),mainSet:rr.mainSet??'',coolDown:phase(rr.coolDown),blocks:Array.isArray(rr.blocks)&&rr.blocks.length?rr.blocks.map(runBlock):[runBlock({name:'Main'},0)]};
+out.metrics={distanceKm:src.metrics?.distanceKm??'',timeMin:src.metrics?.timeMin??'',pace:src.metrics?.pace??'',rpe:src.metrics?.rpe??'',load:src.metrics?.load??''};
+out.caffeine={taken:!!src.caffeine?.taken,mg:src.caffeine?.mg??''};
+out.recovery={sleep:Math.min(5,Math.max(0,Number(src.recovery?.sleep)||0)),energy:Math.min(5,Math.max(0,Number(src.recovery?.energy)||0)),soreness:Math.min(5,Math.max(0,Number(src.recovery?.soreness)||0))};
+out.completed=!!src.completed;out.noteTags=Array.isArray(src.noteTags)?src.noteTags:[];const sf=src.sessionFeedback||{};out.sessionFeedback={feelings:sf.feelings??'',adjustNextTime:sf.adjustNextTime??'',nextFocus:sf.nextFocus??'',tags:Array.isArray(sf.tags)?sf.tags:[]};out.previousFeedback=src.previousFeedback&&typeof src.previousFeedback==='object'?src.previousFeedback:null;return out}
 
 function defaultPlan(){return {goals:[],blocks:[],mesocycles:[],microcycles:[],periodization:[],weeks:{},weekTemplates:[]}}
 function normalizePlan(p){const x={...defaultPlan(),...(p||{})};x.weeks=x.weeks&&typeof x.weeks==='object'?x.weeks:{};x.weekTemplates=Array.isArray(x.weekTemplates)?x.weekTemplates:[];x.blocks=Array.isArray(x.blocks)?x.blocks:[];return x}
@@ -1410,9 +2522,40 @@ async function openDay(k){
   }
 }
 function setVal(sel,v){const el=$(sel);if(el)el.value=v??''}
-function renderDay(){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);$('#day-name').textContent=WEEKDAYS[(dt.getDay()+6)%7];$('#day-date').textContent=`${MONTHS[m-1]} ${d}, ${y}`;setVal('[data-field="tagline"]',currentDay.tagline);setVal('[data-field="strap"]',currentDay.strap);setVal('[data-field="focus"]',currentDay.focus);setVal('[data-field="trainingCategory"]',currentDay.trainingCategory);setVal('[data-field="notes"]',currentDay.notes);$$('[data-rr]').forEach(el=>el.value=currentDay.runningRowing[el.dataset.rr]||'');setVal('[data-metric="distanceKm"]',currentDay.metrics.distanceKm||'');$('#caffeine-toggle').checked=!!currentDay.caffeine.taken;setVal('[data-caffeine-mg]',currentDay.caffeine.mg);$('#day-completed-toggle').checked=!!currentDay.completed;renderRecoveryInputs();renderTrainingBlocks();$$('[data-note-tag]').forEach(b=>b.classList.toggle('active',currentDay.noteTags.includes(b.dataset.noteTag)))}
+function renderDay(){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);$('#day-name').textContent=WEEKDAYS[(dt.getDay()+6)%7];$('#day-date').textContent=`${MONTHS[m-1]} ${d}, ${y}`;setVal('[data-field="tagline"]',currentDay.tagline);setVal('[data-field="strap"]',currentDay.strap);setVal('[data-field="focus"]',currentDay.focus);setVal('[data-field="trainingCategory"]',currentDay.trainingCategory);setVal('[data-field="notes"]',currentDay.notes);$('#conditioning-type').value=currentDay.runningRowing?.type||'Run';$$('[data-conditioning-phase]').forEach(el=>{const phase=currentDay.runningRowing?.[el.dataset.conditioningPhase]||{};el.value=phase[el.dataset.conditioningKey]??''});setVal('[data-metric="distanceKm"]',currentDay.metrics.distanceKm||'');$('#caffeine-toggle').checked=!!currentDay.caffeine.taken;setVal('[data-caffeine-mg]',currentDay.caffeine.mg);$('#day-completed-toggle').checked=!!currentDay.completed;renderRecoveryInputs();renderTrainingBlocks();renderConditioningBlocks();$$('[data-note-tag]').forEach(b=>b.classList.toggle('active',currentDay.noteTags.includes(b.dataset.noteTag)))}
 function renderRecoveryInputs(){const r=currentDay?.recovery||{sleep:0,energy:0,soreness:0};$$('[data-recovery-group]').forEach(group=>{const key=group.dataset.recoveryGroup;const value=Math.max(0,Math.min(5,Number(r[key])||0));group.innerHTML=Array.from({length:5},(_,i)=>`<button type="button" class="recovery-dot${i<value?' active':''}" data-recovery-key="${key}" data-recovery-value="${i+1}" aria-label="${key} ${i+1} of 5">○</button>`).join('')})}
-function renderTrainingBlocks(){const c=$('#training-blocks');c.innerHTML=currentDay.blocks.map((block,bi)=>{const collapsed=!!window._collapsedTrainingBlocks?.[block.id];return `<div class="training-block${collapsed?' is-collapsed':''}" draggable="true" data-block-index="${bi}"><div class="training-block-head"><span class="block-handle">☰</span><input class="block-title" data-block-index="${bi}" data-block-key="name" value="${esc(block.name)}" placeholder="Block name"><select class="block-category" data-block-index="${bi}" data-block-key="category">${['Warm-up','Mobility','Stretching','Strength','Conditioning','Metcon','Running','Accessory','Recovery','Cool-down','Other'].map(x=>`<option ${x===block.category?'selected':''}>${x}</option>`).join('')}</select><div class="block-actions"><button class="block-quick-toggle" type="button" data-block-quick="${bi}" aria-label="Quick actions">⋮</button><button class="block-collapse" type="button" data-block-collapse="${bi}" aria-label="Collapse block">⌄</button><button data-block-save="${bi}">⌑</button><button data-block-copy="${bi}">⧉</button><button data-block-remove="${bi}">×</button></div></div><div class="block-quick-actions"><button type="button" data-block-quick-add-set="${bi}">+ Set</button><button type="button" data-block-quick-add-ex="${bi}">+ Exercise</button><button type="button" data-block-quick-duplicate="${bi}">Duplicate</button><button type="button" data-block-quick-collapse="${bi}">Collapse</button></div><table class="block-table"><thead><tr><th>Exercise</th></tr></thead><tbody>${block.exercises.map((e,ei)=>`<tr class="exercise-row" draggable="true" data-block-index="${bi}" data-ex-index="${ei}"><td><div class="exercise-editor-row"><div class="exercise-main-line"><span class="exercise-handle">⋮⋮</span><span class="exercise-number">${bi+1}.${ei+1}</span><input class="exercise-name-input" data-ex-index="${ei}" data-ex-key="name" data-parent-block="${bi}" value="${esc(String(e.name||'').toUpperCase())}" placeholder="Exercise"><button class="rm-btn exercise-remove" data-action="remove-block-ex" data-block="${bi}" data-index="${ei}">×</button></div><div class="exercise-sets-wrap">${exerciseSetGroups(e).map((g,gi)=>`<div class="set-group-row" data-block-index="${bi}" data-ex-index="${ei}" data-set-index="${gi}"><span class="set-group-index">${gi+1}</span><input data-set-key="sets" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.sets)}" placeholder="sets"><input data-set-key="reps" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.reps)}" placeholder="reps"><input data-set-key="weight" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.weight)}" placeholder="kg / BW"><select class="set-type-select" data-set-key="type" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" aria-label="Set type"><option ${g.type==='Aprox'?'selected':''}>Aprox</option><option ${g.type==='TS'?'selected':''}>TS</option><option ${g.type==='DS'?'selected':''}>DS</option></select><button class="rm-btn" data-action="remove-set-group" data-block="${bi}" data-index="${ei}" data-set="${gi}">×</button></div>`).join('')}<div class="set-group-add-row"><button class="set-group-add" data-action="add-set-group" data-block="${bi}" data-index="${ei}">+ Add set</button></div></div></div></td></tr>`).join('')}</tbody></table><button class="block-add" data-action="add-block-ex" data-block="${bi}">+ Add exercise</button></div>`}).join('')}
+function renderTrainingBlocks(){const c=$('#training-blocks');c.innerHTML=currentDay.blocks.map((block,bi)=>{const collapsed=!!window._collapsedTrainingBlocks?.[block.id];return `<div class="training-block${collapsed?' is-collapsed':''}" draggable="true" data-block-index="${bi}"><div class="training-block-head"><span class="block-handle">☰</span><input class="block-title" data-block-index="${bi}" data-block-key="name" value="${esc(block.name)}" placeholder="Block name"><select class="block-category" data-block-index="${bi}" data-block-key="category">${['Warm-up','Mobility','Stretching','Strength','Conditioning','Metcon','Running','Accessory','Recovery','Cool-down','Other'].map(x=>`<option ${x===block.category?'selected':''}>${x}</option>`).join('')}</select><div class="block-actions"><button class="block-quick-toggle" type="button" data-block-quick="${bi}" aria-label="Quick actions">⋮</button><button class="block-collapse" type="button" data-block-collapse="${bi}" aria-label="Collapse block">⌄</button><button data-block-save="${bi}">⌑</button><button data-block-copy="${bi}">⧉</button><button data-block-remove="${bi}">×</button></div></div><div class="block-quick-actions"><button type="button" data-block-quick-add-set="${bi}">+ Set</button><button type="button" data-block-quick-add-ex="${bi}">+ Exercise</button><button type="button" data-block-quick-duplicate="${bi}">Duplicate</button><button type="button" data-block-quick-collapse="${bi}">Collapse</button></div><table class="block-table"><thead><tr><th>Exercise</th></tr></thead><tbody>${block.exercises.map((e,ei)=>`<tr class="exercise-row${window._collapsedTrainingExercises?.[block.id+':'+ei]?' is-collapsed':''}" draggable="true" data-block-index="${bi}" data-ex-index="${ei}"><td><div class="exercise-editor-row"><div class="exercise-main-line"><span class="exercise-handle">⋮⋮</span><span class="exercise-number">${bi+1}.${ei+1}</span><input class="exercise-name-input" data-ex-index="${ei}" data-ex-key="name" data-parent-block="${bi}" value="${esc(String(e.name||'').toUpperCase())}" placeholder="Exercise"><button type="button" class="exercise-expand" data-ex-collapse="${bi}" data-ex-index="${ei}" aria-label="Collapse exercise">⌄</button><button type="button" class="set-group-add set-group-add-inline" data-action="add-set-group" data-block="${bi}" data-index="${ei}">+ Add set</button><button class="rm-btn exercise-remove" data-action="remove-block-ex" data-block="${bi}" data-index="${ei}">×</button></div><div class="exercise-sets-wrap">${exerciseSetGroups(e).map((g,gi)=>`<div class="set-group-row" data-block-index="${bi}" data-ex-index="${ei}" data-set-index="${gi}"><button class="rm-btn set-remove-inline" data-action="remove-set-group" data-block="${bi}" data-index="${ei}" data-set="${gi}" aria-label="Remove set">×</button><input data-set-key="sets" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.sets)}" placeholder="sets"><input data-set-key="reps" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.reps)}" placeholder="reps"><input data-set-key="weight" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.weight)}" placeholder="kg / BW"><select class="set-type-select" data-set-key="type" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" aria-label="Set type"><option ${g.type==='Aprox'?'selected':''}>Aprox</option><option ${g.type==='TS'?'selected':''}>TS</option><option ${g.type==='DS'?'selected':''}>DS</option></select></div>`).join('')}<div class="set-group-add-row"><button class="set-group-add" data-action="add-set-group" data-block="${bi}" data-index="${ei}">+ Add set</button></div></div></div></td></tr>`).join('')}</tbody></table><button class="block-add" data-action="add-block-ex" data-block="${bi}">+ Add exercise</button></div>`}).join('')}
+function conditioningFields(type){return type==='Row'?['Distance','Split','Recovery']:type==='Bike'?['Duration','Power / Zone','Recovery']:type==='Other'?['Duration','Target','Recovery']:['Distance','Pace','Recovery']}
+function renderConditioningBlocks(){
+  const c=$('#conditioning-blocks');
+  if(!c)return;
+  const type=currentDay.runningRowing?.type||'Run';
+  const labels=conditioningFields(type);
+  const blocks=currentDay.runningRowing?.blocks||[];
+  window._collapsedConditioningBlocks=window._collapsedConditioningBlocks||{};
+  c.innerHTML=blocks.map((b,i)=>{
+    const key=String(b.id||i);
+    const collapsed=!!window._collapsedConditioningBlocks[key];
+    return `<div class="conditioning-block-row${collapsed?' is-collapsed':''}" data-conditioning-index="${i}" data-conditioning-id="${esc(key)}">
+      <div class="conditioning-block-top">
+        <span class="conditioning-block-num">${i+1}</span>
+        <input class="conditioning-block-name" data-conditioning-key="name" data-conditioning-index="${i}" value="${esc(b.name||`Block ${i+1}`)}" placeholder="Block name">
+        <button type="button" class="conditioning-block-collapse" data-conditioning-collapse="${i}" aria-label="${collapsed?'Expand':'Collapse'} block" aria-expanded="${!collapsed}">${collapsed?'›':'⌄'}</button>
+        <button type="button" class="rm-btn conditioning-remove" data-conditioning-remove="${i}" aria-label="Remove conditioning block">×</button>
+      </div>
+      <div class="conditioning-block-body">
+        <div class="conditioning-block-fields">
+          <label>${labels[0]}<input data-conditioning-key="duration" data-conditioning-index="${i}" value="${esc(b.duration||'')}" placeholder="${labels[0]}"></label>
+          <label>${labels[1]}<input data-conditioning-key="target" data-conditioning-index="${i}" value="${esc(b.target||'')}" placeholder="${labels[1]}"></label>
+          <label>${labels[2]}<input data-conditioning-key="recovery" data-conditioning-index="${i}" value="${esc(b.recovery||'')}" placeholder="${labels[2]}"></label>
+        </div>
+        <label class="conditioning-details-label">Details<textarea class="conditioning-block-details" data-conditioning-key="details" data-conditioning-index="${i}" placeholder="e.g. 4 × 800 m @ 4:30/km">${esc(b.details||'')}</textarea></label>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function addConditioningBlock(){if(!currentDay)return;currentDay.runningRowing=currentDay.runningRowing||{type:'Run',warmUp:{duration:'',details:''},mainSet:'',coolDown:{duration:'',details:''},blocks:[]};currentDay.runningRowing.blocks=currentDay.runningRowing.blocks||[];currentDay.runningRowing.blocks.push({name:`Block ${currentDay.runningRowing.blocks.length+1}`,duration:'',target:'',recovery:'',details:''});renderConditioningBlocks();scheduleSave()}
 function showPage(id){$$('.page').forEach(p=>p.classList.remove('active'));const target=$('#'+id);if(!target)return;target.classList.add('active');$$('#main-nav .btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='plan-page')renderPlan();if(id==='home-page')renderHome()}
 function addToArray(arr,blank){arr.push(blank);renderDay()}
 function moveExercise(i,dir){const j=dir==='up'?i-1:i+1;if(j<0||j>=currentDay.exercises.length)return;[currentDay.exercises[i],currentDay.exercises[j]]=[currentDay.exercises[j],currentDay.exercises[i]];renderDay();scheduleSave()}
@@ -1496,8 +2639,27 @@ async function startApp(){if(appStartPromise)return appStartPromise;appStartProm
 $('#login-btn').onclick=async()=>{const {error}=await supabaseClient.auth.signInWithPassword({email:$('#auth-email').value.trim(),password:$('#auth-password').value});if(error)showAuth(error.message);else startApp()};$('#signup-btn').onclick=async()=>{const {error}=await supabaseClient.auth.signUp({email:$('#auth-email').value.trim(),password:$('#auth-password').value});if(error)showAuth(error.message);else showAuth('Account created. Check your email if confirmation is enabled.');};$('#logout-btn').onclick=()=>supabaseClient.auth.signOut();supabaseClient.auth.onAuthStateChange(()=>startApp());
 document.addEventListener('click',e=>{const b=e.target.closest('[data-home-page]');if(b){const id=b.dataset.homePage;if(id==='templates-modal'){loadTemplates().then(()=>$('#templates-modal').classList.add('show'));}else showPage(id);return}const d=e.target.closest('[data-home-open-day]');if(d){openDay(d.dataset.homeOpenDay);return}const a=e.target.closest('[data-home-action]');if(!a)return;const act=a.dataset.homeAction;if(act==='open-today')openDay(todayKey());else if(act==='quick-add')openDay(todayKey());else if(act==='scan')showPage('integrations-page');else if(act==='templates'){loadTemplates().then(()=>$('#templates-modal').classList.add('show'));}else if(act==='open-next'){const d=new Date();d.setDate(d.getDate()+1);openDay(dateKey(d.getFullYear(),d.getMonth(),d.getDate()))}});
 $('#main-nav').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)showPage(b.dataset.page)});$('#prev-month').onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()-1);renderMonth()};$('#next-month').onclick=()=>{monthCursor.setMonth(monthCursor.getMonth()+1);renderMonth()};$('#today-btn').onclick=()=>{const d=new Date();monthCursor=new Date(d.getFullYear(),d.getMonth(),1);renderMonth()};$('#back-btn').onclick=()=>renderMonth();$('#prev-day').onclick=()=>navigateDay(-1);$('#next-day').onclick=()=>navigateDay(1);function navigateDay(delta){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d+delta);openDay(dateKey(dt.getFullYear(),dt.getMonth(),dt.getDate()))}
-$('#day-page').addEventListener('input',e=>{if(!currentDay)return;const t=e.target;if(t.dataset.field)currentDay[t.dataset.field]=t.value;else if(t.dataset.blockKey!==undefined){activeBlockIndex=+t.dataset.blockIndex;currentDay.blocks[+t.dataset.blockIndex][t.dataset.blockKey]=t.value}else if(t.dataset.setKey!==undefined){const bi=+t.dataset.parentBlock,ei=+t.dataset.exIndex,gi=+t.dataset.setIndex;activeBlockIndex=bi;const ex=currentDay.blocks[bi].exercises[ei];if(!Array.isArray(ex.setGroups))ex.setGroups=[normalizeSetGroup(ex)];ex.setGroups[gi][t.dataset.setKey]=t.value;syncExerciseLegacyFields(ex)}else if(t.dataset.parentBlock!==undefined){activeBlockIndex=+t.dataset.parentBlock;if(t.dataset.exKey==='name'){t.value=t.value.toUpperCase()}currentDay.blocks[+t.dataset.parentBlock].exercises[+t.dataset.exIndex][t.dataset.exKey]=t.value}else if(t.dataset.rr)currentDay.runningRowing[t.dataset.rr]=t.value;else if(t.dataset.metric)currentDay.metrics[t.dataset.metric]=t.value;else if(t.dataset.caffeineMg!==undefined)currentDay.caffeine.mg=t.value;scheduleSave()});$('#caffeine-toggle').onchange=()=>{currentDay.caffeine.taken=$('#caffeine-toggle').checked;scheduleSave()};$('#day-completed-toggle').onchange=()=>{if(!currentDay)return;currentDay.completed=$('#day-completed-toggle').checked;scheduleSave()};$('#day-page').addEventListener('click',e=>{const b=e.target.closest('[data-recovery-key]');if(b&&currentDay){const key=b.dataset.recoveryKey;currentDay.recovery=currentDay.recovery||{sleep:0,energy:0,soreness:0};currentDay.recovery[key]=Number(b.dataset.recoveryValue)||0;renderRecoveryInputs();scheduleSave()}});$('#day-page').addEventListener('change',e=>{const t=e.target;if(t.dataset.setKey==='type'){const bi=+t.dataset.parentBlock,ei=+t.dataset.exIndex,gi=+t.dataset.setIndex;activeBlockIndex=bi;const ex=currentDay.blocks[bi].exercises[ei];if(!Array.isArray(ex.setGroups))ex.setGroups=[normalizeSetGroup(ex)];ex.setGroups[gi].type=t.value;syncExerciseLegacyFields(ex);scheduleSave()}});;function openBlockLibrary(i=null){if(i!==null)activeBlockIndex=i;else if(!Number.isInteger(activeBlockIndex)||!currentDay?.blocks?.[activeBlockIndex])activeBlockIndex=0;const block=currentDay?.blocks?.[activeBlockIndex];if(block){setVal('#block-name-input',block.name||'');setVal('#block-tags-input',getBlockTags(block).join(', '))}$('#block-library-modal').classList.add('show');renderBlockLibrary()}
-$('#day-page').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.action==='add-block-ex')addBlockExercise(+b.dataset.block);if(b.dataset.action==='add-set-group')addSetGroup(+b.dataset.block,+b.dataset.index);if(b.dataset.action==='remove-set-group')removeSetGroup(+b.dataset.block,+b.dataset.index,+b.dataset.set);if(b.dataset.action==='remove-block-ex'){const bi=+b.dataset.block,ei=+b.dataset.index;activeBlockIndex=bi;currentDay.blocks[bi].exercises.splice(ei,1);if(!currentDay.blocks[bi].exercises.length)currentDay.blocks[bi].exercises.push(blankExercise());renderDay();scheduleSave()}if(b.dataset.blockRemove!==undefined&&currentDay.blocks.length>1){const bi=+b.dataset.blockRemove;currentDay.blocks.splice(bi,1);activeBlockIndex=Math.max(0,Math.min(activeBlockIndex,currentDay.blocks.length-1));renderDay();scheduleSave()}if(b.dataset.blockCopy!==undefined)copyBlockToClipboard(+b.dataset.blockCopy);if(b.dataset.blockSave!==undefined){saveBlockFromSession(+b.dataset.blockSave)}if(b.dataset.blockQuick!==undefined){const blockEl=b.closest('.training-block');if(blockEl)blockEl.classList.toggle('quick-open');}if(b.dataset.blockQuickAddSet!==undefined){addQuickSet(+b.dataset.blockQuickAddSet)}if(b.dataset.blockQuickAddEx!==undefined){addBlockExercise(+b.dataset.blockQuickAddEx)}if(b.dataset.blockQuickDuplicate!==undefined){duplicateBlock(+b.dataset.blockQuickDuplicate)}if(b.dataset.blockQuickCollapse!==undefined){window._collapsedTrainingBlocks=window._collapsedTrainingBlocks||{};const bi=+b.dataset.blockQuickCollapse,block=currentDay.blocks[bi];if(block){window._collapsedTrainingBlocks[block.id]=true;renderTrainingBlocks()}}if(b.dataset.blockCollapse!==undefined){window._collapsedTrainingBlocks=window._collapsedTrainingBlocks||{};const bi=+b.dataset.blockCollapse,block=currentDay.blocks[bi];if(block){window._collapsedTrainingBlocks[block.id]=!window._collapsedTrainingBlocks[block.id];renderTrainingBlocks()}}if(b.dataset.noteTag){const t=b.dataset.noteTag;currentDay.noteTags=currentDay.noteTags.includes(t)?currentDay.noteTags.filter(x=>x!==t):[...currentDay.noteTags,t];renderDay();scheduleSave()}});$('#add-block-inline').onclick=addBlock;$('#close-block-library').onclick=()=>$('#block-library-modal').classList.remove('show');$('#save-block-btn').onclick=()=>saveBlockFromSession(activeBlockIndex);$('#paste-block-btn').onclick=pasteBlock;$('#block-library-search').oninput=renderBlockLibrary;$('#block-tags-input').oninput=()=>{};$('#block-tag-filters').addEventListener('click',e=>{const b=e.target.closest('[data-block-tag-filter]');if(!b)return;window._trainingPlannerBlockTag=b.dataset.blockTagFilter||'';renderBlockLibrary()});$('#block-library-list').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const b=e.target.closest('button');if(!b||!b.closest('#block-library-list'))return;if(b.dataset.blockInsert!==undefined){insertLibraryBlock(String(b.dataset.blockInsert));return}if(b.dataset.blockDelete!==undefined){deleteLibraryBlock(String(b.dataset.blockDelete));return}});let dragExercise=null,dragBlock=null;$('#training-blocks').addEventListener('dragstart',e=>{const r=e.target.closest('.exercise-row'),b=e.target.closest('.training-block');if(r)dragExercise={b:+r.dataset.blockIndex,e:+r.dataset.exIndex};else if(b)dragBlock=+b.dataset.blockIndex});$('#training-blocks').addEventListener('dragover',e=>{if(e.target.closest('.training-block'))e.preventDefault()});$('#training-blocks').addEventListener('drop',e=>{e.preventDefault();const r=e.target.closest('.exercise-row'),b=e.target.closest('.training-block');if(dragExercise&&r)moveExerciseDrag(dragExercise.b,dragExercise.e,+r.dataset.blockIndex,+r.dataset.exIndex);else if(dragExercise&&b)moveExerciseDrag(dragExercise.b,dragExercise.e,+b.dataset.blockIndex,currentDay.blocks[+b.dataset.blockIndex].exercises.length);else if(dragBlock!==null&&b&&dragBlock!==+b.dataset.blockIndex){const x=currentDay.blocks.splice(dragBlock,1)[0];let t=+b.dataset.blockIndex;if(dragBlock<t)t--;currentDay.blocks.splice(t,0,x);activeBlockIndex=t;renderDay();scheduleSave()}dragExercise=null;dragBlock=null});
+$('#day-page').addEventListener('input',e=>{if(!currentDay)return;const t=e.target;if(t.dataset.field)currentDay[t.dataset.field]=t.value;else if(t.dataset.blockKey!==undefined){activeBlockIndex=+t.dataset.blockIndex;currentDay.blocks[+t.dataset.blockIndex][t.dataset.blockKey]=t.value}else if(t.dataset.setKey!==undefined){const bi=+t.dataset.parentBlock,ei=+t.dataset.exIndex,gi=+t.dataset.setIndex;activeBlockIndex=bi;const ex=currentDay.blocks[bi].exercises[ei];if(!Array.isArray(ex.setGroups))ex.setGroups=[normalizeSetGroup(ex)];ex.setGroups[gi][t.dataset.setKey]=t.value;syncExerciseLegacyFields(ex)}else if(t.dataset.parentBlock!==undefined){activeBlockIndex=+t.dataset.parentBlock;if(t.dataset.exKey==='name'){t.value=t.value.toUpperCase()}currentDay.blocks[+t.dataset.parentBlock].exercises[+t.dataset.exIndex][t.dataset.exKey]=t.value}else if(t.dataset.conditioningPhase!==undefined){currentDay.runningRowing[t.dataset.conditioningPhase][t.dataset.conditioningKey]=t.value}else if(t.dataset.conditioningKey!==undefined){const i=+t.dataset.conditioningIndex;currentDay.runningRowing.blocks[i][t.dataset.conditioningKey]=t.value}else if(t.dataset.metric)currentDay.metrics[t.dataset.metric]=t.value;else if(t.dataset.caffeineMg!==undefined)currentDay.caffeine.mg=t.value;scheduleSave()});$('#day-page').addEventListener('change',e=>{const t=e.target;if(t.id==='conditioning-type'){currentDay.runningRowing.type=t.value;renderConditioningBlocks();scheduleSave()}});$('#add-conditioning-block').onclick=addConditioningBlock;$('#conditioning-blocks').addEventListener('click',e=>{
+  const collapse=e.target.closest('[data-conditioning-collapse]');
+  if(collapse){
+    window._collapsedConditioningBlocks=window._collapsedConditioningBlocks||{};
+    const i=+collapse.dataset.conditioningCollapse;
+    const block=currentDay.runningRowing?.blocks?.[i];
+    if(!block)return;
+    const key=String(block.id||i);
+    window._collapsedConditioningBlocks[key]=!window._collapsedConditioningBlocks[key];
+    renderConditioningBlocks();
+    return;
+  }
+  const remove=e.target.closest('[data-conditioning-remove]');
+  if(!remove)return;
+  const i=+remove.dataset.conditioningRemove;
+  currentDay.runningRowing.blocks.splice(i,1);
+  renderConditioningBlocks();
+  scheduleSave();
+});
+$('#caffeine-toggle').onchange=()=>{currentDay.caffeine.taken=$('#caffeine-toggle').checked;scheduleSave()};$('#day-completed-toggle').onchange=()=>{if(!currentDay)return;currentDay.completed=$('#day-completed-toggle').checked;scheduleSave()};$('#day-page').addEventListener('click',e=>{const b=e.target.closest('[data-recovery-key]');if(b&&currentDay){const key=b.dataset.recoveryKey;currentDay.recovery=currentDay.recovery||{sleep:0,energy:0,soreness:0};currentDay.recovery[key]=Number(b.dataset.recoveryValue)||0;renderRecoveryInputs();scheduleSave()}});$('#day-page').addEventListener('change',e=>{const t=e.target;if(t.dataset.setKey==='type'){const bi=+t.dataset.parentBlock,ei=+t.dataset.exIndex,gi=+t.dataset.setIndex;activeBlockIndex=bi;const ex=currentDay.blocks[bi].exercises[ei];if(!Array.isArray(ex.setGroups))ex.setGroups=[normalizeSetGroup(ex)];ex.setGroups[gi].type=t.value;syncExerciseLegacyFields(ex);scheduleSave()}});;function openBlockLibrary(i=null){if(i!==null)activeBlockIndex=i;else if(!Number.isInteger(activeBlockIndex)||!currentDay?.blocks?.[activeBlockIndex])activeBlockIndex=0;const block=currentDay?.blocks?.[activeBlockIndex];if(block){setVal('#block-name-input',block.name||'');setVal('#block-tags-input',getBlockTags(block).join(', '))}$('#block-library-modal').classList.add('show');renderBlockLibrary()}
+$('#day-page').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.exCollapse!==undefined){window._collapsedTrainingExercises=window._collapsedTrainingExercises||{};const bi=+b.dataset.exCollapse,ei=+b.dataset.exIndex,block=currentDay.blocks[bi];if(block){const key=block.id+':'+ei;window._collapsedTrainingExercises[key]=!window._collapsedTrainingExercises[key];renderTrainingBlocks()}return;}if(b.id==='conditioning-collapse'){const section=document.querySelector('.conditioning-section');if(section){section.classList.toggle('is-collapsed');b.textContent=section.classList.contains('is-collapsed')?'⌄':'⌃';b.setAttribute('aria-label',section.classList.contains('is-collapsed')?'Expand conditioning':'Collapse conditioning')}return;}if(b.dataset.action==='add-block-ex')addBlockExercise(+b.dataset.block);if(b.dataset.action==='add-set-group')addSetGroup(+b.dataset.block,+b.dataset.index);if(b.dataset.action==='remove-set-group')removeSetGroup(+b.dataset.block,+b.dataset.index,+b.dataset.set);if(b.dataset.action==='remove-block-ex'){const bi=+b.dataset.block,ei=+b.dataset.index;activeBlockIndex=bi;currentDay.blocks[bi].exercises.splice(ei,1);if(!currentDay.blocks[bi].exercises.length)currentDay.blocks[bi].exercises.push(blankExercise());renderDay();scheduleSave()}if(b.dataset.blockRemove!==undefined&&currentDay.blocks.length>1){const bi=+b.dataset.blockRemove;currentDay.blocks.splice(bi,1);activeBlockIndex=Math.max(0,Math.min(activeBlockIndex,currentDay.blocks.length-1));renderDay();scheduleSave()}if(b.dataset.blockCopy!==undefined)copyBlockToClipboard(+b.dataset.blockCopy);if(b.dataset.blockSave!==undefined){saveBlockFromSession(+b.dataset.blockSave)}if(b.dataset.blockQuick!==undefined){const blockEl=b.closest('.training-block');if(blockEl)blockEl.classList.toggle('quick-open');}if(b.dataset.blockQuickAddSet!==undefined){addQuickSet(+b.dataset.blockQuickAddSet)}if(b.dataset.blockQuickAddEx!==undefined){addBlockExercise(+b.dataset.blockQuickAddEx)}if(b.dataset.blockQuickDuplicate!==undefined){duplicateBlock(+b.dataset.blockQuickDuplicate)}if(b.dataset.blockQuickCollapse!==undefined){window._collapsedTrainingBlocks=window._collapsedTrainingBlocks||{};const bi=+b.dataset.blockQuickCollapse,block=currentDay.blocks[bi];if(block){window._collapsedTrainingBlocks[block.id]=true;renderTrainingBlocks()}}if(b.dataset.blockCollapse!==undefined){window._collapsedTrainingBlocks=window._collapsedTrainingBlocks||{};const bi=+b.dataset.blockCollapse,block=currentDay.blocks[bi];if(block){window._collapsedTrainingBlocks[block.id]=!window._collapsedTrainingBlocks[block.id];renderTrainingBlocks()}}if(b.dataset.noteTag){const t=b.dataset.noteTag;currentDay.noteTags=currentDay.noteTags.includes(t)?currentDay.noteTags.filter(x=>x!==t):[...currentDay.noteTags,t];renderDay();scheduleSave()}});$('#add-block-inline').onclick=addBlock;$('#close-block-library').onclick=()=>$('#block-library-modal').classList.remove('show');$('#save-block-btn').onclick=()=>saveBlockFromSession(activeBlockIndex);$('#paste-block-btn').onclick=pasteBlock;$('#block-library-search').oninput=renderBlockLibrary;$('#block-tags-input').oninput=()=>{};$('#block-tag-filters').addEventListener('click',e=>{const b=e.target.closest('[data-block-tag-filter]');if(!b)return;window._trainingPlannerBlockTag=b.dataset.blockTagFilter||'';renderBlockLibrary()});$('#block-library-list').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const b=e.target.closest('button');if(!b||!b.closest('#block-library-list'))return;if(b.dataset.blockInsert!==undefined){insertLibraryBlock(String(b.dataset.blockInsert));return}if(b.dataset.blockDelete!==undefined){deleteLibraryBlock(String(b.dataset.blockDelete));return}});let dragExercise=null,dragBlock=null;$('#training-blocks').addEventListener('dragstart',e=>{const r=e.target.closest('.exercise-row'),b=e.target.closest('.training-block');if(r)dragExercise={b:+r.dataset.blockIndex,e:+r.dataset.exIndex};else if(b)dragBlock=+b.dataset.blockIndex});$('#training-blocks').addEventListener('dragover',e=>{if(e.target.closest('.training-block'))e.preventDefault()});$('#training-blocks').addEventListener('drop',e=>{e.preventDefault();const r=e.target.closest('.exercise-row'),b=e.target.closest('.training-block');if(dragExercise&&r)moveExerciseDrag(dragExercise.b,dragExercise.e,+r.dataset.blockIndex,+r.dataset.exIndex);else if(dragExercise&&b)moveExerciseDrag(dragExercise.b,dragExercise.e,+b.dataset.blockIndex,currentDay.blocks[+b.dataset.blockIndex].exercises.length);else if(dragBlock!==null&&b&&dragBlock!==+b.dataset.blockIndex){const x=currentDay.blocks.splice(dragBlock,1)[0];let t=+b.dataset.blockIndex;if(dragBlock<t)t--;currentDay.blocks.splice(t,0,x);activeBlockIndex=t;renderDay();scheduleSave()}dragExercise=null;dragBlock=null});
 $('#sync-btn').onclick=syncLocal;$('#export-btn').onclick=exportData;$('#import-btn').onclick=()=>$('#import-file').click();$('#import-file').onchange=e=>{importData(e.target.files[0]);e.target.value=''};
 $('#templates-btn').onclick=async()=>{$('#templates-modal').classList.add('show');await loadTemplates()};$('#template-search').oninput=renderTemplates;$('#close-templates').onclick=()=>$('#templates-modal').classList.remove('show');$('#save-template-btn').onclick=saveCurrentAsTemplate;$('#apply-template-date-btn').onclick=()=>{selectedDateKey=$('#template-date').value||selectedDateKey};$('#template-list').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.templateUse)useTemplate(b.dataset.templateUse);if(b.dataset.templateEdit)editTemplate(b.dataset.templateEdit);if(b.dataset.templateDelete)deleteTemplate(b.dataset.templateDelete)});
 $('#save-plan-btn').onclick=savePlanCloud;$('#plan-prev-week').onclick=()=>setPlanWeekFrom(-1);$('#plan-next-week').onclick=()=>setPlanWeekFrom(1);$('#plan-this-week').onclick=()=>{planWeekKey=planMondayKey();renderPlan()};$('#plan-duplicate-week').onclick=duplicatePlanWeek;$('#plan-move-week').onclick=movePlanWeek;$('#plan-clear-week').onclick=clearPlannedWeek;$('#add-plan-block').onclick=addPlanBlock;$('#add-season-block').onclick=addSeasonBlock;$('#add-week-template').onclick=saveWeekTemplate;$('#plan-week-focus').addEventListener('input',e=>{weekData(planWeekKey).focus=e.target.value;clearTimeout(window._planSaveTimer);window._planSaveTimer=setTimeout(savePlanCloud,500)});$('#plan-week-notes').addEventListener('input',e=>{weekData(planWeekKey).notes=e.target.value;clearTimeout(window._planSaveTimer);window._planSaveTimer=setTimeout(savePlanCloud,500)});$('#plan-page').addEventListener('change',async e=>{const t=e.target;if(t.dataset.planDayTemplate){planDayInfo(t.dataset.planDayTemplate).templateId=t.value;renderPlan()}if(t.dataset.planDayStatus){planDayInfo(t.dataset.planDayStatus).status=t.value;savePlanCloud()}if(t.dataset.planDayTitle){planDayInfo(t.dataset.planDayTitle).title=t.value;clearTimeout(window._planSaveTimer);window._planSaveTimer=setTimeout(savePlanCloud,400)}if(t.dataset.planBlockIndex!==undefined){planData.blocks[+t.dataset.planBlockIndex][t.dataset.field]=t.value;renderPlan()}if(t.dataset.seasonIndex!==undefined){planData.blocks[+t.dataset.seasonIndex][t.dataset.seasonField]=t.value;renderSeasonBlocks()}});$('#plan-page').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.planOpenDay){openPlanDay(b.dataset.planOpenDay);return}if(b.dataset.planApplyTemplate){await applyPlanTemplate(b.dataset.planApplyTemplate);return}if(b.dataset.planBlockRemove!==undefined){planData.blocks.splice(+b.dataset.planBlockRemove,1);renderPlan();return}if(b.dataset.seasonRemove!==undefined){planData.blocks.splice(+b.dataset.seasonRemove,1);renderPlan();return}if(b.dataset.weekTemplateApply!==undefined){applyWeekTemplate(+b.dataset.weekTemplateApply);return}if(b.dataset.weekTemplateDelete!==undefined){planData.weekTemplates.splice(+b.dataset.weekTemplateDelete,1);renderPlan();savePlanCloud();return}});
@@ -1521,7 +2683,7 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
   const canonicalOCR=name=>{const n=cleanI(name), c=n.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();const map={'rdl':'RDL','romanian deadlift':'RDL','romanian dl':'RDL','peso muerto rumano':'RDL','back squat':'Back Squat','squat':'Back Squat','sentadilla':'Back Squat','bench press':'Bench Press','press banca':'Bench Press','wall ball':'Wall Balls','wall balls':'Wall Balls','kb swing':'KB Swings','kb swings':'KB Swings','kettlebell swing':'KB Swings','devil press':'Devil Press','burpee':'Burpee','row':'Row','rowing':'Row','overhead lunge':'Overhead Lunges','walking lunge':'Walking Lunges','plank pull through':'Plank Pull Through','weighted sit up':'Weighted Sit Up','weighted sit up s':'Weighted Sit Up','around the world lunge':'Around the World Lunge','plate thruster':'Plate Thruster','run':'Run','running':'Run'};if(map[c])return map[c];return n};
   function normalizeOCRSet(g){return {sets:String(g?.sets??''),reps:String(g?.reps??''),weight:String(g?.weight??''),type:g?.type||'Aprox'}}
   function makeExercise(name,groups){const gs=(groups&&groups.length?groups:[{}]).map(normalizeOCRSet);return {name:canonicalOCR(name),originalName:cleanI(name),setGroups:gs,sets:gs[0].sets,reps:gs[0].reps,weight:gs[0].weight}}
-  function blankWorkout(){return {focus:'Imported workout',trainingCategory:'Garmin Import',blocks:[],isRunDay:false,runningRowing:{warmUp:'',mainSet:'',coolDown:''},metrics:{distanceKm:'',timeMin:''},caffeine:{taken:false,mg:''},recovery:{sleep:0,energy:0,soreness:0},completed:false,notes:'',noteTags:[],importMeta:{source:'Garmin OCR'}}}
+  function blankWorkout(){return {focus:'Imported workout',trainingCategory:'Garmin Import',blocks:[],isRunDay:false,runningRowing:{type:'Run',warmUp:{duration:'',details:''},mainSet:'',coolDown:{duration:'',details:''},blocks:[]},metrics:{distanceKm:'',timeMin:''},caffeine:{taken:false,mg:''},recovery:{sleep:0,energy:0,soreness:0},completed:false,notes:'',noteTags:[],importMeta:{source:'Garmin OCR'}}}
   function parseType(s){const c=cleanI(s).toLowerCase();if(/\bds\b|drop/.test(c))return'DS';if(/\bts\b|top set/.test(c))return'TS';if(/\bapprox?\b|\baprox\b|\baprx\b/.test(c))return'Aprox';return''}
   function parseOCRText(text){
     const lines=String(text||'').split(/\n+/).map(cleanI).filter(Boolean);const w=blankWorkout();let block={name:'Block 1',category:'Strength',exercises:[]};let runBlock=null;const warnings=[];
@@ -1633,6 +2795,13 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
       $s('#open-templates-inline').onclick=async()=>{$s('#templates-modal').classList.add('show');await loadTemplates()};
       $s('#open-smart-duplicate-inline').onclick=()=>duplicateSmart();
     }
+    const completionTools=$s('#day-completion-tools');
+    if(completionTools && !completionTools.dataset.ready){
+      completionTools.dataset.ready='1';
+      completionTools.innerHTML='<button type="button" class="btn completion-tool" id="open-templates-completion">Templates</button><button type="button" class="btn completion-tool" id="open-duplicate-completion">Duplicate</button>';
+      $s('#open-templates-completion').onclick=async()=>{$s('#templates-modal').classList.add('show');await loadTemplates()};
+      $s('#open-duplicate-completion').onclick=()=>duplicateSmart();
+    }
   }
   function renderSuite(){ensureSuite();const body=$s('#smart-suite-body');if(!body||!currentDay)return;const a=analyzeDay();const meta=smartMeta(selectedDateKey);body.innerHTML='<div class="smart-tags">'+a.tags.map(t=>`<span class="smart-tag">${esc2(t)}</span>`).join('')+'</div><div class="smart-insight-grid"><div class="smart-insight"><strong>'+a.exerciseCount+'</strong><span>Exercises</span></div><div class="smart-insight"><strong>'+a.sets+'</strong><span>Sets</span></div><div class="smart-insight"><strong>'+a.score+'</strong><span>Load index</span></div><div class="smart-insight"><strong>'+a.reps+'</strong><span>Reps</span></div></div><div class="smart-progress-list">'+progressionHTML().slice(0,1200)+'</div>'}
   function progressionHTML(){if(!currentDay)return '';const ex=nonEmptyExercises(currentDay).slice(0,4);const rows=getRows();return ex.map(e=>{const name=canonical(e.name);const hist=[];rows.forEach(r=>(r.data.exercises||[]).forEach(x=>{if(canonical(x.name)===name&&r.date!==selectedDateKey)hist.push({date:r.date,text:exerciseSetText(x)})}));const last=hist[hist.length-1];return '<div class="smart-progress-row"><div><strong>'+esc2(name)+'</strong><small>'+(last?('Previous · '+last.date):'No previous entry')+'</small></div><div class="smart-progress-value">'+esc2(exerciseSetText(e)||'—')+'</div></div>'}).join('')}
@@ -1669,6 +2838,254 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
   renderMonth=async function(){await originalRenderMonth();renderDashboardExtras();};
   bind();
   setTimeout(()=>{ensureSuite();renderDashboardExtras();},500);
+})();
+
+
+/* ==========================================================================
+   TRAINING PLANNER V5 — WEEK LOAD / RUN STRUCTURE / RECOVERY LOOP
+   Kept in one isolated module so the existing UI remains stable.
+   ========================================================================== */
+(function(){
+  const V5 = {
+    weekPanelId:'tp-week-load-panel',
+    recoveryPanelId:'tp-recovery-panel',
+    loopPanelId:'tp-session-loop'
+  };
+  const q=s=>document.querySelector(s);
+  const qa=s=>Array.from(document.querySelectorAll(s));
+  const num=v=>{const n=parseFloat(v);return Number.isFinite(n)?n:0};
+  const escV=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const cloneV=o=>JSON.parse(JSON.stringify(o));
+  const dayLabel=k=>{const d=new Date(k+'T12:00:00');return d.toLocaleDateString(undefined,{weekday:'short',day:'numeric'});};
+  const weekStart=k=>{const d=new Date((k||todayKey())+'T12:00:00');const dow=(d.getDay()+6)%7;d.setDate(d.getDate()-dow);return d;};
+  const keyOf=d=>dateKey(d.getFullYear(),d.getMonth(),d.getDate());
+  const rows=()=>typeof allWorkoutRows==='function'?allWorkoutRows():[];
+  const rowMap=()=>Object.fromEntries(rows().map(r=>[r.date,r.data]));
+  const workoutLoad=d=>{
+    if(!d)return 0;
+    const explicit=num(d.metrics?.load); if(explicit>0)return explicit;
+    const sets=(d.blocks||[]).reduce((s,b)=>(b.exercises||[]).reduce((x,e)=>x+totalExerciseSets(e),s),0);
+    const reps=(d.blocks||[]).reduce((s,b)=>(b.exercises||[]).reduce((x,e)=>x+totalExerciseReps(e),s),0);
+    const mins=num(d.metrics?.timeMin), rpe=num(d.metrics?.rpe);
+    const distance=num(d.metrics?.distanceKm);
+    return Math.round(sets*1.8+reps*.08+mins*(rpe||5)*.55+distance*1.5);
+  };
+  const loadLabel=v=>v>0?Math.round(v):'—';
+
+  function ensureCalendarPanels(){
+    const main=q('#calendar-page .calendar-main');
+    if(!main)return;
+    if(!q('#'+V5.weekPanelId)){
+      const panel=document.createElement('section');
+      panel.id=V5.weekPanelId;
+      panel.className='tp-v5-panel';
+      main.appendChild(panel);
+    }
+    if(!q('#'+V5.recoveryPanelId)){
+      const panel=document.createElement('section');
+      panel.id=V5.recoveryPanelId;
+      panel.className='tp-v5-panel tp-v5-recovery';
+      main.appendChild(panel);
+    }
+  }
+
+  function renderWeekLoad(){
+    ensureCalendarPanels();
+    const el=q('#'+V5.weekPanelId); if(!el)return;
+    const base=weekStart(todayKey()), map=rowMap(), days=[];
+    for(let i=0;i<7;i++){const d=new Date(base);d.setDate(base.getDate()+i);const k=keyOf(d), data=map[k]||null;days.push({k,data,load:workoutLoad(data)});}
+    const max=Math.max(1,...days.map(x=>x.load));
+    const total=days.reduce((s,x)=>s+x.load,0);
+    const sessions=days.filter(x=>x.data).length;
+    const completed=days.filter(x=>x.data?.completed).length;
+    const distance=days.reduce((s,x)=>s+num(x.data?.metrics?.distanceKm),0);
+    const start=keyOf(base), end=keyOf(new Date(base.getFullYear(),base.getMonth(),base.getDate()+6));
+    el.innerHTML=`<div class="tp-v5-head"><div><div class="tp-v5-kicker">Weekly training load</div><strong>${escV(dayLabel(start))} — ${escV(dayLabel(end))}</strong></div><div class="tp-v5-summary"><span>${sessions} sessions</span><span>${completed} done</span><span>${distance.toFixed(1)} km</span><b>${loadLabel(total)} load</b></div></div>
+      <div class="tp-v5-week-grid">${days.map(x=>{
+        const title=x.data?.focus||x.data?.trainingCategory||'Rest';
+        const pct=Math.round(x.load/max*100);
+        const state=x.data?.completed?'done':x.data?'planned':'empty';
+        const isToday=x.k===todayKey();
+        return `<button type="button" class="tp-v5-day ${state}${isToday?' today':''}" data-tp-open-day="${x.k}">
+          <span class="tp-v5-day-top"><b>${escV(dayLabel(x.k).split(' ')[0])}</b><small>${escV(dayLabel(x.k).replace(/^[^ ]+ /,'').toUpperCase())}</small></span>
+          <span class="tp-v5-load-track"><i style="height:${Math.max(x.load?8:2,pct)}%"></i></span>
+          <strong>${escV(title)}</strong>
+          <small>${x.load?loadLabel(x.load)+' load':'Rest / no session'}</small>
+        </button>`;
+      }).join('')}</div>
+      <div class="tp-v5-legend"><span><i class="tp-dot done"></i> completed</span><span><i class="tp-dot planned"></i> planned</span><span><i class="tp-dot empty"></i> no session</span><span class="tp-v5-note">Load uses your saved load; if absent, a lightweight session estimate is used.</span></div>`;
+    qa('[data-tp-open-day]').forEach(b=>b.onclick=()=>openDay(b.dataset.tpOpenDay));
+  }
+
+  function recoveryScore(d){
+    const r=d?.recovery||{}; const sleep=num(r.sleep), energy=num(r.energy), soreness=num(r.soreness);
+    if(!(sleep||energy||soreness))return null;
+    return Math.max(0,Math.min(5,(sleep+energy+(5-soreness))/3));
+  }
+  function renderRecoveryTrend(){
+    ensureCalendarPanels();
+    const el=q('#'+V5.recoveryPanelId); if(!el)return;
+    const all=rows().filter(r=>r.data?.recovery).sort((a,b)=>a.date.localeCompare(b.date)).slice(-28);
+    const last=all.slice(-14);
+    if(!last.length){el.innerHTML=`<div class="tp-v5-head"><div><div class="tp-v5-kicker">Recovery trend</div><strong>No recovery history yet</strong></div></div><p class="tp-v5-empty">Rate Sleep, Energy and Soreness after sessions to build the trend.</p>`;return;}
+    const vals=last.map(x=>recoveryScore(x.data)).filter(v=>v!==null);
+    const avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+    const latest=recoveryScore(last[last.length-1].data)||0;
+    const width=680,height=170,pad=24;
+    const points=last.map((r,i)=>{const v=recoveryScore(r.data);return v===null?null:[pad+i*((width-pad*2)/Math.max(1,last.length-1)),height-pad-(v/5)*(height-pad*2)];}).filter(Boolean);
+    const poly=points.map(p=>p.join(',')).join(' ');
+    el.innerHTML=`<div class="tp-v5-head"><div><div class="tp-v5-kicker">Recovery trend · last ${last.length} sessions</div><strong>Readiness ${latest.toFixed(1)} / 5</strong></div><div class="tp-v5-summary"><span>Average ${avg.toFixed(1)}</span><span>Higher = more ready</span></div></div>
+      <div class="tp-v5-chart-wrap"><svg class="tp-v5-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Recovery readiness trend">
+        <line x1="${pad}" y1="${height-pad}" x2="${width-pad}" y2="${height-pad}" />
+        <line x1="${pad}" y1="${height/2}" x2="${width-pad}" y2="${height/2}" />
+        <line x1="${pad}" y1="${pad}" x2="${width-pad}" y2="${pad}" />
+        ${poly?`<polyline points="${poly}" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`:''}
+        ${points.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="currentColor"/>`).join('')}
+      </svg><div class="tp-v5-ylabels"><span>5</span><span>2.5</span><span>0</span></div></div>
+      <div class="tp-v5-recovery-note"><span>Readiness = Sleep + Energy + inverse Soreness.</span><span>Use the trend to spot accumulating fatigue before changing the plan.</span></div>`;
+  }
+
+  function runKindOptions(v){
+    return [['easy','Easy'],['interval','Intervals'],['tempo','Tempo'],['threshold','Threshold'],['hill','Hills'],['long','Long run'],['recovery','Recovery run'],['race','Race / test']].map(x=>`<option value="${x[0]}" ${v===x[0]?'selected':''}>${x[1]}</option>`).join('');
+  }
+  function renderRunningStructure(){
+    if(!currentDay || !q('#conditioning-blocks'))return;
+    if((currentDay.runningRowing?.type||'Run')!=='Run'){
+      if(typeof renderConditioningBlocks==='function')renderConditioningBlocks();
+      return;
+    }
+    const c=q('#conditioning-blocks');
+    const blocks=currentDay.runningRowing.blocks?.length?currentDay.runningRowing.blocks:[{id:'run_'+Date.now(),name:'Main',kind:'interval',reps:'',distance:'',duration:'',pace:'',recovery:'',effort:'',surface:'',details:''}];
+    currentDay.runningRowing.blocks=blocks;
+    c.innerHTML=blocks.map((b,i)=>`<div class="tp-run-block" data-conditioning-index="${i}">
+      <div class="tp-run-block-head"><span class="tp-run-num">${i+1}</span><input data-conditioning-key="name" data-conditioning-index="${i}" value="${escV(b.name||`Block ${i+1}`)}" placeholder="Main block"><select data-conditioning-key="kind" data-conditioning-index="${i}">${runKindOptions(b.kind||'interval')}</select><button type="button" class="rm-btn" data-conditioning-remove="${i}" aria-label="Remove run block">×</button></div>
+      <div class="tp-run-grid">
+        <label>Reps<input data-conditioning-key="reps" data-conditioning-index="${i}" value="${escV(b.reps)}" placeholder="4"></label>
+        <label>Distance<input data-conditioning-key="distance" data-conditioning-index="${i}" value="${escV(b.distance)}" placeholder="800 m"></label>
+        <label>Pace / Zone<input data-conditioning-key="pace" data-conditioning-index="${i}" value="${escV(b.pace||b.target)}" placeholder="4:30 / km"></label>
+        <label>Recovery<input data-conditioning-key="recovery" data-conditioning-index="${i}" value="${escV(b.recovery)}" placeholder="90 s"></label>
+        <label>Effort<input data-conditioning-key="effort" data-conditioning-index="${i}" value="${escV(b.effort)}" placeholder="RPE 7"></label>
+        <label>Surface<input data-conditioning-key="surface" data-conditioning-index="${i}" value="${escV(b.surface)}" placeholder="Track / road"></label>
+      </div>
+      <label class="tp-run-details">Details<textarea data-conditioning-key="details" data-conditioning-index="${i}" placeholder="e.g. 4 × 800 m @ 4:30/km, 90 s easy jog">${escV(b.details)}</textarea></label>
+    </div>`).join('');
+  }
+
+  function ensureLoopPanel(){
+    const host=q('#day-page .notes-under-caffeine'); if(!host)return;
+    let el=q('#'+V5.loopPanelId);
+    if(!el){el=document.createElement('section');el.id=V5.loopPanelId;el.className='tp-loop-panel';host.after(el);}
+    return el;
+  }
+  function findPreviousFeedback(){
+    if(!selectedDateKey||!currentDay)return null;
+    const title=String(currentDay.focus||'').trim().toLowerCase();
+    if(!title)return null;
+    const prior=rows().filter(r=>r.date<selectedDateKey && String(r.data?.focus||'').trim().toLowerCase()===title)
+      .sort((a,b)=>b.date.localeCompare(a.date));
+    const p=prior.find(r=>r.data?.sessionFeedback?.adjustNextTime||r.data?.sessionFeedback?.feelings);
+    return p?{date:p.date,...p.data.sessionFeedback}:null;
+  }
+  function renderLoopPanel(){
+    const el=ensureLoopPanel(); if(!el||!currentDay)return;
+    const sf=currentDay.sessionFeedback||{feelings:'',adjustNextTime:'',nextFocus:'',tags:[]};
+    const prev=currentDay.previousFeedback||findPreviousFeedback();
+    if(prev && !currentDay.previousFeedback){currentDay.previousFeedback=cloneV(prev);}
+    el.innerHTML=`<div class="tp-loop-head"><div><div class="tp-v5-kicker">Close the loop</div><strong>Next-session adjustments</strong></div><span class="tp-loop-badge">${prev?'Previous feedback available':'Build feedback history'}</span></div>
+      ${prev?`<div class="tp-previous-feedback"><div><b>Previous session · ${escV(prev.date)}</b><span>What you wanted to carry forward</span></div><p>${escV(prev.adjustNextTime||'No adjustment recorded.')}</p>${prev.nextFocus?`<small>Next focus: ${escV(prev.nextFocus)}</small>`:''}</div>`:''}
+      <div class="tp-loop-grid">
+        <label>Feelings<textarea data-feedback-key="feelings" placeholder="How did the session actually feel?">${escV(sf.feelings)}</textarea></label>
+        <label>Ajustar la próxima vez<textarea data-feedback-key="adjustNextTime" placeholder="What should change next time?">${escV(sf.adjustNextTime)}</textarea></label>
+        <label>Next focus<input data-feedback-key="nextFocus" value="${escV(sf.nextFocus)}" placeholder="e.g. Keep pace controlled"></label>
+      </div>
+      <div class="tp-loop-tags">${['Keep','Increase','Reduce','Technique','Pacing','Recovery'].map(t=>`<button type="button" class="tp-loop-tag ${sf.tags?.includes(t)?'active':''}" data-feedback-tag="${t}">${t}</button>`).join('')}</div>`;
+  }
+
+  function attachHandlers(){
+    const day=q('#day-page');
+    if(day&&!day.dataset.v5Bound){
+      day.dataset.v5Bound='1';
+      day.addEventListener('input',e=>{
+        const t=e.target;
+        if(!currentDay)return;
+        if(t.dataset.feedbackKey){
+          currentDay.sessionFeedback=currentDay.sessionFeedback||{feelings:'',adjustNextTime:'',nextFocus:'',tags:[]};
+          currentDay.sessionFeedback[t.dataset.feedbackKey]=t.value;
+          scheduleSave();
+        }
+        if(t.dataset.conditioningKey && currentDay.runningRowing?.blocks?.[+t.dataset.conditioningIndex]){
+          const b=currentDay.runningRowing.blocks[+t.dataset.conditioningIndex];
+          b[t.dataset.conditioningKey]=t.value;
+          if(t.dataset.conditioningKey==='pace')b.target=t.value;
+          scheduleSave();
+        }
+      });
+      day.addEventListener('change',e=>{
+        const t=e.target;
+        if(!currentDay)return;
+        if(t.dataset.feedbackKey){
+          currentDay.sessionFeedback=currentDay.sessionFeedback||{feelings:'',adjustNextTime:'',nextFocus:'',tags:[]};
+          currentDay.sessionFeedback[t.dataset.feedbackKey]=t.value;scheduleSave();
+        }
+        if(t.dataset.conditioningKey && currentDay.runningRowing?.blocks?.[+t.dataset.conditioningIndex]){
+          currentDay.runningRowing.blocks[+t.dataset.conditioningIndex][t.dataset.conditioningKey]=t.value;scheduleSave();
+        }
+      });
+      day.addEventListener('click',e=>{
+        const tag=e.target.closest('[data-feedback-tag]');
+        if(tag&&currentDay){
+          currentDay.sessionFeedback=currentDay.sessionFeedback||{feelings:'',adjustNextTime:'',nextFocus:'',tags:[]};
+          const a=currentDay.sessionFeedback.tags||[],v=tag.dataset.feedbackTag;
+          currentDay.sessionFeedback.tags=a.includes(v)?a.filter(x=>x!==v):[...a,v];
+          renderLoopPanel();scheduleSave();
+        }
+      });
+    }
+  }
+
+  const baseRenderDayV5=renderDay;
+  renderDay=function(){
+    baseRenderDayV5();
+    attachHandlers();
+    renderRunningStructure();
+    renderLoopPanel();
+  };
+  const baseRenderMonthV5=renderMonth;
+  renderMonth=async function(){
+    await baseRenderMonthV5();
+    ensureCalendarPanels();
+    renderWeekLoad();
+    renderRecoveryTrend();
+  };
+
+  // Re-render the calendar additions after date/month navigation and after autosave.
+  const baseSaveDayV5=saveDay;
+  saveDay=async function(){
+    await baseSaveDayV5();
+    if(q('#calendar-page')?.classList.contains('active')){renderWeekLoad();renderRecoveryTrend();}
+  };
+
+  // Run block add button now creates a complete, editable run segment.
+  const addRunButton=q('#add-conditioning-block');
+  if(addRunButton){
+    addRunButton.onclick=()=>{
+      if((currentDay?.runningRowing?.type||'Run')!=='Run'){
+        addConditioningBlock();
+        return;
+      }
+      currentDay.runningRowing.blocks=currentDay.runningRowing.blocks||[];
+      currentDay.runningRowing.blocks.push({id:'run_'+Date.now(),name:`Main ${currentDay.runningRowing.blocks.length+1}`,kind:'interval',reps:'',distance:'',duration:'',pace:'',target:'',recovery:'',effort:'',surface:'',details:''});
+      renderRunningStructure();scheduleSave();
+    };
+  }
+
+  // Refresh after existing UI events without introducing polling.
+  document.addEventListener('click',e=>{
+    if(e.target.closest('[data-tp-open-day]'))return;
+    if(e.target.closest('#prev-month,#next-month,#today-btn'))setTimeout(()=>{renderWeekLoad();renderRecoveryTrend();},30);
+  });
+  attachHandlers();
+  setTimeout(()=>{if(q('#calendar-page')){ensureCalendarPanels();renderWeekLoad();renderRecoveryTrend();}if(q('#day-page')){attachHandlers();}},50);
 })();
 
 startApp();
@@ -1743,6 +3160,10 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').cat
     set('ios-month-workouts', month.length);
     set('ios-month-distance', sum(month,'distanceKm').toFixed(1));
     set('ios-month-load', Math.round(sum(month,'load')));
+    const weekChart=document.getElementById('ios-week-chart');
+    if(weekChart){const days=WEEKDAYS.map((name,i)=>{const d=new Date(monday);d.setDate(monday.getDate()+i);const k=key(d);const count=week.filter(r=>r.date===k).length;return {label:name.slice(0,3),count}});const max=Math.max(1,...days.map(x=>x.count));weekChart.innerHTML='<div class="ios-chart-title">Sessions this week</div><div class="ios-bars">'+days.map(x=>'<div class="ios-bar-col"><span>'+x.count+'</span><div class="ios-bar-track"><i style="height:'+Math.max(8,Math.round(x.count/max*100))+'%"></i></div><small>'+x.label+'</small></div>').join('')+'</div>';}
+    const monthChart=document.getElementById('ios-month-chart');
+    if(monthChart){const daysInMonth=new Date(today.getFullYear(),today.getMonth()+1,0).getDate();const weeks=[];for(let d=1;d<=daysInMonth;d++){const dt=new Date(today.getFullYear(),today.getMonth(),d);const k=key(dt);const idx=Math.floor((d-1+((new Date(today.getFullYear(),today.getMonth(),1).getDay()+6)%7))/7);weeks[idx]=(weeks[idx]||0)+(month.filter(r=>r.date===k).length);}const max=Math.max(1,...weeks);monthChart.innerHTML='<div class="ios-chart-title">Sessions by week · month</div><div class="ios-month-bars">'+weeks.map((v,i)=>'<div class="ios-month-bar"><span>W'+(i+1)+'</span><div><i style="width:'+Math.round(v/max*100)+'%"></i></div><b>'+v+'</b></div>').join('')+'</div>'; }
   }
 
   const originalRenderMonth = window.renderMonth;
@@ -1760,5 +3181,36 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').cat
   });
 })();
 </script>
+
+
+
+<script>
+/* Robust portrait exercise collapse: handle the control directly on the training container. */
+(function(){
+  const training=document.getElementById('training-blocks');
+  if(!training)return;
+  training.addEventListener('click',function(e){
+    const b=e.target.closest('[data-ex-collapse]');
+    if(!b || !training.contains(b))return;
+    e.preventDefault();
+    e.stopPropagation();
+    if(!window._collapsedTrainingExercises)window._collapsedTrainingExercises={};
+    const bi=Number(b.dataset.exCollapse), ei=Number(b.dataset.exIndex);
+    const block=currentDay && currentDay.blocks && currentDay.blocks[bi];
+    if(!block)return;
+    const key=block.id+':'+ei;
+    window._collapsedTrainingExercises[key]=!window._collapsedTrainingExercises[key];
+    renderTrainingBlocks();
+  });
+})();
+</script>
+
+
+
+
+
+
+
+
 
 </body></html>
