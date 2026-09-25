@@ -460,6 +460,10 @@ table.plan-table td input{width:100%;border:none;background:transparent;padding:
 .smart-suite-title{font-size:13px;font-weight:800;letter-spacing:.01em}
 .smart-suite-sub{font-size:10px;color:var(--muted);margin-top:2px}
 .smart-suite-actions{display:flex;flex-wrap:wrap;gap:7px}
+.smart-suite-collapse{margin-left:auto;width:28px;height:28px;border:0;background:transparent;color:var(--muted);font-size:16px;line-height:1;cursor:pointer;border-radius:8px}
+.smart-suite-collapse:hover{background:var(--paper-dim);color:var(--ink)}
+.smart-suite.is-collapsed .smart-suite-body{display:none!important}
+.smart-suite.is-collapsed .smart-suite-head{margin-bottom:0}
 .smart-pill{border:1px solid var(--line);background:var(--surface);color:var(--text-secondary);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:650}
 .smart-pill.primary{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
 .smart-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
@@ -2288,6 +2292,16 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 #nutri-page .nutri-card{background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(22,22,22,.04);min-width:0}
 #nutri-page .nutri-big-number{font-size:44px}
 #nutri-page .nutri-macro-grid{gap:8px}
+#nutri-page .smart-panel-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"intro intro" "weight calculator" "status status";align-items:start}
+#nutri-page .nutri-card:nth-of-type(1){grid-column:1;grid-row:2}
+#nutri-page .nutri-card:nth-of-type(2){grid-column:1 / -1;grid-row:3}
+#nutri-page .nutri-card:nth-of-type(3){grid-column:1;grid-row:2}
+#nutri-page .nutri-card:nth-of-type(4),#nutri-page .nutri-card:nth-of-type(5),#nutri-page .nutri-card:nth-of-type(6),#nutri-page #nt-calcBtn{grid-column:2}
+#nutri-page .nutri-card:nth-of-type(4){grid-row:2}
+#nutri-page .nutri-card:nth-of-type(5){grid-row:3}
+#nutri-page .nutri-card:nth-of-type(6){grid-row:4}
+#nutri-page #nt-calcBtn{grid-row:5}
+#nutri-page .nutri-card:nth-of-type(2){grid-column:1 / -1;grid-row:6;grid-area:auto}
 #workout-creator-page .smart-tool-slot .smart-wod-panel{width:100%;max-width:none;margin:0;border-radius:20px}
 #workout-creator-page .smart-wod-head{display:flex;padding:18px 20px 14px}
 #workout-creator-page .smart-wod-tabs{padding:8px 12px}
@@ -2683,7 +2697,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .brain-ring{--brain-score:0;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) calc(var(--brain-score)*1%),var(--line-soft) 0);position:relative;flex:0 0 auto}
 .brain-ring:after{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--card-bg)}
 .brain-ring strong{position:relative;z-index:1;font-size:25px}
-.brain-score-copy strong{display:block;font-size:16px}
+.brain-score-copy strong{display:block;font:small}
 .brain-score-copy span{display:block;margin-top:4px;color:var(--muted);font-size:10px;line-height:1.45}
 .brain-driver-list,.brain-pattern-list,.brain-history-list{display:grid;gap:7px}
 .brain-driver,.brain-pattern,.brain-history{padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface-soft);font-size:10px;line-height:1.45}
@@ -2710,24 +2724,27 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 @media(max-width:560px){.brain-page{padding:0 16px 20px}.brain-hero{display:block}.brain-hero .btn{margin-top:10px;width:100%}.brain-card{border:0;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:13px}.brain-feedback{grid-template-columns:1fr}.brain-score{align-items:flex-start}.brain-metric-grid{grid-template-columns:repeat(2,1fr)}}
 
 /* Requested responsive refinements: vertical + horizontal training layouts. */
-.day-status-row{display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:6px 0}
+.day-status-row{display:grid;grid-template-columns:auto auto minmax(150px,1fr) minmax(150px,1fr) auto;align-items:center;gap:12px;padding:6px 0}
 .day-status-row .day-completion-row,.day-status-row .day-color-row{padding:0}
 .day-status-row .day-completion-row{order:3}
 .day-status-row .day-color-row{order:1}
 .day-status-row .day-distance-inline{order:2}
-.day-distance-inline .simple-field{width:86px;padding:6px 8px;border:1px solid var(--line);background:var(--paper);font-size:12px;text-transform:none;color:var(--ink)}
+.day-distance-inline .simple-field,.session-rpe-inline .simple-field,.session-load-inline .simple-field{width:86px;padding:6px 8px;border:1px solid var(--line);background:var(--paper);font-size:12px;text-transform:none;color:var(--ink)}
+.session-rpe-inline,.session-load-inline{display:flex;align-items:center;gap:7px;min-width:0;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 @media (max-width:560px){
   .brain-page{padding-left:12px;padding-right:12px}
   .smart-tool-page .smart-tool-shell{padding-left:14px;padding-right:14px}
   .day-status-row{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;padding:5px 0}
   .day-status-row .day-color-row{grid-column:1;grid-row:1;justify-content:flex-start}
   .day-status-row .day-distance-inline{grid-column:2;grid-row:1;justify-content:space-between}
-  .day-status-row .day-completion-row{grid-column:1 / -1;grid-row:2;justify-content:space-between}
+  .day-status-row .session-rpe-inline{grid-column:1;grid-row:2;justify-content:space-between}
+  .day-status-row .session-load-inline{grid-column:2;grid-row:2;justify-content:space-between}
+  .day-status-row .day-completion-row{grid-column:1 / -1;grid-row:3;justify-content:space-between}
   .day-completion-row{gap:6px;font-size:8px}
   .day-color-row{gap:6px;font-size:8px}
   .day-color-dots{gap:5px}
   .day-color-dot{width:16px;height:16px;border-width:1px}
-  .day-distance-inline .simple-field{width:64px;padding:5px 6px;font-size:11px}
+  .day-distance-inline .simple-field,.session-rpe-inline .simple-field,.session-load-inline .simple-field{width:64px;padding:5px 6px;font-size:11px}
   .block-title{font-size:11px!important;line-height:1.1!important;letter-spacing:.01em}
   .training-block-head{gap:5px;min-width:0}
   .run-meta-inline{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px;padding-top:7px}
@@ -2767,6 +2784,37 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   #day-page .block-table .exercise-sets-wrap{margin:0!important;width:auto!important;max-width:none!important;overflow:visible!important}
   #day-page .block-table .set-group-row{display:grid!important;width:100%!important;grid-template-columns:20px 30px minmax(70px,1fr) minmax(70px,1fr) minmax(90px,1.2fr) 58px!important;gap:5px!important}
   #day-page .conditioning-phase-grid{grid-template-columns:1fr 1.35fr 1fr!important}
+}
+
+/* Home quick navigation — Uiverse-style motion, desktop only */
+@media (min-width:951px){
+  .home-quick-actions .home-quick{
+    font-family:inherit;
+    font-size:20px;
+    background:var(--accent);
+    color:#fff;
+    padding:.7em 1em;
+    padding-left:.9em;
+    display:flex;
+    align-items:center;
+    border:none;
+    border-radius:16px;
+    overflow:hidden;
+    transition:all .2s;
+    cursor:pointer;
+    min-width:0;
+  }
+  .home-quick-actions .home-quick .svg-wrapper-1{display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .home-quick-actions .home-quick .svg-wrapper{display:flex;align-items:center;justify-content:center;transform-origin:center;}
+  .home-quick-actions .home-quick svg{display:block;transform-origin:center center;transition:transform .3s ease-in-out;}
+  .home-quick-actions .home-quick > span{display:flex;flex-direction:column;align-items:flex-start;margin-left:.3em;transition:all .3s ease-in-out;min-width:0;}
+  .home-quick-actions .home-quick strong{display:block;color:inherit;font-size:13px;line-height:1.15;white-space:nowrap;}
+  .home-quick-actions .home-quick small{display:block;color:rgba(255,255,255,.78);font-size:9px;line-height:1.2;margin-top:3px;white-space:nowrap;}
+  .home-quick-actions .home-quick:hover .svg-wrapper{animation:home-quick-fly 0.6s ease-in-out infinite alternate;}
+  .home-quick-actions .home-quick:hover svg{transform:translateX(1.2em) rotate(45deg) scale(1.1);}
+  .home-quick-actions .home-quick:hover > span{transform:translateX(5em);}
+  .home-quick-actions .home-quick:active{transform:scale(.95);}
+  @keyframes home-quick-fly{from{transform:translateY(.1em)}to{transform:translateY(-.1em)}}
 }
 </style>
 </head>
@@ -2850,10 +2898,10 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
         </section>
       </div>
       <div class="home-quick-actions">
-        <button class="home-quick" data-home-action="quick-add"><span>＋</span><strong>Add workout</strong><small>Start from today</small></button>
-        <button class="home-quick" data-home-action="scan"><span>⌁</span><strong>Open Smart Integrations</strong><small>Know your Fitness</small></button>
-        <button class="home-quick" data-home-action="templates"><span>☆</span><strong>Templates</strong><small>Pick a session</small></button>
-        <button class="home-quick" data-home-page="calendar-page"><span>▦</span><strong>Calendar</strong><small>See your month</small></button>
+        <button class="home-quick" data-home-action="quick-add"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M12 5v14m-7-7h14"></path></svg></div></div><span><strong>Add workout</strong><small>Start from today</small></span></button>
+        <button class="home-quick" data-home-action="scan"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path></svg></div></div><span><strong>Open Smart Integrations</strong><small>Know your Fitness</small></span></button>
+        <button class="home-quick" data-home-action="templates"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg></div></div><span><strong>Templates</strong><small>Pick a session</small></span></button>
+        <button class="home-quick" data-home-page="calendar-page"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 16H5V9h14z"></path></svg></div></div><span><strong>Calendar</strong><small>See your month</small></span></button>
       </div>
     </div>
   </section>
@@ -2916,9 +2964,11 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           <button type="button" class="day-color-dot c-gray" data-day-color="gray" aria-label="gray"></button>
         </div></div>
         <div class="run-distance-inline day-distance-inline"><span>Run distance</span><input class="simple-field" type="number" step="0.01" data-metric="distanceKm" placeholder="km"></div>
+        <div class="session-rpe-inline"><span>Session RPE / intensity</span><input class="simple-field" type="number" min="0" max="10" step=0.5 data-metric="rpe" placeholder="0–10" inputmode="decimal"></div>
+        <div class="session-load-inline"><span>Session load</span><input class="simple-field" type="number" min=0 step=1 data-metric="load" placeholder="Load" inputmode="decimal"></div>
       </div>
       <div class="run-meta-inline"><div class="caffeine-inline"><span>Caffeine</span><label class="switch-row"><input type="checkbox" id="caffeine-toggle"><span class="switch-ui"></span></label><input class="simple-field caffeine-inline-mg" type="number" min="0" step="1" data-caffeine-mg placeholder="mg"></div><div class="carbohydrates-inline"><span>Carbs</span><input class="simple-field carbohydrates-inline-g" type="number" min="0" step="1" data-carbohydrates-g placeholder="g" inputmode="decimal" aria-label="Carbohydrates consumed in session"></div><div class="recovery-inline"><span class="recovery-title">Recovery</span><div class="recovery-row"><span>Sleep</span><div class="recovery-dots" data-recovery-group="sleep"></div></div><div class="recovery-row"><span>Energy</span><div class="recovery-dots" data-recovery-group="energy"></div></div><div class="recovery-row"><span>Soreness</span><div class="recovery-dots" data-recovery-group="soreness"></div></div></div></div>
-      <div class="section conditioning-section"><div class="section-bar"><span>Conditioning</span> <span class="divider">|</span><select class="section-sub-select" id="conditioning-type"><option>Run</option><option>Row</option><option>Bike</option><option>Other</option></select><button type="button" class="conditioning-collapse" id="conditioning-collapse" aria-label="Collapse conditioning">⌃</button></div><div class="conditioning-section-body"><div class="conditioning-editor"><div class="conditioning-phase-grid"><div class="conditioning-phase conditioning-main-only"><div class="conditioning-phase-head"><label>Main</label></div><div id="conditioning-blocks" class="conditioning-blocks"></div><button type="button" class="conditioning-add-block" id="add-conditioning-block">+ Add block</button></div></div></div></div>      <div class="section training-section"><div class="section-bar">Training <span class="divider">|</span><input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type"></div><div id="training-blocks" class="training-blocks"></div><button class="add-row-btn" id="add-block-inline">+ Add block</button></div>
+      <div class="section conditioning-section is-collapsed"><div class="section-bar"><span>Conditioning</span> <span class="divider">|</span><select class="section-sub-select" id="conditioning-type"><option>Run</option><option>Row</option><option>Bike</option><option>Other</option></select><button type="button" class="conditioning-collapse" id="conditioning-collapse" aria-label="Expand conditioning">⌄</button></div><div class="conditioning-section-body"><div class="conditioning-editor"><div class="conditioning-phase-grid"><div class="conditioning-phase conditioning-main-only"><div class="conditioning-phase-head"><label>Main</label></div><div id="conditioning-blocks" class="conditioning-blocks"></div><button type="button" class="conditioning-add-block" id="add-conditioning-block">+ Add block</button></div></div></div></div>      <div class="section training-section"><div class="section-bar">Training <span class="divider">|</span><input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type"></div><div id="training-blocks" class="training-blocks"></div><button class="add-row-btn" id="add-block-inline">+ Add block</button></div>
 <div class="notes-under-caffeine"><div class="note-label">Workout Notes</div><div class="note-tags" id="note-tags"><button type="button" class="note-tag" data-note-tag="Strong">Strong</button><button type="button" class="note-tag" data-note-tag="Normal">Normal</button><button type="button" class="note-tag" data-note-tag="Hard">Hard</button><button type="button" class="note-tag" data-note-tag="Low energy">Low energy</button><button type="button" class="note-tag" data-note-tag="Great">Great</button><button type="button" class="note-tag" data-note-tag="Adjust next time">Adjust next time</button></div><textarea class="notes-textarea" data-field="notes" placeholder="How it felt, what to adjust next time..."></textarea></div></div>
       </div>
       <div class="footer-row"><div class="footer-label">Hybrid Training</div><button class="btn danger" id="clear-day">Clear this day</button></div>
@@ -3480,9 +3530,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           </div>
         </div>
 
-        <div class="fatsecret-entry-list" id="fatsecret-entry-list">
-          <div class="fatsecret-empty">No nutrition data loaded yet.</div>
-        </div>
+        <div class="fatsecret-entry-list" id="fatsecret-entry-list" hidden></div>
       </section>
     </div>
   </div>
@@ -3678,7 +3726,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           <div class="settings-panel-title">Theme</div>
           <span class="settings-panel-chevron">▼</span>
         </div>
-        <div class="settings-panel-body open" id="theme-panel-body">
+        <div class="settings-panel-body" id="theme-panel-body">
           <div class="settings-panel-body-inner">
       <div class="theme-grid" id="theme-options">
         <button type="button" class="theme-option" data-theme-choice="original">
@@ -4616,7 +4664,7 @@ async function openDay(k){
 }
 function setVal(sel,v){const el=$(sel);if(el)el.value=v??''}
 function cleanTagline(v){return String(v??'').replace(/\.\/\s*/g,'').replace(/\/(?:N|n)/g,'\n').replace(/\\n/g,'\n').replace(/[ \t]{2,}/g,' ').trim()}
-function renderDay(){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);$('#day-name').textContent=WEEKDAYS[(dt.getDay()+6)%7];$('#day-date').textContent=`${MONTHS[m-1]} ${d}, ${y}`;setVal('[data-field="tagline"]',cleanTagline(currentDay.tagline));setVal('[data-field="strap"]',currentDay.strap);setVal('[data-field="focus"]',currentDay.focus);setVal('[data-field="trainingCategory"]',currentDay.trainingCategory);setVal('[data-field="notes"]',currentDay.notes);$('#conditioning-type').value=currentDay.runningRowing?.type||'Run';$$('[data-conditioning-phase]').forEach(el=>{const phase=currentDay.runningRowing?.[el.dataset.conditioningPhase]||{};el.value=phase[el.dataset.conditioningKey]??''});setVal('[data-metric="distanceKm"]',currentDay.metrics.distanceKm||'');$('#caffeine-toggle').checked=!!currentDay.caffeine.taken;setVal('[data-caffeine-mg]',currentDay.caffeine.mg);setVal('[data-carbohydrates-g]',currentDay.carbohydratesGrams||'');$('#day-completed-toggle').checked=!!currentDay.completed;renderRecoveryInputs();renderTrainingBlocks();renderConditioningBlocks();$$('[data-note-tag]').forEach(b=>b.classList.toggle('active',currentDay.noteTags.includes(b.dataset.noteTag)));$$('[data-day-color]').forEach(b=>b.classList.toggle('active',(currentDay.color||'')===b.dataset.dayColor))}
+function renderDay(){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);$('#day-name').textContent=WEEKDAYS[(dt.getDay()+6)%7];$('#day-date').textContent=`${MONTHS[m-1]} ${d}, ${y}`;setVal('[data-field="tagline"]',cleanTagline(currentDay.tagline));setVal('[data-field="strap"]',currentDay.strap);setVal('[data-field="focus"]',currentDay.focus);setVal('[data-field="trainingCategory"]',currentDay.trainingCategory);setVal('[data-field="notes"]',currentDay.notes);$('#conditioning-type').value=currentDay.runningRowing?.type||'Run';$$('[data-conditioning-phase]').forEach(el=>{const phase=currentDay.runningRowing?.[el.dataset.conditioningPhase]||{};el.value=phase[el.dataset.conditioningKey]??''});setVal('[data-metric="distanceKm"]',currentDay.metrics.distanceKm||'');setVal('[data-metric="rpe"]',currentDay.metrics.rpe||'');setVal('[data-metric="load"]',currentDay.metrics.load||'');$('#caffeine-toggle').checked=!!currentDay.caffeine.taken;setVal('[data-caffeine-mg]',currentDay.caffeine.mg);setVal('[data-carbohydrates-g]',currentDay.carbohydratesGrams||'');$('#day-completed-toggle').checked=!!currentDay.completed;renderRecoveryInputs();renderTrainingBlocks();renderConditioningBlocks();$$('[data-note-tag]').forEach(b=>b.classList.toggle('active',currentDay.noteTags.includes(b.dataset.noteTag)));$$('[data-day-color]').forEach(b=>b.classList.toggle('active',(currentDay.color||'')===b.dataset.dayColor))}
 function renderRecoveryInputs(){const r=currentDay?.recovery||{sleep:0,energy:0,soreness:0};$$('[data-recovery-group]').forEach(group=>{const key=group.dataset.recoveryGroup;const value=Math.max(0,Math.min(5,Number(r[key])||0));group.innerHTML=Array.from({length:5},(_,i)=>`<button type="button" class="recovery-dot${i<value?' active':''}" data-recovery-key="${key}" data-recovery-value="${i+1}" aria-label="${key} ${i+1} of 5">○</button>`).join('')})}
 function renderTrainingBlocks(){const c=$('#training-blocks');const blockCategories=['Warm-up','Mobility','Stretching','Strength','Conditioning','AMRAP','FOR TIME','EMOM','TIME CAP','Running','Accessory','Recovery','Cool-down','Other'];c.innerHTML=currentDay.blocks.map((block,bi)=>{const collapsed=!!window._collapsedTrainingBlocks?.[block.id];return `<div class="training-block${collapsed?' is-collapsed':''}" draggable="true" data-block-index="${bi}"><div class="training-block-head"><span class="block-handle">☰</span><input class="block-title" data-block-index="${bi}" data-block-key="name" value="${esc(block.name)}" placeholder="Block name"><input class="block-coach-note" data-block-index="${bi}" data-block-key="coachNote" value="${esc(block.coachNote||'')}" placeholder="Coach note" aria-label="Coach note for block ${bi+1}"><select class="block-category" data-block-index="${bi}" data-block-key="category">${blockCategories.map(x=>`<option ${x===block.category?'selected':''}>${x}</option>`).join('')}</select><div class="block-actions"><button class="block-quick-toggle" type="button" data-block-quick="${bi}" aria-label="Quick actions">⋮</button><button class="block-collapse" type="button" data-block-collapse="${bi}" aria-label="Collapse block">⌄</button><button data-block-save="${bi}">⌑</button><button data-block-copy="${bi}">⧉</button><button data-block-remove="${bi}">×</button></div></div><div class="block-quick-actions"><button type="button" data-block-quick-add-set="${bi}">+ Set</button><button type="button" data-block-quick-add-ex="${bi}">+ Exercise</button><button type="button" data-block-quick-duplicate="${bi}">Duplicate</button><button type="button" data-block-quick-collapse="${bi}">Collapse</button></div><table class="block-table"><thead><tr><th>Exercise</th></tr></thead><tbody>${block.exercises.map((e,ei)=>`<tr class="exercise-row${window._collapsedTrainingExercises?.[block.id+':'+ei]?' is-collapsed':''}" draggable="true" data-block-index="${bi}" data-ex-index="${ei}"><td><div class="exercise-editor-row"><div class="exercise-main-line"><span class="exercise-handle">⋮⋮</span><span class="exercise-number">${bi+1}.${ei+1}</span><input class="exercise-name-input" data-ex-index="${ei}" data-ex-key="name" data-parent-block="${bi}" value="${esc(String(e.name||'').toUpperCase())}" placeholder="Exercise"><button type="button" class="exercise-expand" data-ex-collapse="${bi}" data-ex-index="${ei}" aria-label="Collapse exercise">⌄</button><button type="button" class="set-group-add set-group-add-inline" data-action="add-set-group" data-block="${bi}" data-index="${ei}">+ Add set</button><button class="rm-btn exercise-remove" data-action="remove-block-ex" data-block="${bi}" data-index="${ei}">×</button></div><div class="exercise-sets-wrap">${exerciseSetGroups(e).map((g,gi)=>`<div class="set-group-row" data-block-index="${bi}" data-ex-index="${ei}" data-set-index="${gi}"><button class="rm-btn set-remove-inline" data-action="remove-set-group" data-block="${bi}" data-index="${ei}" data-set="${gi}" aria-label="Remove set">×</button><input data-set-key="sets" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.sets)}" placeholder="sets"><input data-set-key="reps" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.reps)}" placeholder="reps"><input data-set-key="weight" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.weight)}" placeholder="kg / BW"><select class="set-type-select" data-set-key="type" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" aria-label="Set type"><option ${g.type==='Aprox'?'selected':''}>Aprox</option><option ${g.type==='TS'?'selected':''}>TS</option><option ${g.type==='DS'?'selected':''}>DS</option></select></div>`).join('')}<div class="set-group-add-row"><button class="set-group-add" data-action="add-set-group" data-block="${bi}" data-index="${ei}">+ Add set</button></div></div></div></td></tr>`).join('')}</tbody></table><button class="block-add" data-action="add-block-ex" data-block="${bi}">+ Add exercise</button></div>`}).join('')}
 function conditioningFields(type){return type==='Row'?['Distance','Split','Recovery']:type==='Bike'?['Duration','Power / Zone','Recovery']:type==='Other'?['Duration','Target','Recovery']:['Distance','Pace','Recovery']}
@@ -4886,8 +4934,8 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
     if(!box){
       box=document.createElement('div');
       box.id='smart-suite';
-      box.className='smart-suite';
-      box.innerHTML='<div class="smart-suite-head"><div><div class="smart-suite-title">Smart Training</div><div class="smart-suite-sub">Analyze, reuse and progress this session.</div></div><span class="smart-tag dark">LOCAL</span></div><div id="smart-suite-body"></div>';
+      box.className='smart-suite is-collapsed';
+      box.innerHTML='<div class="smart-suite-head"><div><div class="smart-suite-title">Smart Training</div><div class="smart-suite-sub">Analyze, reuse and progress this session.</div></div><button type="button" class="smart-suite-collapse" id="smart-suite-collapse" aria-label="Expand Smart Training" aria-expanded="false">⌄</button></div><div id="smart-suite-body" class="smart-suite-body"></div>';
       if(anchor)anchor.insertAdjacentElement('afterend',box);else if(dayView)dayView.prepend(box);else day.prepend(box);
     }
     let nav=$s('#smart-training-nav');
@@ -4903,6 +4951,16 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
       $s('#open-recurring-inline').onclick=()=>openRecurring();
       $s('#open-templates-inline').onclick=async()=>{$s('#templates-modal').classList.add('show');await loadTemplates()};
       $s('#open-smart-duplicate-inline').onclick=()=>duplicateSmart();
+      const smartCollapse=$s('#smart-suite-collapse');
+      if(smartCollapse&&!smartCollapse.dataset.bound){
+        smartCollapse.dataset.bound='1';
+        smartCollapse.onclick=()=>{
+          const collapsed=box.classList.toggle('is-collapsed');
+          smartCollapse.textContent=collapsed?'⌄':'⌃';
+          smartCollapse.setAttribute('aria-expanded',String(!collapsed));
+          smartCollapse.setAttribute('aria-label',collapsed?'Expand Smart Training':'Collapse Smart Training');
+        };
+      }
     }
     const completionTools=$s('#day-completion-tools');
     if(completionTools && !completionTools.dataset.ready){
@@ -5542,7 +5600,7 @@ document.addEventListener('DOMContentLoaded',()=>{ntInit();ntSetupSmartPanelColl
   const tPanelHeader = document.getElementById('theme-panel-header');
   const tPanelBody = document.getElementById('theme-panel-body');
   if(tPanelHeader && tPanelBody){
-    tPanelHeader.classList.add('open');
+    tPanelHeader.classList.remove('open');
     tPanelHeader.addEventListener('click', () => {
       tPanelHeader.classList.toggle('open');
       tPanelBody.classList.toggle('open');
@@ -6136,7 +6194,7 @@ document.addEventListener('DOMContentLoaded',()=>{render();home()});window.Train
     if (entriesResult.error) throw entriesResult.error;
 
     setSummary(summaryResult.data);
-    renderEntries(entriesResult.data||[]);
+    // Daily Nutrition intentionally exposes totals only; food-level entries remain stored for the data layer.
   }
 
   async function refresh(){
