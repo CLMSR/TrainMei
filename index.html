@@ -4,17 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#EEEAE1">
-
-<!-- TrainMei iPhone / PWA -->
 <link rel="apple-touch-icon" href="icons/trainmei-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="TrainMei">
-
 <link rel="manifest" href="manifest.json">
-   
 <title>Training Planner</title>
-
 <style>
 /* Training Planner — consolidated stylesheet. */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap");
@@ -499,7 +494,12 @@ table.plan-table td input{width:100%;border:none;background:transparent;padding:
 .smart-search-empty{padding:18px;text-align:center;color:var(--muted-ui);font-size:11px}
 .smart-tools-dock{display:flex;gap:7px;overflow:auto;padding:2px 0 4px;scrollbar-width:none}
 .smart-tools-dock::-webkit-scrollbar{display:none}
-.smart-tools-dock .smart-pill{white-space:nowrap}
+.smart-tools-dock .smart-pill{white-space:nowrap}}
+.nutrition-learning-strip{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:center;margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-soft)}
+.nutrition-learning-strip span{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}
+.nutrition-learning-strip strong{font-size:15px}
+.nutrition-learning-strip small{font-size:10px;color:var(--muted)}
+@media(max-width:560px){.nutrition-learning-strip{grid-template-columns:1fr auto}.nutrition-learning-strip small{grid-column:1/-1}}
 @media (max-width:850px){
   .smart-insight-grid{grid-template-columns:repeat(2,1fr)}
   .smart-dashboard-stats{grid-template-columns:repeat(2,1fr)}
@@ -537,7 +537,7 @@ table.plan-table td input{width:100%;border:none;background:transparent;padding:
 .training-block{border:1px solid var(--line);border-radius:12px;background:var(--white);overflow:hidden;contain:layout paint}
 .training-block-head{display:flex;padding:9px 11px;background:var(--paper-dim);border-bottom:1px solid var(--line)}
 .block-handle,.exercise-handle{cursor:grab;color:var(--muted);user-select:none}
-.block-title{flex:1;border:0;background:transparent;font-weight:900}
+.block-title{flex:1;min-width:0;border:0;background:transparent;font-weight:900;text-transform:uppercase}
 .block-category{border:1px solid var(--line);background:var(--white);padding:5px 7px;font-size:9px;text-transform:uppercase}
 .block-actions{display:flex;gap:3px}
 .block-actions button{border:0;background:transparent;font-size:15px;padding:3px 5px}
@@ -979,6 +979,8 @@ body{color:var(--ink)}
   body:has(#day-page.active) .block-add{padding:10px 11px;font-size:9px}
 }
 @media (max-width:600px){
+  .home-actions .btn{padding:6px 8px;font-size:9px;letter-spacing:.02em}
+  .home-hero .btn,.home-primary{padding:7px 9px;font-size:9px}
   .home-shell{padding:18px 13px 35px}
   .home-hero{align-items:flex-start;margin-bottom:17px}
   .home-hero h1{font-size:32px}
@@ -1154,12 +1156,12 @@ body{color:var(--ink)}
 .day-color-row{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 .day-color-dots{display:flex;gap:6px}
 .day-color-dot{width:18px;height:18px;border-radius:50%;border:2px solid transparent;padding:0;cursor:pointer;background:var(--control)}
-.day-color-dot.c-green{background:#34C759}.day-color-dot.c-yellow{background:#FFC107}.day-color-dot.c-red{background:#E5484D}.day-color-dot.c-blue{background:#007AFF}.day-color-dot.c-gray{background:#9AA0A6}
-.day-color-dot.c-none{background:transparent;border:1px solid var(--line);color:var(--muted);font-size:11px;line-height:14px}
+.day-color-dot.c-green{background:#34C759}.day-color-dot.c-orange{background:#FF9500}.day-color-dot.c-red{background:#E5484D}.day-color-dot.c-black{background:#161616}.day-color-dot.c-gray{background:#9AA0A6}
+
 .day-color-dot.active{border-color:var(--ink)}
 .cal-color-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-top:2px}
-.cal-color-dot.c-green{background:#34C759}.cal-color-dot.c-yellow{background:#FFC107}.cal-color-dot.c-red{background:#E5484D}.cal-color-dot.c-blue{background:#007AFF}.cal-color-dot.c-gray{background:#9AA0A6}
-@media (max-width:560px){.day-color-dot{width:22px;height:22px}}
+.cal-color-dot.c-green{background:#34C759}.cal-color-dot.c-orange{background:#FF9500}.cal-color-dot.c-red{background:#E5484D}.cal-color-dot.c-black{background:#161616}.cal-color-dot.c-gray{background:#9AA0A6}
+@media (max-width:560px){.day-color-dot{width:16px;height:16px}}
 .home-week-progress{display:none!important}
 @media (max-width:950px){
   .recovery-inline{width:100%;border-left:0;border-top:1px solid var(--line);padding:7px 0 0;margin-top:2px}
@@ -2140,6 +2142,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .smart-wod-timer-progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s linear}
 .smart-wod-timer-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px}
 .smart-wod-timer-help{font-size:9px;color:var(--muted);line-height:1.5;margin:9px 0 0}
+.fatsecret-flow-card{margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface-soft);display:grid;gap:9px}.fatsecret-flow-card strong{display:block;font-size:11px;text-transform:uppercase}.fatsecret-flow-card span{font-size:10px;color:var(--muted)}.fatsecret-flow-tags{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.fatsecret-flow-tags span{padding:5px 8px;border-radius:999px;background:var(--card-bg);border:1px solid var(--line);color:var(--text-secondary)}.fatsecret-flow-tags b{font-size:10px;color:var(--muted)}
 @media (max-width:950px){
   .smart-wod-grid,.smart-wod-builder-layout,.smart-wod-timer-layout{grid-template-columns:1fr}
   .smart-wod-result-card{min-height:0}
@@ -2157,6 +2160,43 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   .smart-wod-part-grid{grid-template-columns:1fr}
   .smart-wod-ex-row{grid-template-columns:minmax(0,1fr) 72px 28px}
 }
+.fatsecret-app{display:grid;gap:16px;margin-top:22px}
+.fatsecret-card{background:var(--card-bg,var(--white));border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 28px rgba(0,0,0,.04)}
+.fatsecret-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.fatsecret-card-head h2{margin:3px 0 5px;font-size:20px}
+.fatsecret-card-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+.fatsecret-status-pill{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:10px;font-weight:800}
+.fatsecret-status-pill.connected{color:#15803d;background:#f0fdf4;border-color:#bbf7d0}
+.fatsecret-status-pill.disconnected{color:var(--muted);background:var(--surface)}
+.fatsecret-status-pill.error{color:#b91c1c;background:#fef2f2;border-color:#fecaca}
+.fatsecret-connection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}
+.fatsecret-stat,.fatsecret-summary-item{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface)}
+.fatsecret-stat span,.fatsecret-summary-item span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}
+.fatsecret-stat strong{display:block;margin-top:5px;font-size:14px}
+.fatsecret-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.fatsecret-actions .btn:disabled{opacity:.45;cursor:not-allowed}
+.fatsecret-message{min-height:18px;margin-top:10px;color:var(--muted);font-size:11px}
+.fatsecret-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}
+.fatsecret-summary-item{text-align:center}
+.fatsecret-summary-item strong{display:inline-block;margin-top:5px;font-size:22px}
+.fatsecret-summary-item small{font-size:9px;color:var(--muted);margin-left:3px}
+.fatsecret-entry-list{display:grid;gap:7px;margin-top:14px}
+.fatsecret-entry{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:10px 2px}
+.fatsecret-entry-main{min-width:0}
+.fatsecret-entry-main strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fatsecret-entry-main small{display:block;margin-top:2px;color:var(--muted);font-size:10px}
+.fatsecret-entry-kcal{font-size:11px;font-weight:800;white-space:nowrap}
+.fatsecret-empty{padding:16px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:11px;text-align:center}
+.fatsecret-launch-status{font-size:9px;color:var(--muted)}
+@media(max-width:700px){
+  .fatsecret-connection-grid,.fatsecret-summary-grid{grid-template-columns:1fr 1fr}
+  .fatsecret-card-head{display:block}
+  .fatsecret-status-pill{margin-top:10px}
+}
+@media(max-width:480px){
+  .fatsecret-card{padding:14px;border-radius:14px}
+  .fatsecret-connection-grid,.fatsecret-summary-grid{grid-template-columns:1fr 1fr}
+}
 .smart-launch-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
 .smart-launch-card{width:100%;min-width:0;min-height:150px;padding:22px;border:1px solid var(--line);border-radius:18px;background:var(--card-bg,var(--white));color:var(--ink);display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:15px;text-align:left;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
 .smart-launch-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.08);border-color:var(--accent)}
@@ -2165,7 +2205,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .smart-launch-copy strong{font-size:16px;letter-spacing:.02em}
 .smart-launch-copy small{font-size:11px;line-height:1.45;color:var(--muted)}
 .smart-launch-arrow{font-size:22px;color:var(--accent);font-weight:800}
-.smart-tool-page .smart-tool-shell{}
+.smart-tool-page .smart-tool-shell{max-width:1140px;margin:0 auto;padding:0 22px}
 .smart-tool-topbar{}
 .smart-tool-back{}
 .smart-tool-kicker{font-size:10px;font-weight:800;letter-spacing:.14em;color:var(--accent);margin-bottom:5px}
@@ -2517,6 +2557,46 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   .cycle-app .fert-prob-val{text-align:left}
 }
 
+/* ===== Nutrition System: FatSecret -> Nutri Tracker -> downstream context ===== */
+.nutri-source-card{border-color:color-mix(in srgb,var(--primary) 28%,var(--line))!important}
+.nutri-source-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nutri-source-label{font-size:9px;color:var(--muted);margin-top:3px}
+.nt-readonly-intake{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:7px!important}
+.nt-readonly-intake>div{padding:9px 8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;min-width:0}
+.nt-readonly-intake span,.nt-readonly-intake small{display:block;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.nt-readonly-intake strong{display:inline-block;font-size:17px;color:var(--text);margin-top:3px}
+.nutri-intelligence{display:grid;gap:12px;margin-top:14px}
+.nutri-intel-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.nutri-intel-card{background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(22,22,22,.04);min-width:0}
+.nutri-intel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.nutri-intel-head h2{margin:2px 0 0;font-size:18px;letter-spacing:-.02em}
+.nutri-intel-badge,.nutri-intel-muted{font-size:9px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 8px;white-space:nowrap}
+.nutri-fuel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.nutri-fuel-grid>div{background:var(--surface);border-radius:11px;padding:10px;min-width:0}
+.nutri-fuel-grid span,.nutri-fuel-grid small{display:block;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.05em}
+.nutri-fuel-grid strong{display:block;font-size:20px;line-height:1.1;margin:5px 0 2px}
+.nutri-progress-list{display:grid;gap:7px;margin-top:10px}
+.nutri-progress-row{display:grid;grid-template-columns:72px 1fr 58px;align-items:center;gap:7px;font-size:9px;color:var(--muted)}
+.nutri-progress-track{height:6px;background:var(--surface);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.nutri-progress-track i{display:block;height:100%;background:var(--primary);border-radius:inherit}
+.nutri-insights-list,.nutri-context-list{display:grid;gap:7px}
+.nutri-insight-row,.nutri-context-row{padding:9px 10px;background:var(--surface);border-radius:10px;font-size:10px;line-height:1.45}
+.nutri-insight-row strong,.nutri-context-row strong{display:block;color:var(--text);font-size:10px;margin-bottom:2px}
+.nutri-insight-row span,.nutri-context-row span{color:var(--muted)}
+.nutri-intel-empty{font-size:10px;color:var(--muted);padding:10px 0}
+.nutri-body-trend{min-height:42px}
+.nutri-body-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.nutri-body-stat{background:var(--surface);padding:10px;border-radius:10px}
+.nutri-body-stat span{display:block;font-size:8px;color:var(--muted);text-transform:uppercase}
+.nutri-body-stat strong{display:block;font-size:16px;margin-top:3px}
+.nutri-body-stat small{display:block;color:var(--muted);font-size:8px;margin-top:2px}
+.nutri-system-loop{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;font-size:9px}
+.nutri-system-loop span{padding:7px 8px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-weight:700}
+.nutri-system-loop b{color:var(--muted)}
+.nutri-loop-note{font-size:9px;color:var(--muted);line-height:1.5;margin:10px 0 0}
+@media(max-width:850px){.nutri-intel-two{grid-template-columns:1fr}.nutri-fuel-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.nt-readonly-intake{grid-template-columns:repeat(2,1fr)!important}.nutri-intel-card{padding:12px}.nutri-body-stats{grid-template-columns:1fr 1fr}.nutri-body-stat:last-child{grid-column:1/-1}.nutri-system-loop{justify-content:flex-start}.nutri-system-loop b{display:none}.nutri-system-loop span{font-size:8px}}
+
 /* ===== Nutrition Optimizer ===== */
 .nutrition-optimizer{display:grid;gap:12px}
 .nutrition-session-card,.nutrition-main-card,.nutrition-side-card{background:var(--card-bg);border:1px solid var(--line);border-radius:18px;padding:16px;min-width:0}
@@ -2562,6 +2642,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .cycle-training-stat strong{display:block;margin-top:4px;font-size:13px;line-height:1.25}
 .cycle-training-stat small{display:block;margin-top:4px;color:var(--muted);font-size:9px;line-height:1.4}
 .cycle-training-insight{margin-top:9px;padding:10px 11px;background:var(--surface-soft);border-radius:11px;color:var(--muted);font-size:10px;line-height:1.5}
+.cycle-readiness-wrap{display:flex;align-items:center;gap:10px;margin-top:9px}.cycle-readiness-ring{--readiness:0;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;flex:0 0 62px;background:conic-gradient(var(--primary) calc(var(--readiness) * 1%),var(--line) 0);position:relative}.cycle-readiness-ring::after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--card-bg)}.cycle-readiness-ring strong{position:relative;z-index:1;font-size:15px;color:var(--text);font-weight:900}.cycle-readiness-copy{min-width:0}.cycle-readiness-copy strong{display:block;font-size:11px;color:var(--text)}.cycle-readiness-copy small{display:block;margin-top:3px;font-size:9px;color:var(--muted);line-height:1.35}.cycle-driver-list{display:grid;gap:6px;margin-top:9px}.cycle-driver{padding:8px 9px;background:var(--surface);border-radius:10px;font-size:9px;color:var(--text-secondary);line-height:1.4}.cycle-performance-card{background:var(--card-bg);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:14px}.cycle-performance-table{display:grid;grid-template-columns:minmax(95px,1.1fr) repeat(5,minmax(62px,1fr));overflow-x:auto;margin-top:12px;border:1px solid var(--line);border-radius:12px}.cycle-performance-table>div{padding:8px 7px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:9px;white-space:nowrap}.cycle-performance-table .head{font-weight:800;color:var(--accent);background:var(--surface);text-transform:uppercase;letter-spacing:.04em}.cycle-performance-note{margin-top:9px;font-size:9px;color:var(--muted);line-height:1.45}.nutrition-context-card,.nutrition-loop-card,.nutrition-learning-card{background:var(--card-bg);border:1px solid var(--line);border-radius:18px;padding:14px;min-width:0}.nutrition-context-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.nutrition-context-grid>div{padding:9px;background:var(--surface);border-radius:11px;min-width:0}.nutrition-context-grid span{display:block;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.nutrition-context-grid strong{display:block;margin-top:3px;font-size:14px;color:var(--text)}.nutrition-context-grid small{display:block;margin-top:2px;font-size:8px;color:var(--muted)}.nutrition-loop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.nutrition-loop-step{padding:8px 9px;background:var(--surface);border-radius:10px;font-size:9px;color:var(--text-secondary);line-height:1.4}.nutrition-loop-step strong{display:block;color:var(--text);margin-bottom:3px}.nutrition-feedback-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.nutrition-feedback-grid label{display:grid;gap:4px;font-size:9px;color:var(--muted);font-weight:700}.nutrition-feedback-grid select,.nutrition-intake-grid input{width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:9px;padding:8px;font-size:10px}.nutrition-intake-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.nutrition-intake-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:7px;margin-top:10px}.nutrition-intake-row .nutri-input{min-width:0}.nutrition-intake-grid label{display:grid;gap:4px;font-size:8px;color:var(--muted);text-transform:uppercase;font-weight:700}.nutrition-learning{margin-top:9px;padding:9px 10px;background:var(--surface-soft);border-radius:11px;font-size:9px;color:var(--muted);line-height:1.45}
 @media (max-width:850px){.nutrition-grid{grid-template-columns:1fr}.cycle-training-grid{grid-template-columns:1fr 1fr}.nutrition-session-head h2,.nutrition-card-head h2{font-size:19px}}
 @media (max-width:560px) and (orientation:portrait){
   .top-actions #export-btn,.top-actions #import-btn,.top-actions #sync-btn,.top-actions #logout-btn{display:none}
@@ -2572,12 +2653,120 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   .nutrition-actions{display:grid;grid-template-columns:1fr}
   .cycle-training-card{border-radius:14px;padding:13px}
   .cycle-training-grid{grid-template-columns:1fr}
+  .nutrition-context-grid{grid-template-columns:repeat(2,1fr)}
+  .nutrition-feedback-grid{grid-template-columns:1fr}
+  .nutrition-intake-row{grid-template-columns:1fr 1fr}
 }
 @media (max-width:950px) and (max-height:600px) and (orientation:landscape){
   .topbar{min-height:42px!important;height:42px!important;margin:0 8px 5px!important;padding:5px 10px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;border-radius:10px!important;overflow:hidden}
   .brand{font-size:14px!important;line-height:16px!important}
   .top-actions{display:flex!important;flex:1;min-width:0;overflow-x:auto;flex-wrap:nowrap;gap:2px}
   .top-actions .btn{height:27px;min-height:27px;padding:4px 6px!important;font-size:8px!important}
+}
+
+/* ============================================================
+   TRAINING BRAIN — integrated system UI
+   New component only: does not alter the Original theme tokens.
+   ============================================================ */
+.brain-page{padding:0 22px 30px;max-width:1140px;margin:0 auto}
+.brain-shell{display:grid;gap:14px}
+.brain-hero{display:flex;justify-content:space-between;align-items:end;gap:18px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.brain-title{font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:-.04em;line-height:.95}
+.brain-subtitle{max-width:680px;color:var(--muted);font-size:12px;line-height:1.55;margin-top:7px}
+.brain-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}
+.brain-card{background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.brain-card.full{grid-column:1/-1}
+.brain-card-head{display:flex;justify-content:space-between;align-items:start;gap:10px;margin-bottom:11px}
+.brain-kicker{font-size:9px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:800}
+.brain-card h2{font-size:15px;margin:3px 0 0}
+.brain-score{display:flex;align-items:center;gap:14px}
+.brain-ring{--brain-score:0;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) calc(var(--brain-score)*1%),var(--line-soft) 0);position:relative;flex:0 0 auto}
+.brain-ring:after{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--card-bg)}
+.brain-ring strong{position:relative;z-index:1;font-size:25px}
+.brain-score-copy strong{display:block;font-size:16px}
+.brain-score-copy span{display:block;margin-top:4px;color:var(--muted);font-size:10px;line-height:1.45}
+.brain-driver-list,.brain-pattern-list,.brain-history-list{display:grid;gap:7px}
+.brain-driver,.brain-pattern,.brain-history{padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface-soft);font-size:10px;line-height:1.45}
+.brain-driver{display:flex;justify-content:space-between;gap:10px}
+.brain-driver strong{font-size:11px}
+.brain-metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.brain-metric{padding:10px;border-radius:10px;background:var(--surface-soft)}
+.brain-metric strong{display:block;font-size:19px}
+.brain-metric span{display:block;margin-top:3px;font-size:9px;color:var(--muted);text-transform:uppercase}
+.brain-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.brain-empty{padding:14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:11px;line-height:1.5}
+.brain-source{font-size:9px;color:var(--muted);margin-top:8px}
+.brain-feedback{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.brain-feedback label{font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:800}
+.brain-feedback select,.brain-feedback textarea{width:100%;margin-top:4px;border:1px solid var(--line);background:var(--paper);padding:8px;font:inherit;font-size:11px}
+.brain-feedback textarea{min-height:60px;resize:vertical;grid-column:1/-1}
+.brain-recommendation{border-left:3px solid var(--accent);padding:10px 12px;background:var(--surface-soft);font-size:12px;line-height:1.55}
+.brain-recommendation strong{display:block;margin-bottom:3px}
+.brain-legend{font-size:9px;color:var(--muted);line-height:1.45}
+.home-brain-card .brain-score{margin-top:4px}
+.home-brain-card .brain-ring{width:70px;height:70px}
+.home-brain-card .brain-ring strong{font-size:19px}
+@media(max-width:850px){.brain-grid{grid-template-columns:1fr}.brain-card.full{grid-column:auto}.brain-metric-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.brain-page{padding:0 16px 20px}.brain-hero{display:block}.brain-hero .btn{margin-top:10px;width:100%}.brain-card{border:0;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:13px}.brain-feedback{grid-template-columns:1fr}.brain-score{align-items:flex-start}.brain-metric-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* Requested responsive refinements: vertical + horizontal training layouts. */
+.day-status-row{display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:6px 0}
+.day-status-row .day-completion-row,.day-status-row .day-color-row{padding:0}
+.day-status-row .day-completion-row{order:3}
+.day-status-row .day-color-row{order:1}
+.day-status-row .day-distance-inline{order:2}
+.day-distance-inline .simple-field{width:86px;padding:6px 8px;border:1px solid var(--line);background:var(--paper);font-size:12px;text-transform:none;color:var(--ink)}
+@media (max-width:560px){
+  .brain-page{padding-left:12px;padding-right:12px}
+  .smart-tool-page .smart-tool-shell{padding-left:14px;padding-right:14px}
+  .day-status-row{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;padding:5px 0}
+  .day-status-row .day-color-row{grid-column:1;grid-row:1;justify-content:flex-start}
+  .day-status-row .day-distance-inline{grid-column:2;grid-row:1;justify-content:space-between}
+  .day-status-row .day-completion-row{grid-column:1 / -1;grid-row:2;justify-content:space-between}
+  .day-completion-row{gap:6px;font-size:8px}
+  .day-color-row{gap:6px;font-size:8px}
+  .day-color-dots{gap:5px}
+  .day-color-dot{width:16px;height:16px;border-width:1px}
+  .day-distance-inline .simple-field{width:64px;padding:5px 6px;font-size:11px}
+  .block-title{font-size:11px!important;line-height:1.1!important;letter-spacing:.01em}
+  .training-block-head{gap:5px;min-width:0}
+  .run-meta-inline{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px;padding-top:7px}
+  .caffeine-inline,.carbohydrates-inline{min-width:0;display:flex;align-items:center;gap:5px}
+  .carbohydrates-inline .simple-field{width:60px;padding:6px 7px;border:1px solid var(--line);background:var(--paper);font-size:12px}
+  .caffeine-inline-mg{width:54px!important}
+}
+@media (min-width:561px) and (max-width:950px) and (orientation:landscape){
+  #day-page{padding-left:10px!important;padding-right:10px!important}
+  #day-page .day-view{max-width:none;padding-left:0;padding-right:0}
+  #day-page .day-header{gap:12px;padding-bottom:12px}
+  #day-page .day-name{font-size:48px!important}
+  #day-page .training-blocks{gap:8px}
+  #day-page .training-block-head{padding:7px 9px}
+  #day-page .block-title{font-size:12px}
+  #day-page .block-category{font-size:8px;padding:4px 6px}
+  #day-page .block-table th{font-size:8px;padding:5px}
+  #day-page .block-table input{padding:6px;font-size:11px}
+  #day-page .day-status-row{gap:10px}
+  #day-page .day-distance-inline .simple-field{width:72px}
+  #day-page .run-meta-inline{display:flex;align-items:center;justify-content:flex-start;gap:10px;flex-wrap:nowrap}
+  #day-page .recovery-inline{width:auto;border-left:1px solid var(--line);border-top:0;padding:0 0 0 7px;margin:0}
+}
+@media (min-width:951px){
+  #day-page .day-status-row{justify-content:flex-end}
+}
+
+@media (max-width:560px){
+  .home-card-head>.btn{padding:6px 8px!important;font-size:8px!important;letter-spacing:.01em!important;border-radius:8px!important}
+}
+@media (min-width:561px) and (max-width:950px) and (orientation:landscape){
+  #day-page .block-table thead{display:table-header-group!important}
+  #day-page .block-table tbody{display:table-row-group!important}
+  #day-page .block-table tr.exercise-row{display:table-row!important;padding:0!important}
+  #day-page .block-table td{display:table-cell!important;width:auto!important;padding:5px 7px!important;overflow:visible!important}
+  #day-page .block-table .exercise-main-line{display:flex!important;width:auto;min-width:0;padding-right:24px!important}
+  #day-page .block-table .exercise-sets-wrap{margin:0!important;width:auto!important;max-width:none!important;overflow:visible!important}
+  #day-page .block-table .set-group-row{display:grid!important;width:100%!important;grid-template-columns:20px 30px minmax(70px,1fr) minmax(70px,1fr) minmax(90px,1.2fr) 58px!important;gap:5px!important}
+  #day-page .conditioning-phase-grid{grid-template-columns:1fr 1.35fr 1fr!important}
 }
 </style>
 </head>
@@ -2629,6 +2818,11 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           <div class="home-card-head"><div><div class="eyebrow">Today's readiness</div><h2 id="home-readiness-score">—</h2></div><span id="home-readiness-status" class="home-status">—</span></div>
           <div class="home-readiness-bars" id="home-readiness-bars"></div>
         </section>
+        <section class="home-card home-brain-card">
+          <div class="home-card-head"><div><div class="eyebrow">Training Brain</div><h2 id="home-brain-title">Learning from your training</h2></div><span id="home-brain-confidence" class="home-status">—</span></div>
+          <div class="brain-score"><div class="brain-ring" id="home-brain-ring"><strong id="home-brain-score">—</strong></div><div class="brain-score-copy"><strong id="home-brain-recommendation">Building your personal model</strong><span id="home-brain-pattern">Log completed sessions and feedback to make the model more personal.</span></div></div>
+          <div class="home-actions"><button class="btn" data-brain-open>Open Training Brain</button></div>
+        </section>
         <section class="home-card home-nutrition-card">
           <div class="home-card-head"><div><div class="eyebrow">Fuel for today</div><h2 id="home-nutrition-title">Nutrition Optimizer</h2></div><span id="home-nutrition-time" class="home-status">—</span></div>
           <div id="home-nutrition-body" class="home-nutrition-body"></div>
@@ -2657,7 +2851,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
       </div>
       <div class="home-quick-actions">
         <button class="home-quick" data-home-action="quick-add"><span>＋</span><strong>Add workout</strong><small>Start from today</small></button>
-        <button class="home-quick" data-home-action="scan"><span>⌁</span><strong>OCR Scan</strong><small>Import a screenshot</small></button>
+        <button class="home-quick" data-home-action="scan"><span>⌁</span><strong>Open Smart Integrations</strong><small>Know your Fitness</small></button>
         <button class="home-quick" data-home-action="templates"><span>☆</span><strong>Templates</strong><small>Pick a session</small></button>
         <button class="home-quick" data-home-page="calendar-page"><span>▦</span><strong>Calendar</strong><small>See your month</small></button>
       </div>
@@ -2708,17 +2902,24 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
     <div class="day-view active">
       <div class="day-top"><button class="back-btn" id="back-btn">‹ Back to month</button><div class="day-nav"><button class="icon-btn" id="prev-day">‹</button><button class="icon-btn" id="next-day">›</button></div></div>
       <div class="day-header"><div class="day-title-wrap"><div class="day-name" id="day-name">—</div><div class="day-date" id="day-date">—</div><input class="day-workout-title" data-field="focus" placeholder="WORKOUT TITLE"></div><div class="tagline-box"><textarea class="tagline-input" data-field="tagline" rows="3" placeholder="BUILD THE LEGS. PROTECT THE ENGINE. STAY STRONG"></textarea><hr class="tagline-rule"><input class="strap-input" data-field="strap" placeholder="Stronger for more tomorrows"></div></div>
-      <div class="day-completion-row"><div class="day-completion-tools" id="day-completion-tools"></div><span>Workout completed</span><label class="switch-row"><input type="checkbox" id="day-completed-toggle"><span class="switch-ui"></span></label></div>
-      <div class="day-color-row"><span>Day color</span><div class="day-color-dots" id="day-color-picker">
-        <button type="button" class="day-color-dot c-green" data-day-color="green" aria-label="green"></button>
-        <button type="button" class="day-color-dot c-yellow" data-day-color="yellow" aria-label="yellow"></button>
-        <button type="button" class="day-color-dot c-red" data-day-color="red" aria-label="red"></button>
-        <button type="button" class="day-color-dot c-blue" data-day-color="blue" aria-label="blue"></button>
-        <button type="button" class="day-color-dot c-gray" data-day-color="gray" aria-label="gray"></button>
-        <button type="button" class="day-color-dot c-none" data-day-color="" aria-label="none">×</button>
-      </div></div>
+      <section class="brain-card" id="day-context-card" style="margin-bottom:14px">
+        <div class="brain-card-head"><div><div class="brain-kicker">Session context</div><h2>Readiness</h2></div><button class="btn" data-brain-open>Full analysis</button></div>
+        <div id="day-context"></div>
+      </section>
+      <div class="day-status-row">
+        <div class="day-completion-row"><div class="day-completion-tools" id="day-completion-tools"></div><span>Workout completed</span><label class="switch-row"><input type="checkbox" id="day-completed-toggle"><span class="switch-ui"></span></label></div>
+        <div class="day-color-row"><span>Day color</span><div class="day-color-dots" id="day-color-picker">
+          <button type="button" class="day-color-dot c-green" data-day-color="green" aria-label="green"></button>
+          <button type="button" class="day-color-dot c-orange" data-day-color="orange" aria-label="orange"></button>
+          <button type="button" class="day-color-dot c-red" data-day-color="red" aria-label="red"></button>
+          <button type="button" class="day-color-dot c-black" data-day-color="black" aria-label="black"></button>
+          <button type="button" class="day-color-dot c-gray" data-day-color="gray" aria-label="gray"></button>
+        </div></div>
+        <div class="run-distance-inline day-distance-inline"><span>Run distance</span><input class="simple-field" type="number" step="0.01" data-metric="distanceKm" placeholder="km"></div>
+      </div>
+      <div class="run-meta-inline"><div class="caffeine-inline"><span>Caffeine</span><label class="switch-row"><input type="checkbox" id="caffeine-toggle"><span class="switch-ui"></span></label><input class="simple-field caffeine-inline-mg" type="number" min="0" step="1" data-caffeine-mg placeholder="mg"></div><div class="carbohydrates-inline"><span>Carbs</span><input class="simple-field carbohydrates-inline-g" type="number" min="0" step="1" data-carbohydrates-g placeholder="g" inputmode="decimal" aria-label="Carbohydrates consumed in session"></div><div class="recovery-inline"><span class="recovery-title">Recovery</span><div class="recovery-row"><span>Sleep</span><div class="recovery-dots" data-recovery-group="sleep"></div></div><div class="recovery-row"><span>Energy</span><div class="recovery-dots" data-recovery-group="energy"></div></div><div class="recovery-row"><span>Soreness</span><div class="recovery-dots" data-recovery-group="soreness"></div></div></div></div>
       <div class="section conditioning-section"><div class="section-bar"><span>Conditioning</span> <span class="divider">|</span><select class="section-sub-select" id="conditioning-type"><option>Run</option><option>Row</option><option>Bike</option><option>Other</option></select><button type="button" class="conditioning-collapse" id="conditioning-collapse" aria-label="Collapse conditioning">⌃</button></div><div class="conditioning-section-body"><div class="conditioning-editor"><div class="conditioning-phase-grid"><div class="conditioning-phase conditioning-main-only"><div class="conditioning-phase-head"><label>Main</label></div><div id="conditioning-blocks" class="conditioning-blocks"></div><button type="button" class="conditioning-add-block" id="add-conditioning-block">+ Add block</button></div></div></div></div>      <div class="section training-section"><div class="section-bar">Training <span class="divider">|</span><input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type"></div><div id="training-blocks" class="training-blocks"></div><button class="add-row-btn" id="add-block-inline">+ Add block</button></div>
-      <div class="run-meta-inline"><div class="caffeine-inline"><span>Caffeine</span><label class="switch-row"><input type="checkbox" id="caffeine-toggle"><span class="switch-ui"></span></label><input class="simple-field caffeine-inline-mg" type="number" min="0" step="1" data-caffeine-mg placeholder="mg"></div><div class="carbohydrates-inline"><span>Carbs</span><input class="simple-field carbohydrates-inline-g" type="number" min="0" step="1" data-carbohydrates-g placeholder="g" inputmode="decimal" aria-label="Carbohydrates consumed in session"></div><div class="recovery-inline"><span class="recovery-title">Recovery</span><div class="recovery-row"><span>Sleep</span><div class="recovery-dots" data-recovery-group="sleep"></div></div><div class="recovery-row"><span>Energy</span><div class="recovery-dots" data-recovery-group="energy"></div></div><div class="recovery-row"><span>Soreness</span><div class="recovery-dots" data-recovery-group="soreness"></div></div></div><div class="run-distance-inline"><span>Run distance</span><input class="simple-field" type="number" step="0.01" data-metric="distanceKm" placeholder="km"></div></div><div class="notes-under-caffeine"><div class="note-label">Workout Notes</div><div class="note-tags" id="note-tags"><button type="button" class="note-tag" data-note-tag="Strong">Strong</button><button type="button" class="note-tag" data-note-tag="Normal">Normal</button><button type="button" class="note-tag" data-note-tag="Hard">Hard</button><button type="button" class="note-tag" data-note-tag="Low energy">Low energy</button><button type="button" class="note-tag" data-note-tag="Great">Great</button><button type="button" class="note-tag" data-note-tag="Adjust next time">Adjust next time</button></div><textarea class="notes-textarea" data-field="notes" placeholder="How it felt, what to adjust next time..."></textarea></div></div>
+<div class="notes-under-caffeine"><div class="note-label">Workout Notes</div><div class="note-tags" id="note-tags"><button type="button" class="note-tag" data-note-tag="Strong">Strong</button><button type="button" class="note-tag" data-note-tag="Normal">Normal</button><button type="button" class="note-tag" data-note-tag="Hard">Hard</button><button type="button" class="note-tag" data-note-tag="Low energy">Low energy</button><button type="button" class="note-tag" data-note-tag="Great">Great</button><button type="button" class="note-tag" data-note-tag="Adjust next time">Adjust next time</button></div><textarea class="notes-textarea" data-field="notes" placeholder="How it felt, what to adjust next time..."></textarea></div></div>
       </div>
       <div class="footer-row"><div class="footer-label">Hybrid Training</div><button class="btn danger" id="clear-day">Clear this day</button></div>
     </div>
@@ -2739,6 +2940,49 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
       <div class="plan-card full"><div class="plan-card-head"><div><h3>Season blocks</h3><div class="hint">Use these for multi-week phases such as Base, Build, Peak or Deload.</div></div><button class="btn" id="add-season-block">+ Add block</button></div><div id="season-block-list" class="season-block-list"></div></div>
     </div>
   </section>
+
+  <section id="brain-page" class="page brain-page">
+    <div class="brain-shell">
+      <div class="brain-hero"><div><div class="eyebrow">Personal model</div><div class="brain-title">Training Brain</div><div class="brain-subtitle">A deterministic learning layer built from your own training history. It uses rules, personal baselines, trends, associations and feedback — not generative AI.</div></div><button class="btn" data-brain-back>Back to Home</button></div>
+      <div class="brain-grid">
+        <section class="brain-card">
+          <div class="brain-card-head"><div><div class="brain-kicker">Readiness 2.0</div><h2>Today's preparation</h2></div><span id="brain-confidence" class="home-status">—</span></div>
+          <div class="brain-score"><div class="brain-ring" id="brain-ring"><strong id="brain-score">—</strong></div><div class="brain-score-copy"><strong id="brain-status">—</strong><span id="brain-score-copy">—</span></div></div>
+          <div class="brain-driver-list" id="brain-drivers" style="margin-top:12px"></div>
+        </section>
+        <section class="brain-card">
+          <div class="brain-card-head"><div><div class="brain-kicker">Personal baselines</div><h2>What your data says</h2></div></div>
+          <div class="brain-metric-grid" id="brain-baselines"></div>
+          <div class="brain-source" id="brain-baseline-source">Calculated from completed sessions available to the model.</div>
+        </section>
+        <section class="brain-card full">
+          <div class="brain-card-head"><div><div class="brain-kicker">Personal associations</div><h2>Patterns observed in your data</h2></div><span id="brain-pattern-count" class="home-status">0 patterns</span></div>
+          <div class="brain-pattern-list" id="brain-patterns"></div>
+          <div class="brain-legend">Associations are descriptive, not proof of causation. The model only promotes a pattern when there is enough data and a meaningful difference between groups.</div>
+        </section>
+        <section class="brain-card">
+          <div class="brain-card-head"><div><div class="brain-kicker">Adaptation engine</div><h2>Next-session adjustment</h2></div></div>
+          <div class="brain-recommendation" id="brain-recommendation">Collecting enough data to make a personal adjustment.</div>
+          <div class="brain-actions"><button class="btn" data-brain-feedback="accepted">Use this</button><button class="btn" data-brain-feedback="modified">Modify</button><button class="btn" data-brain-feedback="rejected">Skip</button></div>
+        </section>
+        <section class="brain-card">
+          <div class="brain-card-head"><div><div class="brain-kicker">Learning loop</div><h2>Tell the model what happened</h2></div></div>
+          <div class="brain-feedback"><label>Outcome<select id="brain-feedback-outcome"><option value="better">Better than expected</option><option value="expected" selected>As expected</option><option value="worse">Worse than expected</option></select></label><label>Energy<select id="brain-feedback-energy"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></label><label>Performance<select id="brain-feedback-performance"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></label><textarea id="brain-feedback-note" placeholder="Optional note about how the session actually felt…"></textarea></div>
+          <div class="brain-actions"><button class="btn" id="brain-save-feedback">Save feedback</button></div>
+        </section>
+        <section class="brain-card full" id="brain-nutrition-context-card">
+          <div class="brain-card-head"><div><div class="brain-kicker">Nutrition context</div><h2>Fuel entering the model</h2></div><span id="brain-nutrition-source" class="home-status">—</span></div>
+          <div class="brain-metric-grid" id="brain-nutrition-context"></div>
+          <div class="brain-source">FatSecret intake is interpreted by Nutri Tracker and propagated into Training Brain context; missing nutrition data is left unavailable.</div>
+        </section>
+        <section class="brain-card full">
+          <div class="brain-card-head"><div><div class="brain-kicker">History</div><h2>Recent learning events</h2></div></div>
+          <div class="brain-history-list" id="brain-history"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
   <section id="integrations-page" class="page">
     <div class="smart-int-wrap">
       <div class="dashboard-head"><div><div class="dashboard-title">SMART INTEGRATIONS</div><div class="hint">Choose a tool to open its dedicated workspace.</div></div></div>
@@ -2764,8 +3008,13 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           <span class="smart-launch-arrow">→</span>
         </button>
         <button type="button" class="smart-launch-card" data-page="nutrition-page">
-          <span class="smart-launch-icon">🥣</span>
+          <span class="smart-launch-icon">🍅</span>
           <span class="smart-launch-copy"><strong>Nutrition Optimizer</strong><small>Adapt your pre-workout meal to today's session and training demand.</small></span>
+          <span class="smart-launch-arrow">→</span>
+        </button>
+        <button type="button" class="smart-launch-card" data-page="fatsecret-page" id="fatsecret-launch-card">
+          <span class="smart-launch-icon">🥗</span>
+          <span class="smart-launch-copy"><strong>FatSecret · Food Source</strong><small>Manage the FatSecret connection used by Nutri Tracker and the nutrition data layer.</small><span class="fatsecret-launch-status" id="fatsecret-launch-status">Checking connection…</span></span>
           <span class="smart-launch-arrow">→</span>
         </button>
       </div>
@@ -2778,7 +3027,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           <span class="smart-panel-chevron" aria-hidden="true">⌄</span>
         </button>
         <div class="smart-panel-body open" data-smart-panel-body>
-        <input id="smart-screenshot-file" type="file" accept="image/png,image/jpeg,image/webp" capture="environment" style="display:none">
+        <input id="smart-screenshot-file" type="file" accept="image/png,image/jpeg,image/webp" style="display:none">
         <button class="smart-drop" id="smart-select-btn" type="button">
           <strong>＋ Upload Screenshot</strong><small>Tap to choose a screenshot or take a photo </small>
         </button>
@@ -2804,7 +3053,26 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           </div>
           <div style="font-size:11px;color:var(--muted);margin-top:7px;" id="nt-weightHint"></div>
         </div>
+        <!-- Today's intake is now owned by FatSecret -> nutrition_entries -> daily summary -->
+        <div class="nutri-card nutri-source-card">
+          <div class="nutri-source-head">
+            <div>
+              <div class="nutri-card-title">Today's intake</div>
+              <div class="nutri-source-label" id="nt-intakeSource">FatSecret · waiting for sync</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="btn" type="button" id="nt-syncFatSecret" style="flex:none;padding:8px 11px;">Sync now</button><button class="btn" type="button" id="nt-openFatSecret" style="flex:none;padding:8px 11px;">FatSecret settings</button></div>
+          </div>
+          <div class="nutrition-intake-row nt-readonly-intake">
+            <div><span>Kcal</span><strong id="nt-intakeKcalValue">—</strong></div>
+            <div><span>Carbs</span><strong id="nt-intakeCarbValue">—</strong><small>g</small></div>
+            <div><span>Protein</span><strong id="nt-intakeProtValue">—</strong><small>g</small></div>
+            <div><span>Fat</span><strong id="nt-intakeFatValue">—</strong><small>g</small></div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:7px;" id="nt-intakeHint">Sync your FatSecret diary to make actual intake available to Nutri Tracker, Nutrition Optimizer and Training Brain.</div>
+        </div>
         <!-- Weight chart (collapsible) -->
+        <div class="nutri-card">
+
         <div class="nutri-card">
           <div class="nutri-collapsible-header" id="nt-weightChartHeader">
             <div class="nutri-card-title" style="margin:0;">Progress</div>
@@ -3130,6 +3398,96 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   </section>
 </div>
 <!-- Dedicated Smart Integration workspaces -->
+<section id="fatsecret-page" class="page smart-tool-page" data-tool="fatsecret">
+  <div class="smart-tool-shell">
+    <div class="smart-tool-topbar">
+      <button type="button" class="btn smart-tool-back" data-smart-back>← Smart Integrations</button>
+      <div>
+        <div class="smart-tool-kicker">SMART INTEGRATION</div>
+        <h1>FatSecret</h1>
+        <p>Connect your FatSecret food diary and bring your nutrition data into TrainMei.</p>
+      </div>
+    </div>
+
+    <div class="fatsecret-app" id="fatsecret-app">
+      <section class="fatsecret-card">
+        <div class="fatsecret-card-head">
+          <div>
+            <div class="smart-panel-kicker">FOOD DATA SOURCE</div>
+            <h2>FatSecret connection</h2>
+            <p id="fatsecret-connection-copy">Checking your connection…</p>
+          </div>
+          <span class="fatsecret-status-pill" id="fatsecret-status-pill">Checking…</span>
+        </div>
+
+        <div class="fatsecret-connection-grid">
+          <div class="fatsecret-stat">
+            <span>Account</span>
+            <strong id="fatsecret-account-status">—</strong>
+          </div>
+          <div class="fatsecret-stat">
+            <span>Last sync</span>
+            <strong id="fatsecret-last-sync">—</strong>
+          </div>
+          <div class="fatsecret-stat">
+            <span>Imported today</span>
+            <strong id="fatsecret-imported-count">—</strong>
+          </div>
+        </div>
+
+        <div class="fatsecret-actions">
+          <button type="button" class="btn" id="fatsecret-connect-btn">Connect FatSecret</button>
+          <button type="button" class="btn" id="fatsecret-sync-btn" disabled>Sync food diary</button>
+        </div>
+
+        <div class="fatsecret-message" id="fatsecret-message" role="status" aria-live="polite"></div>
+        <div class="fatsecret-flow-card">
+          <div><strong>TrainMei data flow</strong><span>FatSecret remains the source. TrainMei interprets the same synced data across the app.</span></div>
+          <div class="fatsecret-flow-tags"><span>Food Diary</span><b>→</b><span>Nutri Tracker</span><b>→</b><span>Performance Fuel</span><b>→</b><span>Training Brain</span><b>→</b><span>Recovery / Performance</span></div>
+        </div>
+      </section>
+
+      <section class="fatsecret-card">
+        <div class="fatsecret-card-head">
+          <div>
+            <div class="smart-panel-kicker">NUTRITION IMPORT</div>
+            <h2>Daily nutrition</h2>
+            <p>Select a date to sync and inspect the data imported from FatSecret.</p>
+          </div>
+          <input type="date" id="fatsecret-sync-date">
+        </div>
+
+        <div class="fatsecret-summary-grid">
+          <div class="fatsecret-summary-item">
+            <span>Calories</span>
+            <strong id="fatsecret-kcal">—</strong>
+            <small>kcal</small>
+          </div>
+          <div class="fatsecret-summary-item">
+            <span>Carbohydrates</span>
+            <strong id="fatsecret-carbs">—</strong>
+            <small>g</small>
+          </div>
+          <div class="fatsecret-summary-item">
+            <span>Protein</span>
+            <strong id="fatsecret-protein">—</strong>
+            <small>g</small>
+          </div>
+          <div class="fatsecret-summary-item">
+            <span>Fat</span>
+            <strong id="fatsecret-fat">—</strong>
+            <small>g</small>
+          </div>
+        </div>
+
+        <div class="fatsecret-entry-list" id="fatsecret-entry-list">
+          <div class="fatsecret-empty">No nutrition data loaded yet.</div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
 <section id="ocr-page" class="page smart-tool-page" data-tool="ocr">
   <div class="smart-tool-shell">
     <div class="smart-tool-topbar">
@@ -3154,6 +3512,43 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
       </div>
     </div>
     <div id="nutri-tool-slot" class="smart-tool-slot nutri-tool-slot"></div>
+
+    <div class="nutri-intelligence" id="nutri-intelligence">
+      <section class="nutri-intel-card nutri-fuel-card">
+        <div class="nutri-intel-head"><div><span class="smart-panel-kicker">FUEL STATUS</span><h2>Today's nutrition state</h2></div><span class="nutri-intel-badge" id="nt-fuel-status">No data</span></div>
+        <div class="nutri-fuel-grid" id="nt-fuel-grid">
+          <div><span>Calories</span><strong id="nt-fuel-kcal">—</strong><small id="nt-fuel-kcal-sub">Target —</small></div>
+          <div><span>Carbohydrates</span><strong id="nt-fuel-carb">—</strong><small id="nt-fuel-carb-sub">Target —</small></div>
+          <div><span>Protein</span><strong id="nt-fuel-prot">—</strong><small id="nt-fuel-prot-sub">Target —</small></div>
+          <div><span>Fat</span><strong id="nt-fuel-fat">—</strong><small id="nt-fuel-fat-sub">Target —</small></div>
+        </div>
+        <div class="nutri-progress-list" id="nt-fuel-progress"></div>
+      </section>
+
+      <div class="nutri-intel-two">
+        <section class="nutri-intel-card">
+          <div class="nutri-intel-head"><div><span class="smart-panel-kicker">NUTRITION INSIGHTS</span><h2>What your intake means</h2></div></div>
+          <div id="nt-insights-list" class="nutri-insights-list"><div class="nutri-intel-empty">Waiting for nutrition data.</div></div>
+        </section>
+        <section class="nutri-intel-card">
+          <div class="nutri-intel-head"><div><span class="smart-panel-kicker">PERFORMANCE FUEL</span><h2>Nutrition ↔ training</h2></div></div>
+          <div id="nt-performance-fuel" class="nutri-context-list"><div class="nutri-intel-empty">Waiting for today's training context.</div></div>
+        </section>
+      </div>
+
+      <section class="nutri-intel-card">
+        <div class="nutri-intel-head"><div><span class="smart-panel-kicker">BODY TREND</span><h2>Weight + nutrition context</h2></div><span class="nutri-intel-muted" id="nt-body-trend-meta">—</span></div>
+        <div id="nt-body-trend" class="nutri-body-trend"><div class="nutri-intel-empty">Add weight records to build your body trend.</div></div>
+      </section>
+
+      <section class="nutri-intel-card nutri-loop-card">
+        <div class="nutri-intel-head"><div><span class="smart-panel-kicker">SYSTEM LOOP</span><h2>Where this data goes</h2></div></div>
+        <div class="nutri-system-loop">
+          <span>FatSecret</span><b>→</b><span>Nutri Tracker</span><b>→</b><span>Training Brain</span><b>→</b><span>Workout</span><b>→</b><span>Recovery Trend</span><b>→</b><span>Calendar</span><b>→</b><span>Performance</span>
+        </div>
+        <p class="nutri-loop-note">Actual food intake is stored once in the nutrition data layer. Downstream modules read the same context; missing data remains unavailable rather than being converted to zero.</p>
+      </section>
+    </div>
   </div>
 </section>
 <section id="workout-creator-page" class="page smart-tool-page" data-tool="workout">
@@ -3187,6 +3582,10 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           <div class="nutrition-session-head"><div><h2 id="no-session-title">No workout planned</h2><p id="no-session-meta">Add or open today's workout to optimize your fuel.</p></div><span id="no-demand-badge" class="nutrition-demand-badge">—</span></div>
           <div id="no-session-tags" class="nutrition-tags"></div>
         </div>
+        <div class="nutrition-context-card">
+          <div class="nutrition-card-head"><div><div class="nutrition-section-kicker">NUTRI TRACKER DATA</div><h2>Today's fuel context</h2></div><span id="no-intake-status" class="nutrition-muted">—</span></div>
+          <div id="no-nutri-context" class="nutrition-context-grid"></div><div id="no-performance-fuel" class="nutrition-learning-strip"><span>Performance Fuel</span><strong id="no-fuel-score">—</strong><small id="no-fuel-copy">Waiting for training + nutrition data.</small></div>
+        </div>
         <div class="nutrition-grid">
           <div class="nutrition-main-card">
             <div class="nutrition-card-head"><div><div class="nutrition-section-kicker">PRE-WORKOUT</div><h2>Optimize your meal</h2></div><span id="no-timing-label" class="nutrition-muted">60 min</span></div>
@@ -3209,6 +3608,21 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
             <p id="no-analysis-copy">The recommendation changes with training demand and time until the session.</p>
             <div id="no-analysis-list" class="nutrition-analysis-list"></div>
           </aside>
+        </div>
+        <div class="nutrition-loop-card">
+          <div class="nutrition-card-head"><div><div class="nutrition-section-kicker">NUTRITION LOOP</div><h2>Before → During → After</h2></div><span id="no-next-session" class="nutrition-muted">Next session —</span></div>
+          <div class="nutrition-loop-grid" id="no-nutrition-loop"></div>
+        </div>
+        <div class="nutrition-learning-card">
+          <div class="nutrition-card-head"><div><div class="nutrition-section-kicker">PERSONAL LEARNING</div><h2>How did the fueling work?</h2></div><span id="no-learning-count" class="nutrition-muted">0 sessions</span></div>
+          <div class="nutrition-feedback-grid">
+            <label>Did it sit well? <select id="no-feedback-tolerance"><option value="">Select</option><option value="5">Very well</option><option value="4">Well</option><option value="3">Neutral</option><option value="2">Not great</option><option value="1">Poorly</option></select></label>
+            <label>Energy during session <select id="no-feedback-energy"><option value="">Select</option><option value="5">Excellent</option><option value="4">Good</option><option value="3">Okay</option><option value="2">Low</option><option value="1">Very low</option></select></label>
+            <label>Hunger during session <select id="no-feedback-hunger"><option value="">Select</option><option value="1">None</option><option value="2">Low</option><option value="3">Moderate</option><option value="4">High</option><option value="5">Very high</option></select></label>
+            <label>How was performance? <select id="no-feedback-performance"><option value="">Select</option><option value="5">Excellent</option><option value="4">Good</option><option value="3">Normal</option><option value="2">Below usual</option><option value="1">Poor</option></select></label>
+          </div>
+          <div class="nutrition-actions"><button type="button" class="btn" id="no-save-feedback">Save session feedback</button></div>
+          <div id="no-learning-insight" class="nutrition-learning">After several feedback entries, the app will identify the pre-workout patterns that have worked best for you.</div>
         </div>
       </div>
     </div>
@@ -3405,11 +3819,17 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
       <div class="cycle-training-card" id="ct-trainingCard">
         <div class="cycle-training-head"><div><div class="cycle-kicker">TRAINING CONTEXT</div><h3>Cycle-informed readiness</h3></div><span id="ct-trainingDemand" class="cycle-training-badge">—</span></div>
         <div class="cycle-training-grid">
-          <div class="cycle-training-stat"><span>Readiness</span><strong id="ct-trainingReadiness">—</strong><small id="ct-trainingReadinessNote">Log Sleep, Energy and Soreness in your workout.</small></div>
+          <div class="cycle-training-stat"><span>Readiness score</span><div class="cycle-readiness-wrap"><div class="cycle-readiness-ring" id="ct-readinessRing"><strong id="ct-readinessScore">—</strong></div><div class="cycle-readiness-copy"><strong id="ct-trainingReadiness">—</strong><small id="ct-trainingReadinessNote">Log Sleep, Energy and Soreness in your workout.</small></div></div></div>
           <div class="cycle-training-stat"><span>Performance context</span><strong id="ct-performanceContext">—</strong><small id="ct-performanceNote">—</small></div>
           <div class="cycle-training-stat"><span>Hormonal context</span><strong id="ct-hormonalContext">—</strong><small id="ct-hormonalNote">—</small></div>
         </div>
-        <div class="cycle-training-insight" id="ct-trainingInsight">Your cycle phase is one context signal; your observed recovery should remain the primary day-to-day input.</div>
+        <div class="cycle-driver-list" id="ct-readinessDrivers"></div>
+        <div class="cycle-training-insight" id="ct-trainingInsight">Your cycle phase is one context signal; observed recovery and actual training response remain primary.</div>
+      </div>
+      <div class="cycle-performance-card" id="ct-performanceCard">
+        <div class="cycle-training-head"><div><div class="cycle-kicker">CYCLE ↔ PERFORMANCE</div><h3>Observed training by phase</h3></div><span id="ct-performanceSample" class="cycle-training-badge">0 sessions</span></div>
+        <div id="ct-performanceTable" class="cycle-performance-table"></div>
+        <div id="ct-performanceCorrelation" class="cycle-performance-note">Complete more sessions with real training metrics to build a personal comparison.</div>
       </div>
       <div class="card">
         <h3>⚡ Quick action</h3>
@@ -3787,35 +4207,33 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
     $("#ct-axisEnd").textContent = `Day ${totalDays}`;
   }
 
-  function renderTrainingContext(a){
-    const demandEl = $("#ct-trainingDemand"), readinessEl=$("#ct-trainingReadiness"), readinessNote=$("#ct-trainingReadinessNote"), perfEl=$("#ct-performanceContext"), perfNote=$("#ct-performanceNote"), hormoneEl=$("#ct-hormonalContext"), hormoneNote=$("#ct-hormonalNote"), insight=$("#ct-trainingInsight");
+  async function renderTrainingContext(a){
+    const demandEl=$("#ct-trainingDemand"), readinessEl=$("#ct-trainingReadiness"), readinessScoreEl=$("#ct-readinessScore"), readinessRing=$("#ct-readinessRing"), readinessNote=$("#ct-trainingReadinessNote"), perfEl=$("#ct-performanceContext"), perfNote=$("#ct-performanceNote"), hormoneEl=$("#ct-hormonalContext"), hormoneNote=$("#ct-hormonalNote"), insight=$("#ct-trainingInsight"), driversEl=$("#ct-readinessDrivers"), tableEl=$("#ct-performanceTable"), sampleEl=$("#ct-performanceSample"), corrEl=$("#ct-performanceCorrelation");
     if(!demandEl) return;
-    const key=toISO(a.today);
-    let workout=null;
-    try{ const raw=localStorage.getItem('training-planner:workout:'+key); workout=raw?JSON.parse(raw):null; }catch(e){ workout=null; }
-    const blocks=Array.isArray(workout?.blocks)?workout.blocks:[];
-    const exercises=blocks.flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]).filter(e=>String(e?.name||'').trim());
+    const key=toISO(a.today);let workout=null;try{const raw=localStorage.getItem('training-planner:workout:'+key);workout=raw?JSON.parse(raw):null}catch(e){workout=null}
+    const blocks=Array.isArray(workout?.blocks)?workout.blocks:[],exercises=blocks.flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]).filter(e=>String(e?.name||'').trim());
     const sets=exercises.reduce((n,e)=>n+(Array.isArray(e.setGroups)?e.setGroups.reduce((s,g)=>s+(Number(g?.sets)||0),0):(Number(e?.sets)||0)),0);
-    const text=JSON.stringify(workout||{}).toLowerCase();
-    const load=Number(workout?.metrics?.load)||0, duration=Number(workout?.metrics?.timeMin)||0, distance=Number(workout?.metrics?.distanceKm)||0;
-    let demandScore=Math.min(100, Math.round((load?Math.min(100,load):Math.min(100,sets*3+exercises.length*4+(duration>60?15:duration>40?8:0)+(distance>8?18:distance>3?8:0)+(/(amrap|for time|emom|time cap|conditioning|running)/.test(text)?15:0)))));
-    const demand=demandScore>=70?'High':demandScore>=40?'Moderate':'Low';
-    demandEl.textContent=workout?demand.toUpperCase():'NO SESSION';
-    const r=workout?.recovery||{};
-    const vals=[Number(r.sleep)||0,Number(r.energy)||0,Number(r.soreness)||0].filter(v=>v>0);
-    const observed=vals.length?Math.round(vals.reduce((x,y)=>x+y,0)/vals.length/5*100):null;
-    readinessEl.textContent=observed===null?'—':observed+'%';
-    readinessNote.textContent=observed===null?'Log Sleep, Energy and Soreness in your workout.':'Observed recovery from your latest ratings.';
-    const ph=getPhase(a);
-    const curve=a.cycleDay?getHormoneCurve(a.avgCycle,Math.round(a.avgCycle-14)).find(x=>x.day===Math.min(a.avgCycle,a.cycleDay)):null;
-    const hormoneLabel=ph.key==='menstrual'?'Lower estrogen / progesterone':ph.key==='follicular'?'Estrogen rising':ph.key==='ovulatory'?'Estrogen peak context':'Progesterone higher context';
-    const performanceLabel=ph.key==='menstrual'?'Individual response varies':ph.key==='follicular'?'Often compatible with progressive work':ph.key==='ovulatory'?'Individual performance response varies':'Monitor heat, fatigue and perceived effort';
-    hormoneEl.textContent=hormoneLabel;
-    hormoneNote.textContent=curve?`Est ${Math.round(curve.estrogen*100)} · Prog ${Math.round(curve.progesterone*100)}`:'Estimated from cycle timing';
-    perfEl.textContent=performanceLabel;
-    perfNote.textContent=demand?`${demand} session demand · use observed readiness to adjust.`:'Add a workout to contextualize training.';
-    insight.textContent=observed===null?`Your ${ph.name.toLowerCase()} phase is a context signal, not a fixed performance rule. Add today's recovery ratings to personalize the read.`:observed<55?`Recovery is currently ${observed}%. Consider using perceived effort and recovery feedback alongside the ${ph.name.toLowerCase()} phase context.`:`Recovery is currently ${observed}%. The app will keep phase context alongside your observed response rather than assuming a universal cycle effect.`;
+    const volume=estimateVolumeCycle(workout),text=JSON.stringify(workout||{}).toLowerCase(),load=Number(workout?.metrics?.load)||0,duration=Number(workout?.metrics?.timeMin)||0,distance=Number(workout?.metrics?.distanceKm)||0,rpe=Number(workout?.metrics?.rpe)||0;
+    const demandScore=Math.min(100,Math.round((load?Math.min(55,load/2):0)+(duration?Math.min(20,duration/4):0)+(distance?Math.min(25,distance*2):0)+(volume?Math.min(20,volume/500):0)+(rpe?Math.min(15,rpe*1.5):0)+(/amrap|for time|emom|time cap|conditioning|running/.test(text)?10:0)));const demand=demandScore>=70?'High':demandScore>=40?'Moderate':'Low';demandEl.textContent=workout?demand.toUpperCase():'NO SESSION';
+    const r=workout?.recovery||{},sleep=Number(r.sleep)||0,energy=Number(r.energy)||0,soreness=Number(r.soreness)||0,ph=getPhase(a);
+    const recentRows=await getCycleWorkoutRows(a.today,7),recentLoad=recentRows.reduce((n,row)=>n+estimateCycleLoad(row.data),0),recentSessions=recentRows.length;
+    const nextRows=await getCycleWorkoutRows(a.today,7,true),nextLoad=nextRows.reduce((n,row)=>n+estimateCycleLoad(row.data),0);
+    const loadInfo=window.TrainingDataCore?await window.TrainingDataCore.recentLoadRatio(key):{ratio:null,hasData:false};
+    const rr=window.TrainingDataCore?window.TrainingDataCore.readiness(workout,{loadRatio:loadInfo.hasData?loadInfo.ratio:null,cyclePhase:ph.key}):{score:null,factors:[],status:null,confidence:null};
+    const readiness=rr.score??60;
+    readinessEl.textContent=readiness+'%';readinessScoreEl.textContent=readiness;readinessRing.style.setProperty('--readiness',readiness);readinessNote.textContent=rr.score!==null?`${rr.status} · ${rr.confidence}`:'Add Sleep, Energy and Soreness for a more personal score.';
+    driversEl.innerHTML=(rr.factors.length?rr.factors.map(f=>`${f.label}: ${Math.round(f.value)}%`):['Recovery input: not logged']).concat([`Recent training: ${recentSessions} session${recentSessions===1?'':'s'} · estimated load ${Math.round(recentLoad)}`,`Upcoming plan: ${nextRows.length} session${nextRows.length===1?'':'s'} · estimated load ${Math.round(nextLoad)}`]).map(x=>`<div class="cycle-driver">${x}</div>`).join('');
+    const curve=a.cycleDay?getHormoneCurve(a.avgCycle,Math.round(a.avgCycle-14)).find(x=>x.day===Math.min(a.avgCycle,a.cycleDay)):null;const hormoneLabel=ph.key==='menstrual'?'Lower estrogen / progesterone':ph.key==='follicular'?'Estrogen rising':ph.key==='ovulatory'?'Estrogen peak context':ph.key==='luteal'?'Progesterone higher context':'Cycle context pending';
+    hormoneEl.textContent=hormoneLabel;hormoneNote.textContent=curve?`Est ${Math.round(curve.estrogen*100)} · Prog ${Math.round(curve.progesterone*100)}`:'Estimated from cycle timing';perfEl.textContent='Compare against your own data';perfNote.textContent=workout?`${sets} sets · ${Math.round(volume)} volume · ${duration||0} min · RPE ${rpe||'—'}`:'Add a workout to contextualize performance.';insight.textContent=`Readiness is ${readiness}%. This is an observation model, not a medical or fixed cycle rule; your own training response and feedback remain important.`;
+    const comparison=buildPhaseComparison(await getCycleWorkoutRows(a.today,90));sampleEl.textContent=`${comparison.total} sessions`;tableEl.innerHTML=`<div class="head">Phase</div><div class="head">Sessions</div><div class="head">Load</div><div class="head">Volume</div><div class="head">Duration</div><div class="head">RPE</div>`+comparison.rows.map(x=>`<div>${x.phase}</div><div>${x.n||0}</div><div>${x.load||'—'}</div><div>${x.volume||'—'}</div><div>${x.duration||'—'}</div><div>${x.rpe||'—'}</div>`).join('');corrEl.textContent=comparison.note;
   }
+  function estimateCycleLoad(d){const m=d?.metrics||{},explicit=Number(m.load)||0;if(explicit>0)return explicit;const ex=(d?.blocks||[]).flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]),sets=ex.reduce((n,e)=>n+exerciseSetsCycle(e),0),reps=ex.reduce((n,e)=>n+exerciseRepsCycle(e),0),mins=Number(m.timeMin)||0,rpe=Number(m.rpe)||5,dist=Number(m.distanceKm)||0;return Math.round(sets*1.8+reps*.08+mins*rpe*.55+dist*1.5)}
+  function exerciseSetsCycle(e){const gs=Array.isArray(e?.setGroups)&&e.setGroups.length?e.setGroups:[e];return gs.reduce((n,g)=>n+(Number(g?.sets)||0),0)}
+  function exerciseRepsCycle(e){const gs=Array.isArray(e?.setGroups)&&e.setGroups.length?e.setGroups:[e];return gs.reduce((n,g)=>n+(Number(String(g?.reps||'').match(/\d+(?:\.\d+)?/)?.[0])||0)*(Number(g?.sets)||0),0)}
+  async function getCycleWorkoutRows(today,days,forward=false){const center=new Date(toISO(today)+'T12:00:00'),from=new Date(center),to=new Date(center);if(forward){from.setDate(from.getDate()+1);to.setDate(to.getDate()+days)}else{from.setDate(from.getDate()-days);to.setDate(to.getDate()-1)}const fromK=toISO(from),toK=toISO(to);try{if(typeof getAnalyticsRows==='function'){const rows=await getAnalyticsRows(fromK,toK);return(rows||[]).filter(r=>r?.data&&!r.data?.skipped&&(forward||r.data?.completed||Number(r.data?.metrics?.load)||Number(r.data?.metrics?.rpe)||Number(r.data?.metrics?.timeMin)||Number(r.data?.metrics?.distanceKm)))}}catch(e){}const rows=[];for(let dt=new Date(from);dt<=to;dt.setDate(dt.getDate()+1)){const k=toISO(dt);try{const raw=localStorage.getItem('training-planner:workout:'+k);if(raw)rows.push({date:k,data:JSON.parse(raw)})}catch(e){}}return rows}
+  function analyzeCycleForDate(date){const sorted=[...records].sort((x,y)=>x.date.localeCompare(y.date));if(!sorted.length)return null;const starts=sorted.map(r=>parseISO(r.date)).filter(d=>d<=date);if(!starts.length)return null;const last=starts[starts.length-1],cycleDay=daysBetween(last,date)+1;let avg=28;if(sorted.length>=2){const diffs=[];for(let i=1;i<sorted.length;i++){const d=daysBetween(parseISO(sorted[i-1].date),parseISO(sorted[i].date));if(d>=15&&d<=60)diffs.push(d)}if(diffs.length)avg=Math.round(diffs.reduce((a,b)=>a+b,0)/diffs.length)}avg=Math.min(45,Math.max(19,avg));const periodLen=Number(sorted[sorted.length-1].duration)||5,ov=Math.max(1,avg-14),fertStart=ov-5,fertEnd=ov+1;let phase;if(cycleDay<=periodLen)phase='menstrual';else if(cycleDay<fertStart)phase='follicular';else if(cycleDay<=fertEnd)phase='ovulatory';else phase='luteal';return{phase,cycleDay,avg}}
+  function estimateVolumeCycle(d){return(d?.blocks||[]).flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]).reduce((n,e)=>{const gs=Array.isArray(e?.setGroups)&&e.setGroups.length?e.setGroups:[e];return n+gs.reduce((s,g)=>s+(Number(g?.sets)||0)*(Number(String(g?.reps||'').match(/\d+(?:\.\d+)?/)?.[0])||0)*(Number(g?.weight)||0),0)},0)}
+  function buildPhaseComparison(rows){const buckets={menstrual:[],follicular:[],ovulatory:[],luteal:[]};rows.forEach(row=>{const phase=analyzeCycleForDate(parseISO(row.date));if(phase&&buckets[phase.phase])buckets[phase.phase].push(row.data)});const labels={menstrual:'Menstrual',follicular:'Follicular',ovulatory:'Ovulatory',luteal:'Luteal'};const stats=Object.entries(buckets).map(([phase,list])=>{const loads=list.map(estimateCycleLoad),vols=list.map(estimateVolumeCycle),mins=list.map(d=>Number(d?.metrics?.timeMin)||0),rpes=list.map(d=>Number(d?.metrics?.rpe)||0).filter(Boolean);return{phase:labels[phase],n:list.length,load:list.length?Math.round(loads.reduce((a,b)=>a+b,0)/list.length):0,volume:list.length?Math.round(vols.reduce((a,b)=>a+b,0)/list.length):0,duration:list.length?Math.round(mins.reduce((a,b)=>a+b,0)/list.length):0,rpe:rpes.length?(rpes.reduce((a,b)=>a+b,0)/rpes.length).toFixed(1):'—'}});const populated=stats.filter(x=>x.n);let note=populated.length<2?'Add completed sessions with load, volume, duration and RPE across more than one phase to build a meaningful personal comparison.':`Personal comparison from ${rows.length} recent workouts: phase averages are descriptive, not evidence of causation.`;if(populated.length>=2){const lr=Math.max(...populated.map(x=>x.load))-Math.min(...populated.map(x=>x.load)),rr=Math.max(...populated.map(x=>Number(x.rpe)||0))-Math.min(...populated.map(x=>Number(x.rpe)||0));note+=` Observed phase spread: load ${Math.round(lr)}, RPE ${rr.toFixed(1)}.`}return{rows:stats,total:rows.length,note}}
 
   function renderToday(){
     const a = analyze();
@@ -4127,6 +4545,13 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   // Wait for DOM to be ready if needed
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
+
+  // Read-only snapshot for the Data Core (Fase 2). Reuses analyzeCycleForDate;
+  // does not duplicate storage or logic, and never asserts causal phase effects.
+  window.tpCycleSnapshot=function(){
+    const a=analyzeCycleForDate(todayMid());
+    return a?{phase:a.phase,cycleDay:a.cycleDay,avgCycleLength:a.avg,recordCount:records.length}:{phase:null,cycleDay:null,avgCycleLength:null,recordCount:records.length};
+  };
 })();
 </script>
 <script>
@@ -4135,6 +4560,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 const SUPABASE_URL='https://vjgsezfjslevjbiotfoq.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_IzFrnMtQjVxTHQ3_BVmbLg_Ww2zzi2F';
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+window.supabaseClient=supabaseClient;
 const WEEKDAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const PREFIX='training-planner:';
@@ -4167,7 +4593,7 @@ function loadDayLocal(key){try{const r=localApi.get('workout:'+key);if(r)return 
 async function loadDay(key){if(currentUser){const {data,error}=await supabaseClient.from('workouts').select('data').eq('user_id',currentUser.id).eq('date',key).maybeSingle();if(!error&&data?.data)return normalizeDay(data.data)}return loadDayLocal(key)}
 function persistCurrentDayLocal(){if(!selectedDateKey||!currentDay)return;try{currentDay=normalizeDay(currentDay);localApi.set('workout:'+selectedDateKey,JSON.stringify(currentDay));monthIndicators[selectedDateKey]=currentDay}catch{}}
 function scheduleSave(){setStatus('Saving…');clearTimeout(saveTimer);saveTimer=setTimeout(saveDay,450)}
-async function saveDay(){if(!selectedDateKey||!currentDay)return;const normalized=normalizeDay(currentDay);currentDay=normalized;localApi.set('workout:'+selectedDateKey,JSON.stringify(normalized)); if(currentUser){const {error}=await supabaseClient.from('workouts').upsert({user_id:currentUser.id,date:selectedDateKey,data:normalized,updated_at:new Date().toISOString()},{onConflict:'user_id,date'});if(error){console.error(error);setStatus('Saved locally — cloud error');return}}monthIndicators[selectedDateKey]=normalized;setStatus(currentUser?'Autosaved · Synced':'Autosaved · Local')}
+async function saveDay(){if(!selectedDateKey||!currentDay)return;const normalized=normalizeDay(currentDay);currentDay=normalized;localApi.set('workout:'+selectedDateKey,JSON.stringify(normalized)); if(currentUser){const {error}=await supabaseClient.from('workouts').upsert({user_id:currentUser.id,date:selectedDateKey,data:normalized,updated_at:new Date().toISOString()},{onConflict:'user_id,date'});if(error){console.error(error);setStatus('Saved locally — cloud error');return}}monthIndicators[selectedDateKey]=normalized;setStatus(currentUser?'Autosaved · Synced':'Autosaved · Local');window.TrainMeiBrain?.refresh?.()}
 async function syncLocal(){if(!currentUser)return;const rows=[];for(const k of localApi.list('workout:').keys){try{const date=k.replace('workout:','');rows.push({user_id:currentUser.id,date,data:normalizeDay(JSON.parse(localApi.get(k).value)),updated_at:new Date().toISOString()})}catch{}}if(!rows.length){setStatus('Nothing to sync');return}const {error}=await supabaseClient.from('workouts').upsert(rows,{onConflict:'user_id,date'});setStatus(error?'Sync failed':'Synced')}
 function exportData(){const data={};for(const k of localApi.list('workout:').keys)data[k]=localStorage.getItem(PREFIX+k);const payload={app:'Training Planner',version:4,exportedAt:new Date().toISOString(),data,plan:planData,templates:templatesCache};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));a.download=`training-planner-backup-${todayKey()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);setStatus('Backup exported')}
 function importData(file){if(!file)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);Object.entries(p.data||{}).forEach(([k,v])=>localStorage.setItem(PREFIX+k,v));if(p.plan)planData=normalizePlan(p.plan);renderMonth();renderPlan();setStatus('Backup restored')}catch{setStatus('Invalid backup')}};r.readAsText(file)}
@@ -4260,26 +4686,28 @@ function addPlanBlock(){addSeasonBlock()}
 function setPlanWeekFrom(delta){const d=new Date(planWeekKey+'T12:00:00');d.setDate(d.getDate()+delta*7);planWeekKey=dateKey(d.getFullYear(),d.getMonth(),d.getDate());renderPlan()}
 function openPlanDay(key){selectedDateKey=key;openDay(key)}
 function homeWeekRange(){const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());const day=(today.getDay()+6)%7;const monday=new Date(today);monday.setDate(today.getDate()-day);const sunday=new Date(monday);sunday.setDate(monday.getDate()+6);return {today,monday,sunday,dates:Array.from({length:7},(_,i)=>{const d=new Date(monday);d.setDate(monday.getDate()+i);return dateKey(d.getFullYear(),d.getMonth(),d.getDate())})}}
-async function renderHome(){const range=homeWeekRange();const from=dateKey(range.monday.getFullYear(),range.monday.getMonth(),range.monday.getDate()),to=dateKey(range.sunday.getFullYear(),range.sunday.getMonth(),range.sunday.getDate());const monthStart=new Date(range.today.getFullYear(),range.today.getMonth(),1),monthEnd=new Date(range.today.getFullYear(),range.today.getMonth()+1,0);const rows=await getAnalyticsRows(from,to);const monthRows=await getAnalyticsRows(dateKey(monthStart.getFullYear(),monthStart.getMonth(),monthStart.getDate()),dateKey(monthEnd.getFullYear(),monthEnd.getMonth(),monthEnd.getDate()));const byDate={};rows.forEach(r=>byDate[r.date]=normalizeDay(r.data));const monthByDate={};monthRows.forEach(r=>monthByDate[r.date]=normalizeDay(r.data));const todayK=todayKey();const todayData=byDate[todayK]||loadDayLocal(todayK);const title=todayData?.focus||todayData?.trainingCategory||'';$('#home-greeting').textContent=((()=>{const h=range.today.getHours();return h<6?'Good night':h<12?'Good morning':h<18?'Good afternoon':h<22?'Good evening':'Good night'})());$('#home-date-label').textContent=`${WEEKDAYS[(range.today.getDay()+6)%7]} · ${MONTHS[range.today.getMonth()]} ${range.today.getDate()}, ${range.today.getFullYear()}`;$('#home-today-title').textContent=title||'No workout planned';$('#home-today-status').textContent=todayData?.completed?'Completed':'Not completed';const blocks=(todayData?.blocks||[]).filter(b=>(b.exercises||[]).some(e=>String(e.name||'').trim()));const sets=blocks.reduce((n,b)=>n+(b.exercises||[]).reduce((s,e)=>s+totalExerciseSets(e),0),0);$('#home-today-body').innerHTML=title?`<div class="home-session-title">${esc(todayData.trainingCategory||'Training session')}</div><div class="home-session-sub">${blocks.length} block${blocks.length===1?'':'s'} · ${sets} planned sets</div><div class="home-session-meta">${blocks.slice(0,4).map(b=>`<span class="home-pill">${esc(b.name||'Block')}</span>`).join('')}</div>`:'<div class="home-empty">Nothing is scheduled for today. You can add a workout or use a template.</div>';const completed=range.dates.filter(k=>!!byDate[k]?.completed).length;const planned=range.dates.filter(k=>!!byDate[k]).length;$('#home-week-title').textContent=`Week ${getWeekNumber(range.monday)}`;$('#home-week-progress-text').textContent=`${completed} completed`;$('#home-week-progress-bar').style.width=(planned?100:0)+'%';$('#home-week-days').innerHTML=range.dates.map((k,i)=>{const d=new Date(k+'T12:00:00'),data=byDate[k],has=!!data;return `<button type="button" class="home-week-day${k===todayK?' today':''}${data?.completed?' completed':''}${!has?' empty':''}" data-home-open-day="${k}"><div class="dow">${WEEKDAYS[i].slice(0,3)}</div><div class="daynum">${d.getDate()}</div><div class="dot"></div></button>`}).join('');$('#home-month-title').textContent=`${MONTHS[range.today.getMonth()]} ${range.today.getFullYear()}`;const firstDow=(monthStart.getDay()+6)%7;const daysInMonth=monthEnd.getDate();let heat='';for(let i=0;i<firstDow;i++)heat+='<span class="home-heat-day empty"></span>';for(let day=1;day<=daysInMonth;day++){const k=dateKey(range.today.getFullYear(),range.today.getMonth(),day),data=monthByDate[k]||loadDayLocal(k);heat+=`<button type="button" class="home-heat-day${data?.completed?' completed':''}${k===todayK?' today':''}" data-home-open-day="${k}" aria-label="${k}${data?.completed?' completed':''}">${day}</button>`}$('#home-month-heatmap').innerHTML=heat;const dist=monthRows.reduce((n,r)=>n+numeric(r.data.metrics?.distanceKm),0);const mins=monthRows.reduce((n,r)=>n+numeric(r.data.metrics?.timeMin),0);$('#home-stats').innerHTML=`<div class="home-stat"><strong>${completed}</strong><span>Completed this week</span></div><div class="home-stat"><strong>${dist.toFixed(1)}</strong><span>km this month</span></div><div class="home-stat"><strong>${Math.round(mins)}</strong><span>minutes</span></div>`;const nextDate=new Date(range.today);nextDate.setDate(nextDate.getDate()+1);const nextKey=dateKey(nextDate.getFullYear(),nextDate.getMonth(),nextDate.getDate()),nextData=monthByDate[nextKey]||loadDayLocal(nextKey);$('#home-next-title').textContent=nextData?.focus||nextData?.trainingCategory||'Open tomorrow’s session';$('#home-next-date').textContent=`${WEEKDAYS[(nextDate.getDay()+6)%7]} · ${nextDate.getDate()}`;$('#home-next-body').innerHTML=`<div class="home-session-sub">${nextData?.completed?'Completed already':'Ready to write'} · ${esc(nextKey)}</div>`;window._homeNextKey=nextKey;renderHomeReadinessAndLoad(todayData)}
-function homeWeekLoadDays(offsetWeeks){const now=new Date();const dow=(now.getDay()+6)%7;const monday=new Date(now);monday.setDate(now.getDate()-dow-offsetWeeks*7);const map={};allWorkoutRows().forEach(r=>map[r.date]=r.data);const days=[];for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);const k=dateKey(d.getFullYear(),d.getMonth(),d.getDate());days.push({k,data:map[k]||null,load:window.tpWorkoutLoad?window.tpWorkoutLoad(map[k]||null):0})}return days}
+async function renderHome(){const range=homeWeekRange();const from=dateKey(range.monday.getFullYear(),range.monday.getMonth(),range.monday.getDate()),to=dateKey(range.sunday.getFullYear(),range.sunday.getMonth(),range.sunday.getDate());const monthStart=new Date(range.today.getFullYear(),range.today.getMonth(),1),monthEnd=new Date(range.today.getFullYear(),range.today.getMonth()+1,0);const rows=await TrainingDataCore.training(from,to);const monthRows=await TrainingDataCore.training(dateKey(monthStart.getFullYear(),monthStart.getMonth(),monthStart.getDate()),dateKey(monthEnd.getFullYear(),monthEnd.getMonth(),monthEnd.getDate()));const byDate={};rows.forEach(r=>byDate[r.date]=normalizeDay(r.data));const monthByDate={};monthRows.forEach(r=>monthByDate[r.date]=normalizeDay(r.data));const todayK=todayKey();const todayData=byDate[todayK]||loadDayLocal(todayK);const title=todayData?.focus||todayData?.trainingCategory||'';$('#home-greeting').textContent=((()=>{const h=new Date().getHours();return h<6?'Good night':h<12?'Good morning':h<18?'Good afternoon':h<22?'Good evening':'Good night'})());$('#home-date-label').textContent=`${WEEKDAYS[(range.today.getDay()+6)%7]} · ${MONTHS[range.today.getMonth()]} ${range.today.getDate()}, ${range.today.getFullYear()}`;$('#home-today-title').textContent=title||'No workout planned';$('#home-today-status').textContent=todayData?.completed?'Completed':'Not completed';const blocks=(todayData?.blocks||[]).filter(b=>(b.exercises||[]).some(e=>String(e.name||'').trim()));const sets=blocks.reduce((n,b)=>n+(b.exercises||[]).reduce((s,e)=>s+totalExerciseSets(e),0),0);$('#home-today-body').innerHTML=title?`<div class="home-session-title">${esc(todayData.trainingCategory||'Training session')}</div><div class="home-session-sub">${blocks.length} block${blocks.length===1?'':'s'} · ${sets} planned sets</div><div class="home-session-meta">${blocks.slice(0,4).map(b=>`<span class="home-pill">${esc(b.name||'Block')}</span>`).join('')}</div>`:'<div class="home-empty">Nothing is scheduled for today. You can add a workout or use a template.</div>';const completed=range.dates.filter(k=>!!byDate[k]?.completed).length;const planned=range.dates.filter(k=>!!byDate[k]).length;$('#home-week-title').textContent=`Week ${getWeekNumber(range.monday)}`;$('#home-week-progress-text').textContent=`${completed} completed`;$('#home-week-progress-bar').style.width=(planned?100:0)+'%';$('#home-week-days').innerHTML=range.dates.map((k,i)=>{const d=new Date(k+'T12:00:00'),data=byDate[k],has=!!data;return `<button type="button" class="home-week-day${k===todayK?' today':''}${data?.completed?' completed':''}${!has?' empty':''}" data-home-open-day="${k}"><div class="dow">${WEEKDAYS[i].slice(0,3)}</div><div class="daynum">${d.getDate()}</div><div class="dot"></div></button>`}).join('');$('#home-month-title').textContent=`${MONTHS[range.today.getMonth()]} ${range.today.getFullYear()}`;const firstDow=(monthStart.getDay()+6)%7;const daysInMonth=monthEnd.getDate();let heat='';for(let i=0;i<firstDow;i++)heat+='<span class="home-heat-day empty"></span>';for(let day=1;day<=daysInMonth;day++){const k=dateKey(range.today.getFullYear(),range.today.getMonth(),day),data=monthByDate[k]||loadDayLocal(k);heat+=`<button type="button" class="home-heat-day${data?.completed?' completed':''}${k===todayK?' today':''}" data-home-open-day="${k}" aria-label="${k}${data?.completed?' completed':''}">${day}</button>`}$('#home-month-heatmap').innerHTML=heat;const dist=monthRows.reduce((n,r)=>n+numeric(r.data.metrics?.distanceKm),0);const mins=monthRows.reduce((n,r)=>n+numeric(r.data.metrics?.timeMin),0);$('#home-stats').innerHTML=`<div class="home-stat"><strong>${completed}</strong><span>Completed this week</span></div><div class="home-stat"><strong>${dist.toFixed(1)}</strong><span>km this month</span></div><div class="home-stat"><strong>${Math.round(mins)}</strong><span>minutes</span></div>`;const nextDate=new Date(range.today);nextDate.setDate(nextDate.getDate()+1);const nextKey=dateKey(nextDate.getFullYear(),nextDate.getMonth(),nextDate.getDate()),nextData=monthByDate[nextKey]||loadDayLocal(nextKey);$('#home-next-title').textContent=nextData?.focus||nextData?.trainingCategory||'Open tomorrow’s session';$('#home-next-date').textContent=`${WEEKDAYS[(nextDate.getDay()+6)%7]} · ${nextDate.getDate()}`;$('#home-next-body').innerHTML=`<div class="home-session-sub">${nextData?.completed?'Completed already':'Ready to write'} · ${esc(nextKey)}</div>`;window._homeNextKey=nextKey;renderHomeReadinessAndLoad(todayData)}
+function homeWeekLoadDays(offsetWeeks){const now=new Date();const dow=(now.getDay()+6)%7;const monday=new Date(now);monday.setDate(now.getDate()-dow-offsetWeeks*7);const map={};allWorkoutRows().forEach(r=>map[r.date]=r.data);const days=[];for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);const k=dateKey(d.getFullYear(),d.getMonth(),d.getDate());days.push({k,data:map[k]||null,load:TrainingDataCore.trainingLoad(map[k]||null)})}return days}
 function renderHomeReadinessAndLoad(todayData){
-  const rv=window.tpRecoveryValues?window.tpRecoveryValues(todayData):null;const pct=v=>Math.round(v/5*100);
-  const scoreEl=$('#home-readiness-score'),statusEl=$('#home-readiness-status'),barsEl=$('#home-readiness-bars');
-  if(rv&&rv.complete){
-    const sleepPct=pct(rv.sleep),energyPct=pct(rv.energy),sorenessPct=pct(5-rv.soreness);
-    const score=Math.round((sleepPct+energyPct+sorenessPct)/3);
-    scoreEl.textContent=score;
-    statusEl.textContent=score>=75?'Training normally':score>=55?'Reduce intensity':'Recovery-focused session';
-    barsEl.innerHTML=[['Sleep',sleepPct],['Energy',energyPct],['Soreness',sorenessPct]].map(x=>`<div class="home-readiness-row"><span>${x[0]}</span><div class="home-readiness-track"><i style="width:${x[1]}%"></i></div><b>${x[1]}</b></div>`).join('');
-  }else{scoreEl.textContent='—';statusEl.textContent='No data yet';barsEl.innerHTML='<div class="home-empty">Rate sleep, energy and soreness today to see your readiness.</div>';}
   const days=homeWeekLoadDays(0),max=Math.max(1,...days.map(x=>x.load));
   const loadBars=$('#home-load-bars');if(loadBars)loadBars.innerHTML=days.map((x,i)=>`<div class="home-load-col"><i style="height:${Math.max(x.load?6:2,Math.round(x.load/max*100))}%"></i><span>${WEEKDAYS[i].slice(0,1)}</span></div>`).join('');
   const total=days.reduce((s,x)=>s+x.load,0);let prevTotal=0,prevWeeks=0;
   for(let w=1;w<=3;w++){const t=homeWeekLoadDays(w).reduce((s,x)=>s+x.load,0);if(t>0){prevTotal+=t;prevWeeks++}}
   const avgPrev=prevWeeks?prevTotal/prevWeeks:total,ratio=avgPrev?total/avgPrev:1;
   const loadStatus=$('#home-load-status');if(loadStatus)loadStatus.textContent=total===0?'—':(ratio>1.15?'HIGH LOAD':ratio<0.85?'LOW LOAD':'OPTIMAL LOAD');
-  const recVals=days.map(x=>window.tpRecoveryScore?window.tpRecoveryScore(x.data):null).filter(v=>v!==null);
+  const recVals=days.map(x=>TrainingDataCore.recoveryScore(x.data)).filter(v=>v!==null);
   const recPct=$('#home-load-recovery-pct');if(recPct)recPct.textContent=recVals.length?Math.round(recVals.reduce((a,b)=>a+b,0)/recVals.length/5*100)+'%':'—';
+  const cyclePhase=TrainingDataCore.cycle()?.phase||null;
+  const readiness=TrainingDataCore.readiness(todayData,{loadRatio:total?ratio:null,cyclePhase});
+  const scoreEl=$('#home-readiness-score'),statusEl=$('#home-readiness-status'),barsEl=$('#home-readiness-bars');
+  if(readiness.score!==null){
+    scoreEl.textContent=readiness.score;
+    statusEl.textContent=`${readiness.status} · ${readiness.confidence}`;
+    barsEl.innerHTML=readiness.factors.map(f=>`<div class="home-readiness-row"><span>${f.label}</span><div class="home-readiness-track"><i style="width:${f.value}%"></i></div><b>${Math.round(f.value)}</b></div>`).join('');
+  }else{
+    scoreEl.textContent='—';statusEl.textContent='No data yet';
+    barsEl.innerHTML='<div class="home-empty">Rate sleep, energy and soreness today to see your readiness.</div>';
+  }
 }
 async function createSmartTemplate(){if(!smartWorkout||!currentUser)return;const defaultName=smartWorkout.templateName||smartWorkout.focus||'Imported workout';const name=prompt('Template name:',defaultName);if(!name)return;const data=smartDayData();data.importMeta={source:'SMART AI',fileName:smartFileName,activityId:'',importedAt:new Date().toISOString()};data._tags=deriveTags(data);const {error}=await supabaseClient.from('workout_templates').insert({user_id:currentUser.id,name:name.trim(),category:data.trainingCategory||null,data,updated_at:new Date().toISOString()});if(error){alert(error.message);return}await loadTemplates();setStatus('Smart template created');$('#smart-result-modal').classList.remove('show')}
 async function createSmartTemplateSilently(){if(!smartWorkout||!currentUser)return null;const defaultName=smartWorkout.templateName||smartWorkout.focus||'Imported workout';const data=smartDayData();data.importMeta={source:'SMART AI',fileName:smartFileName,activityId:'',importedAt:new Date().toISOString()};data._tags=deriveTags(data);const {data:created,error}=await supabaseClient.from('workout_templates').insert({user_id:currentUser.id,name:defaultName.trim(),category:data.trainingCategory||null,data,updated_at:new Date().toISOString()}).select('*').single();if(error)throw error;await loadTemplates();return created}
@@ -4344,7 +4772,7 @@ $('#day-page').addEventListener('input',e=>{if(!currentDay)return;const t=e.targ
   renderConditioningBlocks();
   scheduleSave();
 });
-$('#caffeine-toggle').onchange=()=>{currentDay.caffeine.taken=$('#caffeine-toggle').checked;scheduleSave()};$('#day-completed-toggle').onchange=()=>{if(!currentDay)return;currentDay.completed=$('#day-completed-toggle').checked;scheduleSave()};$('#day-page').addEventListener('click',e=>{const b=e.target.closest('[data-recovery-key]');if(b&&currentDay){const key=b.dataset.recoveryKey;currentDay.recovery=currentDay.recovery||{sleep:0,energy:0,soreness:0};currentDay.recovery[key]=Number(b.dataset.recoveryValue)||0;renderRecoveryInputs();scheduleSave()}const dc=e.target.closest('[data-day-color]');if(dc&&currentDay){currentDay.color=dc.dataset.dayColor||'';$$('[data-day-color]').forEach(x=>x.classList.toggle('active',x===dc));scheduleSave()}});$('#day-page').addEventListener('change',e=>{const t=e.target;if(t.dataset.setKey==='type'){const bi=+t.dataset.parentBlock,ei=+t.dataset.exIndex,gi=+t.dataset.setIndex;activeBlockIndex=bi;const ex=currentDay.blocks[bi].exercises[ei];if(!Array.isArray(ex.setGroups))ex.setGroups=[normalizeSetGroup(ex)];ex.setGroups[gi].type=t.value;syncExerciseLegacyFields(ex);scheduleSave()}});;function openBlockLibrary(i=null){if(i!==null)activeBlockIndex=i;else if(!Number.isInteger(activeBlockIndex)||!currentDay?.blocks?.[activeBlockIndex])activeBlockIndex=0;const block=currentDay?.blocks?.[activeBlockIndex];if(block){setVal('#block-name-input',block.name||'');setVal('#block-tags-input',getBlockTags(block).join(', '))}$('#block-library-modal').classList.add('show');renderBlockLibrary()}
+$('#caffeine-toggle').onchange=()=>{currentDay.caffeine.taken=$('#caffeine-toggle').checked;scheduleSave()};$('#day-completed-toggle').onchange=()=>{if(!currentDay)return;currentDay.completed=$('#day-completed-toggle').checked;scheduleSave()};$('#day-page').addEventListener('click',e=>{const b=e.target.closest('[data-recovery-key]');if(b&&currentDay){const key=b.dataset.recoveryKey;currentDay.recovery=currentDay.recovery||{sleep:0,energy:0,soreness:0};currentDay.recovery[key]=Number(b.dataset.recoveryValue)||0;renderRecoveryInputs();if(typeof renderDayContext==='function')renderDayContext();scheduleSave()}const dc=e.target.closest('[data-day-color]');if(dc&&currentDay){currentDay.color=dc.dataset.dayColor||'';$$('[data-day-color]').forEach(x=>x.classList.toggle('active',x===dc));scheduleSave()}});$('#day-page').addEventListener('change',e=>{const t=e.target;if(t.dataset.setKey==='type'){const bi=+t.dataset.parentBlock,ei=+t.dataset.exIndex,gi=+t.dataset.setIndex;activeBlockIndex=bi;const ex=currentDay.blocks[bi].exercises[ei];if(!Array.isArray(ex.setGroups))ex.setGroups=[normalizeSetGroup(ex)];ex.setGroups[gi].type=t.value;syncExerciseLegacyFields(ex);scheduleSave()}});;function openBlockLibrary(i=null){if(i!==null)activeBlockIndex=i;else if(!Number.isInteger(activeBlockIndex)||!currentDay?.blocks?.[activeBlockIndex])activeBlockIndex=0;const block=currentDay?.blocks?.[activeBlockIndex];if(block){setVal('#block-name-input',block.name||'');setVal('#block-tags-input',getBlockTags(block).join(', '))}$('#block-library-modal').classList.add('show');renderBlockLibrary()}
 $('#day-page').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.exCollapse!==undefined){window._collapsedTrainingExercises=window._collapsedTrainingExercises||{};const bi=+b.dataset.exCollapse,ei=+b.dataset.exIndex,block=currentDay.blocks[bi];if(block){const key=block.id+':'+ei;window._collapsedTrainingExercises[key]=!window._collapsedTrainingExercises[key];renderTrainingBlocks()}return;}if(b.id==='conditioning-collapse'){const section=document.querySelector('.conditioning-section');if(section){section.classList.toggle('is-collapsed');b.textContent=section.classList.contains('is-collapsed')?'⌄':'⌃';b.setAttribute('aria-label',section.classList.contains('is-collapsed')?'Expand conditioning':'Collapse conditioning')}return;}if(b.dataset.action==='add-block-ex')addBlockExercise(+b.dataset.block);if(b.dataset.action==='add-set-group')addSetGroup(+b.dataset.block,+b.dataset.index);if(b.dataset.action==='remove-set-group')removeSetGroup(+b.dataset.block,+b.dataset.index,+b.dataset.set);if(b.dataset.action==='remove-block-ex'){const bi=+b.dataset.block,ei=+b.dataset.index;activeBlockIndex=bi;currentDay.blocks[bi].exercises.splice(ei,1);if(!currentDay.blocks[bi].exercises.length)currentDay.blocks[bi].exercises.push(blankExercise());renderDay();scheduleSave()}if(b.dataset.blockRemove!==undefined&&currentDay.blocks.length>1){const bi=+b.dataset.blockRemove;currentDay.blocks.splice(bi,1);activeBlockIndex=Math.max(0,Math.min(activeBlockIndex,currentDay.blocks.length-1));renderDay();scheduleSave()}if(b.dataset.blockCopy!==undefined)copyBlockToClipboard(+b.dataset.blockCopy);if(b.dataset.blockSave!==undefined){saveBlockFromSession(+b.dataset.blockSave)}if(b.dataset.blockQuick!==undefined){const blockEl=b.closest('.training-block');if(blockEl)blockEl.classList.toggle('quick-open');}if(b.dataset.blockQuickAddSet!==undefined){addQuickSet(+b.dataset.blockQuickAddSet)}if(b.dataset.blockQuickAddEx!==undefined){addBlockExercise(+b.dataset.blockQuickAddEx)}if(b.dataset.blockQuickDuplicate!==undefined){duplicateBlock(+b.dataset.blockQuickDuplicate)}if(b.dataset.blockQuickCollapse!==undefined){window._collapsedTrainingBlocks=window._collapsedTrainingBlocks||{};const bi=+b.dataset.blockQuickCollapse,block=currentDay.blocks[bi];if(block){window._collapsedTrainingBlocks[block.id]=true;renderTrainingBlocks()}}if(b.dataset.blockCollapse!==undefined){window._collapsedTrainingBlocks=window._collapsedTrainingBlocks||{};const bi=+b.dataset.blockCollapse,block=currentDay.blocks[bi];if(block){window._collapsedTrainingBlocks[block.id]=!window._collapsedTrainingBlocks[block.id];renderTrainingBlocks()}}if(b.dataset.noteTag){const t=b.dataset.noteTag;currentDay.noteTags=currentDay.noteTags.includes(t)?currentDay.noteTags.filter(x=>x!==t):[...currentDay.noteTags,t];renderDay();scheduleSave()}});$('#add-block-inline').onclick=addBlock;$('#close-block-library').onclick=()=>$('#block-library-modal').classList.remove('show');$('#save-block-btn').onclick=()=>saveBlockFromSession(activeBlockIndex);$('#paste-block-btn').onclick=pasteBlock;$('#block-library-search').oninput=renderBlockLibrary;$('#block-tags-input').oninput=()=>{};$('#block-tag-filters').addEventListener('click',e=>{const b=e.target.closest('[data-block-tag-filter]');if(!b)return;window._trainingPlannerBlockTag=b.dataset.blockTagFilter||'';renderBlockLibrary()});$('#block-library-list').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const b=e.target.closest('button');if(!b||!b.closest('#block-library-list'))return;if(b.dataset.blockInsert!==undefined){insertLibraryBlock(String(b.dataset.blockInsert));return}if(b.dataset.blockDelete!==undefined){deleteLibraryBlock(String(b.dataset.blockDelete));return}});let dragExercise=null,dragBlock=null;$('#training-blocks').addEventListener('dragstart',e=>{const r=e.target.closest('.exercise-row'),b=e.target.closest('.training-block');if(r)dragExercise={b:+r.dataset.blockIndex,e:+r.dataset.exIndex};else if(b)dragBlock=+b.dataset.blockIndex});$('#training-blocks').addEventListener('dragover',e=>{if(e.target.closest('.training-block'))e.preventDefault()});$('#training-blocks').addEventListener('drop',e=>{e.preventDefault();const r=e.target.closest('.exercise-row'),b=e.target.closest('.training-block');if(dragExercise&&r)moveExerciseDrag(dragExercise.b,dragExercise.e,+r.dataset.blockIndex,+r.dataset.exIndex);else if(dragExercise&&b)moveExerciseDrag(dragExercise.b,dragExercise.e,+b.dataset.blockIndex,currentDay.blocks[+b.dataset.blockIndex].exercises.length);else if(dragBlock!==null&&b&&dragBlock!==+b.dataset.blockIndex){const x=currentDay.blocks.splice(dragBlock,1)[0];let t=+b.dataset.blockIndex;if(dragBlock<t)t--;currentDay.blocks.splice(t,0,x);activeBlockIndex=t;renderDay();scheduleSave()}dragExercise=null;dragBlock=null});
 $('#sync-btn').onclick=syncLocal;$('#export-btn').onclick=exportData;$('#import-btn').onclick=()=>$('#import-file').click();$('#import-file').onchange=e=>{importData(e.target.files[0]);e.target.value=''};
 $('#templates-btn').onclick=async()=>{$('#templates-modal').classList.add('show');await loadTemplates()};$('#template-search').oninput=renderTemplates;$('#close-templates').onclick=()=>$('#templates-modal').classList.remove('show');$('#save-template-btn').onclick=saveCurrentAsTemplate;$('#apply-template-date-btn').onclick=()=>{selectedDateKey=$('#template-date').value||selectedDateKey};$('#template-list').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.templateUse)useTemplate(b.dataset.templateUse);if(b.dataset.templateEdit)editTemplate(b.dataset.templateEdit);if(b.dataset.templateDelete)deleteTemplate(b.dataset.templateDelete)});
@@ -4445,7 +4873,7 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
   function deriveTags(d){const set=new Set();const text=clean(dayText(d)); if(/run|running|5k|10k|km/.test(text))set.add('running');if(/hyrox|wall ball|sled|ski erg|row/.test(text))set.add('hyrox');if(/strength|squat|deadlift|bench|press|pull up/.test(text))set.add('strength');if(/conditioning|for time|amrap|emom|time cap|burpee/.test(text))set.add('conditioning');if(/upper|bench|pull|back|chest|shoulder/.test(text))set.add('upper body');if(/lower|squat|lunge|hamstring|deadlift/.test(text))set.add('lower body');if(/recovery|mobility|stretch/.test(text))set.add('recovery');(d.exercises||[]).forEach(e=>(groups[canonical(e.name)]||[]).forEach(x=>set.add(x)));return Array.from(set).slice(0,8)}
   function smartMeta(date){return read(SMART+date,{tags:[],status:'planned',analyzedAt:null,score:0})}
   function saveSmartMeta(date,patch){const m={...smartMeta(date),...patch};write(SMART+date,m);return m}
-  function getRows(){if(typeof allWorkoutRows==='function')return allWorkoutRows();const rows=[];Object.keys(localStorage).filter(k=>k.startsWith('training-planner:workout:')).forEach(k=>{try{rows.push({date:k.split(':').pop(),data:JSON.parse(localStorage.getItem(k))})}catch{}});return rows}
+  function getRows(){if(typeof window.tpAllWorkoutRows==='function')return window.tpAllWorkoutRows();const rows=[];Object.keys(localStorage).filter(k=>k.startsWith('training-planner:workout:')).forEach(k=>{try{rows.push({date:k.split(':').pop(),data:JSON.parse(localStorage.getItem(k))})}catch{}});return rows}
   function nonEmptyExercises(d){return (d.exercises||[]).filter(e=>String(e.name||'').trim())}
   function scoreWorkout(d){const ex=nonEmptyExercises(d);const sets=ex.reduce((s,e)=>s+totalExerciseSets(e),0);const reps=ex.reduce((s,e)=>s+totalExerciseReps(e),0);const mins=parseFloat(d.metrics?.timeMin)||0;const rpe=parseFloat(d.metrics?.rpe)||0;return Math.min(100,Math.round(sets*3+reps*.25+mins*.35+rpe*2))}
   function analyzeDay(){if(!currentDay)return null;const ex=nonEmptyExercises(currentDay);const tags=deriveTags(currentDay);const score=scoreWorkout(currentDay);const canonicalized=ex.map(e=>({...e,name:canonical(e.name)}));const groupsCount={};canonicalized.forEach(e=>(groups[canonical(e.name)]||[]).forEach(g=>groupsCount[g]=(groupsCount[g]||0)+1));saveSmartMeta(selectedDateKey,{tags,score,analyzedAt:new Date().toISOString(),exerciseCount:ex.length});return {tags,score,exerciseCount:ex.length,sets:ex.reduce((s,e)=>s+totalExerciseSets(e),0),reps:ex.reduce((s,e)=>s+totalExerciseReps(e),0),canonicalized,groupsCount}}
@@ -4573,7 +5001,7 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
     const base=weekStart(todayKey());
     base.setDate(base.getDate()+V5.weekOffset*7);
     const map=rowMap(), days=[];
-    for(let i=0;i<7;i++){const d=new Date(base);d.setDate(base.getDate()+i);const k=keyOf(d), data=map[k]||null;days.push({k,data,load:workoutLoad(data)});}
+    for(let i=0;i<7;i++){const d=new Date(base);d.setDate(base.getDate()+i);const k=keyOf(d), data=map[k]||null;days.push({k,data,load:TrainingDataCore.trainingLoad(data)});}
     const max=Math.max(1,...days.map(x=>x.load));
     const total=days.reduce((s,x)=>s+x.load,0);
     const sessions=days.filter(x=>x.data).length;
@@ -4612,29 +5040,36 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
     if(!complete)return null;
     return (sleep+energy+(6-soreness))/3;
   }
-  function renderRecoveryTrend(){
+  async function renderRecoveryTrend(){
     ensureCalendarPanels();
     const el=q('#'+V5.recoveryPanelId); if(!el)return;
-    const all=rows().filter(r=>recoveryValues(r.data).complete).sort((a,b)=>a.date.localeCompare(b.date)).slice(-28);
+    const all=rows().filter(r=>TrainingDataCore.recovery(r.data).complete).sort((a,b)=>a.date.localeCompare(b.date)).slice(-28);
     const last=all.slice(-14);
     if(!last.length){el.innerHTML=`<div class="tp-v5-head"><div><div class="tp-v5-kicker">Recovery trend</div><strong>No recovery history yet</strong></div></div><p class="tp-v5-empty">Rate Sleep, Energy and Soreness after sessions to build the radial trend.</p>`;return;}
-    const vals=last.map(x=>recoveryScore(x.data)).filter(v=>v!==null);
+    const vals=last.map(x=>TrainingDataCore.recoveryScore(x.data)).filter(v=>v!==null);
     const avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
     const latestRow=last[last.length-1];
-    const latest=recoveryScore(latestRow.data)||0;
-    const latestRecovery=recoveryValues(latestRow.data);
-    const sleep=latestRecovery.sleep;
-    const energy=latestRecovery.energy;
-    const soreness=Math.max(0,6-latestRecovery.soreness);
+    const latest=TrainingDataCore.recoveryScore(latestRow.data)||0;
+    const latestRecovery=TrainingDataCore.recovery(latestRow.data);
+    const sleep=latestRecovery.sleep,energy=latestRecovery.energy,soreness=Math.max(0,6-latestRecovery.soreness);
+    const fuel=TrainingDataCore.performanceFuel(latestRow.date,latestRow.data);
     const rings=[{label:'Sleep',value:sleep,radius:62},{label:'Energy',value:energy,radius:48},{label:'Soreness',value:soreness,radius:34}];
     const circumference=r=>2*Math.PI*r;
     const ringSvg=rings.map((x,i)=>{const c=circumference(x.radius),dash=(x.value/5)*c;return `<circle class="recovery-ring recovery-ring-bg" cx="92" cy="92" r="${x.radius}"/><circle class="recovery-ring recovery-ring-value ring-${i}" cx="92" cy="92" r="${x.radius}" stroke-dasharray="${dash.toFixed(2)} ${(c-dash).toFixed(2)}"/>`}).join('');
-    el.innerHTML=`<div class="tp-v5-head recovery-radial-head"><div><div class="tp-v5-kicker">Recovery trend · last ${last.length}</div><strong>Readiness ${latest.toFixed(1)} / 5</strong></div><div class="tp-v5-summary"><span>Average ${avg.toFixed(1)}</span><span>Sleep · Energy · Soreness</span></div></div>
+    let fuelHistory=[];
+    try{
+      const nh=await TrainingDataCore.nutritionHistory(last[0].date,last[last.length-1].date);
+      const byDate=new Map(nh.map(x=>[x.date,x]));
+      fuelHistory=last.map(r=>{const n=byDate.get(r.date)||null;return TrainingDataCore.performanceFuel(r.date,r.data,n)}).filter(x=>x.score!=null);
+      fuelHistory=fuelHistory.map(x=>({...x,nutrition:byDate.get(x.date)||null}));
+    }catch(e){}
+    const avgFuel=fuelHistory.length?Math.round(fuelHistory.reduce((s,x)=>s+x.score,0)/fuelHistory.length):null;
+    el.innerHTML=`<div class="tp-v5-head recovery-radial-head"><div><div class="tp-v5-kicker">Recovery trend · last ${last.length}</div><strong>Readiness ${latest.toFixed(1)} / 5</strong></div><div class="tp-v5-summary"><span>Average ${avg.toFixed(1)}</span><span>${avgFuel==null?'Fuel data pending':`Fuel ${avgFuel}%`}</span></div></div>
       <div class="recovery-radial-wrap">
         <div class="recovery-radial-chart"><svg viewBox="0 0 184 184" role="img" aria-label="Radial recovery trend">${ringSvg}<text x="92" y="87" text-anchor="middle" class="recovery-radial-score">${latest.toFixed(1)}</text><text x="92" y="103" text-anchor="middle" class="recovery-radial-unit">READINESS</text></svg></div>
         <div class="recovery-radial-legend">${rings.map(x=>`<div><span class="recovery-legend-dot"></span><span>${x.label}</span><strong>${x.value.toFixed(1)}</strong></div>`).join('')}</div>
       </div>
-      <div class="recovery-radial-footer"><span>${escV(latestRow.date)}</span><span>Soreness is inverted: lower soreness = higher readiness</span></div>`;
+      <div class="recovery-radial-footer"><span>${escV(latestRow.date)}</span><span>${fuel.score==null?'Nutrition will appear after FatSecret sync.':`Performance fuel ${fuel.score}% · ${fuel.status}`}</span></div>`;
   }
   function runKindOptions(v){
     return [['easy','Easy'],['interval','Intervals'],['tempo','Tempo'],['threshold','Threshold'],['hill','Hills'],['long','Long run'],['recovery','Recovery run'],['race','Race / test']].map(x=>`<option value="${x[0]}" ${v===x[0]?'selected':''}>${x[1]}</option>`).join('');
@@ -4747,6 +5182,7 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
     attachHandlers();
     renderRunningStructure();
     renderLoopPanel();
+    if(typeof renderDayContext==='function')renderDayContext();
   };
   const baseRenderMonthV5=renderMonth;
   renderMonth=async function(){
@@ -4778,8 +5214,72 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
   });
   attachHandlers();
   setTimeout(()=>{if(q('#calendar-page')){ensureCalendarPanels();renderWeekLoad();renderRecoveryTrend();}if(q('#day-page')){attachHandlers();}},50);
-  window.tpWorkoutLoad=workoutLoad;window.tpRecoveryValues=recoveryValues;window.tpRecoveryScore=recoveryScore;window.tpWeekStart=weekStart;window.tpKeyOf=keyOf;
+  window.tpWorkoutLoad=workoutLoad;window.tpRecoveryValues=recoveryValues;window.tpRecoveryScore=recoveryScore;window.tpWeekStart=weekStart;window.tpKeyOf=keyOf;window.tpAllWorkoutRows=allWorkoutRows;
 })();
+
+/* ===== Data Core (Fase 2) =====
+   Single, read-only entry point the rest of the app (Home, Calendar, Cycle
+   Tracker, Day page, and the existing Training Brain script) should use
+   instead of each panel re-fetching or recalculating on its own. It does NOT
+   introduce new storage or duplicate data: every method simply reads from
+   the source that already owns that data.
+     - training/recovery -> the Supabase-backed "workouts" table (via the
+       existing getAnalyticsRows), where recovery already lives inside each
+       day's record as data.recovery.{sleep,energy,soreness}
+     - trainingLoad/recovery helpers -> the existing tpWorkoutLoad /
+       tpRecoveryValues / tpRecoveryScore functions above (window.tp*)
+     - nutrition/body -> NutriTracker's own state (window.TrainMeiNutri)
+     - cycle -> the Cycle Tracker module's own snapshot (window.tpCycleSnapshot)
+   If a source isn't loaded yet, the matching method returns null/[] rather
+   than inventing data (see punto 13/17 of the spec: no fabricar datos). */
+const TrainingDataCore={
+  VERSION:'3.0.0',
+  user:()=>currentUser,
+  training:(from,to)=>getAnalyticsRows(from,to),
+  recovery:d=>window.tpRecoveryValues?window.tpRecoveryValues(d):null,
+  recoveryScore:d=>window.tpRecoveryScore?window.tpRecoveryScore(d):null,
+  trainingLoad:d=>window.tpWorkoutLoad?window.tpWorkoutLoad(d):0,
+  nutrition:()=>window.TrainMeiNutri?.getSnapshot?.()||null,
+  body:()=>{const n=window.TrainMeiNutri?.getSnapshot?.();return n?{weight:n.weight||null}:null},
+  cycle:()=>window.tpCycleSnapshot?window.tpCycleSnapshot():null,
+  clamp(n,a=0,b=100){return Math.max(a,Math.min(b,Number(n)||0))},
+  avg(a){return a.length?a.reduce((x,y)=>x+Number(y||0),0)/a.length:0},
+  corr(a,b){if(a.length<5||b.length!==a.length)return 0;const ma=this.avg(a),mb=this.avg(b),sa=Math.sqrt(this.avg(a.map(x=>(x-ma)**2))),sb=Math.sqrt(this.avg(b.map(x=>(x-mb)**2)));return sa&&sb?this.avg(a.map((x,i)=>(x-ma)*(b[i]-mb)))/(sa*sb):0},
+  dayKey(d=new Date()){const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`},
+  recoveryPercent(d){const rv=this.recovery(d);if(!rv||!rv.hasData)return null;const sub=[];if(Number(rv.sleep)>0)sub.push(Number(rv.sleep)/5*100);if(Number(rv.energy)>0)sub.push(Number(rv.energy)/5*100);if(Number(rv.soreness)>0)sub.push((6-Number(rv.soreness))/5*100);return sub.length?this.avg(sub):null},
+  nutritionContext(date){const n=this.nutrition()||{},i=n.intake||{},t=n.targets||{},same=!date||!n.date||n.date===date;const intake={kcal:same&&i.kcal!=null?Number(i.kcal):null,carb:same&&i.carb!=null?Number(i.carb):null,prot:same&&i.prot!=null?Number(i.prot):null,fat:same&&i.fat!=null?Number(i.fat):null};const coverage={kcal:intake.kcal!=null&&Number(t.kcal)>0?Math.round(intake.kcal/Number(t.kcal)*100):null,carb:intake.carb!=null&&Number(t.carb)>0?Math.round(intake.carb/Number(t.carb)*100):null,prot:intake.prot!=null&&Number(t.prot)>0?Math.round(intake.prot/Number(t.prot)*100):null};return{date:date||n.date||null,source:same?(n.source||'fatsecret'):'historical',connected:same?!!n.connected:false,intake,targets:{kcal:Number(t.kcal)||null,carb:Number(t.carb)||null,prot:Number(t.prot)||null,fat:Number(t.fat)||null},coverage}},
+  async nutritionHistory(from,to){const sb=window.supabaseClient;if(!sb)return[];try{const {data,error}=await sb.from('nutrition_daily_summaries').select('summary_date,calories_kcal,protein_g,carbohydrate_g,fat_g').gte('summary_date',from).lte('summary_date',to).order('summary_date',{ascending:true});return error?[]:(data||[]).map(r=>({date:r.summary_date,kcal:Number(r.calories_kcal)||null,prot:Number(r.protein_g)||null,carb:Number(r.carbohydrate_g)||null,fat:Number(r.fat_g)||null,source:'fatsecret'}))}catch(e){return[]}},
+  plannedWorkout(date){try{const d=new Date(date+'T12:00:00'),monday=new Date(d);monday.setDate(d.getDate()-((d.getDay()+6)%7));const mk=this.dayKey(monday),week=typeof planData!=='undefined'?planData?.weeks?.[mk]:null,info=week?.days?.[date];if(!info)return null;const t=typeof templateForId==='function'?templateForId(info.templateId):null;return t?.data||t?.workout||t||null}catch(e){return null}},
+  trainingDemand(date,workout){let w=workout||null,planned=!w;if(!w&&window.tpAllWorkoutRows){try{w=(window.tpAllWorkoutRows()||[]).find(r=>r.date===date)?.data||null}catch(e){}}if(!w)w=this.plannedWorkout(date);if(!w)return{date,hasWorkout:false,planned:false,score:0,demand:'Low',type:'No session',load:0,volume:0,duration:0,distance:0,rpe:0,conditioning:false,running:false,strength:false};const blocks=Array.isArray(w.blocks)?w.blocks:[],ex=blocks.flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]).filter(e=>String(e?.name||'').trim()),sets=ex.reduce((n,e)=>(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0),n),0),volume=ex.reduce((n,e)=>(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0)*(Number(String(g?.reps||'').match(/\d+(?:\.\d+)?/)?.[0])||0)*(Number(g?.weight)||0),n),0),metrics=w.metrics||{},text=JSON.stringify(w).toLowerCase(),distance=Number(metrics.distanceKm)||0,duration=Number(metrics.timeMin)||0,load=Number(metrics.load)||0,rpe=Number(metrics.rpe)||0,running=/run|running|row|cycling|bike/.test(text),strength=/strength|squat|deadlift|bench|press|pull|hypertrophy/.test(text),conditioning=/amrap|for time|emom|time cap|conditioning|hyrox/.test(text),score=Math.min(100,Math.round((running?Math.min(35,distance*2.5):0)+(duration?Math.min(25,duration/3):0)+(volume?Math.min(20,volume/450):0)+(load?Math.min(20,load/5):0)+(rpe?Math.min(12,rpe*1.5):0)+(conditioning?10:0)));return{date,hasWorkout:true,planned,score,demand:score>=72?'High':score>=42?'Moderate':'Low',type:running?'Running / endurance':conditioning?'Conditioning':strength?'Strength':'Mixed training',sets,volume,distance,duration,load,rpe,conditioning,running,strength}},
+  performanceFuel(date,workout,nutritionOverride=null){const base=this.nutrition(),n=nutritionOverride?{date,source:'fatsecret',connected:true,intake:{kcal:nutritionOverride.kcal??null,carb:nutritionOverride.carb??null,prot:nutritionOverride.prot??null,fat:nutritionOverride.fat??null},targets:{kcal:Number(base?.targets?.kcal)||null,carb:Number(base?.targets?.carb)||null,prot:Number(base?.targets?.prot)||null,fat:Number(base?.targets?.fat)||null},coverage:{kcal:nutritionOverride.kcal!=null&&base?.targets?.kcal?Math.round(nutritionOverride.kcal/base.targets.kcal*100):null,carb:nutritionOverride.carb!=null&&base?.targets?.carb?Math.round(nutritionOverride.carb/base.targets.carb*100):null,prot:nutritionOverride.prot!=null&&base?.targets?.prot?Math.round(nutritionOverride.prot/base.targets.prot*100):null}}:this.nutritionContext(date),d=this.trainingDemand(date,workout),c=n.coverage.carb,k=n.coverage.kcal,p=n.coverage.prot;if(c==null&&k==null&&p==null)return{date,score:null,status:'Insufficient data',demand:d,coverage:n.coverage,limitingFactor:null};const demandWeight=d.demand==='High'?1.15:d.demand==='Moderate'?1:.85,parts=[];if(c!=null)parts.push({v:this.clamp(c/demandWeight,0,120),w:.5,label:'Carbohydrate coverage'});if(k!=null)parts.push({v:this.clamp(k,0,120),w:.3,label:'Energy coverage'});if(p!=null)parts.push({v:this.clamp(p,0,120),w:.2,label:'Protein coverage'});const score=Math.round(parts.reduce((s,x)=>s+x.v*x.w,0)/parts.reduce((s,x)=>s+x.w,0)),status=score>=90?'Well fueled':score>=70?'Adequate':score>=50?'Needs attention':'Low fuel coverage',limiting=parts.reduce((a,b)=>b.v<a.v?b:a).label;return{date,score,status,demand:d,coverage:n.coverage,limitingFactor:limiting}},
+  async recentLoadRatio(refDateKey){const ref=new Date(refDateKey+'T12:00:00'),monday=new Date(ref);monday.setDate(ref.getDate()-((ref.getDay()+6)%7));const start=new Date(monday);start.setDate(monday.getDate()-21);const iso=d=>this.dayKey(d),rows=await this.training(iso(start),iso(new Date(monday.getFullYear(),monday.getMonth(),monday.getDate()+6))),by={};rows.forEach(r=>by[r.date]=this.trainingLoad(r.data));const week=w=>{const s=new Date(monday);s.setDate(monday.getDate()-w*7);let t=0;for(let i=0;i<7;i++){const d=new Date(s);d.setDate(s.getDate()+i);t+=by[iso(d)]||0}return t},total=week(0);let prev=0,n=0;for(let w=1;w<=3;w++){const x=week(w);if(x>0){prev+=x;n++}}const avgPrev=n?prev/n:total;return{ratio:avgPrev?total/avgPrev:1,hasData:total>0}},
+  recoveryContext(date,dayData){const rv=this.recovery(dayData),rp=this.recoveryPercent(dayData),n=this.nutritionContext(date),fuel=this.performanceFuel(date,dayData);return{date,recovery:rv,recoveryPercent:rp,nutrition:n,fuel}},
+  async unifiedContext(date,workout){const cycle=this.cycle()||{},demand=this.trainingDemand(date,workout),fuel=this.performanceFuel(date,workout),load=await this.recentLoadRatio(date),recovery=this.recovery(workout),recoveryPercent=this.recoveryPercent(workout),nutrition=this.nutritionContext(date);return{date,workout:workout||null,training:demand,nutrition,recovery,recoveryPercent,fuel,loadRatio:load.ratio,cycle,body:this.body()}},
+  async learningEvents(){const local=[];try{const raw=JSON.parse(localStorage.getItem('training-planner:brain:v1')||'{}');if(Array.isArray(raw.events))local.push(...raw.events)}catch{};return local},
+  async learningProfile(from,to){const rows=await this.training(from,to),nutrition=await this.nutritionHistory(from,to),nm=new Map(nutrition.map(x=>[x.date,x])),events=await this.learningEvents(),sessions=rows.filter(r=>r.data?.completed).map(r=>{const d=r.data||{},rv=this.recovery(d)||{},n=nm.get(r.date)||null,f=this.performanceFuel(r.date,d,n);return{date:r.date,data:d,rpe:Number(d.metrics?.rpe)||0,load:this.trainingLoad(d),volume:Number(d.metrics?.volume)||0,sleep:Number(rv.sleep)||0,energy:Number(rv.energy)||0,soreness:Number(rv.soreness)||0,carb:n?.carb??null,kcal:n?.kcal??null,prot:n?.prot??null,fuel:f.score,feedback:d.sessionFeedback||null}}),patterns=[];const add=(kind,text,n,confidence)=>patterns.push({kind,text,n,confidence});const usable=sessions.filter(s=>s.rpe>0&&s.fuel!=null);if(usable.length>=6){const hi=usable.filter(s=>s.fuel>=85),lo=usable.filter(s=>s.fuel<65);if(hi.length>=3&&lo.length>=3){const a=this.avg(hi.map(x=>x.rpe)),b=this.avg(lo.map(x=>x.rpe));if(Math.abs(a-b)>=.4)add('Fuel ↔ RPE',`Higher-fuel sessions averaged RPE ${a.toFixed(1)} vs ${b.toFixed(1)} on lower-fuel sessions.`,usable.length,this.clamp(55+Math.abs(a-b)*18,55,92))}}const rec=sessions.filter(s=>s.rpe>0&&s.sleep>0);if(rec.length>=6){const c=this.corr(rec.map(x=>x.sleep),rec.map(x=>x.rpe));if(Math.abs(c)>=.25)add('Sleep ↔ RPE',`Your logged sleep and RPE show a correlation of ${c.toFixed(2)} across ${rec.length} comparable sessions.`,rec.length,this.clamp(50+Math.abs(c)*45,50,92))}const feedback=events.filter(e=>/feedback|adjustment|cycle|session/i.test(e.type||''));return{generatedAt:new Date().toISOString(),sample:sessions.length,recentSample:sessions.filter(s=>s.date>=this.dayKey(Date.now()-42*86400000)).length,nutritionSample:nutrition.length,patterns,events:feedback,sessions,nutrition}},
+  adaptation(context,profile){const c=context||{},p=profile||{},actions=[],signals=[];const fuel=c.fuel?.score,recovery=c.recoveryPercent,load=c.loadRatio,cycle=c.cycle||{};if(recovery!=null&&recovery<55){actions.push('Reduce intensity or accessory volume today; keep the main movement technically controlled.');signals.push('Recovery below your observed range')}else if(recovery!=null&&recovery<70){actions.push('Keep planned load stable and use RPE/technique as the progression gate.');signals.push('Recovery moderate')}if(fuel!=null&&fuel<60)actions.push('Prioritize fueling around the session; avoid treating low fuel as a reason to force higher intensity.');if(load!=null&&load>1.18)actions.push('Recent load is elevated versus your prior weeks; avoid adding volume unless execution is clearly strong.');if(cycle.phase==='menstrual')actions.push('Period logged: use your own observed response as the primary guide; if symptoms or recovery are worse than usual, reduce intensity, impact or volume and extend recovery.');const phasePattern=(p.patterns||[]).find(x=>String(x.kind).includes(`Cycle phase ↔`)&&String(x.kind).includes(cycle.phase||'___'));if(phasePattern)actions.push(`Your history shows a phase-specific RPE pattern (${phasePattern.text.replace(/^Your logged sessions /,'Logged sessions ')}). Use it as context, not as a fixed rule.`);if(!actions.length)actions.push('No strong limiter detected. Follow the planned session and let execution feedback determine progression.');return{actions,signals,cycleImpact:cycle.phase?`Cycle context: ${cycle.phase}.`:'No cycle phase logged.',confidence:p.sample>=12?'High':p.sample>=6?'Moderate':'Low'}},
+  readiness(dayData,context={}){const parts=[],factors=[],rp=this.recoveryPercent(dayData);if(rp!=null){parts.push({value:rp,weight:.4});factors.push({label:'Recovery',value:rp})}if(context.loadRatio!=null){const v=this.clamp(100-Math.abs(context.loadRatio-1)*60,15,100);parts.push({value:v,weight:.25});factors.push({label:'Recent training load',value:v})}if(context.fuelScore!=null){parts.push({value:this.clamp(context.fuelScore),weight:.2});factors.push({label:'Performance fuel',value:context.fuelScore})}if(context.cyclePhase){const v={menstrual:60,follicular:70,ovulatory:72,luteal:64}[context.cyclePhase]??65;parts.push({value:v,weight:.15});factors.push({label:'Cycle context',value:v})}if(!parts.length)return{score:null,status:'No data yet',confidence:'insufficient data',factors:[],mainLimitingFactor:null};const score=Math.round(parts.reduce((s,p)=>s+p.value*p.weight,0)/parts.reduce((s,p)=>s+p.weight,0)),status=score>=75?'Training normally':score>=55?'Adjust intensity':'Recovery-focused session';return{score,status,confidence:factors.length>=3?'Good confidence':factors.length===2?'Moderate confidence':'Low confidence',factors,mainLimitingFactor:factors.reduce((a,b)=>b.value<a.value?b:a).label}},
+  async getUnifiedProfile(days=365){const to=this.dayKey(),from=this.dayKey(Date.now()-days*86400000);return this.learningProfile(from,to)},
+  async getUnifiedContext(date,workout){const c=await this.unifiedContext(date,workout),p=await this.getUnifiedProfile(365);return{...c,profile:p,adaptation:this.adaptation(c,p)}},
+  recordEvent(event){const e={...event,id:`${Date.now()}_${Math.random().toString(36).slice(2,8)}`,createdAt:new Date().toISOString()};try{const raw=JSON.parse(localStorage.getItem('training-planner:brain:v1')||'{}');raw.events=[...(raw.events||[]),e].slice(-150);localStorage.setItem('training-planner:brain:v1',JSON.stringify(raw))}catch{};document.dispatchEvent(new CustomEvent('trainmei:core-learning',{detail:e}));return e},
+  async personalInsights(from,to){const p=await this.learningProfile(from,to);return{sample:p.sample,insights:p.patterns,sessions:p.sessions,nutritionSample:p.nutritionSample}},
+};
+window.TrainingDataCore=TrainingDataCore;
+
+async function renderDayContext(){
+  const box=$('#day-context');if(!box||!window.TrainingDataCore)return;
+  const cyclePhase=window.tpCycleSnapshot?window.tpCycleSnapshot().phase:null;
+  let loadRatio=null,fuelScore=null;
+  try{
+    const li=await TrainingDataCore.recentLoadRatio(selectedDateKey);if(li.hasData)loadRatio=li.ratio;
+    const fuel=TrainingDataCore.performanceFuel(selectedDateKey,currentDay);if(fuel.score!=null)fuelScore=fuel.score;
+  }catch(e){}
+  const readiness=TrainingDataCore.readiness(currentDay,{loadRatio,fuelScore,cyclePhase});
+  box.innerHTML=readiness.score!==null
+    ?`<div class="brain-driver"><span>Readiness</span><strong>${readiness.score} · ${readiness.status}</strong></div><div class="brain-legend">${readiness.confidence}${readiness.mainLimitingFactor?' · Main factor: '+readiness.mainLimitingFactor:''}</div>`
+    :'<div class="brain-empty">Log sleep, energy and soreness below to see today\'s readiness.</div>';
+}
+
 startApp();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();
@@ -4863,14 +5363,15 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').cat
 })();
 /* ===== NUTRI TRACKER (namespaced) ===== */
 (function(){
-const NT_KEYS={weight:'nutritrack_weight_v2',targets:'nutritrack_targets_v2',profile:'nutritrack_profile_v2',split:'nutritrack_split_v2'};
-let ntState={profile:{sexo:'hombre',edad:30,peso:70,altura:175,actividad:1.55,objetivo:1},macroSplit:{prot:30,carb:40,fat:30},targets:{kcal:0,prot:0,carb:0,fat:0},weightHistory:[]};
+const NT_KEYS={weight:'nutritrack_weight_v2',targets:'nutritrack_targets_v2',profile:'nutritrack_profile_v2',split:'nutritrack_split_v2',intake:'nutritrack_intake_v1'};
+let ntState={profile:{sexo:'hombre',edad:30,peso:70,altura:175,actividad:1.55,objetivo:1},macroSplit:{prot:30,carb:40,fat:30},targets:{kcal:0,prot:0,carb:0,fat:0},weightHistory:[],intake:{date:'',kcal:0,carb:0,prot:0}};
 let ntMacroChart=null,ntWeightChart=null;
-function ntLoad(){try{const w=localStorage.getItem(NT_KEYS.weight);if(w)ntState.weightHistory=JSON.parse(w);const t=localStorage.getItem(NT_KEYS.targets);if(t)ntState.targets=JSON.parse(t);const p=localStorage.getItem(NT_KEYS.profile);if(p){ntState.profile=JSON.parse(p);ntApplyProfile();}const s=localStorage.getItem(NT_KEYS.split);if(s)ntState.macroSplit=JSON.parse(s);}catch(e){}}
+function ntLoad(){try{const w=localStorage.getItem(NT_KEYS.weight);if(w)ntState.weightHistory=JSON.parse(w);const t=localStorage.getItem(NT_KEYS.targets);if(t)ntState.targets=JSON.parse(t);const p=localStorage.getItem(NT_KEYS.profile);if(p){ntState.profile=JSON.parse(p);ntApplyProfile();}const s=localStorage.getItem(NT_KEYS.split);if(s)ntState.macroSplit=JSON.parse(s);const i=localStorage.getItem(NT_KEYS.intake);if(i)ntState.intake=JSON.parse(i);}catch(e){}}
 function ntSaveWeight(){try{localStorage.setItem(NT_KEYS.weight,JSON.stringify(ntState.weightHistory));}catch(e){}}
 function ntSaveTargets(){try{localStorage.setItem(NT_KEYS.targets,JSON.stringify(ntState.targets));}catch(e){}}
 function ntSaveProfile(){try{localStorage.setItem(NT_KEYS.profile,JSON.stringify(ntState.profile));}catch(e){}}
 function ntSaveSplit(){try{localStorage.setItem(NT_KEYS.split,JSON.stringify(ntState.macroSplit));}catch(e){}}
+function ntSaveIntake(){try{localStorage.setItem(NT_KEYS.intake,JSON.stringify(ntState.intake));}catch(e){}}
 function ntApplyProfile(){const f=['sexo','edad','peso','altura','actividad','objetivo'];f.forEach(id=>{const el=document.getElementById('nt-'+id);if(el)el.value=ntState.profile[id];});}
 function ntReadProfile(){return{sexo:document.getElementById('nt-sexo').value,edad:+document.getElementById('nt-edad').value,peso:+document.getElementById('nt-peso').value,altura:+document.getElementById('nt-altura').value,actividad:+document.getElementById('nt-actividad').value,objetivo:+document.getElementById('nt-objetivo').value};}
 function ntTMB(p){let t=(10*p.peso)+(6.25*p.altura)-(5*p.edad);t+=p.sexo==='hombre'?5:-161;return t;}
@@ -4914,6 +5415,8 @@ function ntAddWeight(){
   if(ntState.weightHistory.length>365)ntState.weightHistory=ntState.weightHistory.slice(-365);
   ntSaveWeight();inp.value='';ntRenderWeight();ntToast(idx>=0?'Weight updated ✓':'Weight saved ✓');
 }
+function ntSaveTodayIntake(){const k=ntTodayKey(),kcal=Math.max(0,parseFloat(document.getElementById('nt-intakeKcal')?.value)||0),carb=Math.max(0,parseFloat(document.getElementById('nt-intakeCarb')?.value)||0),prot=Math.max(0,parseFloat(document.getElementById('nt-intakeProt')?.value)||0);ntState.intake={date:k,kcal,carb,prot};ntSaveIntake();ntRenderIntake();ntToast("Today's intake saved ✓");}
+function ntRenderIntake(){const remote=window.TrainMeiNutritionData?.getSnapshot?.();const i=remote?.intake||{};const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v==null?'—':String(v)};set('nt-intakeKcalValue',i.kcal==null?null:Math.round(Number(i.kcal)));set('nt-intakeCarbValue',i.carb);set('nt-intakeProtValue',i.prot);set('nt-intakeFatValue',i.fat);const source=document.getElementById('nt-intakeSource');if(source)source.textContent=i.source==='fatsecret'?'FatSecret · synced nutrition data':'FatSecret · waiting for sync';const hint=document.getElementById('nt-intakeHint');if(hint)hint.textContent=i.kcal!=null?`Actual intake today: ${Math.round(Number(i.kcal))} kcal · ${i.carb??'—'} g carbs · ${i.prot??'—'} g protein.`:'Sync your FatSecret diary to make actual intake available to Nutri Tracker, Nutrition Optimizer and Training Brain.';}
 function ntDeleteWeight(date){ntState.weightHistory=ntState.weightHistory.filter(w=>w.date!==date);ntSaveWeight();ntRenderWeight();ntToast('Entry deleted');}
 function ntClearWeight(){if(!ntState.weightHistory.length)return;if(!confirm('Delete all weight history?'))return;ntState.weightHistory=[];ntSaveWeight();ntRenderWeight();ntToast('History cleared');}
 function ntRenderWeight(){
@@ -4975,7 +5478,7 @@ function ntInit(){
   const calcBtn=document.getElementById('nt-calcBtn');if(calcBtn)calcBtn.addEventListener('click',ntRenderCalc);
   const wBtn=document.getElementById('nt-addWeightBtn');if(wBtn)wBtn.addEventListener('click',ntAddWeight);
   const wInp=document.getElementById('nt-newWeight');if(wInp)wInp.addEventListener('keydown',e=>{if(e.key==='Enter')ntAddWeight();});
-  const clrBtn=document.getElementById('nt-clearWeightBtn');if(clrBtn)clrBtn.addEventListener('click',ntClearWeight);
+  const clrBtn=document.getElementById('nt-clearWeightBtn');if(clrBtn)clrBtn.addEventListener('click',ntClearWeight);const intakeBtn=document.getElementById('nt-saveIntakeBtn');if(intakeBtn)intakeBtn.addEventListener('click',ntSaveTodayIntake);
   if(ntState.targets.kcal>0){
     document.getElementById('nt-resultCard').style.display='block';
     document.getElementById('nt-totalKcal').textContent=ntState.targets.kcal;
@@ -4992,7 +5495,9 @@ function ntInit(){
   document.getElementById('nt-fatPct').value=ntState.macroSplit.fat;
   ntUpdateSliders();
   ntRenderWeight();
+  ntRenderIntake();
 }
+window.TrainMeiNutri={getSnapshot:()=>{const latest=ntState.weightHistory.length?ntState.weightHistory[ntState.weightHistory.length-1]:null;const base={targets:{...ntState.targets},profile:{...ntState.profile},macroSplit:{...ntState.macroSplit},weight:(latest?.kg ?? Number(ntState.profile?.peso) ?? null),intake:{kcal:null,carb:null,prot:null,fat:null,date:ntTodayKey(),source:null}};const remote=window.TrainMeiNutritionData?.getSnapshot?.();if(remote){base.intake={...base.intake,...(remote.intake||{})};if(remote.weight!=null)base.weight=remote.weight;base.nutrition=remote;}return base}};
 document.addEventListener('DOMContentLoaded',()=>{ntInit();ntSetupSmartPanelCollapse();});
 })();
 /* ===== SETTINGS / THEME ===== */
@@ -5349,7 +5854,12 @@ document.addEventListener('DOMContentLoaded',()=>{ntInit();ntSetupSmartPanelColl
   }
   document.addEventListener('DOMContentLoaded',init);
 })();
-/* ===== FIX: SMART INTEGRATIONS LAUNCH CARDS ===== */
+/* ===== Smart Integrations: shared-panel router =====
+   The Garmin/OCR, Nutri Tracker and Workout Creator panels are authored once
+   (inside the Integrations page two-column layout) and reused as full pages.
+   This module relocates those DOM nodes into their dedicated page slots and
+   wires the launch-card / back navigation for them, since they live outside
+   #main-nav and are not covered by the main showPage() click handler. */
 (function(){
   function moveSmartPanels(){
     const moves = [
@@ -5427,90 +5937,460 @@ document.addEventListener('DOMContentLoaded',()=>{ntInit();ntSetupSmartPanelColl
 <script>
 /* ===== Nutrition Optimizer ===== */
 (function(){
+'use strict';
+const FEEDBACK_KEY='nutrition_optimizer_feedback_v1';let timing=60,variant=0;
+const escN=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const todayKey=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const addDays=(k,n)=>{const d=new Date(k+'T12:00:00');d.setDate(d.getDate()+n);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const readWorkout=k=>{try{const r=localStorage.getItem('training-planner:workout:'+k);return r?JSON.parse(r):null}catch(e){return null}};
+const readFeedback=()=>{try{const r=localStorage.getItem(FEEDBACK_KEY),v=r?JSON.parse(r):[];return Array.isArray(v)?v:[]}catch(e){return[]}};const saveFeedback=v=>{try{localStorage.setItem(FEEDBACK_KEY,JSON.stringify(v.slice(-30)))}catch(e){}};
+function metrics(w){const ex=(w?.blocks||[]).flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]).filter(e=>String(e?.name||'').trim()),sets=ex.reduce((n,e)=>n+(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0),0),0),volume=ex.reduce((n,e)=>n+(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0)*(Number(String(g?.reps||'').match(/\d+(?:\.\d+)?/)?.[0])||0)*(Number(g?.weight)||0),0),0),text=JSON.stringify(w||{}).toLowerCase(),distance=Number(w?.metrics?.distanceKm)||0,duration=Number(w?.metrics?.timeMin)||0,load=Number(w?.metrics?.load)||0,rpe=Number(w?.metrics?.rpe)||0,running=/run|running|row|cycling|bike/.test(text),strength=/strength|squat|deadlift|bench|press|pull|hypertrophy/.test(text),conditioning=/amrap|for time|emom|time cap|conditioning|hyrox/.test(text),score=Math.min(100,Math.round((running?Math.min(35,distance*2.5):0)+(duration?Math.min(25,duration/3):0)+(volume?Math.min(20,volume/450):0)+(load?Math.min(20,load/5):0)+(rpe?Math.min(12,rpe*1.5):0)+(conditioning?10:0)));return{sets,volume,distance,duration,load,rpe,running,strength,conditioning,type:running?'Running / endurance':conditioning?'Conditioning':strength?'Strength':'Mixed training',demand:score>=72?'High':score>=42?'Moderate':'Low'};}
+function session(){const w=readWorkout(todayKey());if(!w)return{workout:null,title:'No workout planned',type:'No session',demand:'Low',sets:0,volume:0,distance:0,duration:0,load:0,rpe:0};const m=window.TrainingDataCore?.trainingDemand?.(todayKey(),w)||metrics(w);return{workout:w,title:w.focus||w.trainingCategory||'Training session',...m};}
+function nutri(){return window.TrainMeiNutri?.getSnapshot?.()||{targets:{kcal:0,carb:0,prot:0},weight:70,intake:{kcal:0,carb:0,prot:0}}}
+const meals={30:[['Banana + rice cakes',['1 banana','2 rice cakes','15 g skyr or whey']],['Yogurt + banana',['120 g skyr','½ banana','10 g honey']]],60:[['Cream of Rice Bowl',['30 g cream of rice','150 g skyr 0%','½ banana','5 g honey']],['Toast + turkey + banana',['2 small slices white toast','50 g turkey breast','½ banana']],['Skyr + rice cereal + banana',['170 g skyr 0%','25 g rice cereal','½ banana']]],120:[['Oats + yogurt + banana',['40 g oats','170 g skyr','1 banana']],['Toast + eggs + fruit',['2 slices toast','1 egg + 100 g egg whites','1 small fruit']]],180:[['Rice + chicken + fruit',['120 g cooked rice','100 g chicken','1 piece of fruit']],['Oats + yogurt + fruit',['50 g oats','200 g skyr','1 banana']]]};
+function target(d,n){const w=Math.max(40,Number(n.weight)||70);let c=Math.round(w*({30:.35,60:.65,120:.9,180:1.05}[timing]||.65)),p=Math.round(w*.2);if(d.running)c+=Math.round((d.distance>8?20:d.distance>5?12:4)+(d.duration>75?12:0));else if(d.strength){c+=d.volume>5000?12:6;p+=d.volume>5000?4:0}if(d.conditioning)c+=10;if(d.rpe>=8)c+=8;if(d.duration>=90)c+=10;if(timing===30){c=Math.round(c*.7);p=Math.round(p*.7)}if(timing===180)p+=5;const i=n.intake||{},hasK=i.kcal!=null,hasC=i.carb!=null,hasP=i.prot!=null,rk=hasK&&n.targets.kcal?Math.max(0,n.targets.kcal-i.kcal):null,rc=hasC&&n.targets.carb?Math.max(0,n.targets.carb-i.carb):null,rp=hasP&&n.targets.prot?Math.max(0,n.targets.prot-i.prot):null;if(rk!=null)c=Math.min(c,Math.max(15,Math.round(rc!=null?rc*.5:c)));if(rp!=null)p=Math.min(p,Math.max(8,Math.round(rp*.45)));return{k:Math.max(120,Math.round(c*4+p*4)),c:Math.max(15,Math.round(c)),p:Math.max(8,Math.round(p))};}
+function nextSession(){for(let i=1;i<=7;i++){const w=readWorkout(addDays(todayKey(),i));if(w)return{date:addDays(todayKey(),i),title:w.focus||w.trainingCategory||'Next session',m:metrics(w)}}return null}
+function during(d,n){if(!d.workout)return'No session planned yet.';if(d.duration<45&&d.distance<5)return'Water is usually enough for this short session; use your own feedback to decide if carbohydrate helps.';let c=(d.duration>=60?20:0)+(d.duration>=90?15:0)+(d.distance>=8?20:0)+(d.rpe>=8?10:0)+(d.conditioning?10:0);return c?`Consider ~${c} g carbohydrate per hour, adjusted to tolerance and actual duration.`:'Use thirst and session feedback as the main guide.'}
+function after(d,next,n){if(!d.workout)return'Complete a session first to generate recovery guidance.';const w=Number(n.weight)||70,p=Math.max(20,Math.round(w*.3)),c=Math.max(25,Math.round((d.duration>=75?(d.distance>=8?1:.8):.6)*w)+(next?.m.duration>=75||next?.m.distance>=8?15:0));return`Post-workout target: ~${c} g carbohydrate + ${p} g protein, adjusted to your daily Nutri Tracker targets.${next?` Next session: ${next.title}.`:' No next session is planned in 7 days.'}`}
+function learning(f){if(f.length<3)return'After at least 3 completed feedback entries, the app will identify patterns in your timing and carbohydrate intake.';const good=f.filter(x=>x.tolerance>=4&&x.energy>=4&&x.performance>=4&&x.hunger<=2);if(good.length<2)return'Your feedback is still mixed. Keep logging sessions so the app can distinguish what consistently works for you.';const c=good.reduce((s,x)=>s+x.carbs,0)/good.length,t=good.reduce((s,x)=>s+x.timing,0)/good.length;return`Your logged responses suggest that ~${Math.round(c-5)}–${Math.round(c+5)} g carbs around ${Math.round(t)} min before training has worked best so far (${good.length} positive sessions). This is a personal pattern, not a fixed rule.`}
+function render(){const d=session(),n=nutri(),t=target(d,n),set=meals[timing]||meals[60],m=set[variant%set.length],next=nextSession(),f=readFeedback();const title=document.getElementById('no-session-title'),meta=document.getElementById('no-session-meta');if(!title)return;title.textContent=d.title;meta.textContent=d.workout?`${d.type} · ${d.duration||0} min · ${d.distance?d.distance+' km · ':''}${Math.round(d.volume)} volume · RPE ${d.rpe||'—'}`:'Add today\'s workout to personalize the recommendation.';document.getElementById('no-demand-badge').textContent=d.workout?d.demand.toUpperCase():'NO SESSION';document.getElementById('no-session-tags').innerHTML=d.workout?[d.type,d.duration?`${d.duration} min`:null,d.distance?`${d.distance} km`:null,d.volume?`${Math.round(d.volume)} volume`:null,d.rpe?`RPE ${d.rpe}`:null].filter(Boolean).map(x=>`<span>${escN(x)}</span>`).join(''):'';document.getElementById('no-timing-label').textContent=timing===180?'3+ h':timing===120?'2 h':timing+' min';document.getElementById('no-kcal').textContent=t.k;document.getElementById('no-carbs').textContent=t.c;document.getElementById('no-protein').textContent=t.p;document.getElementById('no-meal-name').textContent=m[0];document.getElementById('no-meal-items').innerHTML=m[1].map(x=>`<div>• ${escN(x)}</div>`).join('');document.getElementById('no-meal-why').textContent=`Built from ${d.type.toLowerCase()}, duration, distance, volume, load/RPE and your Nutri Tracker targets/intake.`;const i=n.intake||{};document.getElementById('no-intake-status').textContent=(i.kcal!=null||i.carb!=null||i.prot!=null)?'FatSecret synced':'No intake synced';document.getElementById('no-nutri-context').innerHTML=[['Target kcal',n.targets.kcal||'—','daily'],['Consumed kcal',i.kcal==null?'—':Math.round(i.kcal),'FatSecret'],['Target carbs',n.targets.carb?`${n.targets.carb} g`:'—','daily'],['Consumed carbs',i.carb==null?'—':`${i.carb} g`,n.weight?`${n.weight} kg bodyweight`:'weight —']].map(x=>`<div><span>${x[0]}</span><strong>${x[1]}</strong><small>${x[2]}</small></div>`).join('');const fuel=window.TrainingDataCore?.performanceFuel?.(todayKey(),d.workout);const fuelScore=document.getElementById('no-fuel-score'),fuelCopy=document.getElementById('no-fuel-copy');if(fuelScore)fuelScore.textContent=fuel?.score!=null?`${fuel.score}% · ${fuel.status}`:'—';if(fuelCopy)fuelCopy.textContent=fuel?.score!=null?`${fuel.demand.demand} demand · ${fuel.limitingFactor||'No limiting factor identified'}`:'Sync FatSecret and log a session to calculate fuel.';document.getElementById('no-analysis-title').textContent=`${d.type} fueling`;document.getElementById('no-analysis-copy').textContent=d.workout?'The recommendation distinguishes short strength, long endurance and mixed sessions instead of relying on one High/Moderate/Low label.':'Add today\'s session to unlock session-specific fueling.';document.getElementById('no-analysis-list').innerHTML=[`${d.duration||0} min · ${d.distance||0} km · ${Math.round(d.volume)} volume · ${d.load||0} load`,n.targets.kcal?`Nutri target: ${n.targets.kcal} kcal · ${n.targets.carb} g carbs · ${n.targets.prot} g protein`:'Set a Nutri Tracker target first',i.kcal!=null?`Remaining today: ${n.targets.kcal?Math.max(0,n.targets.kcal-i.kcal):'—'} kcal · ${n.targets.carb&&i.carb!=null?Math.max(0,n.targets.carb-i.carb):'—'} g carbs`:'Sync FatSecret in Nutri Tracker for budget-aware recommendations'].map(x=>`<div>${escN(x)}</div>`).join('');document.getElementById('no-next-session').textContent=next?`Next · ${next.date}`:'Next session —';document.getElementById('no-nutrition-loop').innerHTML=[['BEFORE',`${t.c} g carbs · ${t.p} g protein · ~${t.k} kcal`,`${timing===180?'3+ h':timing===120?'2 h':timing+' min'} before`],['DURING',during(d,n),'Based on duration, distance and intensity'],['AFTER',after(d,next,n),'Based on completed work + next plan']].map(x=>`<div class="nutrition-loop-step"><strong>${x[0]}</strong>${escN(x[1])}<br><small>${escN(x[2])}</small></div>`).join('');document.getElementById('no-learning-count').textContent=`${f.length} session${f.length===1?'':'s'} · central model`;document.getElementById('no-learning-insight').textContent=learning(f);document.querySelectorAll('[data-nutrition-time]').forEach(b=>b.classList.toggle('active',Number(b.dataset.nutritionTime)===timing));}
+function home(){const title=document.getElementById('home-nutrition-title'),time=document.getElementById('home-nutrition-time'),body=document.getElementById('home-nutrition-body');if(!title||!body)return;const d=session(),n=nutri(),t=target(d,n);title.textContent=d.workout?'Nutrition Optimizer':'Nutrition Optimizer';time.textContent=d.workout?d.type:'—';body.innerHTML=d.workout?`<div class="home-nutrition-main"><strong>~${t.k} kcal</strong><span>60 min before training</span></div><div class="home-nutrition-meta"><span>${t.c} g carbs</span><span>${t.p} g protein</span><span>${escN(d.type)}</span></div>`:"<div class='home-empty'>Open today's workout to get a session-specific pre-workout recommendation.</div>"}
+function open(){document.querySelector('#main-nav [data-page="integrations-page"]')?.click();setTimeout(()=>{document.querySelector('.smart-launch-card[data-page="nutrition-page"]')?.click();setTimeout(render,30)},0)}
+function saveFB(){const v={tolerance:+document.getElementById('no-feedback-tolerance')?.value||0,energy:+document.getElementById('no-feedback-energy')?.value||0,hunger:+document.getElementById('no-feedback-hunger')?.value||0,performance:+document.getElementById('no-feedback-performance')?.value||0};if(!Object.values(v).every(Boolean))return;const d=session(),n=nutri(),t=target(d,n),event={date:todayKey(),timing,carbs:t.c,kcal:t.k,protein:t.p,...v,sessionType:d.type,duration:d.duration,distance:d.distance};const a=readFeedback();a.push(event);saveFeedback(a);document.dispatchEvent(new CustomEvent('trainmei:nutrition-feedback',{detail:event}));['no-feedback-tolerance','no-feedback-energy','no-feedback-hunger','no-feedback-performance'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});render()}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-nutrition-time]');if(t){timing=+t.dataset.nutritionTime;variant=0;render();return}if(e.target.closest('#no-change-meal')){variant++;render();return}if(e.target.closest('#no-open-nutri')){document.querySelector('#main-nav [data-page="nutri-page"]')?.click();return}if(e.target.closest('#no-save-feedback')){saveFB();return}if(e.target.closest('[data-home-action="nutrition"]')){open();return}const p=e.target.closest('[data-page]');if(p?.dataset.page==='nutrition-page')setTimeout(render,30);if(p?.dataset.page==='home-page')setTimeout(home,80);});
+document.addEventListener('DOMContentLoaded',()=>{render();home()});window.TrainMeiNutrition={render,open};
+})();
+</script>
+
+<script>
+/* ============================================================
+   TRAINING BRAIN — view/controller of the single TrainingDataCore
+   No independent learning model lives here.
+   ============================================================ */
+(()=>{
   'use strict';
-  const PAGE='nutrition-page';
-  let timing=60, variant=0;
-  const escN=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const todayKey=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-  const readWorkout=()=>{try{const raw=localStorage.getItem('training-planner:workout:'+todayKey());return raw?JSON.parse(raw):null}catch(e){return null}};
-  function sessionData(){
-    const w=readWorkout();
-    if(!w)return {workout:null,title:'No workout planned',category:'Add a session first',demand:'Low',score:0,sets:0,exercises:0,distance:0,duration:0};
-    const blocks=Array.isArray(w.blocks)?w.blocks:[];
-    const exercises=blocks.flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]).filter(e=>String(e?.name||'').trim());
-    const sets=exercises.reduce((n,e)=>n+(Array.isArray(e.setGroups)?e.setGroups.reduce((s,g)=>s+(Number(g?.sets)||0),0):(Number(e?.sets)||0)),0);
-    const text=JSON.stringify(w).toLowerCase();
-    const distance=Number(w.metrics?.distanceKm)||0,duration=Number(w.metrics?.timeMin)||0,load=Number(w.metrics?.load)||0;
-    const score=Math.min(100,Math.round(load?Math.min(100,load):sets*3+exercises.length*4+(duration>60?15:duration>40?8:0)+(distance>8?18:distance>3?8:0)+(/amrap|for time|emom|time cap|conditioning|running/.test(text)?15:0)));
-    const demand=score>=70?'High':score>=40?'Moderate':'Low';
-    return {workout:w,title:w.focus||w.trainingCategory||'Training session',category:w.trainingCategory||blocks.map(b=>b.name).filter(Boolean).slice(0,2).join(' · ')||'Training',demand,score,sets,exercises:exercises.length,distance,duration};
-  }
-  const mealSets={
-    30:[
-      {name:'Banana + rice cakes',items:['1 banana','2 rice cakes','15 g skyr or whey'],kcal:185,c:36,p:9,why:'Fast, low-volume carbohydrate with a small protein dose for a session starting soon.'},
-      {name:'Yogurt + banana',items:['120 g skyr','½ banana','10 g honey'],kcal:155,c:27,p:12,why:'Light and easy to digest when there is very little time before training.'}
-    ],
-    60:[
-      {name:'Cream of Rice Bowl',items:['30 g cream of rice','150 g skyr 0%','½ banana','5 g honey'],kcal:270,c:43,p:17,why:'Carbohydrate-focused with moderate protein and low fat for a high-demand session.'},
-      {name:'Toast + turkey + banana',items:['2 small slices white toast','50 g turkey breast','½ banana'],kcal:285,c:43,p:18,why:'A practical mixed option with enough carbohydrate without a heavy digestive load.'},
-      {name:'Skyr + rice cereal + banana',items:['170 g skyr 0%','25 g rice cereal','½ banana'],kcal:255,c:39,p:19,why:'Protein-forward but still carbohydrate-led for strength and hypertrophy work.'}
-    ],
-    120:[
-      {name:'Oats + yogurt + banana',items:['40 g oats','170 g skyr','1 banana'],kcal:325,c:55,p:22,why:'More complete meal for a longer gap before training; slightly more fibre is acceptable here.'},
-      {name:'Toast + eggs + fruit',items:['2 slices toast','1 egg + 100 g egg whites','1 small fruit'],kcal:310,c:39,p:25,why:'Balanced meal with more time for digestion before a demanding session.'}
-    ],
-    180:[
-      {name:'Rice + chicken + fruit',items:['120 g cooked rice','100 g chicken','1 piece of fruit'],kcal:390,c:55,p:31,why:'Full pre-training meal with enough time for digestion and a stronger carbohydrate base.'},
-      {name:'Oats + yogurt + fruit',items:['50 g oats','200 g skyr','1 banana'],kcal:370,c:61,p:25,why:'Complete meal for a longer pre-workout window.'}
-    ]
-  };
-  function target(data){
-    const base={Low:{30:[170,25,12],60:[210,32,15],120:[280,42,20],180:[340,50,24]},Moderate:{30:[190,30,10],60:[240,38,16],120:[310,48,22],180:[370,56,25]},High:{30:[210,34,10],60:[270,43,17],120:[340,54,24],180:[410,62,28]}};
-    const [k,c,p]=base[data.demand][timing];
-    return {k,c,p};
+  const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let model=null;
+  async function refresh(){
+    if(!window.TrainingDataCore)return;
+    const from=TrainingDataCore.dayKey(Date.now()-365*86400000),to=TrainingDataCore.dayKey();
+    model=await TrainingDataCore.learningProfile(from,to);
+    const ctx=await TrainingDataCore.getUnifiedContext(to,window.tpAllWorkoutRows?.()?.find(r=>r.date===to)?.data||null);
+    model.context=ctx;model.adaptation=ctx.adaptation;
+    render();
   }
   function render(){
-    const root=document.getElementById('nutrition-optimizer'); if(!root)return;
-    const d=sessionData(), t=target(d), meals=mealSets[timing]||mealSets[60], m=meals[variant%meals.length];
-    const title=document.getElementById('no-session-title'),meta=document.getElementById('no-session-meta');
-    if(title)title.textContent=d.title;
-    if(meta)meta.textContent=d.workout?`${d.category} · ${d.exercises} exercises · ${d.sets||0} planned sets`:'Add or open today\'s workout to personalize the recommendation.';
-    document.getElementById('no-demand-badge').textContent=d.workout?d.demand.toUpperCase():'NO SESSION';
-    document.getElementById('no-session-tags').innerHTML=d.workout?[`${d.demand} demand`,d.duration?`${d.duration} min`:null,d.distance?`${d.distance} km`:null].filter(Boolean).map(x=>`<span>${escN(x)}</span>`).join(''):'';
-    document.getElementById('no-timing-label').textContent=timing===180?'3+ h':timing===120?'2 h':timing+' min';
-    document.getElementById('no-kcal').textContent=t.k;document.getElementById('no-carbs').textContent=t.c;document.getElementById('no-protein').textContent=t.p;
-    document.getElementById('no-meal-name').textContent=m.name;
-    document.getElementById('no-meal-items').innerHTML=m.items.map(x=>`<div>• ${escN(x)}</div>`).join('');
-    document.getElementById('no-meal-why').textContent=m.why;
-    document.getElementById('no-analysis-title').textContent=d.workout?`${d.demand} training demand`:'Session-aware fueling';
-    document.getElementById('no-analysis-copy').textContent=d.workout?'The meal target increases with session demand, then adjusts for how close you are to training.':'Add today\'s session to unlock training-aware targets.';
-    document.getElementById('no-analysis-list').innerHTML=[
-      `${d.demand==='High'?'Higher':'Moderate'} carbohydrate priority for today`,
-      timing<=60?'Keep fat and fibre relatively low close to training':'A longer window allows a more complete meal',
-      'Your observed recovery should guide how hard you train; food supports the planned demand'
-    ].map(x=>`<div>${escN(x)}</div>`).join('');
-    document.querySelectorAll('[data-nutrition-time]').forEach(b=>b.classList.toggle('active',Number(b.dataset.nutritionTime)===timing));
+    if(!model)return;
+    const ctx=model.context||{},a=model.adaptation||{},r=TrainingDataCore.readiness(ctx.workout||null,{loadRatio:ctx.loadRatio,fuelScore:ctx.fuel?.score,cyclePhase:ctx.cycle?.phase}),score=r.score??60,confidence=model.sample>=12?'High':model.sample>=6?'Moderate':'Low';
+    [$(`#brain-ring`),$(`#home-brain-ring`)].forEach(x=>x&&x.style.setProperty('--brain-score',score));['#brain-score','#home-brain-score'].forEach(id=>{const e=$(id);if(e)e.textContent=score});
+    if($('#brain-status'))$('#brain-status').textContent=r.status;if($('#brain-score-copy'))$('#brain-score-copy').textContent=`${confidence} confidence · ${model.sample} completed sessions · one unified learning engine`;
+    if($('#brain-confidence'))$('#brain-confidence').textContent=`${confidence} confidence`;if($('#home-brain-confidence'))$('#home-brain-confidence').textContent=`${confidence} model`;
+    if($('#home-brain-recommendation'))$('#home-brain-recommendation').textContent=a.actions?.[0]||'The unified model is learning your response patterns.';
+    if($('#home-brain-pattern'))$('#home-brain-pattern').textContent=model.patterns?.[0]?.text||'No stable personal association yet.';
+    if($('#brain-drivers'))$('#brain-drivers').innerHTML=(r.factors||[]).map(f=>`<div class="brain-driver"><span>${esc(f.label)}</span><strong>${Math.round(f.value)}%</strong></div>`).join('');
+    if($('#brain-baselines'))$('#brain-baselines').innerHTML=[['Sessions',model.sample,'observed'],['Nutrition days',model.nutritionSample,'FatSecret'],['Patterns',model.patterns.length,'learned'],['Cycle',ctx.cycle?.phase||'—','context']].map(([n,v,u])=>`<div class="brain-metric"><strong>${esc(String(v))}</strong><span>${esc(n)} · ${esc(u)}</span></div>`).join('');
+    if($('#brain-baseline-source'))$('#brain-baseline-source').textContent=`${model.sample} completed sessions · ${model.recentSample} in last 42 days · ${model.nutritionSample} nutrition days`;if($('#brain-pattern-count'))$('#brain-pattern-count').textContent=`${model.patterns.length} pattern${model.patterns.length===1?'':'s'}`;
+    if($('#brain-patterns'))$('#brain-patterns').innerHTML=model.patterns.length?model.patterns.map(p=>`<div class="brain-pattern"><strong>${esc(p.kind)} · ${p.confidence}% confidence</strong><br>${esc(p.text)}</div>`).join(''):'<div class="brain-empty">The single engine needs more completed sessions and feedback before calling a pattern stable.</div>';
+    if($('#brain-recommendation'))$('#brain-recommendation').innerHTML=`<strong>${esc(a.actions?.[0]||'No strong limiter detected')}</strong>${a.actions?.slice(1).map(x=>`<br>${esc(x)}`).join('')||''}`;
+    const ev=(model.events||[]).slice(-8).reverse();if($('#brain-history'))$('#brain-history').innerHTML=ev.length?ev.map(e=>`<div class="brain-history"><strong>${esc(e.type)}</strong> · ${esc(new Date(e.createdAt).toLocaleDateString())}<br>${esc(e.note||e.status||'Learning event recorded.')}</div>`).join(''):'<div class="brain-empty">No learning events recorded yet.</div>';
   }
-  function renderHomeNutrition(){
-    const title=document.getElementById('home-nutrition-title'),time=document.getElementById('home-nutrition-time'),body=document.getElementById('home-nutrition-body');
-    if(!title||!body)return;
-    const d=sessionData(),t=target(d),m=(mealSets[60]||[])[0];
-    title.textContent=d.workout?m.name:'Nutrition Optimizer';
-    time.textContent=d.workout?`${d.demand} demand`:'—';
-    body.innerHTML=d.workout?`<div class="home-nutrition-main"><strong>~${t.k} kcal</strong><span>60 min before training</span></div><div class="home-nutrition-meta"><span>${t.c} g carbs</span><span>${t.p} g protein</span><span>${escN(d.demand)} demand</span></div>`:"<div class='home-empty'>Open today's workout to get a session-specific pre-workout recommendation.</div>";
+  function showPageSafe(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id)?.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+  async function openBrain(){showPageSafe('brain-page');await refresh()}
+  function saveFeedback(){const outcome=$('#brain-feedback-outcome')?.value||'expected',energy=Number($('#brain-feedback-energy')?.value)||3,performance=Number($('#brain-feedback-performance')?.value)||3,note=$('#brain-feedback-note')?.value.trim()||'';TrainingDataCore.recordEvent({type:'session_feedback',outcome,energy,performance,note,status:'Feedback learned by TrainingDataCore'});if($('#brain-feedback-note'))$('#brain-feedback-note').value='';refresh()}
+  document.addEventListener('trainmei:nutrition-feedback',e=>{const v=e.detail||{};TrainingDataCore.recordEvent({type:'nutrition_feedback',status:'Nutrition feedback learned by TrainingDataCore',note:`${v.sessionType||'Session'} · ${v.carbs||0} g carbs · ${v.timing||0} min · energy ${v.energy||0}/5 · performance ${v.performance||0}/5`,payload:v});refresh()});
+  document.addEventListener('trainmei:core-learning',()=>refresh());
+  document.addEventListener('click',e=>{if(e.target.closest('[data-brain-open]'))openBrain();if(e.target.closest('[data-brain-back]'))showPageSafe('home-page');const fb=e.target.closest('[data-brain-feedback]');if(fb)TrainingDataCore.recordEvent({type:'recommendation_response',status:fb.dataset.brainFeedback,note:`Recommendation response: ${fb.dataset.brainFeedback}`});if(e.target.closest('#brain-save-feedback'))saveFeedback()});
+  document.addEventListener('DOMContentLoaded',refresh);
+  window.TrainMeiBrain={refresh,open:openBrain,getModel:()=>model};
+})();
+</script>
+
+<script>
+/* ============================================================
+   FATSECRET — authenticated connection + food diary sync
+   Frontend only handles session state and invokes Edge Functions.
+   OAuth/access credentials never reach the browser.
+   ============================================================ */
+(()=> {
+  'use strict';
+
+  const SB = window.supabaseClient;
+  if (!SB) return;
+
+  const $f = (s) => document.querySelector(s);
+  const today = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  };
+
+  function setMessage(text, isError=false){
+    const el = $f('#fatsecret-message');
+    if (!el) return;
+    el.textContent = text || '';
+    el.style.color = isError ? '#b91c1c' : '';
   }
-  function open(){const b=document.querySelector('#main-nav [data-page="integrations-page"]');if(b)b.click();setTimeout(()=>{const card=document.querySelector('.smart-launch-card[data-page="nutrition-page"]');if(card)card.click();setTimeout(render,30)},0)}
-  document.addEventListener('click',e=>{
-    const time=e.target.closest('[data-nutrition-time]');if(time){timing=Number(time.dataset.nutritionTime);variant=0;render();return}
-    const change=e.target.closest('#no-change-meal');if(change){variant++;render();return}
-    const openNutri=e.target.closest('#no-open-nutri');if(openNutri){document.querySelector('#main-nav [data-page="nutri-page"]')?.click();return}
-    const action=e.target.closest('[data-home-action="nutrition"]');if(action){open();return}
-    const page=e.target.closest('[data-page]');if(page?.dataset.page==='nutrition-page'){setTimeout(render,30);return}
-    const home=e.target.closest('[data-page]');if(home?.dataset.page==='home-page'){setTimeout(renderHomeNutrition,80);return}
-    const back=e.target.closest('[data-smart-back]');if(back&&back.closest('#nutrition-page')){document.querySelector('#main-nav [data-page="integrations-page"]')?.click();return}
-  });
-  document.addEventListener('DOMContentLoaded',()=>{render();renderHomeNutrition();});
-  window.TrainMeiNutrition={render,open};
+
+  function setStatus(status, connected){
+    const pill = $f('#fatsecret-status-pill');
+    const launch = $f('#fatsecret-launch-status');
+    const copy = $f('#fatsecret-connection-copy');
+    const account = $f('#fatsecret-account-status');
+    const connect = $f('#fatsecret-connect-btn');
+    const sync = $f('#fatsecret-sync-btn');
+    if (!pill) return;
+
+    pill.className = 'fatsecret-status-pill ' + (connected ? 'connected' : 'disconnected');
+    pill.textContent = connected ? 'Connected' : (status || 'Not connected');
+    if (launch) launch.textContent = connected ? 'Connected · ready to sync' : 'Not connected';
+    if (copy) copy.textContent = connected
+      ? 'Your FatSecret food diary is connected to TrainMei.'
+      : 'Connect your personal FatSecret account to import food diary data.';
+    if (account) account.textContent = connected ? 'Connected' : 'Not connected';
+    if (connect) {
+      connect.disabled = false;
+      connect.textContent = connected ? 'Reconnect FatSecret' : 'Connect FatSecret';
+    }
+    if (sync) sync.disabled = !connected;
+  }
+
+  function formatDateTime(value){
+    if (!value) return '—';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return '—';
+    return d.toLocaleString(undefined,{dateStyle:'short',timeStyle:'short'});
+  }
+
+  function setSummary(summary){
+    const fields = [
+      ['#fatsecret-kcal', summary?.calories_kcal],
+      ['#fatsecret-carbs', summary?.carbohydrate_g],
+      ['#fatsecret-protein', summary?.protein_g],
+      ['#fatsecret-fat', summary?.fat_g]
+    ];
+    fields.forEach(([id,val])=>{
+      const el=$f(id);
+      if (el) el.textContent = val == null ? '—' : Math.round(Number(val));
+    });
+  }
+
+  function renderEntries(rows){
+    const list=$f('#fatsecret-entry-list');
+    const count=$f('#fatsecret-imported-count');
+    if (!list) return;
+
+    if (!rows?.length){
+      list.innerHTML='<div class="fatsecret-empty">No food entries were imported for this date.</div>';
+      if (count) count.textContent='0';
+      return;
+    }
+
+    if (count) count.textContent=String(rows.length);
+
+    list.innerHTML=rows.map(row=>{
+      const meal=row.meal ? String(row.meal) : 'Other';
+      const name=String(row.food_name||'Food');
+      const kcal=row.calories_kcal==null ? '—' : `${Math.round(Number(row.calories_kcal))} kcal`;
+      const serving=row.serving_description ? String(row.serving_description) : '';
+      return `<div class="fatsecret-entry">
+        <div class="fatsecret-entry-main">
+          <strong>${escapeHtml(name)}</strong>
+          <small>${escapeHtml(meal)}${serving ? ' · '+escapeHtml(serving) : ''}</small>
+        </div>
+        <span class="fatsecret-entry-kcal">${escapeHtml(kcal)}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function escapeHtml(value){
+    return String(value??'').replace(/[&<>"']/g,c=>({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  async function getConnection(){
+    const {data,error}=await SB
+      .from('fatsecret_connections')
+      .select('status,last_sync_at,connected_at,fatsecret_user_id')
+      .eq('provider','fatsecret')
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  }
+
+  async function loadDailyData(date){
+    if (!date) return;
+    const [summaryResult, entriesResult] = await Promise.all([
+      SB.from('nutrition_daily_summaries')
+        .select('calories_kcal,protein_g,carbohydrate_g,fat_g')
+        .eq('summary_date',date)
+        .maybeSingle(),
+      SB.from('nutrition_entries')
+        .select('meal,food_name,serving_description,calories_kcal')
+        .eq('entry_date',date)
+        .order('meal',{ascending:true})
+        .order('food_name',{ascending:true})
+    ]);
+
+    if (summaryResult.error) throw summaryResult.error;
+    if (entriesResult.error) throw entriesResult.error;
+
+    setSummary(summaryResult.data);
+    renderEntries(entriesResult.data||[]);
+  }
+
+  async function refresh(){
+    const date=$f('#fatsecret-sync-date')?.value || today();
+    try{
+      const connection=await getConnection();
+      const connected=connection?.status==='connected';
+      setStatus(connection?.status,connected);
+
+      const last=$f('#fatsecret-last-sync');
+      if(last) last.textContent=formatDateTime(connection?.last_sync_at);
+
+      await loadDailyData(date);
+
+      setMessage(connected
+        ? 'FatSecret is connected. Your nutrition data is ready to use across TrainMei.'
+        : 'Connect FatSecret to start importing your food diary.');
+    }catch(error){
+      console.error('FatSecret UI error:',error);
+      setStatus('Error',false);
+      setMessage(error?.message || 'Could not load FatSecret connection status.',true);
+    }
+  }
+
+  async function connect(){
+    const button=$f('#fatsecret-connect-btn');
+    if(button) button.disabled=true;
+    setMessage('Opening FatSecret authorization…');
+
+    try{
+      const {data,error}=await SB.functions.invoke('fatsecret-oauth-start',{
+        body:{}
+      });
+
+      if(error){
+        let detail=error?.message || 'FatSecret authorization could not be started.';
+        try{
+          const response=error?.context;
+          if(response && typeof response.json==='function'){
+            const payload=await response.clone().json();
+            if(payload?.error) detail=String(payload.error);
+            else if(payload?.message) detail=String(payload.message);
+          }
+        }catch(_){}
+        throw new Error(detail);
+      }
+      if(data?.error) throw new Error(String(data.error));
+      if(!data?.authorize_url) throw new Error('FatSecret authorization URL was not returned by Supabase.');
+
+      window.location.href=data.authorize_url;
+    }catch(error){
+      console.error('FatSecret connect error:',error);
+      if(button) button.disabled=false;
+      setMessage(error?.message || 'Could not start FatSecret authorization.',true);
+    }
+  }
+
+  async function sync(){
+    const button=$f('#fatsecret-sync-btn');
+    const date=$f('#fatsecret-sync-date')?.value || today();
+    if(button) button.disabled=true;
+    setMessage(`Syncing FatSecret food diary for ${date}…`);
+
+    try{
+      const {data,error}=await SB.functions.invoke('fatsecret-sync',{
+        body:{date}
+      });
+
+      if(error) throw error;
+      if(data?.error) throw new Error(data.error);
+
+      await refresh();
+      if(window.TrainMeiNutritionData?.load) await window.TrainMeiNutritionData.load(date);
+      setMessage(`Sync complete · ${Number(data?.synced||data?.upsertCount||0)} food entries processed.`);
+    }catch(error){
+      console.error('FatSecret sync error:',error);
+      setMessage(error?.message || 'Could not sync the FatSecret food diary.',true);
+    }finally{
+      const connected=($f('#fatsecret-status-pill')?.classList.contains('connected'));
+      if(button) button.disabled=!connected;
+    }
+  }
+
+  function bind(){
+    const date=$f('#fatsecret-sync-date');
+    if(date){
+      date.value=today();
+      date.addEventListener('change',()=>loadDailyData(date.value).catch(error=>{
+        console.error(error);
+        setMessage(error?.message || 'Could not load nutrition data.',true);
+      }));
+    }
+
+    $f('#fatsecret-connect-btn')?.addEventListener('click',connect);
+    $f('#fatsecret-sync-btn')?.addEventListener('click',sync);
+
+    document.addEventListener('click',event=>{
+      const card=event.target.closest('.smart-launch-card[data-page="fatsecret-page"]');
+      if(card) setTimeout(refresh,50);
+    });
+
+    document.addEventListener('click',event=>{
+      if(event.target.closest('[data-smart-back]')) return;
+      const page=document.querySelector('#fatsecret-page');
+      if(page?.classList.contains('active')) setTimeout(refresh,80);
+    });
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',bind,{once:true});
+  }else{
+    bind();
+  }
+
+  window.TrainMeiFatSecret={refresh,sync,connect};
+})();
+</script>
+
+<script>
+/* ===== CENTRAL NUTRITION DATA LAYER =====
+   FatSecret is the source. Nutri Tracker interprets it. All downstream
+   modules consume this snapshot instead of maintaining their own intake copy.
+*/
+(function(){
+  'use strict';
+  const SB=window.supabaseClient;
+  const state={date:null,connection:null,summary:null,entries:[],insight:null,trainingNutrition:null,performance:null,loaded:false,error:null};
+  const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+  const num=v=>v==null||v===''||!Number.isFinite(Number(v))?null:Number(v);
+  const firstNum=(o,keys)=>{for(const k of keys){const v=num(o?.[k]);if(v!=null)return v}return null};
+  const firstText=(o,keys)=>{for(const k of keys){if(o?.[k]!=null&&String(o[k]).trim()!=='')return String(o[k])}return null};
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const el=id=>document.getElementById(id);
+
+  async function maybe(table,build){
+    try{const q=build(SB.from(table));const r=await q;return r.error?null:r.data}catch(e){return null}
+  }
+  function pickDate(rows,date){
+    if(!Array.isArray(rows))return null;
+    return rows.find(r=>['summary_date','context_date','insight_date','date','entry_date'].some(k=>String(r?.[k]||'').slice(0,10)===date))||null;
+  }
+  async function load(date=today()){
+    if(!SB)return null;
+    state.date=date;
+    const [conn,summary,entries,insights,tnc,perf]=await Promise.all([
+      maybe('fatsecret_connections',q=>q.select('status,last_sync_at,connected_at,fatsecret_user_id').eq('provider','fatsecret').maybeSingle()),
+      maybe('nutrition_daily_summaries',q=>q.select('*').eq('summary_date',date).maybeSingle()),
+      maybe('nutrition_entries',q=>q.select('*').eq('entry_date',date).order('meal',{ascending:true}).order('food_name',{ascending:true})),
+      maybe('nutrition_insights',q=>q.select('*').order('created_at',{ascending:false}).limit(30)),
+      maybe('training_nutrition_context',q=>q.select('*').limit(30)),
+      maybe('performance_context',q=>q.select('*').limit(30))
+    ]);
+    state.connection=conn;state.summary=summary;state.entries=entries||[];
+    state.insight=pickDate(insights,date)||(Array.isArray(insights)&&insights[0])||null;
+    state.trainingNutrition=pickDate(tnc,date)||(Array.isArray(tnc)&&tnc[0])||null;
+    state.performance=pickDate(perf,date)||(Array.isArray(perf)&&perf[0])||null;
+    state.loaded=true;state.error=null;
+    render();
+    document.dispatchEvent(new CustomEvent('trainmei:nutrition-updated',{detail:getSnapshot()}));
+    return getSnapshot();
+  }
+  function snapshot(){
+    const s=state.summary||{};
+    return {
+      date:state.date||today(),
+      source:'fatsecret',
+      connected:state.connection?.status==='connected',
+      lastSyncAt:state.connection?.last_sync_at||null,
+      summary:state.summary,
+      entries:state.entries,
+      insight:state.insight,
+      trainingNutrition:state.trainingNutrition,
+      performance:state.performance,
+      intake:{
+        date:state.date||today(),
+        kcal:firstNum(s,['calories_kcal','kcal','total_calories']),
+        carb:firstNum(s,['carbohydrate_g','carbs_g','carb_g']),
+        prot:firstNum(s,['protein_g','protein']),
+        fat:firstNum(s,['fat_g','fat']),
+        fiber:firstNum(s,['fiber_g','fiber']),
+        source:'fatsecret'
+      }
+    };
+  }
+  function getSnapshot(){return snapshot()}
+
+  function setText(id,v,suffix=''){const e=el(id);if(e)e.textContent=v==null?'—':`${v}${suffix}`}
+  function renderFuel(){
+    const n=window.TrainMeiNutri?.getSnapshot?.()||{},t=n.targets||{},i=n.intake||{},k=i.kcal,c=i.carb,p=i.prot,f=i.fat;
+    setText('nt-fuel-kcal',k==null?null:Math.round(k));setText('nt-fuel-carb',c);setText('nt-fuel-prot',p);setText('nt-fuel-fat',f);
+    setText('nt-fuel-kcal-sub',t.kcal?`Target ${Math.round(t.kcal)}`:'Target —');setText('nt-fuel-carb-sub',t.carb?`Target ${Math.round(t.carb)} g`:'Target —');setText('nt-fuel-prot-sub',t.prot?`Target ${Math.round(t.prot)} g`:'Target —');setText('nt-fuel-fat-sub',t.fat?`Target ${Math.round(t.fat)} g`:'Target —');
+    const badge=el('nt-fuel-status');if(badge){badge.textContent=k==null?'No intake synced':(t.kcal&&k<t.kcal*.8?'Below target':'Logged');}
+    const rows=[['Calories',k,t.kcal],['Carbs',c,t.carb],['Protein',p,t.prot],['Fat',f,t.fat]];
+    const host=el('nt-fuel-progress');if(host)host.innerHTML=rows.map(([label,a,b])=>{const pct=a!=null&&b?Math.min(100,Math.round(a/b*100)):null;return `<div class="nutri-progress-row"><span>${label}</span><div class="nutri-progress-track"><i style="width:${pct??0}%"></i></div><strong>${pct==null?'—':pct+'%'}</strong></div>`}).join('');
+  }
+  async function renderInsights(){
+    const n=window.TrainMeiNutri?.getSnapshot?.()||{},i=n.intake||{},t=n.targets||{};const rows=[];
+    if(i.kcal!=null&&t.kcal)rows.push(['Energy budget',`${Math.round(i.kcal)} / ${Math.round(t.kcal)} kcal`,i.kcal>=t.kcal?'Daily energy target reached or exceeded.':`${Math.round(t.kcal-i.kcal)} kcal remain against today\'s target.`]);
+    if(i.carb!=null&&t.carb)rows.push(['Carbohydrate availability',`${Math.round(i.carb)} / ${Math.round(t.carb)} g`,i.carb>=t.carb?'Carbohydrate target reached or exceeded.':`${Math.round(t.carb-i.carb)} g remain against today\'s target.`]);
+    if(i.prot!=null&&t.prot)rows.push(['Protein coverage',`${Math.round(i.prot)} / ${Math.round(t.prot)} g`,i.prot>=t.prot?'Protein target reached or exceeded.':`${Math.round(t.prot-i.prot)} g remain against today\'s target.`]);
+    const backend=state.insight;
+    if(backend){const text=firstText(backend,['insight','message','recommendation','summary','note','description']);if(text)rows.push(['Training Brain insight','Backend insight',text])}
+    try{
+      const pi=await TrainingDataCore.personalInsights(TrainingDataCore.dayKey(Date.now()-180*86400000),n.date||today());
+      const p=pi.insights?.[0];
+      if(p)rows.push(['Personal learning',`${p.n||p.sample||0} comparable records`,p.text]);
+      else if(pi.sample>=3)rows.push(['Personal learning',`${pi.sample} sessions analysed`,'No stable nutrition ↔ training pattern yet. Keep logging sessions and feedback.']);
+    }catch(e){}
+    const host=el('nt-insights-list');if(host)host.innerHTML=rows.length?rows.map(r=>`<div class="nutri-insight-row"><strong>${esc(r[0])}</strong><span>${esc(r[1])} · ${esc(r[2])}</span></div>`).join(''):'<div class="nutri-intel-empty">No interpretable nutrition signal is available yet.</div>';
+  }
+
+  async function renderPerformance(){
+    const n=window.TrainMeiNutri?.getSnapshot?.()||{},i=n.intake||{},t=n.targets||{},tn=state.trainingNutrition||{},pf=state.performance||{};const rows=[];
+    const load=firstNum(tn,['training_load','load','session_load']);const rpe=firstNum(tn,['rpe','session_rpe']);const volume=firstNum(tn,['volume','training_volume']);
+    if(load!=null)rows.push(['Training load',String(load),'Central training-demand context.']);
+    if(rpe!=null)rows.push(['Session RPE',String(rpe),'Used with recovery and fuel to learn session response.']);
+    if(volume!=null)rows.push(['Training volume',String(volume),'Current training context.']);
+    const currentWorkout=window.tpAllWorkoutRows?.()?.find(r=>r.date===(n.date||today()))?.data||null;
+    const fuel=TrainingDataCore.performanceFuel(n.date||today(),currentWorkout);
+    if(fuel.score!=null)rows.push(['Performance Fuel',`${fuel.score}% · ${fuel.status}`,`${fuel.demand.type} · ${fuel.demand.demand} demand · Limiting factor: ${fuel.limitingFactor||'—'}.`]);
+    if(i.carb!=null&&t.carb)rows.push(['Fuel availability',`${Math.round(i.carb)} / ${Math.round(t.carb)} g carbs`,i.carb>=t.carb?'Carbohydrate target reached.':'Carbohydrate target still below target.']);
+    const ptxt=firstText(pf,['fuel_note','nutrition_note','note','recommendation','summary']);if(ptxt)rows.push(['Performance context','Stored context',ptxt]);
+    try{
+      const pi=await TrainingDataCore.personalInsights(TrainingDataCore.dayKey(Date.now()-180*86400000),n.date||today());
+      if(pi.insights?.[0])rows.push(['Personal insight','Learning signal',pi.insights[0].text]);
+      const uc=await TrainingDataCore.getUnifiedContext(n.date||today(),currentWorkout);
+      if(uc.adaptation?.actions?.[0])rows.push(['Training adaptation',uc.adaptation.confidence,uc.adaptation.actions[0]]);
+    }catch(e){}
+    const host=el('nt-performance-fuel');if(host)host.innerHTML=rows.length?rows.map(r=>`<div class="nutri-context-row"><strong>${esc(r[0])}</strong><span>${esc(r[1])} · ${esc(r[2])}</span></div>`).join(''):'<div class="nutri-intel-empty">No training/performance context is available for this date yet.</div>';
+  }
+function renderBody(){
+    const n=window.TrainMeiNutri?.getSnapshot?.()||{},profile=n.profile||{},latest=n.weight,history=(()=>{try{const x=localStorage.getItem('nutritrack_weight_v2');return x?JSON.parse(x):[]}catch(e){return[]}})();
+    const arr=Array.isArray(history)?history.filter(x=>Number.isFinite(Number(x?.kg))).sort((a,b)=>String(a.date).localeCompare(String(b.date))):[];
+    const first=arr[0]?.kg,last=arr.at(-1)?.kg,delta=first!=null&&last!=null?last-first:null;const meta=el('nt-body-trend-meta');if(meta)meta.textContent=arr.length?`${arr.length} records`:'No records';
+    const host=el('nt-body-trend');if(!host)return;
+    host.innerHTML=`<div class="nutri-body-stats"><div class="nutri-body-stat"><span>Current weight</span><strong>${latest==null?'—':Number(latest).toFixed(1)+' kg'}</strong><small>latest available</small></div><div class="nutri-body-stat"><span>Trend</span><strong>${delta==null?'—':(delta>0?'+':'')+delta.toFixed(1)+' kg'}</strong><small>${arr.length>1?'from first saved record':'needs more records'}</small></div><div class="nutri-body-stat"><span>Nutrition source</span><strong>FatSecret</strong><small>food diary</small></div></div>`;
+  }
+  function renderBrain(){const host=el('brain-nutrition-context');if(!host)return;const n=getSnapshot(),i=n.intake||{},t=window.TrainMeiNutri?.getSnapshot?.().targets||{};const vals=[['Calories',i.kcal==null?'—':Math.round(i.kcal)+' kcal',t.kcal?'Target '+Math.round(t.kcal):'Target —'],['Carbs',i.carb==null?'—':Math.round(i.carb)+' g',t.carb?'Target '+Math.round(t.carb)+' g':'Target —'],['Protein',i.prot==null?'—':Math.round(i.prot)+' g',t.prot?'Target '+Math.round(t.prot)+' g':'Target —'],['Source',n.connected?'FatSecret':'Not connected',n.lastSyncAt?'Last sync '+new Date(n.lastSyncAt).toLocaleString():'No sync yet']];host.innerHTML=vals.map(v=>`<div><span>${esc(v[0])}</span><strong>${esc(v[1])}</strong><small>${esc(v[2])}</small></div>`).join('');const source=el('brain-nutrition-source');if(source)source.textContent=n.connected?'FatSecret synced':'No FatSecret sync';}
+  function render(){renderFuel();renderInsights();renderPerformance();renderBody();renderBrain();
+    if(typeof ntRenderIntake==='function')ntRenderIntake();
+    if(window.TrainMeiNutrition?.render)window.TrainMeiNutrition.render();
+    if(window.TrainMeiNutrition?.home)window.TrainMeiNutrition.home();
+  }
+  async function sync(date=today()){
+    if(!SB)return null;
+    const {data,error}=await SB.functions.invoke('fatsecret-sync',{body:{date}});
+    if(error)throw error;if(data?.error)throw new Error(data.error);
+    await load(date);return data;
+  }
+  function openFatSecret(){document.querySelector('#main-nav [data-page="integrations-page"]')?.click();setTimeout(()=>document.querySelector('.smart-launch-card[data-page="fatsecret-page"]')?.click(),0)}
+  document.addEventListener('click',e=>{if(e.target.closest('#nt-openFatSecret'))openFatSecret();if(e.target.closest('#nt-syncFatSecret')){const b=e.target.closest('#nt-syncFatSecret');b.disabled=true;b.textContent='Syncing…';sync(today()).catch(err=>{console.error(err);}).finally(()=>{b.disabled=false;b.textContent='Sync now'})}});
+  document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>load(today()).catch(e=>{state.error=e;render()}),120)});
+  document.addEventListener('trainmei:nutrition-sync-request',e=>{sync(e.detail?.date||today()).catch(console.error)});
+  window.TrainMeiNutritionData={getSnapshot,load,sync,openFatSecret,state};
 })();
 </script>
 </body></html>
