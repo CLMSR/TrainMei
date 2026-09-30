@@ -574,7 +574,7 @@ table.plan-table td input{width:100%;border:none;background:transparent;padding:
 .caffeine-inline{display:flex;align-items:center;gap:8px;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800}
 .caffeine-inline .switch-row{font-size:9px}
 .caffeine-inline-mg{width:72px!important;padding:6px 8px!important;border:1px solid var(--line)!important;background:var(--paper)!important;font-size:12px!important;text-transform:none!important;color:var(--ink)!important}
-.run-distance-inline{display:flex;align-items:center;gap:10px;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800}
+.run-distance-inline{display:flex;align-items:center;gap:10px;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:300}
 .run-distance-inline .simple-field{width:110px;padding:6px 8px;border:1px solid var(--line);background:var(--paper);font-size:12px;text-transform:none;color:var(--ink)}
 .notes-under-caffeine{margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
 .library-filter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0}
@@ -592,7 +592,7 @@ table.plan-table td input{width:100%;border:none;background:transparent;padding:
   .block-table td{display:inline-block;border:0}
   .block-table td:first-child{width:22px}
   .block-table td:nth-child(2){width:calc(100% - 27px)}
-  .block-table td:nth-child(n/**/+3){margin-left:22px}
+  .block-table td:nth-child(n+3){margin-left:22px}
   .block-table input{padding:2px 0;font-size:13px}
   .caffeine-box{display:block;border-radius:14px;border:0}
   .caffeine-mg{margin-top:12px}
@@ -803,6 +803,7 @@ body{color:var(--ink)}
   .top-actions{display:flex;align-items:center;justify-content:flex-end;gap:4px;flex-wrap:wrap;min-width:0}
   .top-actions .btn{border:0!important;border-radius:9px;padding:8px 10px;background:transparent;color:var(--text-secondary);font-size:10px;letter-spacing:0;text-transform:none;white-space:nowrap}
   .top-actions .btn:hover,.top-actions .btn.active{background:var(--surface);color:var(--ink)}
+  .top-actions .nav-label{line-height:1}
   .top-actions #export-btn,.top-actions #import-btn,.top-actions #sync-btn,.top-actions #logout-btn{border:1px solid var(--line)!important;background:var(--nav-bg)}
   .month-head{border-bottom:1px solid var(--line)}
   .month-title,.dashboard-title,.plan-title{font-size:42px;text-transform:none;letter-spacing:-.045em}
@@ -866,7 +867,7 @@ body{color:var(--ink)}
   .block-table .set-group-row .rm-btn{position:static!important;width:18px!important;min-width:18px!important;max-width:18px!important;height:22px;padding:0!important;margin:0!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:12px!important;line-height:1!important}
 }
 @media (max-width:950px) and (max-height:600px) and (orientation:landscape){
-  #day-page{min-width:0;overflow:hidden}
+  #day-page{min-width:0;overflow:clip}
   .training-blocks,.training-block{min-width:0;max-width:100%}
   .block-table{width:100%!important;max-width:100%!important;table-layout:fixed!important}
   .block-table .exercise-row td{width:100%!important;max-width:100%!important;padding:4px 7px 5px!important;overflow:hidden}
@@ -905,7 +906,7 @@ body{color:var(--ink)}
 .home-primary{padding:11px 16px}
 .home-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
 .home-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:17px;min-width:0}
-.home-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.home-card-head{display:grid;align-items:flex-start;justify-content:space-between}
 .home-card h2{font-size:18px;line-height:1.1;margin:4px 0 0;letter-spacing:-.02em}
 .home-status{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:800;white-space:nowrap}
 .home-today-body,.home-next-body{min-height:70px;padding:14px 0 4px}
@@ -1136,13 +1137,13 @@ body{color:var(--ink)}
   body:has(#day-page.active) .day-top .back-btn{margin:0;padding:7px 0;flex:0 0 auto}
   body:has(#day-page.active) .day-top .day-nav{display:flex;align-items:center;gap:5px;margin-left:auto}
   body:has(#day-page.active) .day-top .day-nav .icon-btn{width:34px;height:34px;min-width:34px;display:inline-flex;align-items:center;justify-content:center;padding:0}
-  body:has(#day-page.active) #day-page{padding-top:58px}
+  body:has(#day-page.active) 
 }
 @media (min-width:561px) and (max-width:850px){
   body:has(#day-page.active) .day-top{height:58px;padding:0 18px}
   body:has(#day-page.active) .day-top .back-btn{font-size:14px}
   body:has(#day-page.active) .day-top .day-nav .icon-btn{width:34px;height:34px}
-  body:has(#day-page.active) #day-page{padding-top:58px}
+  body:has(#day-page.active) 
 }
 @media (max-width:560px){
   body:has(#day-page.active) .day-top{top:0}
@@ -1207,7 +1208,7 @@ body:has(#day-page.active) .caffeine-inline,body:has(#day-page.active) .run-dist
 @media (max-width:950px){
   body:has(#day-page.active) .run-meta-inline{flex-wrap:wrap;justify-content:space-between}
   body:has(#day-page.active) .caffeine-inline,body:has(#day-page.active) .run-distance-inline{width:auto;flex:1 1 auto}
-  body:has(#day-page.active) .recovery-inline{order:3;flex:0 0 100%;width:100%;border-left:0;border-top:1px solid var(--line);padding:7px 0 0;margin-top:2px}
+  body:has(#day-page.active) .recovery-inline{order:3;flex:0 0 100%;width:100%;border-left:0;margin-top:2px; display:flex;font-size-adjust: cap-height 0.5;}
 }
 @media (max-width:560px) and (orientation:portrait){
   #home-page .home-grid{grid-template-columns:1fr 1fr;gap:8px}
@@ -1382,7 +1383,7 @@ body:has(#day-page.active) .caffeine-inline,body:has(#day-page.active) .run-dist
   body:has(#day-page.active) #smart-training-nav #open-templates-inline,
   body:has(#day-page.active) #smart-training-nav #open-smart-duplicate-inline{display:none!important}
   body:has(#day-page.active) #smart-training-nav .btn{width:100%;min-width:0;padding:7px 2px!important;font-size:8px!important;white-space:nowrap}
-  body:has(#day-page.active) .day-completion-row{display:flex!important;align-items:center;justify-content:space-between;gap:6px}
+  body:has(#day-page.active) .day-completion-row{display:flex!important;align-items:center;justify-content:space-between;gap:60px}
   body:has(#day-page.active) .day-completion-tools{display:flex;align-items:center;gap:4px;margin-right:auto}
   body:has(#day-page.active) .day-completion-tools .btn{font-size:7px;padding:5px 6px;white-space:nowrap}
   body:has(#day-page.active) .set-group-row{display:grid!important;grid-template-columns:17px minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr) 48px!important;gap:3px!important;align-items:center!important;min-height:22px!important;margin:2px 0!important}
@@ -1523,8 +1524,8 @@ body:has(#day-page.active) .caffeine-inline,body:has(#day-page.active) .run-dist
 @media (max-width:560px) and (orientation:portrait){
   body:has(#day-page.active) .run-meta-inline{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:auto auto!important;gap:8px 10px!important;align-items:start!important}
   body:has(#day-page.active) .caffeine-inline{grid-column:1!important;grid-row:1!important;width:100%!important;min-width:0!important}
-  body:has(#day-page.active) .run-distance-inline{grid-column:2!important;grid-row:1!important;width:100%!important;min-width:0!important;justify-content:flex-start!important}
-  body:has(#day-page.active) .recovery-inline{grid-column:1/-1!important;grid-row:2!important;width:100%!important;border-left:0!important;border-top:1px solid var(--line)!important;padding:7px 0 0!important;margin-top:2px!important}
+  body:has(#day-page.active) .run-distance-inline{grid-column:3!important;grid-row:4!important;width:100%!important;min-width:0!important;justify-content:flex-start!important}
+  body:has(#day-page.active) .recovery-inline{grid-column:1/-1!important;grid-row:2!important;width:100%!important;border-left:0!important;border-top:1px solid var(--line)!important;padding:7px 0 0!important;margin-top:2px!important;font-size-adjust: ex-height 0.5}
 }
 @media (min-width:951px){
   #plan-page{padding-left:24px;padding-right:24px}
@@ -1663,14 +1664,14 @@ body:has(#day-page.active) .set-group-add-inline{display:none}
 .tp-loop-badge{font-size:8px;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:5px 7px;border-radius:999px}
 .tp-loop-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
 .tp-loop-grid label{font-size:9px;text-transform:uppercase;color:var(--muted);font-weight:800}
-.tp-loop-grid textarea,.tp-loop-grid input{display:block;width:100%;margin-top:5px;border:1px solid var(--line);background:var(--paper);padding:9px;font:inherit;font-size:11px}
+.tp-loop-grid textarea,.tp-loop-grid input{display:block;width:100%;margin-top:5px;border:1px solid var(--line);background:var(--paper);padding:9px;font-size:11px;font-weight:300}
 .tp-loop-grid textarea{min-height:78px;resize:vertical}
 .tp-loop-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .tp-loop-tag{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 9px;font-size:9px}
 .tp-loop-tag.active{background:var(--primary);color:var(--on-primary)}
 .tp-journal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
 .tp-journal-grid label{font-size:9px;text-transform:uppercase;color:var(--muted);font-weight:800}
-.tp-journal-grid input{display:block;width:100%;margin-top:5px;border:1px solid var(--line);background:var(--paper);padding:9px;font:inherit;font-size:11px}
+.tp-journal-grid input{display:block;width:100%;margin-top:5px;border:1px solid var(--line);background:var(--paper);padding:9px;font-weight:300;font-size:11px}
 .tp-previous-feedback{margin-top:10px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
 .tp-previous-feedback div{display:flex;justify-content:space-between;gap:8px;font-size:9px}
 .tp-previous-feedback div span{color:var(--muted)}
@@ -1795,7 +1796,7 @@ body:has(#day-page.active) .set-group-add-inline{display:none}
   #calendar-page #tp-week-load-panel .tp-v5-legend{gap:5px;font-size:6px!important}
 }
 @media (min-width:561px) and (max-width:950px) and (max-height:600px) and (orientation:landscape){
-  body:has(#day-page.active) #day-page .day-top{display:flex!important;position:sticky!important;top:48px!important;z-index:20!important;margin:0 -8px 8px!important;padding:6px 8px!important;min-height:34px!important;justify-content:space-between!important;background:var(--card-bg)!important;border-bottom:1px solid var(--line)!important}
+  body:has(#day-page.active) #day-page .day-top{display:flex!important;position:static!important;margin:0 -8px 8px!important;padding:6px 8px!important;min-height:34px!important;justify-content:space-between!important;background:#fff4ec!important;border-bottom:1px solid var(--line)!important}
   body:has(#day-page.active) #day-page .back-btn{display:inline-flex!important;align-items:center!important;color:var(--ink)!important;font-size:11px!important;font-weight:700!important;letter-spacing:.04em!important;text-transform:uppercase!important;padding:6px 8px!important;border:1px solid var(--line)!important;border-radius:9px!important;background:var(--surface-soft)!important}
   body:has(#day-page.active) #day-page .day-nav{display:flex!important;gap:5px!important}
   body:has(#day-page.active) #day-page .day-header{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(190px,280px)!important;gap:20px!important;align-items:end!important;padding:4px 0 13px!important;border-bottom:1px solid var(--line)!important}
@@ -1932,7 +1933,7 @@ body[data-theme="clinical"] .block-category{border:1px solid #2F86C9;background:
 
 body[data-theme="performance"]{--ink:#1A1A1A;--paper:#FFF4EC;--paper-dim:#FFE6D5;--line:rgba(26,26,26,.14);--line-strong:#1A1A1A;--white:#FFFFFF;--muted:#8A6F5C;--primary:#FF4B1F;--accent:#FF7A1A;--secondary:#FFB020;--success:#2FAE60;--danger:#E5322D;--warning:#FFB020;--surface:#FFF0E4;--surface-soft:#FFE6D5;--text-secondary:#4A3B30;--muted-ui:#9C8570;--control:#F0C9AC;--line-soft:#F5D9C2;--control-line:#F0C9AC;--on-primary:#FFFFFF;--on-accent:#1A1A1A;--input-bg:#FFFFFF;--card-bg:#FFFFFF;--nav-bg:rgba(255,255,255,.92);--app-bg:#FFF4EC;--danger-soft:#FCE1DE;--body-gradient-end:#FFE7D2;--nav-hover:#FFE1CB;--calendar-today:#FF4B1F;--highlight:#FFD9B8;--heading-color:#B8280A;--chart-primary:#FF4B1F;--chart-secondary:#FFB020;--ui-btn-radius:8px;--ui-table-radius:8px;--ui-section-radius:8px;--ui-table-head-bg:#FF4B1F;--ui-table-head-color:#FFFFFF;font-family:"Poppins",system-ui,sans-serif;--nav-item-bg:#FFFFFF;--nav-item-color:#8A6F5C;--nav-item-border:#F5D9C2;--nav-active-bg:#FF4B1F;--nav-active-color:#1A1A1A;--nav-active-border:#FF4B1F;--nav-item-radius:8px;}
 body[data-theme="performance"] .brand,body[data-theme="performance"] h1,body[data-theme="performance"] h2,body[data-theme="performance"] h3{font-weight:900;letter-spacing:-.03em;text-transform:uppercase;color:#B8280A}
-body[data-theme="performance"] .btn{border:1px solid #FF4B1F;border-radius:8px;background:#FFFFFF;color:#FF4B1F;font-weight:800;text-transform:uppercase;font-size:10px;padding:7px 10px}
+body[data-theme="performance"] .btn{border:1px solid #FF4B1F;border-radius:8px;background:#FFFFFF;color:#FF4B1F;font-weight:650;text-transform:uppercase;font-size:10px;padding:7px 10px}
 body[data-theme="performance"] .btn.active,body[data-theme="performance"] .btn:hover{background:#FF4B1F;color:#fff}
 body[data-theme="performance"] .section-bar{background:#FF4B1F;color:#fff;border-radius:8px;padding:6px 9px}
 body[data-theme="performance"] .training-block,body[data-theme="performance"] .home-card,body[data-theme="performance"] .stat-card{border:1px solid #F5D9C2;border-radius:8px;box-shadow:none;padding:11px}
@@ -2741,6 +2742,9 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .brain-recommendation{border-left:3px solid var(--accent);padding:10px 12px;background:var(--surface-soft);font-size:12px;line-height:1.55}
 .brain-recommendation strong{display:block;margin-bottom:3px}
 .brain-legend{font-size:9px;color:var(--muted);line-height:1.45}
+.brain-cycle-info{display:flex;gap:8px;margin-bottom:8px;padding:8px 10px;background:var(--surface-soft);border-radius:8px;font-size:9px}
+.brain-cycle-phase{font-weight:700;color:var(--accent);text-transform:capitalize}
+.brain-cycle-day{color:var(--muted)}
 .home-brain-card .brain-score{margin-top:4px}
 .home-brain-card .brain-ring{width:70px;height:70px}
 .home-brain-card .brain-ring strong{font-size:19px}
@@ -2748,7 +2752,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 @media(max-width:560px){.brain-page{padding:0 16px 20px}.brain-hero{display:block}.brain-hero .btn{margin-top:10px;width:100%}.brain-card{border:0;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:13px}.brain-feedback{grid-template-columns:1fr}.brain-score{align-items:flex-start}.brain-metric-grid{grid-template-columns:repeat(2,1fr)}}
 
 /* Requested responsive refinements: vertical + horizontal training layouts. */
-.day-status-row{display:grid;grid-template-columns:auto auto minmax(150px,1fr) minmax(150px,1fr) auto;align-items:center;gap:12px;padding:6px 0}
+.day-status-row{display:grid;grid-template-columns:auto auto minmax(120px,1fr) minmax(120px,1fr) auto auto;align-items:center;gap:12px;padding:6px 0}
 .day-status-row .day-completion-row,.day-status-row .day-color-row{padding:0}
 .day-status-row .day-completion-row{order:3}
 .day-status-row .day-color-row{order:1}
@@ -2759,7 +2763,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   .brain-page{padding-left:12px;padding-right:12px}
   .smart-tool-page .smart-tool-shell{padding-left:14px;padding-right:14px}
   .day-status-row{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;padding:5px 0}
-  .day-status-row .day-color-row{grid-column:1;grid-row:1;justify-content:flex-start}
+  .day-status-row .day-color-row{grid-column:1;justify-content:flex-start}
   .day-status-row .day-distance-inline{grid-column:2;grid-row:1;justify-content:space-between}
   .day-status-row .session-rpe-inline{grid-column:1;grid-row:2;justify-content:space-between}
   .day-status-row .session-load-inline{grid-column:2;grid-row:2;justify-content:space-between}
@@ -2857,12 +2861,12 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   <header class="topbar">
     <div class="brand">TRAINING PLANNER</div>
     <div class="top-actions" id="main-nav">
-      <button class="btn active" data-page="home-page" aria-label="Home" title="Home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-9Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 21v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
-      <button class="btn" data-page="calendar-page" aria-label="Calendar" title="Calendar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 3v4M16.5 3v4M3.5 9h17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-      <button class="btn" data-page="plan-page" aria-label="Plan" title="Plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="3.5" cy="5" r=".9" fill="currentColor"/><circle cx="3.5" cy="12" r=".9" fill="currentColor"/><circle cx="3.5" cy="19" r=".9" fill="currentColor"/></svg></button>
-      <button class="btn" data-page="integrations-page" aria-label="Smart Integrations" title="Smart Integrations"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="6" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8 11 7.8-4M8 13l7.8 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-      <button class="btn" id="templates-btn" aria-label="Templates" title="Templates"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 20h11a2 2 0 0 0 2-2V7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 8h5M8 12h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-      <button class="btn" id="settings-btn" aria-label="Open settings" title="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m19.4 15 .9 1.7-2 2-1.7-.9a7.8 7.8 0 0 1-2.1.9l-.5 1.9h-2.8l-.5-1.9a7.8 7.8 0 0 1-2.1-.9l-1.7.9-2-2 .9-1.7a7.8 7.8 0 0 1-.9-2.1l-1.9-.5V9.6l1.9-.5a7.8 7.8 0 0 1 .9-2.1L5.1 5.3l2-2 1.7.9a7.8 7.8 0 0 1 2.1-.9l.5-1.9h2.8l.5 1.9a7.8 7.8 0 0 1 2.1.9l1.7-.9 2 2-.9 1.7a7.8 7.8 0 0 1 .9 2.1l1.9.5v2.8l-1.9.5a7.8 7.8 0 0 1-.9 2.1Z" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/></svg></button>
+      <button class="btn active" data-page="home-page" aria-label="Home" title="Home"><span class="nav-label">Home</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-9Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 21v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+      <button class="btn" data-page="calendar-page" aria-label="Calendar" title="Calendar"><span class="nav-label">Calendar</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 3v4M16.5 3v4M3.5 9h17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <button class="btn" data-page="plan-page" aria-label="Plan" title="Plan"><span class="nav-label">Plan</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="3.5" cy="5" r=".9" fill="currentColor"/><circle cx="3.5" cy="12" r=".9" fill="currentColor"/><circle cx="3.5" cy="19" r=".9" fill="currentColor"/></svg></button>
+      <button class="btn" data-page="integrations-page" aria-label="Smart Integrations" title="Smart Integrations"><span class="nav-label">Smart Integrations</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="6" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8 11 7.8-4M8 13l7.8 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <button class="btn" id="templates-btn" aria-label="Templates" title="Templates"><span class="nav-label">Templates</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 20h11a2 2 0 0 0 2-2V7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 8h5M8 12h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <button class="btn" id="settings-btn" aria-label="Open settings" title="Settings"><span class="nav-label">Settings</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m19.4 15 .9 1.7-2 2-1.7-.9a7.8 7.8 0 0 1-2.1.9l-.5 1.9h-2.8l-.5-1.9a7.8 7.8 0 0 1-2.1-.9l-1.7.9-2-2 .9-1.7a7.8 7.8 0 0 1-.9-2.1l-1.9-.5V9.6l1.9-.5a7.8 7.8 0 0 1 .9-2.1L5.1 5.3l2-2 1.7.9a7.8 7.8 0 0 1 2.1-.9l.5-1.9h2.8l.5 1.9a7.8 7.8 0 0 1 2.1.9l1.7-.9 2 2-.9 1.7a7.8 7.8 0 0 1 .9 2.1l1.9.5v2.8l-1.9.5a7.8 7.8 0 0 1-.9 2.1Z" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/></svg></button>
       <button class="btn" id="export-btn">Backup</button>
       <button class="btn" id="import-btn">Restore</button>
       <input type="file" id="import-file" accept="application/json" style="display:none">
@@ -2901,7 +2905,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           <div class="home-actions"><button class="btn" data-home-action="nutrition">Optimize meal</button></div>
         </section>
         <section class="home-card home-load-card">
-          <div class="home-card-head"><div><div class="eyebrow">Training load</div><h2>This week</h2></div><span id="home-load-status" class="home-status">—</span></div>
+          <div class="home-card-head"><div><div class="eyebrow">Total time</div><h2>This week</h2></div><span id="home-load-status" class="home-status">—</span></div>
           <div class="home-load-bars" id="home-load-bars"></div>
           <div class="home-load-recovery"><span>Recovery</span><strong id="home-load-recovery-pct">—</strong></div>
         </section>
@@ -2958,7 +2962,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
             <div class="ios-summary-stats">
               <div class="ios-stat"><strong id="ios-month-workouts">—</strong><span>Workouts</span></div>
               <div class="ios-stat"><strong id="ios-month-distance">—</strong><span>km</span></div>
-              <div class="ios-stat"><strong id="ios-month-load">—</strong><span>Load</span></div>
+              <div class="ios-stat"><strong id="ios-month-time">—</strong><span>Total time</span></div>
             </div>
           </div>
           <div class="ios-month-chart" id="ios-month-chart" aria-label="Month session analysis"></div>
@@ -2978,7 +2982,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
         <div class="brain-card-head"><div><div class="brain-kicker">Session context</div><h2>Readiness</h2></div><button class="btn" data-brain-open>Full analysis</button></div>
         <div id="day-context"></div>
       </section>
-      <div class="day-status-row">
+      <div class="day-status-row"><div class="rest-day-inline"><span>Rest day</span><label class="switch-row"><input type="checkbox" id="day-rest-toggle"><span class="switch-ui"></span></label></div>
         <div class="day-completion-row"><div class="day-completion-tools" id="day-completion-tools"></div><span>Workout completed</span><label class="switch-row"><input type="checkbox" id="day-completed-toggle"><span class="switch-ui"></span></label></div>
         <div class="day-color-row"><span>Day color</span><div class="day-color-dots" id="day-color-picker">
           <button type="button" class="day-color-dot c-green" data-day-color="green" aria-label="green"></button>
@@ -2989,7 +2993,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
         </div></div>
         <div class="run-distance-inline day-distance-inline"><span>Run distance</span><input class="simple-field" type="number" step="0.01" data-metric="distanceKm" placeholder="km"></div>
         <div class="session-rpe-inline"><span>Session RPE / intensity</span><input class="simple-field" type="number" min="0" max="10" step=0.5 data-metric="rpe" placeholder="0–10" inputmode="decimal"></div>
-        <div class="session-load-inline"><span>Session load</span><input class="simple-field" type="number" min=0 step=1 data-metric="load" placeholder="Load" inputmode="decimal"></div>
+        <div class="session-load-inline"><span>Total time</span><input class="simple-field" type="number" min=0 step=1 data-metric="timeMin" placeholder="min" inputmode="numeric"></div>
       </div>
       <div class="run-meta-inline"><div class="caffeine-inline"><span>Caffeine</span><label class="switch-row"><input type="checkbox" id="caffeine-toggle"><span class="switch-ui"></span></label><input class="simple-field caffeine-inline-mg" type="number" min="0" step="1" data-caffeine-mg placeholder="mg"></div><div class="carbohydrates-inline"><span>Carbs</span><input class="simple-field carbohydrates-inline-g" type="number" min="0" step="1" data-carbohydrates-g placeholder="g" inputmode="decimal" aria-label="Carbohydrates consumed in session"></div><div class="recovery-inline"><span class="recovery-title">Recovery</span><div class="recovery-row"><span>Sleep</span><div class="recovery-dots" data-recovery-group="sleep"></div></div><div class="recovery-row"><span>Energy</span><div class="recovery-dots" data-recovery-group="energy"></div></div><div class="recovery-row"><span>Soreness</span><div class="recovery-dots" data-recovery-group="soreness"></div></div></div></div>
       <div class="section conditioning-section is-collapsed"><div class="section-bar"><span>Conditioning</span> <span class="divider">|</span><select class="section-sub-select" id="conditioning-type"><option>Run</option><option>Row</option><option>Bike</option><option>Other</option></select><button type="button" class="conditioning-collapse" id="conditioning-collapse" aria-label="Expand conditioning">⌄</button></div><div class="conditioning-section-body"><div class="conditioning-editor"><div class="conditioning-phase-grid"><div class="conditioning-phase conditioning-main-only"><div class="conditioning-phase-head"><label>Main</label></div><div id="conditioning-blocks" class="conditioning-blocks"></div><button type="button" class="conditioning-add-block" id="add-conditioning-block">+ Add block</button></div></div></div></div>      <div class="section training-section"><div class="section-bar">Training <span class="divider">|</span><input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type"></div><div id="training-blocks" class="training-blocks"></div><button class="add-row-btn" id="add-block-inline">+ Add block</button></div>
@@ -4033,7 +4037,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   const $  = s => root.querySelector(s);
   const $$ = s => Array.from(root.querySelectorAll(s));
 
-  const KEY = "cycle_tracker_records_v2";
+  const KEY = "cycle_tracker_records_v3";
   let records = [];
   let editingId = null;
 
@@ -4059,13 +4063,17 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 
   function load(){
     try{
-      const raw = localStorage.getItem(KEY);
+      let raw = localStorage.getItem(KEY);
+      if(!raw) raw = localStorage.getItem("cycle_tracker_records_v2");
       records = raw ? JSON.parse(raw) : [];
       if(!Array.isArray(records)) records=[];
+      const byDate=new Map();
+      records.forEach(r=>{if(r&&/^\d{4}-\d{2}-\d{2}$/.test(String(r.date||'')))byDate.set(String(r.date),{...r,date:String(r.date),duration:Math.max(1,Math.min(15,Number(r.duration)||5)),symptoms:Array.isArray(r.symptoms)?[...new Set(r.symptoms.map(String))]:[]});});
+      records=[...byDate.values()].sort((a,b)=>a.date.localeCompare(b.date));
+      localStorage.setItem(KEY,JSON.stringify(records));
     }catch(e){ records=[]; }
-    records.sort((a,b)=> a.date.localeCompare(b.date));
   }
-  function save(){ localStorage.setItem(KEY, JSON.stringify(records)); }
+  function save(){ try{localStorage.setItem(KEY, JSON.stringify(records));}catch(e){ toast("Cycle log could not be saved"); } }
 
   function analyze(){
     const today = todayMid();
@@ -4314,7 +4322,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
     driversEl.innerHTML=(rr.factors.length?rr.factors.map(f=>`${f.label}: ${Math.round(f.value)}%`):['Recovery input: not logged']).concat([`Recent training: ${recentSessions} session${recentSessions===1?'':'s'} · estimated load ${Math.round(recentLoad)}`,`Upcoming plan: ${nextRows.length} session${nextRows.length===1?'':'s'} · estimated load ${Math.round(nextLoad)}`]).map(x=>`<div class="cycle-driver">${x}</div>`).join('');
     const curve=a.cycleDay?getHormoneCurve(a.avgCycle,Math.round(a.avgCycle-14)).find(x=>x.day===Math.min(a.avgCycle,a.cycleDay)):null;const hormoneLabel=ph.key==='menstrual'?'Lower estrogen / progesterone':ph.key==='follicular'?'Estrogen rising':ph.key==='ovulatory'?'Estrogen peak context':ph.key==='luteal'?'Progesterone higher context':'Cycle context pending';
     hormoneEl.textContent=hormoneLabel;hormoneNote.textContent=curve?`Est ${Math.round(curve.estrogen*100)} · Prog ${Math.round(curve.progesterone*100)}`:'Estimated from cycle timing';perfEl.textContent='Compare against your own data';perfNote.textContent=workout?`${sets} sets · ${Math.round(volume)} volume · ${duration||0} min · RPE ${rpe||'—'}`:'Add a workout to contextualize performance.';insight.textContent=`Readiness is ${readiness}%. This is an observation model, not a medical or fixed cycle rule; your own training response and feedback remain important.`;
-    const comparison=buildPhaseComparison(await getCycleWorkoutRows(a.today,90));sampleEl.textContent=`${comparison.total} sessions`;tableEl.innerHTML=`<div class="head">Phase</div><div class="head">Sessions</div><div class="head">Load</div><div class="head">Volume</div><div class="head">Duration</div><div class="head">RPE</div>`+comparison.rows.map(x=>`<div>${x.phase}</div><div>${x.n||0}</div><div>${x.load||'—'}</div><div>${x.volume||'—'}</div><div>${x.duration||'—'}</div><div>${x.rpe||'—'}</div>`).join('');corrEl.textContent=comparison.note;
+    const comparison=buildPhaseComparison(await getCycleWorkoutRows(a.today,90));sampleEl.textContent=`${comparison.total} sessions`;tableEl.innerHTML=`<div class="head">Phase</div><div class="head">Sessions</div><div class="head">Total time</div><div class="head">Volume</div><div class="head">RPE</div><div class="head">RPE</div>`+comparison.rows.map(x=>`<div>${x.phase}</div><div>${x.n||0}</div><div>${x.duration||'—'} min</div><div>${x.volume||'—'}</div><div>${x.rpe||'—'}</div>`).join('');corrEl.textContent=comparison.note;
   }
   function estimateCycleLoad(d){const m=d?.metrics||{},explicit=Number(m.load)||0;if(explicit>0)return explicit;const ex=(d?.blocks||[]).flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]),sets=ex.reduce((n,e)=>n+exerciseSetsCycle(e),0),reps=ex.reduce((n,e)=>n+exerciseRepsCycle(e),0),mins=Number(m.timeMin)||0,rpe=Number(m.rpe)||5,dist=Number(m.distanceKm)||0;return Math.round(sets*1.8+reps*.08+mins*rpe*.55+dist*1.5)}
   function exerciseSetsCycle(e){const gs=Array.isArray(e?.setGroups)&&e.setGroups.length?e.setGroups:[e];return gs.reduce((n,g)=>n+(Number(g?.sets)||0),0)}
@@ -4659,7 +4667,7 @@ const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll
 function setStatus(t){$('#status-row').textContent=t||''} function pad(n){return String(n).padStart(2,'0')} function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`} function todayKey(){const d=new Date();return dateKey(d.getFullYear(),d.getMonth(),d.getDate())}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function clone(x){return JSON.parse(JSON.stringify(x))}
-function defaultDay(){return {tagline:'',strap:'',focus:'',trainingCategory:'',color:'',blocks:[{id:'blk_'+Date.now(),name:'Block 1',coachNote:'',category:'Strength',exercises:[{name:'',setGroups:[{sets:'',reps:'',weight:'',type:'Aprox'}],sets:'',reps:'',weight:''}]}],isRunDay:false,runningRowing:{type:'Run',warmUp:{duration:'',details:''},mainSet:'',coolDown:{duration:'',details:''},blocks:[{id:'run_'+Date.now(),name:'Main',kind:'interval',reps:'',distance:'',duration:'',pace:'',target:'',recovery:'',effort:'',surface:'',details:''}]},metrics:{distanceKm:'',timeMin:'',pace:'',rpe:'',load:''},caffeine:{taken:false,mg:''},carbohydratesGrams:'',recovery:{sleep:0,energy:0,soreness:0},completed:false,notes:'',noteTags:[],sessionFeedback:{feelings:'',adjustNextTime:'',nextFocus:'',tags:[],performance:'',energyRating:'',technique:'',pain:'',adjustmentOutcome:''},previousFeedback:null}} 
+function defaultDay(){return {tagline:'',strap:'',focus:'',trainingCategory:'',color:'',blocks:[{id:'blk_'+Date.now(),name:'Block 1',coachNote:'',category:'Strength',exercises:[{name:'',setGroups:[{sets:'',reps:'',weight:'',type:'Aprox'}],sets:'',reps:'',weight:''}]}],isRunDay:false,runningRowing:{type:'Run',warmUp:{duration:'',details:''},mainSet:'',coolDown:{duration:'',details:''},blocks:[{id:'run_'+Date.now(),name:'Main',kind:'interval',reps:'',distance:'',duration:'',pace:'',target:'',recovery:'',effort:'',surface:'',details:''}]},metrics:{distanceKm:'',timeMin:'',pace:'',rpe:'',load:''},restDay:false,caffeine:{taken:false,mg:''},carbohydratesGrams:'',recovery:{sleep:0,energy:0,soreness:0},completed:false,notes:'',noteTags:[],sessionFeedback:{feelings:'',adjustNextTime:'',nextFocus:'',tags:[],performance:'',energyRating:'',technique:'',pain:'',adjustmentOutcome:''},previousFeedback:null}} 
 function normalizeSetGroup(g){return {sets:g?.sets??'',reps:g?.reps??'',weight:g?.weight??'',type:g?.type??'Aprox'}}
 function normalizeExercise(e){const raw=e&&typeof e==='object'?e:{};let groups=Array.isArray(raw.setGroups)?raw.setGroups.map(normalizeSetGroup):[];if(!groups.length)groups=[normalizeSetGroup({sets:raw.sets??'',reps:raw.reps??'',weight:raw.weight??''})];const first=groups[0]||normalizeSetGroup({});return {name:raw.name??'',setGroups:groups,sets:first.sets??'',reps:first.reps??'',weight:first.weight??''}}
 function syncExerciseLegacyFields(e){const first=Array.isArray(e?.setGroups)?e.setGroups[0]:null;if(first&&e){e.sets=first.sets??'';e.reps=first.reps??'';e.weight=first.weight??''}return e}
@@ -4671,6 +4679,7 @@ function normalizeDay(src){const base=defaultDay();src=src&&typeof src==='object
 const rr=src.runningRowing||{};const phase=x=>typeof x==='object'&&x!==null?{duration:x.duration??'',details:x.details??''}:{duration:'',details:x??''};const runBlock=(b,i)=>({id:b?.id||'run_'+Date.now()+'_'+i,name:b?.name||`Block ${i+1}`,kind:b?.kind||'interval',reps:b?.reps??'',distance:b?.distance??b?.duration??'',duration:b?.duration??'',pace:b?.pace??b?.target??'',target:b?.target??'',recovery:b?.recovery??'',effort:b?.effort??'',surface:b?.surface??'',details:b?.details??''});
 out.runningRowing={type:rr.type||'Run',warmUp:phase(rr.warmUp),mainSet:rr.mainSet??'',coolDown:phase(rr.coolDown),blocks:Array.isArray(rr.blocks)&&rr.blocks.length?rr.blocks.map(runBlock):[runBlock({name:'Main'},0)]};
 out.metrics={distanceKm:src.metrics?.distanceKm??'',timeMin:src.metrics?.timeMin??'',pace:src.metrics?.pace??'',rpe:src.metrics?.rpe??'',load:src.metrics?.load??''};
+out.restDay=!!src.restDay;
 out.caffeine={taken:!!src.caffeine?.taken,mg:src.caffeine?.mg??''};out.carbohydratesGrams=src.carbohydratesGrams??src.carbsGrams??'';
 out.recovery={sleep:Math.min(5,Math.max(0,Number(src.recovery?.sleep)||0)),energy:Math.min(5,Math.max(0,Number(src.recovery?.energy)||0)),soreness:Math.min(5,Math.max(0,Number(src.recovery?.soreness)||0))};
 out.completed=!!src.completed;out.color=src.color||'';out.noteTags=Array.isArray(src.noteTags)?src.noteTags:[];const sf=src.sessionFeedback||{};out.sessionFeedback={feelings:sf.feelings??'',adjustNextTime:sf.adjustNextTime??'',nextFocus:sf.nextFocus??'',tags:Array.isArray(sf.tags)?sf.tags:[],performance:sf.performance??'',energyRating:sf.energyRating??'',technique:sf.technique??'',pain:sf.pain??'',adjustmentOutcome:sf.adjustmentOutcome??''};out.previousFeedback=src.previousFeedback&&typeof src.previousFeedback==='object'?src.previousFeedback:null;return out}
@@ -4683,31 +4692,32 @@ function loadDayLocal(key){try{const r=localApi.get('workout:'+key);if(r)return 
 async function loadDay(key){if(currentUser){const {data,error}=await supabaseClient.from('workouts').select('data').eq('user_id',currentUser.id).eq('date',key).maybeSingle();if(!error&&data?.data)return normalizeDay(data.data)}return loadDayLocal(key)}
 function persistCurrentDayLocal(){if(!selectedDateKey||!currentDay)return;try{currentDay=normalizeDay(currentDay);localApi.set('workout:'+selectedDateKey,JSON.stringify(currentDay));monthIndicators[selectedDateKey]=currentDay}catch{}}
 function scheduleSave(){if(templateEditorMode){setStatus('Template editing');return}setStatus('Saving…');clearTimeout(saveTimer);saveTimer=setTimeout(saveDay,450)}
-async function saveDay(){if(templateEditorMode||!selectedDateKey||!currentDay)return;const normalized=normalizeDay(currentDay);currentDay=normalized;localApi.set('workout:'+selectedDateKey,JSON.stringify(normalized)); if(currentUser){const {error}=await supabaseClient.from('workouts').upsert({user_id:currentUser.id,date:selectedDateKey,data:normalized,updated_at:new Date().toISOString()},{onConflict:'user_id,date'});if(error){console.error(error);setStatus('Saved locally — cloud error');return}}monthIndicators[selectedDateKey]=normalized;setStatus(currentUser?'Autosaved · Synced':'Autosaved · Local');window.TrainMeiBrain?.refresh?.()}
+async function saveDay(){if(templateEditorMode||!selectedDateKey||!currentDay)return;const saveKey=selectedDateKey;const normalized=normalizeDay(clone(currentDay));currentDay=normalized;localApi.set('workout:'+saveKey,JSON.stringify(normalized));if(currentUser){const {error}=await supabaseClient.from('workouts').upsert({user_id:currentUser.id,date:saveKey,data:normalized,updated_at:new Date().toISOString()},{onConflict:'user_id,date'});if(error){console.error(error);setStatus('Saved locally — cloud error');return}}if(selectedDateKey===saveKey)monthIndicators[saveKey]=normalized;setStatus(currentUser?'Autosaved · Synced':'Autosaved · Local');window.TrainMeiBrain?.refresh?.()}
 async function syncLocal(){if(!currentUser)return;const rows=[];for(const k of localApi.list('workout:').keys){try{const date=k.replace('workout:','');rows.push({user_id:currentUser.id,date,data:normalizeDay(JSON.parse(localApi.get(k).value)),updated_at:new Date().toISOString()})}catch{}}if(!rows.length){setStatus('Nothing to sync');return}const {error}=await supabaseClient.from('workouts').upsert(rows,{onConflict:'user_id,date'});setStatus(error?'Sync failed':'Synced')}
 function exportData(){const data={};for(const k of localApi.list('workout:').keys)data[k]=localStorage.getItem(PREFIX+k);const payload={app:'Training Planner',version:4,exportedAt:new Date().toISOString(),data,plan:planData,templates:templatesCache};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));a.download=`training-planner-backup-${todayKey()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);setStatus('Backup exported')}
 function importData(file){if(!file)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);Object.entries(p.data||{}).forEach(([k,v])=>localStorage.setItem(PREFIX+k,v));if(p.plan)planData=normalizePlan(p.plan);renderMonth();renderPlan();setStatus('Backup restored')}catch{setStatus('Invalid backup')}};r.readAsText(file)}
-function renderCalendarQuickView(key){const box=$('#calendar-quick-view');if(!box)return;const d=monthIndicators[key];if(!d){box.innerHTML='<div class="quick-view-empty"><div><strong>No workout planned</strong><br><span>Select another day to preview its session.</span></div></div>';return}const dt=new Date(key+'T12:00:00'),title=d.focus||d.trainingCategory||'Workout';const blocks=(d.blocks||[]).filter(b=>(b.exercises||[]).some(e=>String(e.name||'').trim()));const sets=blocks.reduce((n,b)=>n+(b.exercises||[]).reduce((s,e)=>s+totalExerciseSets(e),0),0);const dist=parseFloat(d.metrics?.distanceKm)||0;const notes=String(d.notes||'').trim();box.innerHTML=`<div class="quick-view-kicker">Quick view · select a day to preview</div><div class="quick-view-date">${WEEKDAYS[(dt.getDay()+6)%7]} · ${MONTHS[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}</div><div class="quick-view-title">${esc(title)}</div><div class="quick-view-focus">${esc(d.trainingCategory||'Training session')}</div><div class="quick-view-stats"><div class="quick-view-stat"><strong>${blocks.length}</strong><span>Blocks</span></div><div class="quick-view-stat"><strong>${sets}</strong><span>Sets</span></div><div class="quick-view-stat"><strong>${dist?dist.toFixed(1)+' km':'—'}</strong><span>Distance</span></div></div>${blocks.slice(0,4).map(b=>`<div class="quick-view-block"><div class="quick-view-block-head"><strong>${esc(b.name||'Block')}</strong><span>${esc(b.category||'')}</span></div><div class="quick-view-exercises">${(b.exercises||[]).filter(e=>String(e.name||'').trim()).slice(0,5).map(e=>`<div class="quick-view-exercise"><strong>${esc(e.name)}</strong><span>${esc(exerciseSetText(e)||'—')}</span></div>`).join('')}</div></div>`).join('')}${notes?`<div class="quick-view-notes">${esc(notes).slice(0,220)}</div>`:''}<div class="quick-view-actions"><button class="btn" data-quick-open="${key}">Open workout</button></div>`}
-async function renderMonth(){view='month';showPage('calendar-page');const y=monthCursor.getFullYear(),m=monthCursor.getMonth();$('#month-title').innerHTML=`<span class="month-name">${MONTHS[m].toUpperCase()}</span><span class="month-year"> &nbsp;${y}</span>`;$('#cal-grid').innerHTML='<div style="padding:14px;font-size:12px;color:var(--muted)">Loading…</div>';monthIndicators=await fetchMonth(y,m);const first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();let h='';for(let i=0;i<start;i++)h+='<div class="cal-cell empty"></div>';for(let d=1;d<=days;d++){const k=dateKey(y,m,d),e=monthIndicators[k],is=k===todayKey(),title=e?.focus||e?.trainingCategory||'',dist=e?.metrics?.distanceKm?e.metrics.distanceKm+' km':'';h+=`<div class="cal-cell${is?' today':''}" data-key="${k}"><div class="cal-daynum">${d}</div><div class="cal-focus"><strong>${esc(title)}</strong></div>${e?.color?`<span class="cal-color-dot c-${e.color}"></span>`:''}<div class="cal-metric">${esc(dist)}</div></div>`}$('#cal-grid').innerHTML=h;const initial=selectedDateKey&&monthIndicators[selectedDateKey]?selectedDateKey:(monthIndicators[todayKey()]?todayKey():Object.keys(monthIndicators).find(k=>monthIndicators[k])||dateKey(y,m,1));selectedDateKey=initial;renderCalendarQuickView(initial);$$('#cal-grid .cal-cell[data-key]').forEach(c=>{if(c.dataset.key===initial)c.classList.add('selected');c.onclick=()=>{selectedDateKey=c.dataset.key;$$('#cal-grid .cal-cell.selected').forEach(x=>x.classList.remove('selected'));c.classList.add('selected');if(window.matchMedia('(min-width:561px) and (max-width:950px) and (orientation:landscape)').matches || window.matchMedia('(max-width:560px) and (orientation:portrait)').matches){openDay(c.dataset.key);return}renderCalendarQuickView(c.dataset.key);setStatus('')}});setStatus('')}
+function renderCalendarQuickView(key){const box=$('#calendar-quick-view');if(!box)return;const d=monthIndicators[key];if(!d){box.innerHTML='<div class="quick-view-empty"><div><strong>No workout planned</strong><br><span>Select another day to preview its session.</span></div></div>';return}const dt=new Date(key+'T12:00:00'),title=d.restDay?'Rest day':(d.focus||d.trainingCategory||'Workout');const blocks=(d.blocks||[]).filter(b=>(b.exercises||[]).some(e=>String(e.name||'').trim()));const sets=blocks.reduce((n,b)=>n+(b.exercises||[]).reduce((s,e)=>s+totalExerciseSets(e),0),0);const dist=parseFloat(d.metrics?.distanceKm)||0;const notes=String(d.notes||'').trim();box.innerHTML=`<div class="quick-view-kicker">Quick view · select a day to preview</div><div class="quick-view-date">${WEEKDAYS[(dt.getDay()+6)%7]} · ${MONTHS[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}</div><div class="quick-view-title">${esc(title)}</div><div class="quick-view-focus">${esc(d.restDay?'No training':(d.trainingCategory||'Training session'))}</div><div class="quick-view-stats"><div class="quick-view-stat"><strong>${blocks.length}</strong><span>Blocks</span></div><div class="quick-view-stat"><strong>${sets}</strong><span>Sets</span></div><div class="quick-view-stat"><strong>${dist?dist.toFixed(1)+' km':'—'}</strong><span>Distance</span></div></div>${blocks.slice(0,4).map(b=>`<div class="quick-view-block"><div class="quick-view-block-head"><strong>${esc(b.name||'Block')}</strong><span>${esc(b.category||'')}</span></div><div class="quick-view-exercises">${(b.exercises||[]).filter(e=>String(e.name||'').trim()).slice(0,5).map(e=>`<div class="quick-view-exercise"><strong>${esc(e.name)}</strong><span>${esc(exerciseSetText(e)||'—')}</span></div>`).join('')}</div></div>`).join('')}${notes?`<div class="quick-view-notes">${esc(notes).slice(0,220)}</div>`:''}<div class="quick-view-actions"><button class="btn" data-quick-open="${key}">Open workout</button></div>`}
+async function renderMonth(){view='month';showPage('calendar-page');const y=monthCursor.getFullYear(),m=monthCursor.getMonth();$('#month-title').innerHTML=`<span class="month-name">${MONTHS[m].toUpperCase()}</span><span class="month-year"> &nbsp;${y}</span>`;$('#cal-grid').innerHTML='<div style="padding:14px;font-size:12px;color:var(--muted)">Loading…</div>';monthIndicators=await fetchMonth(y,m);const first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();let h='';for(let i=0;i<start;i++)h+='<div class="cal-cell empty"></div>';for(let d=1;d<=days;d++){const k=dateKey(y,m,d),e=monthIndicators[k],is=k===todayKey(),isRest=!!e?.restDay,title=isRest?'Rest day':(e?.focus||e?.trainingCategory||''),dist=e?.metrics?.distanceKm?e.metrics.distanceKm+' km':'';h+=`<div class="cal-cell${is?' today':''}${isRest?' rest-day':''}" data-key="${k}"><div class="cal-daynum">${d}</div><div class="cal-focus"><strong>${esc(title)}</strong></div>${isRest?'<span class="rest-day-badge">Rest</span>':(e?.color?`<span class="cal-color-dot c-${e.color}"></span>`:'')}<div class="cal-metric">${esc(isRest?'No training':dist)}</div></div>`}$('#cal-grid').innerHTML=h;const initial=selectedDateKey&&monthIndicators[selectedDateKey]?selectedDateKey:(monthIndicators[todayKey()]?todayKey():Object.keys(monthIndicators).find(k=>monthIndicators[k])||dateKey(y,m,1));selectedDateKey=initial;renderCalendarQuickView(initial);$$('#cal-grid .cal-cell[data-key]').forEach(c=>{if(c.dataset.key===initial)c.classList.add('selected');c.onclick=()=>{selectedDateKey=c.dataset.key;$$('#cal-grid .cal-cell.selected').forEach(x=>x.classList.remove('selected'));c.classList.add('selected');if(window.matchMedia('(min-width:561px) and (max-width:950px) and (orientation:landscape)').matches || window.matchMedia('(max-width:560px) and (orientation:portrait)').matches){openDay(c.dataset.key);return}renderCalendarQuickView(c.dataset.key);setStatus('')}});setStatus('')}
 async function openDay(k){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(k))return;
   if(!templateEditorMode&&selectedDateKey&&currentDay){clearTimeout(saveTimer);persistCurrentDayLocal();}
   templateEditorMode=false; templateEditorId=null;
-  selectedDateKey=k;
-  currentDay=loadDayLocal(k);
+  const requestedKey=k;
+  selectedDateKey=requestedKey;
+  currentDay=loadDayLocal(requestedKey);
   showPage('day-page');
   renderDay();
   setStatus('');
-  const requestedKey=k;
-  const cloudDay=await loadDay(k);
+  const cloudDay=await loadDay(requestedKey);
   if(selectedDateKey===requestedKey){
-    currentDay=cloudDay;
+    currentDay=normalizeDay(clone(cloudDay));
     renderDay();
     setStatus('');
   }
 }
 function setVal(sel,v){const el=$(sel);if(el)el.value=v??''}
 function cleanTagline(v){return String(v??'').replace(/\.\/\s*/g,'').replace(/\/(?:N|n)/g,'\n').replace(/\\n/g,'\n').replace(/[ \t]{2,}/g,' ').trim()}
-function renderDay(){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);$('#day-name').textContent=WEEKDAYS[(dt.getDay()+6)%7];$('#day-date').textContent=templateEditorMode?'Template editor':`${MONTHS[m-1]} ${d}, ${y}`;$('#back-btn').textContent=templateEditorMode?'‹ Back to templates':'‹ Back to month';$('#day-footer-label').textContent=templateEditorMode?(templateEditorId?'Edit template':'Create template'):'Hybrid Training';const stb=$('#save-template-from-editor');if(stb){stb.hidden=!templateEditorMode;stb.textContent=templateEditorId?'Update template':'Save as template';}setVal('[data-field="tagline"]',cleanTagline(currentDay.tagline));setVal('[data-field="strap"]',currentDay.strap);setVal('[data-field="focus"]',currentDay.focus);setVal('[data-field="trainingCategory"]',currentDay.trainingCategory);setVal('[data-field="notes"]',currentDay.notes);$('#conditioning-type').value=currentDay.runningRowing?.type||'Run';$$('[data-conditioning-phase]').forEach(el=>{const phase=currentDay.runningRowing?.[el.dataset.conditioningPhase]||{};el.value=phase[el.dataset.conditioningKey]??''});setVal('[data-metric="distanceKm"]',currentDay.metrics.distanceKm||'');setVal('[data-metric="rpe"]',currentDay.metrics.rpe||'');setVal('[data-metric="load"]',currentDay.metrics.load||'');$('#caffeine-toggle').checked=!!currentDay.caffeine.taken;setVal('[data-caffeine-mg]',currentDay.caffeine.mg);setVal('[data-carbohydrates-g]',currentDay.carbohydratesGrams||'');$('#day-completed-toggle').checked=!!currentDay.completed;renderRecoveryInputs();renderTrainingBlocks();renderConditioningBlocks();$$('[data-note-tag]').forEach(b=>b.classList.toggle('active',currentDay.noteTags.includes(b.dataset.noteTag)));$$('[data-day-color]').forEach(b=>b.classList.toggle('active',(currentDay.color||'')===b.dataset.dayColor))}
+function renderDay(){const [y,m,d]=selectedDateKey.split('-').map(Number),dt=new Date(y,m-1,d);$('#day-name').textContent=WEEKDAYS[(dt.getDay()+6)%7];$('#day-date').textContent=templateEditorMode?'Template editor':`${MONTHS[m-1]} ${d}, ${y}`;$('#back-btn').textContent=templateEditorMode?'‹ Back to templates':'‹ Back to month';$('#day-footer-label').textContent=templateEditorMode?(templateEditorId?'Edit template':'Create template'):'Hybrid Training';const stb=$('#save-template-from-editor');if(stb){stb.hidden=!templateEditorMode;stb.textContent=templateEditorId?'Update template':'Save as template';}setVal('[data-field="tagline"]',cleanTagline(currentDay.tagline));setVal('[data-field="strap"]',currentDay.strap);setVal('[data-field="focus"]',currentDay.focus);setVal('[data-field="trainingCategory"]',currentDay.trainingCategory);setVal('[data-field="notes"]',currentDay.notes);$('#conditioning-type').value=currentDay.runningRowing?.type||'Run';$$('[data-conditioning-phase]').forEach(el=>{const phase=currentDay.runningRowing?.[el.dataset.conditioningPhase]||{};el.value=phase[el.dataset.conditioningKey]??''});setVal('[data-metric="distanceKm"]',currentDay.metrics.distanceKm||'');setVal('[data-metric="timeMin"]',currentDay.metrics.timeMin||'');setVal('[data-metric="rpe"]',currentDay.metrics.rpe||'');$('#caffeine-toggle').checked=!!currentDay.caffeine.taken;setVal('[data-caffeine-mg]',currentDay.caffeine.mg);setVal('[data-carbohydrates-g]',currentDay.carbohydratesGrams||'');$('#day-completed-toggle').checked=!!currentDay.completed;$('#day-rest-toggle').checked=!!currentDay.restDay;renderRecoveryInputs();renderTrainingBlocks();renderConditioningBlocks();$$('[data-note-tag]').forEach(b=>b.classList.toggle('active',currentDay.noteTags.includes(b.dataset.noteTag)));$$('[data-day-color]').forEach(b=>b.classList.toggle('active',(currentDay.color||'')===b.dataset.dayColor))}
 function renderRecoveryInputs(){const r=currentDay?.recovery||{sleep:0,energy:0,soreness:0};$$('[data-recovery-group]').forEach(group=>{const key=group.dataset.recoveryGroup;const value=Math.max(0,Math.min(5,Number(r[key])||0));group.innerHTML=Array.from({length:5},(_,i)=>`<button type="button" class="recovery-dot${i<value?' active':''}" data-recovery-key="${key}" data-recovery-value="${i+1}" aria-label="${key} ${i+1} of 5">○</button>`).join('')})}
 function renderTrainingBlocks(){const c=$('#training-blocks');const blockCategories=['Warm-up','Mobility','Stretching','Strength','Conditioning','AMRAP','FOR TIME','EMOM','TIME CAP','Running','Accessory','Recovery','Cool-down','Other'];c.innerHTML=currentDay.blocks.map((block,bi)=>{const collapsed=!!window._collapsedTrainingBlocks?.[block.id];return `<div class="training-block${collapsed?' is-collapsed':''}" draggable="true" data-block-index="${bi}"><div class="training-block-head"><span class="block-handle">☰</span><input class="block-title" data-block-index="${bi}" data-block-key="name" value="${esc(block.name)}" placeholder="Block name"><input class="block-coach-note" data-block-index="${bi}" data-block-key="coachNote" value="${esc(block.coachNote||'')}" placeholder="Coach note" aria-label="Coach note for block ${bi+1}"><select class="block-category" data-block-index="${bi}" data-block-key="category">${blockCategories.map(x=>`<option ${x===block.category?'selected':''}>${x}</option>`).join('')}</select><div class="block-actions"><button class="block-quick-toggle" type="button" data-block-quick="${bi}" aria-label="Quick actions">⋮</button><button class="block-collapse" type="button" data-block-collapse="${bi}" aria-label="Collapse block">⌄</button><button data-block-save="${bi}">⌑</button><button data-block-copy="${bi}">⧉</button><button data-block-remove="${bi}">×</button></div></div><div class="block-quick-actions"><button type="button" data-block-quick-add-set="${bi}">+ Set</button><button type="button" data-block-quick-add-ex="${bi}">+ Exercise</button><button type="button" data-block-quick-duplicate="${bi}">Duplicate</button><button type="button" data-block-quick-collapse="${bi}">Collapse</button></div><table class="block-table"><thead><tr><th>Exercise</th></tr></thead><tbody>${block.exercises.map((e,ei)=>`<tr class="exercise-row${window._collapsedTrainingExercises?.[block.id+':'+ei]?' is-collapsed':''}" draggable="true" data-block-index="${bi}" data-ex-index="${ei}"><td><div class="exercise-editor-row"><div class="exercise-main-line"><span class="exercise-handle">⋮⋮</span><span class="exercise-number">${bi+1}.${ei+1}</span><input class="exercise-name-input" data-ex-index="${ei}" data-ex-key="name" data-parent-block="${bi}" value="${esc(String(e.name||'').toUpperCase())}" placeholder="Exercise"><button type="button" class="exercise-expand" data-ex-collapse="${bi}" data-ex-index="${ei}" aria-label="Collapse exercise">⌄</button><button type="button" class="set-group-add set-group-add-inline" data-action="add-set-group" data-block="${bi}" data-index="${ei}">+ Add set</button><button class="rm-btn exercise-remove" data-action="remove-block-ex" data-block="${bi}" data-index="${ei}">×</button></div><div class="exercise-sets-wrap">${exerciseSetGroups(e).map((g,gi)=>`<div class="set-group-row" data-block-index="${bi}" data-ex-index="${ei}" data-set-index="${gi}"><button class="rm-btn set-remove-inline" data-action="remove-set-group" data-block="${bi}" data-index="${ei}" data-set="${gi}" aria-label="Remove set">×</button><input data-set-key="sets" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.sets)}" placeholder="sets"><input data-set-key="reps" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.reps)}" placeholder="reps"><input data-set-key="weight" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" value="${esc(g.weight)}" placeholder="kg / BW"><select class="set-type-select" data-set-key="type" data-parent-block="${bi}" data-ex-index="${ei}" data-set-index="${gi}" aria-label="Set type"><option ${g.type==='Aprox'?'selected':''}>Aprox</option><option ${g.type==='TS'?'selected':''}>TS</option><option ${g.type==='DS'?'selected':''}>DS</option></select></div>`).join('')}<div class="set-group-add-row"><button class="set-group-add" data-action="add-set-group" data-block="${bi}" data-index="${ei}">+ Add set</button></div></div></div></td></tr>`).join('')}</tbody></table><button class="block-add" data-action="add-block-ex" data-block="${bi}">+ Add exercise</button></div>`}).join('')}
 function conditioningFields(type){return type==='Row'?['Distance','Split','Recovery']:type==='Bike'?['Duration','Power / Zone','Recovery']:type==='Other'?['Duration','Target','Recovery']:['Distance','Pace','Recovery']}
@@ -4747,7 +4757,7 @@ function numeric(v){const n=Number(v);return Number.isFinite(n)?n:0}
 function allWorkoutRows(){const rows=[];Object.keys(localStorage).filter(k=>k.startsWith(PREFIX+'workout:')).forEach(k=>{try{const date=k.slice((PREFIX+'workout:').length);rows.push({date,data:normalizeDay(JSON.parse(localStorage.getItem(k)))})}catch{}});Object.entries(monthIndicators||{}).forEach(([date,data])=>{const idx=rows.findIndex(r=>r.date===date);if(idx>=0)rows[idx]={date,data:normalizeDay(data)};else rows.push({date,data:normalizeDay(data)})});return rows.sort((a,b)=>a.date.localeCompare(b.date))}
 async function getAnalyticsRows(from,to){if(currentUser){const {data,error}=await supabaseClient.from('workouts').select('date,data').eq('user_id',currentUser.id).gte('date',from).lte('date',to);if(!error)return (data||[]).map(r=>({date:r.date,data:normalizeDay(r.data)}))}return allWorkoutRows().filter(r=>r.date>=from&&r.date<=to)}
 function rangeDates(){const range=$('#analytics-range').value;let to=new Date(),from=new Date(to);if(range!=='all')from.setDate(from.getDate()-Number(range));else from=new Date(2000,0,1);if($('#analytics-from').value)from=new Date($('#analytics-from').value+'T00:00:00');if($('#analytics-to').value)to=new Date($('#analytics-to').value+'T00:00:00');return {from:dateKey(to.getFullYear(),to.getMonth(),to.getDate()),to:dateKey(from.getFullYear(),from.getMonth(),from.getDate())}}
-async function renderAnalytics(){const range=$('#analytics-range').value;let to=new Date(),from=new Date(to);if(range==='all')from=new Date(2000,0,1);else from.setDate(from.getDate()-Number(range));if($('#analytics-from').value)from=new Date($('#analytics-from').value+'T00:00:00');if($('#analytics-to').value)to=new Date($('#analytics-to').value+'T00:00:00');const rows=await getAnalyticsRows(dateKey(from.getFullYear(),from.getMonth(),from.getDate()),dateKey(to.getFullYear(),to.getMonth(),to.getDate()));const stats={sessions:rows.length,distance:rows.reduce((s,r)=>s+numeric(r.data.metrics.distanceKm),0),time:rows.reduce((s,r)=>s+numeric(r.data.metrics.timeMin),0),volume:rows.reduce((s,r)=>s+numeric(r.data.metrics.volume),0),load:rows.reduce((s,r)=>s+numeric(r.data.metrics.load),0),prs:rows.filter(r=>String(r.data.metrics.pr||'').trim()).length};$('#stat-grid').innerHTML=[['Sessions',stats.sessions,''],['Distance',stats.distance.toFixed(1),'km'],['Time',Math.round(stats.time),'min'],['Volume',Math.round(stats.volume), ''],['Load',Math.round(stats.load), ''],['PRs',stats.prs,'']].map(x=>`<div class="stat-card"><div class="stat-label">${x[0]}</div><div class="stat-value">${x[1]}</div><div class="stat-unit">${x[2]}</div></div>`).join('');const series=(key)=>rows.map(r=>({label:r.date,value:numeric(r.data.metrics[key])}));drawChart($('#distance-chart'),series('distanceKm'),'km');drawChart($('#time-chart'),series('timeMin'),'min');drawChart($('#volume-chart'),series('volume'),'');drawChart($('#load-chart'),series('load'),'');const prs=rows.filter(r=>String(r.data.metrics.pr||'').trim()).sort((a,b)=>b.date.localeCompare(a.date));$('#prs-area').innerHTML=prs.length?`<table class="pr-table"><thead><tr><th>Date</th><th>PR</th><th>Session</th></tr></thead><tbody>${prs.map(r=>`<tr><td>${esc(r.date)}</td><td>${esc(r.data.metrics.pr)}</td><td>${esc(r.data.focus||r.data.trainingCategory||'')}</td></tr>`).join('')}</tbody></table>`:'<div class="empty-state">No PRs recorded in this period yet.</div>'}
+async function renderAnalytics(){const range=$('#analytics-range').value;let to=new Date(),from=new Date(to);if(range==='all')from=new Date(2000,0,1);else from.setDate(from.getDate()-Number(range));if($('#analytics-from').value)from=new Date($('#analytics-from').value+'T00:00:00');if($('#analytics-to').value)to=new Date($('#analytics-to').value+'T00:00:00');const rows=await getAnalyticsRows(dateKey(from.getFullYear(),from.getMonth(),from.getDate()),dateKey(to.getFullYear(),to.getMonth(),to.getDate()));const stats={sessions:rows.length,distance:rows.reduce((s,r)=>s+numeric(r.data.metrics.distanceKm),0),time:rows.reduce((s,r)=>s+numeric(r.data.metrics.timeMin),0),volume:rows.reduce((s,r)=>s+numeric(r.data.metrics.volume),0),load:rows.reduce((s,r)=>s+numeric(r.data.metrics.load),0),prs:rows.filter(r=>String(r.data.metrics.pr||'').trim()).length};$('#stat-grid').innerHTML=[['Sessions',stats.sessions,''],['Distance',stats.distance.toFixed(1),'km'],['Time',Math.round(stats.time),'min'],['Volume',Math.round(stats.volume), ''],['Total time',Math.round(stats.time), 'min'],['PRs',stats.prs,'']].map(x=>`<div class="stat-card"><div class="stat-label">${x[0]}</div><div class="stat-value">${x[1]}</div><div class="stat-unit">${x[2]}</div></div>`).join('');const series=(key)=>rows.map(r=>({label:r.date,value:numeric(r.data.metrics[key])}));drawChart($('#distance-chart'),series('distanceKm'),'km');drawChart($('#time-chart'),series('timeMin'),'min');drawChart($('#volume-chart'),series('volume'),'');drawChart($('#load-chart'),series('timeMin'),'min');const prs=rows.filter(r=>String(r.data.metrics.pr||'').trim()).sort((a,b)=>b.date.localeCompare(a.date));$('#prs-area').innerHTML=prs.length?`<table class="pr-table"><thead><tr><th>Date</th><th>PR</th><th>Session</th></tr></thead><tbody>${prs.map(r=>`<tr><td>${esc(r.date)}</td><td>${esc(r.data.metrics.pr)}</td><td>${esc(r.data.focus||r.data.trainingCategory||'')}</td></tr>`).join('')}</tbody></table>`:'<div class="empty-state">No PRs recorded in this period yet.</div>'}
 function drawChart(canvas,data,unit){const w=canvas.clientWidth||500,h=220,dpr=window.devicePixelRatio||1;canvas.width=w*dpr;canvas.height=h*dpr;const c=canvas.getContext('2d');c.scale(dpr,dpr);c.clearRect(0,0,w,h);const css=getComputedStyle(document.body),line=css.getPropertyValue('--line').trim()||'rgba(22,22,22,.18)',ink=css.getPropertyValue('--ink').trim()||'#161616',muted=css.getPropertyValue('--muted').trim()||'#6b6b63';const vals=data.map(x=>x.value);const max=Math.max(1,...vals);const padX=28,padY=22,plotW=w-padX*2,plotH=h-padY*2;c.strokeStyle=line;c.lineWidth=1;for(let i=0;i<4;i++){const y=padY+i*plotH/3;c.beginPath();c.moveTo(padX,y);c.lineTo(w-padX,y);c.stroke()}if(!data.length)return;c.strokeStyle=ink;c.lineWidth=2;c.beginPath();data.forEach((p,i)=>{const x=padX+(data.length===1?plotW/2:i*(plotW/(data.length-1)));const y=padY+plotH-(p.value/max)*plotH;if(i===0)c.moveTo(x,y);else c.lineTo(x,y)});c.stroke();c.fillStyle=ink;data.forEach((p,i)=>{const x=padX+(data.length===1?plotW/2:i*(plotW/(data.length-1)));const y=padY+plotH-(p.value/max)*plotH;c.beginPath();c.arc(x,y,2.5,0,Math.PI*2);c.fill()});c.fillStyle=muted;c.font='10px sans-serif';c.fillText(`${max.toFixed(max%1?1:0)} ${unit}`.trim(),padX,12);if(data.length){c.fillText(data[0].label,padX,h-5);c.textAlign='right';c.fillText(data[data.length-1].label,w-padX,h-5);c.textAlign='left'}}
 function renderList(containerId,arr,fields,labels){const c=$('#'+containerId);c.innerHTML=arr.map((obj,i)=>`<div class="plan-row">${fields.map((f,j)=>`<input data-plan-array="${containerId}" data-index="${i}" data-field="${f}" value="${esc(obj[f]??'')}" placeholder="${esc(labels[j]||'')}">`).join('')}<button data-plan-remove="${containerId}" data-index="${i}">×</button></div>`).join('')}
 function planMondayKey(date=new Date()){const d=new Date(date);d.setHours(12,0,0,0);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return dateKey(d.getFullYear(),d.getMonth(),d.getDate())}
@@ -4777,15 +4787,15 @@ function addPlanBlock(){addSeasonBlock()}
 function setPlanWeekFrom(delta){const d=new Date(planWeekKey+'T12:00:00');d.setDate(d.getDate()+delta*7);planWeekKey=dateKey(d.getFullYear(),d.getMonth(),d.getDate());renderPlan()}
 function openPlanDay(key){selectedDateKey=key;openDay(key)}
 function homeWeekRange(){const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());const day=(today.getDay()+6)%7;const monday=new Date(today);monday.setDate(today.getDate()-day);const sunday=new Date(monday);sunday.setDate(monday.getDate()+6);return {today,monday,sunday,dates:Array.from({length:7},(_,i)=>{const d=new Date(monday);d.setDate(monday.getDate()+i);return dateKey(d.getFullYear(),d.getMonth(),d.getDate())})}}
-async function renderHome(){const range=homeWeekRange();const from=dateKey(range.monday.getFullYear(),range.monday.getMonth(),range.monday.getDate()),to=dateKey(range.sunday.getFullYear(),range.sunday.getMonth(),range.sunday.getDate());const monthStart=new Date(range.today.getFullYear(),range.today.getMonth(),1),monthEnd=new Date(range.today.getFullYear(),range.today.getMonth()+1,0);const rows=await TrainingDataCore.training(from,to);const monthRows=await TrainingDataCore.training(dateKey(monthStart.getFullYear(),monthStart.getMonth(),monthStart.getDate()),dateKey(monthEnd.getFullYear(),monthEnd.getMonth(),monthEnd.getDate()));const byDate={};rows.forEach(r=>byDate[r.date]=normalizeDay(r.data));const monthByDate={};monthRows.forEach(r=>monthByDate[r.date]=normalizeDay(r.data));const todayK=todayKey();const todayData=byDate[todayK]||loadDayLocal(todayK);const title=todayData?.focus||todayData?.trainingCategory||'';$('#home-greeting').textContent=((()=>{const h=new Date().getHours();return h<6?'Good night':h<12?'Good morning':h<18?'Good afternoon':h<22?'Good evening':'Good night'})());$('#home-date-label').textContent=`${WEEKDAYS[(range.today.getDay()+6)%7]} · ${MONTHS[range.today.getMonth()]} ${range.today.getDate()}, ${range.today.getFullYear()}`;$('#home-today-title').textContent=title||'No workout planned';$('#home-today-status').textContent=todayData?.completed?'Completed':'Not completed';const blocks=(todayData?.blocks||[]).filter(b=>(b.exercises||[]).some(e=>String(e.name||'').trim()));const sets=blocks.reduce((n,b)=>n+(b.exercises||[]).reduce((s,e)=>s+totalExerciseSets(e),0),0);$('#home-today-body').innerHTML=title?`<div class="home-session-title">${esc(todayData.trainingCategory||'Training session')}</div><div class="home-session-sub">${blocks.length} block${blocks.length===1?'':'s'} · ${sets} planned sets</div><div class="home-session-meta">${blocks.slice(0,4).map(b=>`<span class="home-pill">${esc(b.name||'Block')}</span>`).join('')}</div>`:'<div class="home-empty">Nothing is scheduled for today. You can add a workout or use a template.</div>';const completed=range.dates.filter(k=>!!byDate[k]?.completed).length;const planned=range.dates.filter(k=>!!byDate[k]).length;$('#home-week-title').textContent=`Week ${getWeekNumber(range.monday)}`;$('#home-week-progress-text').textContent=`${completed} completed`;$('#home-week-progress-bar').style.width=(planned?100:0)+'%';$('#home-week-days').innerHTML=range.dates.map((k,i)=>{const d=new Date(k+'T12:00:00'),data=byDate[k],has=!!data;return `<button type="button" class="home-week-day${k===todayK?' today':''}${data?.completed?' completed':''}${!has?' empty':''}" data-home-open-day="${k}"><div class="dow">${WEEKDAYS[i].slice(0,3)}</div><div class="daynum">${d.getDate()}</div><div class="dot"></div></button>`}).join('');$('#home-month-title').textContent=`${MONTHS[range.today.getMonth()]} ${range.today.getFullYear()}`;const firstDow=(monthStart.getDay()+6)%7;const daysInMonth=monthEnd.getDate();let heat='';for(let i=0;i<firstDow;i++)heat+='<span class="home-heat-day empty"></span>';for(let day=1;day<=daysInMonth;day++){const k=dateKey(range.today.getFullYear(),range.today.getMonth(),day),data=monthByDate[k]||loadDayLocal(k);heat+=`<button type="button" class="home-heat-day${data?.completed?' completed':''}${k===todayK?' today':''}" data-home-open-day="${k}" aria-label="${k}${data?.completed?' completed':''}">${day}</button>`}$('#home-month-heatmap').innerHTML=heat;const dist=monthRows.reduce((n,r)=>n+numeric(r.data.metrics?.distanceKm),0);const mins=monthRows.reduce((n,r)=>n+numeric(r.data.metrics?.timeMin),0);$('#home-stats').innerHTML=`<div class="home-stat"><strong>${completed}</strong><span>Completed this week</span></div><div class="home-stat"><strong>${dist.toFixed(1)}</strong><span>km this month</span></div><div class="home-stat"><strong>${Math.round(mins)}</strong><span>minutes</span></div>`;const nextDate=new Date(range.today);nextDate.setDate(nextDate.getDate()+1);const nextKey=dateKey(nextDate.getFullYear(),nextDate.getMonth(),nextDate.getDate()),nextData=monthByDate[nextKey]||loadDayLocal(nextKey);$('#home-next-title').textContent=nextData?.focus||nextData?.trainingCategory||'Open tomorrow’s session';$('#home-next-date').textContent=`${WEEKDAYS[(nextDate.getDay()+6)%7]} · ${nextDate.getDate()}`;$('#home-next-body').innerHTML=`<div class="home-session-sub">${nextData?.completed?'Completed already':'Ready to write'} · ${esc(nextKey)}</div>`;window._homeNextKey=nextKey;renderHomeReadinessAndLoad(todayData)}
-function homeWeekLoadDays(offsetWeeks){const now=new Date();const dow=(now.getDay()+6)%7;const monday=new Date(now);monday.setDate(now.getDate()-dow-offsetWeeks*7);const map={};allWorkoutRows().forEach(r=>map[r.date]=r.data);const days=[];for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);const k=dateKey(d.getFullYear(),d.getMonth(),d.getDate());days.push({k,data:map[k]||null,load:TrainingDataCore.trainingLoad(map[k]||null)})}return days}
+async function renderHome(){const range=homeWeekRange();const from=dateKey(range.monday.getFullYear(),range.monday.getMonth(),range.monday.getDate()),to=dateKey(range.sunday.getFullYear(),range.sunday.getMonth(),range.sunday.getDate());const monthStart=new Date(range.today.getFullYear(),range.today.getMonth(),1),monthEnd=new Date(range.today.getFullYear(),range.today.getMonth()+1,0);const rows=await TrainingDataCore.training(from,to);const monthRows=await TrainingDataCore.training(dateKey(monthStart.getFullYear(),monthStart.getMonth(),monthStart.getDate()),dateKey(monthEnd.getFullYear(),monthEnd.getMonth(),monthEnd.getDate()));const byDate={};rows.forEach(r=>byDate[r.date]=normalizeDay(r.data));const monthByDate={};monthRows.forEach(r=>monthByDate[r.date]=normalizeDay(r.data));const todayK=todayKey();const todayData=byDate[todayK]||loadDayLocal(todayK);const title=todayData?.focus||todayData?.trainingCategory||'';$('#home-greeting').textContent=((()=>{const h=new Date().getHours();return h<6?'Good night':h<12?'Good morning':h<18?'Good afternoon':h<22?'Good evening':'Good night'})());$('#home-date-label').textContent=`${WEEKDAYS[(range.today.getDay()+6)%7]} · ${MONTHS[range.today.getMonth()]} ${range.today.getDate()}, ${range.today.getFullYear()}`;$('#home-today-title').textContent=todayData?.restDay?'Rest day':(title||'No workout planned');$('#home-today-status').textContent=todayData?.restDay?'Rest day':(todayData?.completed?'Completed':'Not completed');const blocks=(todayData?.blocks||[]).filter(b=>(b.exercises||[]).some(e=>String(e.name||'').trim()));const sets=blocks.reduce((n,b)=>n+(b.exercises||[]).reduce((s,e)=>s+totalExerciseSets(e),0),0);$('#home-today-body').innerHTML=todayData?.restDay?'<div class="home-session-title">Rest day</div><div class="home-session-sub">No training scheduled. Recovery inputs can still be logged.</div>':(title?`<div class="home-session-title">${esc(todayData.trainingCategory||'Training session')}</div><div class="home-session-sub">${blocks.length} block${blocks.length===1?'':'s'} · ${sets} planned sets</div><div class="home-session-meta">${blocks.slice(0,4).map(b=>`<span class="home-pill">${esc(b.name||'Block')}</span>`).join('')}</div>`:'<div class="home-empty">Nothing is scheduled for today. You can add a workout or use a template.</div>');const completed=range.dates.filter(k=>!!byDate[k]?.completed).length;const planned=range.dates.filter(k=>!!byDate[k]).length;$('#home-week-title').textContent=`Week ${getWeekNumber(range.monday)}`;$('#home-week-progress-text').textContent=`${completed} completed`;$('#home-week-progress-bar').style.width=(planned?100:0)+'%';$('#home-week-days').innerHTML=range.dates.map((k,i)=>{const d=new Date(k+'T12:00:00'),data=byDate[k],has=!!data;return `<button type="button" class="home-week-day${k===todayK?' today':''}${data?.completed?' completed':''}${!has?' empty':''}" data-home-open-day="${k}"><div class="dow">${WEEKDAYS[i].slice(0,3)}</div><div class="daynum">${d.getDate()}</div><div class="dot"></div></button>`}).join('');$('#home-month-title').textContent=`${MONTHS[range.today.getMonth()]} ${range.today.getFullYear()}`;const firstDow=(monthStart.getDay()+6)%7;const daysInMonth=monthEnd.getDate();let heat='';for(let i=0;i<firstDow;i++)heat+='<span class="home-heat-day empty"></span>';for(let day=1;day<=daysInMonth;day++){const k=dateKey(range.today.getFullYear(),range.today.getMonth(),day),data=monthByDate[k]||loadDayLocal(k);heat+=`<button type="button" class="home-heat-day${data?.completed?' completed':''}${k===todayK?' today':''}" data-home-open-day="${k}" aria-label="${k}${data?.completed?' completed':''}">${day}</button>`}$('#home-month-heatmap').innerHTML=heat;const dist=monthRows.reduce((n,r)=>n+numeric(r.data.metrics?.distanceKm),0);const mins=monthRows.reduce((n,r)=>n+numeric(r.data.metrics?.timeMin),0);$('#home-stats').innerHTML=`<div class="home-stat"><strong>${completed}</strong><span>Completed this week</span></div><div class="home-stat"><strong>${dist.toFixed(1)}</strong><span>km this month</span></div><div class="home-stat"><strong>${Math.round(mins)}</strong><span>minutes</span></div>`;const nextDate=new Date(range.today);nextDate.setDate(nextDate.getDate()+1);const nextKey=dateKey(nextDate.getFullYear(),nextDate.getMonth(),nextDate.getDate()),nextData=monthByDate[nextKey]||loadDayLocal(nextKey);$('#home-next-title').textContent=nextData?.focus||nextData?.trainingCategory||'Open tomorrow’s session';$('#home-next-date').textContent=`${WEEKDAYS[(nextDate.getDay()+6)%7]} · ${nextDate.getDate()}`;$('#home-next-body').innerHTML=`<div class="home-session-sub">${nextData?.completed?'Completed already':'Ready to write'} · ${esc(nextKey)}</div>`;window._homeNextKey=nextKey;renderHomeReadinessAndLoad(todayData)}
+function homeWeekLoadDays(offsetWeeks){const now=new Date();const dow=(now.getDay()+6)%7;const monday=new Date(now);monday.setDate(now.getDate()-dow-offsetWeeks*7);const map={};allWorkoutRows().forEach(r=>map[r.date]=r.data);const days=[];for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);const k=dateKey(d.getFullYear(),d.getMonth(),d.getDate());const data=map[k]||null;days.push({k,data,time:TrainingDataCore.totalTime?TrainingDataCore.totalTime(data):Number(data?.metrics?.timeMin)||0,load:TrainingDataCore.trainingLoad(data)})}return days}
 function renderHomeReadinessAndLoad(todayData){
-  const days=homeWeekLoadDays(0),max=Math.max(1,...days.map(x=>x.load));
-  const loadBars=$('#home-load-bars');if(loadBars)loadBars.innerHTML=days.map((x,i)=>`<div class="home-load-col"><i style="height:${Math.max(x.load?6:2,Math.round(x.load/max*100))}%"></i><span>${WEEKDAYS[i].slice(0,1)}</span></div>`).join('');
-  const total=days.reduce((s,x)=>s+x.load,0);let prevTotal=0,prevWeeks=0;
-  for(let w=1;w<=3;w++){const t=homeWeekLoadDays(w).reduce((s,x)=>s+x.load,0);if(t>0){prevTotal+=t;prevWeeks++}}
+  const days=homeWeekLoadDays(0),max=Math.max(1,...days.map(x=>x.time));
+  const loadBars=$('#home-load-bars');if(loadBars)loadBars.innerHTML=days.map((x,i)=>`<div class="home-load-col"><i style="height:${Math.max(x.time?6:2,Math.round(x.time/max*100))}%"></i><span>${WEEKDAYS[i].slice(0,1)}</span></div>`).join('');
+  const total=days.reduce((s,x)=>s+x.time,0);let prevTotal=0,prevWeeks=0;
+  for(let w=1;w<=3;w++){const t=homeWeekLoadDays(w).reduce((s,x)=>s+x.time,0);if(t>0){prevTotal+=t;prevWeeks++}}
   const avgPrev=prevWeeks?prevTotal/prevWeeks:total,ratio=avgPrev?total/avgPrev:1;
-  const loadStatus=$('#home-load-status');if(loadStatus)loadStatus.textContent=total===0?'—':(ratio>1.15?'HIGH LOAD':ratio<0.85?'LOW LOAD':'OPTIMAL LOAD');
+  const loadStatus=$('#home-load-status');if(loadStatus)loadStatus.textContent=total===0?'—':`${Math.round(total)} MIN`;
   const recVals=days.map(x=>TrainingDataCore.recoveryScore(x.data)).filter(v=>v!==null);
   const recPct=$('#home-load-recovery-pct');if(recPct)recPct.textContent=recVals.length?Math.round(recVals.reduce((a,b)=>a+b,0)/recVals.length/5*100)+'%':'—';
   const cyclePhase=TrainingDataCore.cycle()?.phase||null;
@@ -4800,9 +4810,92 @@ function renderHomeReadinessAndLoad(todayData){
     barsEl.innerHTML='<div class="home-empty">Rate sleep, energy and soreness today to see your readiness.</div>';
   }
 }
-async function createSmartTemplate(){if(!smartWorkout||!currentUser)return;const defaultName=smartWorkout.templateName||smartWorkout.focus||'Imported workout';const name=prompt('Template name:',defaultName);if(!name)return;const data=smartDayData();data.importMeta={source:'SMART AI',fileName:smartFileName,activityId:'',importedAt:new Date().toISOString()};data._tags=deriveTags(data);const {error}=await supabaseClient.from('workout_templates').insert({user_id:currentUser.id,name:name.trim(),category:data.trainingCategory||null,data,updated_at:new Date().toISOString()});if(error){alert(error.message);return}await loadTemplates();setStatus('Smart template created');$('#smart-result-modal').classList.remove('show')}
+async function createSmartTemplate(){
+  if(!smartWorkout) return;
+  if(!currentUser){
+    setStatus('Log in to save templates');
+    alert('Log in to save templates.');
+    return;
+  }
+  const defaultName = smartWorkout.templateName || smartWorkout.focus || 'Imported workout';
+  const name = prompt('Template name:', defaultName);
+  if(name === null) return;      // canceló
+  if(!name.trim()) return;       // vacío
+
+  const data = smartDayData();
+
+  // deriveTags puede no existir en este scope → fallback seguro
+  let tags = [];
+  try {
+    tags = (typeof deriveTags === 'function') ? deriveTags(data) : [];
+  } catch(e) {
+    tags = [];
+  }
+  data._tags = tags;
+  data.importMeta = {
+    source: 'SMART AI',
+    fileName: smartFileName,
+    activityId: '',
+    importedAt: new Date().toISOString()
+  };
+
+  console.log('[OCR] Inserting template:', name.trim(), data);
+
+  const { data: created, error } = await supabaseClient
+    .from('workout_templates')
+    .insert({
+      user_id: currentUser.id,
+      name: name.trim(),
+      category: data.trainingCategory || null,
+      data,
+      updated_at: new Date().toISOString()
+    })
+    .select('*')
+    .single();
+
+  if(error){
+    console.error('[OCR] Template insert failed:', error);
+    alert('Could not save template: ' + error.message);
+    return;
+  }
+
+  console.log('[OCR] Template created:', created);
+
+  try {
+    await loadTemplates();      // recarga la caché y llama renderTemplates()
+  } catch(e) {
+    console.error('[OCR] loadTemplates failed:', e);
+  }
+  setStatus('Smart template created');
+
+  // Cerrar ambos modales para que se vea el resultado
+  document.querySelector('#smart-result-modal')?.classList.remove('show');
+  document.querySelector('#smart-review-modal')?.classList.remove('show');
+}
 async function createSmartTemplateSilently(){if(!smartWorkout||!currentUser)return null;const defaultName=smartWorkout.templateName||smartWorkout.focus||'Imported workout';const data=smartDayData();data.importMeta={source:'SMART AI',fileName:smartFileName,activityId:'',importedAt:new Date().toISOString()};data._tags=deriveTags(data);const {data:created,error}=await supabaseClient.from('workout_templates').insert({user_id:currentUser.id,name:defaultName.trim(),category:data.trainingCategory||null,data,updated_at:new Date().toISOString()}).select('*').single();if(error)throw error;await loadTemplates();return created}
-async function applySmartToDay(){if(!smartWorkout||!currentUser)return;const date=prompt('Add this workout to date (YYYY-MM-DD):',selectedDateKey||todayKey());if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return;selectedDateKey=date;currentDay=smartDayData();await saveDay();monthCursor=new Date(Number(date.slice(0,4)),Number(date.slice(5,7))-1,1);await openDay(date);$('#smart-result-modal').classList.remove('show');setStatus('Workout added to '+date)}
+async function applySmartToDay(){
+  if(!smartWorkout||!currentUser)return;
+  const date=prompt('Add this workout to date (YYYY-MM-DD):',selectedDateKey||todayKey());
+  if(date===null)return;
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){
+    alert('Fecha inválida. Usa el formato YYYY-MM-DD.');
+    return;
+  }
+  try{
+    selectedDateKey=date;
+    currentDay=smartDayData();
+    await saveDay();
+    monthCursor=new Date(Number(date.slice(0,4)),Number(date.slice(5,7))-1,1);
+    await openDay(date);
+    document.querySelector('#smart-result-modal')?.classList.remove('show');
+    document.querySelector('#smart-review-modal')?.classList.remove('show');
+    setStatus('Workout added to '+date);
+  }catch(e){
+    console.error('[OCR] applySmartToDay error:', e);
+    setStatus('Error saving workout');
+    alert('Could not save workout: '+e.message);
+  }
+}
 async function smartCreateAndApply(){try{if(!smartWorkout||!currentUser)return;await createSmartTemplateSilently();await applySmartToDay()}catch(err){alert(err.message||'Could not create the smart template.')}}
 function smartSearch(q){q=String(q||'').trim().toLowerCase();const rows=allWorkoutRows();if(!q)return rows.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,30);return rows.filter(r=>{const d=r.data||{},ex=(d.exercises||[]).flatMap(e=>[e.name,exerciseSetText(e)]);const hay=[r.date,d.focus,d.trainingCategory,d.notes,d.status,...ex].join(' ').toLowerCase();if(q==='completed')return String(d.status||'').toLowerCase()==='completed';if(q==='lower body')return /leg|lower|squat|deadlift|hamstring|quad|glute|lunge|adductor/i.test(hay);return hay.includes(q)})}
 function renderSearchResults(){const el=$('#smart-search-results');if(!el)return;const q=$('#smart-search-input')?.value||'';const rows=smartSearch(q);el.innerHTML=rows.length?`<div class="search-result-count">${rows.length} result${rows.length===1?'':'s'}</div>`+rows.slice(0,40).map(r=>{const d=r.data||{};const names=(d.exercises||[]).map(e=>e.name).filter(Boolean).slice(0,4).join(' · ');return `<div class="search-result" data-search-date="${r.date}"><div><div class="search-result-title">${esc(d.focus||d.trainingCategory||'Workout')}</div><div class="search-result-meta">${esc(r.date)}${names?' · '+esc(names):''}</div></div><div class="search-result-status">${esc(d.status||'planned')}</div></div>`}).join(''):'<div class="empty-state">No workouts match your search.</div>'}
@@ -4874,6 +4967,27 @@ $('#smart-select-btn').onclick=()=>$('#smart-screenshot-file').click();$('#close
 /* Bridge selected first-layer actions to Smart Training navigation */
 window.__trainingPlannerOpenBlockLibrary = (i=null) => openBlockLibrary(i);
 window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
+window.__trainingPlannerOpenBlockLibrary = (i=null) => openBlockLibrary(i);
+window.__tpApplySmartToDay = applySmartToDay;
+window.__tpCreateSmartTemplate = createSmartTemplate;
+/* Expose training-planner internals for the OCR IIFE (separate scope). */
+window.__tp = {
+  get currentUser(){ return currentUser; },
+  get currentDay(){ return currentDay; },
+  get selectedDateKey(){ return selectedDateKey; },
+  get smartWorkout(){ return smartWorkout; },
+  set smartWorkout(v){ smartWorkout = v; },
+  todayKey,
+  openDay,
+  saveDay,
+  normalizeDay,
+  defaultDay,
+  monthCursor: () => monthCursor,
+  setMonthCursor: (d) => { monthCursor = d; },
+  setStatus,
+  loadTemplates,
+  TrainingDataCore: () => TrainingDataCore
+};
 /* ===== SMART INTEGRATIONS OCR ===== */
 (function(){
   const OCRKEY='training-planner:smart-imports';
@@ -4929,14 +5043,8 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
   function renderRecentImports(){const el=$i('#smart-recent-imports');if(!el)return;const a=readImports();el.innerHTML=a.length?a.map(x=>`<div class="smart-int-import"><div><strong>${escI(x.name)}</strong><small>${new Date(x.date).toLocaleDateString()} · ${Math.round(x.confidence||0)}% OCR confidence · ${countExercises(x.workout)} exercises</small></div><button type="button" class="btn" data-recent-id="${escI(x.id)}">Review</button></div>`).join(''):'<div class="smart-int-note">No imports yet. Your reviewed Garmin screenshots will appear here.</div>'}
   function openRecent(id){const x=readImports().find(i=>i.id===id);if(!x)return;reviewWorkout=clone(x.workout);renderSmartReview()}
   function persistReview(){syncReview();if(reviewWorkout?.importMeta?.id){const a=readImports();const i=a.findIndex(x=>x.id===reviewWorkout.importMeta.id);if(i>=0){a[i].workout=clone(reviewWorkout);a[i].confidence=reviewWorkout._ocrConfidence||0;a[i].date=new Date().toISOString();saveImports(a)}}}
-  async function addDay(){persistReview();smartWorkout=smartDayData();if(!currentUser){alert('Log in to add an imported workout to a synced day. You can still review it or save the import locally.');return}await applySmartToDay()}
-  async function saveTemplate(){persistReview();smartWorkout=smartDayData();if(!currentUser){alert('Log in to save the imported workout as a synced template. The OCR review remains stored locally.');return}await createSmartTemplate()}
-  document.addEventListener('click',e=>{const r=e.target.closest('[data-recent-id]');if(r){openRecent(r.dataset.recentId);return}if(e.target.closest('#close-smart-review')||e.target.closest('#smart-review-close')){persistReview();$i('#smart-review-modal').classList.remove('show');return}if(e.target.closest('#smart-review-add-day')){addDay();return}if(e.target.closest('#smart-review-template')){saveTemplate();return}const rem=e.target.closest('[data-rblock-remove]');if(rem){persistReview();const b=rem.closest('[data-rblock]');reviewWorkout.blocks.splice(Number(b.dataset.rblock),1);renderSmartReview();return}const add=e.target.closest('[data-rex-add]');if(add){persistReview();const b=reviewWorkout.blocks[Number(add.closest('[data-rblock]').dataset.rblock)];b.exercises[0]?.setGroups?.push(normalizeOCRSet({}));if(!b.exercises[0])b.exercises.push(makeExercise('New exercise',[{}]));renderSmartReview();return}const ea=e.target.closest('[data-ex-add]');if(ea){persistReview();const b=reviewWorkout.blocks[Number(ea.closest('[data-rblock]').dataset.rblock)];b.exercises.push(makeExercise('New exercise',[{}]));renderSmartReview();return}if(e.target.closest('[data-block-add]')){persistReview();reviewWorkout.blocks.push({name:`Block ${reviewWorkout.blocks.length+1}`,category:'Strength',exercises:[makeExercise('New exercise',[{}])]});renderSmartReview();return}const rs=e.target.closest('[data-rex-remove]');if(rs){persistReview();const row=rs.closest('[data-rex]'),parts=row.dataset.rex.split(':').map(Number),b=reviewWorkout.blocks[parts[0]],ex=b.exercises[parts[1]];ex.setGroups.splice(parts[2],1);if(!ex.setGroups.length)b.exercises.splice(parts[1],1);renderSmartReview();return}});
-  const file=$i('#smart-screenshot-file');if(file)file.addEventListener('change',analyzeSmartScreenshot);const drop=$i('#smart-select-btn');if(drop){['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('dragover')}));['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('dragover') }));drop.addEventListener('drop',e=>{const f=e.dataTransfer.files?.[0];if(!f)return;const dt=new DataTransfer();dt.items.add(f);file.files=dt.files;analyzeSmartScreenshot()})}
-  renderRecentImports();
-  window.analyzeSmartScreenshot=analyzeSmartScreenshot;
-  window.smartDayData=smartDayData;
-})();
+  async function addDay(){persistReview();const tp = window.__tp;if(!tp){ alert('Training Planner is not ready yet.'); return; }tp.smartWorkout = smartDayData();if(!tp.currentUser){alert('Log in to add an imported workout to a synced day. You can still review it or save the import locally.');return;}if(typeof window.__tpApplySmartToDay === 'function'){await window.__tpApplySmartToDay();}}
+  async function saveTemplate(){persistReview();const tp = window.__tp;if(!tp){ alert('Training Planner is not ready yet.'); return; }tp.smartWorkout = smartDayData();if(!tp.currentUser){alert('Log in to save the imported workout as a synced template. The OCR review remains stored locally.');return;}if(typeof window.__tpCreateSmartTemplate === 'function'){await window.__tpCreateSmartTemplate();}}document.addEventListener('click',e=>{const r=e.target.closest('[data-recent-id]');if(r){openRecent(r.dataset.recentId);return}if(e.target.closest('#close-smart-review')||e.target.closest('#smart-review-close')){persistReview();$i('#smart-review-modal').classList.remove('show');return}if(e.target.closest('#smart-review-add-day')){addDay();return}if(e.target.closest('#smart-review-template')){saveTemplate();return}const rem=e.target.closest('[data-rblock-remove]');if(rem){persistReview();const b=rem.closest('[data-rblock]');reviewWorkout.blocks.splice(Number(b.dataset.rblock),1);renderSmartReview();return}const add=e.target.closest('[data-rex-add]');if(add){persistReview();const b=reviewWorkout.blocks[Number(add.closest('[data-rblock]').dataset.rblock)];b.exercises[0]?.setGroups?.push(normalizeOCRSet({}));if(!b.exercises[0])b.exercises.push(makeExercise('New exercise',[{}]));renderSmartReview();return}const ea=e.target.closest('[data-ex-add]');if(ea){persistReview();const b=reviewWorkout.blocks[Number(ea.closest('[data-rblock]').dataset.rblock)];b.exercises.push(makeExercise('New exercise',[{}]));renderSmartReview();return}if(e.target.closest('[data-block-add]')){persistReview();reviewWorkout.blocks.push({name:`Block ${reviewWorkout.blocks.length+1}`,category:'Strength',exercises:[makeExercise('New exercise',[{}])]});renderSmartReview();return}const rs=e.target.closest('[data-rex-remove]');if(rs){persistReview();const row=rs.closest('[data-rex]'),parts=row.dataset.rex.split(':').map(Number),b=reviewWorkout.blocks[parts[0]],ex=b.exercises[parts[1]];ex.setGroups.splice(parts[2],1);if(!ex.setGroups.length)b.exercises.splice(parts[1],1);renderSmartReview();return}});const file=$i('#smart-screenshot-file');if(file)file.addEventListener('change',analyzeSmartScreenshot);const drop=$i('#smart-select-btn');if(drop){['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('dragover')}));['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('dragover') }));drop.addEventListener('drop',e=>{const f=e.dataTransfer.files?.[0];if(!f)return;const dt=new DataTransfer();dt.items.add(f);file.files=dt.files;analyzeSmartScreenshot()})}renderRecentImports();window.analyzeSmartScreenshot=analyzeSmartScreenshot;window.smartDayData=smartDayData;})();
 /* ===== SMART TRAINING SUITE JS ===== */
 (function(){
   const SMART='training-planner:smart:';
@@ -4963,7 +5071,22 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
   };
   function canonical(name){const c=clean(name);if(aliases[c])return aliases[c];const hit=Object.keys(aliases).find(k=>c.includes(k));return hit?aliases[hit]:String(name||'').trim()}
   function dayText(d){return [d.focus,d.trainingCategory,d.tagline,d.strap,d.notes,d.exercises?.map(e=>[e.name,exerciseSetText(e)].join(' ')).join(' ')].join(' ')}
-  function deriveTags(d){const set=new Set();const text=clean(dayText(d)); if(/run|running|5k|10k|km/.test(text))set.add('running');if(/hyrox|wall ball|sled|ski erg|row/.test(text))set.add('hyrox');if(/strength|squat|deadlift|bench|press|pull up/.test(text))set.add('strength');if(/conditioning|for time|amrap|emom|time cap|burpee/.test(text))set.add('conditioning');if(/upper|bench|pull|back|chest|shoulder/.test(text))set.add('upper body');if(/lower|squat|lunge|hamstring|deadlift/.test(text))set.add('lower body');if(/recovery|mobility|stretch/.test(text))set.add('recovery');(d.exercises||[]).forEach(e=>(groups[canonical(e.name)]||[]).forEach(x=>set.add(x)));return Array.from(set).slice(0,8)}
+  function deriveTags(d){
+  const set = new Set();
+  const text = String(
+    [d.focus, d.trainingCategory, d.tagline, d.strap, d.notes,
+     (d.blocks||[]).flatMap(b => (b.exercises||[]).map(e => e.name)).join(' ')]
+  ).toLowerCase();
+  if(/run|running|5k|10k|km/.test(text)) set.add('running');
+  if(/hyrox|wall ball|sled|ski erg|row/.test(text)) set.add('hyrox');
+  if(/strength|squat|deadlift|bench|press|pull/.test(text)) set.add('strength');
+  if(/conditioning|for time|amrap|emom|time cap|burpee/.test(text)) set.add('conditioning');
+  if(/upper|bench|pull|back|chest|shoulder/.test(text)) set.add('upper body');
+  if(/lower|squat|lunge|hamstring|deadlift|glute/.test(text)) set.add('lower body');
+  if(/mobility|stretch/.test(text)) set.add('mobility');
+  if(/recovery/.test(text)) set.add('recovery');
+  return Array.from(set).slice(0, 8);
+}
   function smartMeta(date){return read(SMART+date,{tags:[],status:'planned',analyzedAt:null,score:0})}
   function saveSmartMeta(date,patch){const m={...smartMeta(date),...patch};write(SMART+date,m);return m}
   function getRows(){if(typeof window.tpAllWorkoutRows==='function')return window.tpAllWorkoutRows();const rows=[];Object.keys(localStorage).filter(k=>k.startsWith('training-planner:workout:')).forEach(k=>{try{rows.push({date:k.split(':').pop(),data:JSON.parse(localStorage.getItem(k))})}catch{}});return rows}
@@ -5297,12 +5420,22 @@ window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
   };
   function recordSessionLearning(){
     if(!currentDay||!selectedDateKey||!window.TrainingDataCore)return;
-    const sf=currentDay.sessionFeedback||{},cycle=window.tpCycleSnapshot?window.tpCycleSnapshot():null;
-    const payload={date:selectedDateKey,completed:!!currentDay.completed,rpe:Number(currentDay.metrics?.rpe)||0,load:Number(currentDay.metrics?.load)||0,distance:Number(currentDay.metrics?.distanceKm)||0,duration:Number(currentDay.metrics?.timeMin)||0,recovery:cloneV(currentDay.recovery||{}),performance:Number(sf.performance)||null,energy:Number(sf.energyRating)||null,technique:Number(sf.technique)||null,adjustNextTime:sf.adjustNextTime||'',adjustmentOutcome:sf.adjustmentOutcome||'',feelings:sf.feelings||'',cyclePhase:cycle?.phase||null,trainingCategory:currentDay.trainingCategory||'',focus:currentDay.focus||''};
+    const sf=currentDay.sessionFeedback||{},cycleSnapshot=window.tpCycleSnapshot?window.tpCycleSnapshot():null;
+    const cycleContext=cycleSnapshot?{
+      phase:cycleSnapshot.phase||null,
+      cycleDay:cycleSnapshot.cycleDay||null,
+      energy:Number(cycleSnapshot.energy)||null,
+      pain:Number(cycleSnapshot.pain)||null,
+      mood:Number(cycleSnapshot.mood)||null,
+      symptoms:cycleSnapshot.symptoms||null,
+      bleeding:cycleSnapshot.bleeding||null,
+      observed:cycleSnapshot.observed||false
+    }:{};
+    const payload={date:selectedDateKey,completed:!!currentDay.completed,rpe:Number(currentDay.metrics?.rpe)||0,load:Number(currentDay.metrics?.load)||0,distance:Number(currentDay.metrics?.distanceKm)||0,duration:Number(currentDay.metrics?.timeMin)||0,recovery:cloneV(currentDay.recovery||{}),performance:Number(sf.performance)||null,energy:Number(sf.energyRating)||null,technique:Number(sf.technique)||null,adjustNextTime:sf.adjustNextTime||'',adjustmentOutcome:sf.adjustmentOutcome||'',feelings:sf.feelings||'',cyclePhase:cycleContext.phase||null,cycleContext,trainingCategory:currentDay.trainingCategory||'',focus:currentDay.focus||''};
     const signature=JSON.stringify(payload);let previous='';try{previous=localStorage.getItem('training-planner:brain:session-signature:'+selectedDateKey)||''}catch{}
     if(previous===signature)return;
     try{localStorage.setItem('training-planner:brain:session-signature:'+selectedDateKey,signature)}catch{}
-    if(currentDay.completed)window.TrainingDataCore.recordEvent({type:'session_feedback',status:'Completed session learned by TrainingDataCore',payload,rpe:payload.rpe,performance:payload.performance,cyclePhase:payload.cyclePhase});
+    if(currentDay.completed)window.TrainingDataCore.recordEvent({type:'session_feedback',status:'Completed session learned by TrainingDataCore',payload,rpe:payload.rpe,performance:payload.performance,cyclePhase:payload.cyclePhase,cycleContext});
     if(payload.adjustNextTime)window.TrainingDataCore.recordEvent({type:'session_adjustment',status:'Next-session adjustment learned by TrainingDataCore',payload});
   }
   const baseSaveDayV5=saveDay;
@@ -5364,9 +5497,9 @@ const TrainingDataCore={
   recoveryPercent(d){const rv=this.recovery(d);if(!rv||!rv.hasData)return null;const sub=[];if(Number(rv.sleep)>0)sub.push(Number(rv.sleep)/5*100);if(Number(rv.energy)>0)sub.push(Number(rv.energy)/5*100);if(Number(rv.soreness)>0)sub.push((6-Number(rv.soreness))/5*100);return sub.length?this.avg(sub):null},
   nutritionContext(date){const n=this.nutrition()||{},i=n.intake||{},t=n.targets||{},same=!date||!n.date||n.date===date;const intake={kcal:same&&i.kcal!=null?Number(i.kcal):null,carb:same&&i.carb!=null?Number(i.carb):null,prot:same&&i.prot!=null?Number(i.prot):null,fat:same&&i.fat!=null?Number(i.fat):null};const coverage={kcal:intake.kcal!=null&&Number(t.kcal)>0?Math.round(intake.kcal/Number(t.kcal)*100):null,carb:intake.carb!=null&&Number(t.carb)>0?Math.round(intake.carb/Number(t.carb)*100):null,prot:intake.prot!=null&&Number(t.prot)>0?Math.round(intake.prot/Number(t.prot)*100):null};return{date:date||n.date||null,source:same?(n.source||'fatsecret'):'historical',connected:same?!!n.connected:false,intake,targets:{kcal:Number(t.kcal)||null,carb:Number(t.carb)||null,prot:Number(t.prot)||null,fat:Number(t.fat)||null},coverage}},
   async nutritionHistory(from,to){const sb=window.supabaseClient;if(!sb)return[];try{const {data,error}=await sb.from('nutrition_daily_summaries').select('summary_date,calories_kcal,protein_g,carbohydrate_g,fat_g').gte('summary_date',from).lte('summary_date',to).order('summary_date',{ascending:true});return error?[]:(data||[]).map(r=>({date:r.summary_date,kcal:Number(r.calories_kcal)||null,prot:Number(r.protein_g)||null,carb:Number(r.carbohydrate_g)||null,fat:Number(r.fat_g)||null,source:'fatsecret'}))}catch(e){return[]}},
-  async nutritionEntriesHistory(from,to){const sb=window.supabaseClient;if(!sb)return[];try{const {data,error}=await sb.from('nutrition_entries').select('entry_date,meal,food_name,serving_description,calories_kcal,carbohydrate_g,protein_g,fat_g').gte('entry_date',from).lte('entry_date',to).order('entry_date',{ascending:true});return error?[]:(data||[])}catch(e){return[]}},
+  async nutritionEntriesHistory(from,to){const sb=window.supabaseClient;if(!sb)return[];try{const {data,error}=await sb.from('nutrition_entries').select('*').gte('entry_date',from).lte('entry_date',to).order('entry_date',{ascending:true});if(error)return[];return(data||[]).map(r=>({...r,consumptionTime:r.consumption_time??r.meal_time??r.entry_time??r.consumed_at??r.time??null}))}catch(e){return[]}},
   plannedWorkout(date){try{const d=new Date(date+'T12:00:00'),monday=new Date(d);monday.setDate(d.getDate()-((d.getDay()+6)%7));const mk=this.dayKey(monday),week=typeof planData!=='undefined'?planData?.weeks?.[mk]:null,info=week?.days?.[date];if(!info)return null;const t=typeof templateForId==='function'?templateForId(info.templateId):null;return t?.data||t?.workout||t||null}catch(e){return null}},
-  trainingDemand(date,workout){let w=workout||null,planned=!w;if(!w&&window.tpAllWorkoutRows){try{w=(window.tpAllWorkoutRows()||[]).find(r=>r.date===date)?.data||null}catch(e){}}if(!w)w=this.plannedWorkout(date);if(!w)return{date,hasWorkout:false,planned:false,score:0,demand:'Low',type:'No session',load:0,volume:0,duration:0,distance:0,rpe:0,conditioning:false,running:false,strength:false};const blocks=Array.isArray(w.blocks)?w.blocks:[],ex=blocks.flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]).filter(e=>String(e?.name||'').trim()),sets=ex.reduce((n,e)=>(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0),n),0),volume=ex.reduce((n,e)=>(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0)*(Number(String(g?.reps||'').match(/\d+(?:\.\d+)?/)?.[0])||0)*(Number(g?.weight)||0),n),0),metrics=w.metrics||{},text=JSON.stringify(w).toLowerCase(),distance=Number(metrics.distanceKm)||0,duration=Number(metrics.timeMin)||0,load=Number(metrics.load)||0,rpe=Number(metrics.rpe)||0,running=/run|running|row|cycling|bike/.test(text),strength=/strength|squat|deadlift|bench|press|pull|hypertrophy/.test(text),conditioning=/amrap|for time|emom|time cap|conditioning|hyrox/.test(text),score=Math.min(100,Math.round((running?Math.min(35,distance*2.5):0)+(duration?Math.min(25,duration/3):0)+(volume?Math.min(20,volume/450):0)+(load?Math.min(20,load/5):0)+(rpe?Math.min(12,rpe*1.5):0)+(conditioning?10:0)));return{date,hasWorkout:true,planned,score,demand:score>=72?'High':score>=42?'Moderate':'Low',type:running?'Running / endurance':conditioning?'Conditioning':strength?'Strength':'Mixed training',sets,volume,distance,duration,load,rpe,conditioning,running,strength}},
+  trainingDemand(date,workout){let w=workout||null,planned=!w;if(!w&&window.tpAllWorkoutRows){try{w=(window.tpAllWorkoutRows()||[]).find(r=>r.date===date)?.data||null}catch(e){}}if(!w)w=this.plannedWorkout(date);if(!w)return{date,hasWorkout:false,planned:false,restDay:true,score:0,demand:'Rest day',type:'Rest day',load:0,volume:0,duration:0,distance:0,rpe:0,sets:0,conditioning:false,running:false,strength:false,timeSource:'none'};if(w.restDay)return{date,hasWorkout:false,planned,restDay:true,score:0,demand:'Rest day',type:'Rest day',load:0,volume:0,duration:0,distance:0,rpe:0,sets:0,conditioning:false,running:false,strength:false,timeSource:'explicit'};const blocks=Array.isArray(w.blocks)?w.blocks:[],ex=blocks.flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]).filter(e=>String(e?.name||'').trim()),sets=ex.reduce((n,e)=>(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0),n),0),volume=ex.reduce((n,e)=>(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0)*(Number(String(g?.reps||'').match(/\d+(?:\.\d+)?/)?.[0])||0)*(Number(g?.weight)||0),n),0),metrics=w.metrics||{},text=JSON.stringify(w).toLowerCase(),distance=Number(metrics.distanceKm)||0,loggedDuration=Number(metrics.timeMin)||0,load=Number(metrics.load)||0,rpe=Number(metrics.rpe)||0,running=/run|running|row|cycling|bike/.test(text),strength=/strength|squat|deadlift|bench|press|pull|hypertrophy/.test(text),conditioning=/amrap|for time|emom|time cap|conditioning|hyrox/.test(text),estimatedDuration=loggedDuration||(running&&distance?Math.max(15,Math.round(distance*7.5)):(sets?Math.max(15,Math.round(sets*2.5)):conditioning?30:20)),timeSource=loggedDuration?'logged':'estimated',score=Math.min(100,Math.round((running?Math.min(35,distance*2.5):0)+(estimatedDuration?Math.min(30,estimatedDuration/3):0)+(volume?Math.min(20,volume/450):0)+(load?Math.min(15,load/5):0)+(rpe?Math.min(12,rpe*1.5):0)+(conditioning?10:0)));return{date,hasWorkout:true,planned,restDay:false,score,demand:score>=72?'High':score>=42?'Moderate':'Low',type:running?'Running / endurance':conditioning?'Conditioning':strength?'Strength':'Mixed training',sets,volume,distance,duration:estimatedDuration,loggedDuration,load,rpe,conditioning,running,strength,timeSource}},
   performanceFuel(date,workout,nutritionOverride=null){const base=this.nutrition(),n=nutritionOverride?{date,source:'fatsecret',connected:true,intake:{kcal:nutritionOverride.kcal??null,carb:nutritionOverride.carb??null,prot:nutritionOverride.prot??null,fat:nutritionOverride.fat??null},targets:{kcal:Number(base?.targets?.kcal)||null,carb:Number(base?.targets?.carb)||null,prot:Number(base?.targets?.prot)||null,fat:Number(base?.targets?.fat)||null},coverage:{kcal:nutritionOverride.kcal!=null&&base?.targets?.kcal?Math.round(nutritionOverride.kcal/base.targets.kcal*100):null,carb:nutritionOverride.carb!=null&&base?.targets?.carb?Math.round(nutritionOverride.carb/base.targets.carb*100):null,prot:nutritionOverride.prot!=null&&base?.targets?.prot?Math.round(nutritionOverride.prot/base.targets.prot*100):null}}:this.nutritionContext(date),d=this.trainingDemand(date,workout),c=n.coverage.carb,k=n.coverage.kcal,p=n.coverage.prot;if(c==null&&k==null&&p==null)return{date,score:null,status:'Insufficient data',demand:d,coverage:n.coverage,limitingFactor:null};const demandWeight=d.demand==='High'?1.15:d.demand==='Moderate'?1:.85,parts=[];if(c!=null)parts.push({v:this.clamp(c/demandWeight,0,120),w:.5,label:'Carbohydrate coverage'});if(k!=null)parts.push({v:this.clamp(k,0,120),w:.3,label:'Energy coverage'});if(p!=null)parts.push({v:this.clamp(p,0,120),w:.2,label:'Protein coverage'});const score=Math.round(parts.reduce((s,x)=>s+x.v*x.w,0)/parts.reduce((s,x)=>s+x.w,0)),status=score>=90?'Well fueled':score>=70?'Adequate':score>=50?'Needs attention':'Low fuel coverage',limiting=parts.reduce((a,b)=>b.v<a.v?b:a).label;return{date,score,status,demand:d,coverage:n.coverage,limitingFactor:limiting}},
   async recentLoadRatio(refDateKey){const ref=new Date(refDateKey+'T12:00:00'),monday=new Date(ref);monday.setDate(ref.getDate()-((ref.getDay()+6)%7));const start=new Date(monday);start.setDate(monday.getDate()-21);const iso=d=>this.dayKey(d),rows=await this.training(iso(start),iso(new Date(monday.getFullYear(),monday.getMonth(),monday.getDate()+6))),by={};rows.forEach(r=>by[r.date]=this.trainingLoad(r.data));const week=w=>{const ss=new Date(monday);ss.setDate(monday.getDate()-w*7);let t=0;for(let i=0;i<7;i++){const d=new Date(ss);d.setDate(ss.getDate()+i);t+=by[iso(d)]||0}return t},total=week(0);let prev=0,n=0;for(let w=1;w<=3;w++){const x=week(w);if(x>0){prev+=x;n++}}const avgPrev=n?prev/n:total;return{ratio:avgPrev?total/avgPrev:1,hasData:total>0}},
   recoveryContext(date,dayData){const rv=this.recovery(dayData),rp=this.recoveryPercent(dayData),n=this.nutritionContext(date),fuel=this.performanceFuel(date,dayData);return{date,recovery:rv,recoveryPercent:rp,nutrition:n,fuel}},
@@ -5375,10 +5508,13 @@ const TrainingDataCore={
   foodTokens(items){const text=(Array.isArray(items)?items:[]).join(' ').toLowerCase();const known=['banana','apple','pear','blueberr','strawberr','raspberr','mango','kiwi','fruit','toast','bread','rice cake','rice cakes','oat','cereal','corn flakes','bagel','yogurt','skyr','cottage cheese','turkey','egg','chicken','rice','pasta','potato','pretzel','jam','honey','applesauce','cream of rice','peanut butter','milk'];return [...new Set(known.filter(k=>text.includes(k)))];},
   quickFoodPreferences(timing=null){const map={};try{const raw=JSON.parse(localStorage.getItem('training-planner:brain:v1')||'{}');for(const e of (raw.events||[])){if(e.type!=='nutrition_feedback')continue;const p=e.payload||e;if(timing!=null&&Number(p.timing)!==Number(timing))continue;const score=this.feedbackScore(p);if(score==null)continue;for(const food of this.foodTokens(p.mealItems||[])){map[food]??={n:0,sum:0};map[food].n++;map[food].sum+=score}}}catch{}return Object.entries(map).filter(([,v])=>v.n>=2).map(([food,v])=>({food,score:v.sum/v.n,n:v.n})).sort((a,b)=>b.score-a.score);},
   feedbackScore(e){const a=[Number(e?.tolerance),Number(e?.energy),Number(e?.performance)].filter(Number.isFinite).filter(v=>v>0);return a.length?this.avg(a):null},
+  dataConfidence(profile){const p=profile||{},sample=Number(p.sample)||0,recent=Number(p.recentSample)||0,nut=Number(p.nutritionSample)||0,complete=Number(p.completeFeedbackSample)||0;const sampleScore=this.clamp(sample/12*40),recentScore=this.clamp(recent/6*20),nutritionScore=this.clamp(nut/14*15),feedbackScore=this.clamp(complete/6*15),consistency=Number(p.baseline?.consistency)||0,score=Math.round(this.clamp(sampleScore+recentScore+nutritionScore+feedbackScore+consistency*10));return{score,status:score>=80?'High':score>=55?'Moderate':score>=30?'Building':'Low',components:{sessions:sample,recentSessions:recent,nutritionDays:nut,feedbackSessions:complete}}},
+  personalBaseline(sessions){const arr=(sessions||[]).filter(s=>s?.rpe>0);if(!arr.length)return{sample:0,rpe:null,duration:null,recovery:null,performance:null,consistency:0};const med=a=>{const x=a.filter(Number.isFinite).sort((m,n)=>m-n);return x.length?x[Math.floor(x.length/2)]:null},avg=a=>a.length?this.avg(a):null,rpes=arr.map(x=>Number(x.rpe)).filter(Number.isFinite),durations=arr.map(x=>Number(x.duration||x.data?.metrics?.timeMin)).filter(x=>x>0),recoveries=arr.map(x=>this.recoveryPercent(x.data)).filter(x=>x!=null),performances=arr.map(x=>Number(x.performance)).filter(x=>x>0),meanR=avg(rpes),sd=rpes.length>1?Math.sqrt(this.avg(rpes.map(x=>(x-meanR)**2))):0,consistency=rpes.length?this.clamp(1-sd/3,0,1):0;return{sample:arr.length,rpe:med(rpes),duration:med(durations),recovery:med(recoveries),performance:med(performances),consistency}},
+  recoveryLagProfile(sessions,rows){const by=new Map((rows||[]).map(r=>[r.date,r.data||{}]));const lags={24:[],48:[],72:[]};for(const s of sessions||[]){const base=new Date(s.date+'T12:00:00');[24,48,72].forEach(h=>{const d=new Date(base);d.setHours(d.getHours()+h);const key=this.dayKey(d),v=this.recoveryPercent(by.get(key));if(v!=null)lags[h].push(v)});}return Object.fromEntries(Object.entries(lags).map(([h,a])=>[h,{sample:a.length,average:a.length?Math.round(this.avg(a)):null}]));},
   async learningProfile(from,to){
     const [rows,nutrition,entries,events]=await Promise.all([this.training(from,to),this.nutritionHistory(from,to),this.nutritionEntriesHistory(from,to),this.learningEvents()]);
     const nm=new Map(nutrition.map(x=>[x.date,x]));
-    const sessions=rows.filter(r=>r.data?.completed).map(r=>{const d=r.data||{},rv=this.recovery(d)||{},n=nm.get(r.date)||null,f=this.performanceFuel(r.date,d,n),sf=d.sessionFeedback||{};return{date:r.date,data:d,rpe:Number(d.metrics?.rpe)||0,load:this.trainingLoad(d),volume:Number(d.metrics?.volume)||0,sets:this.trainingDemand(r.date,d).sets,sleep:Number(rv.sleep)||0,energy:Number(rv.energy)||0,soreness:Number(rv.soreness)||0,carb:n?.carb??null,kcal:n?.kcal??null,prot:n?.prot??null,fuel:f.score,performance:Number(sf.performance)||null,technique:Number(sf.technique)||null,feelings:sf.feelings||'',adjustNextTime:sf.adjustNextTime||'',adjustmentOutcome:sf.adjustmentOutcome||'',cyclePhase:sf.cyclePhase||null,feedback:sf}});
+    const sessions=rows.filter(r=>r.data?.completed).map(r=>{const d=r.data||{},rv=this.recovery(d)||{},n=nm.get(r.date)||null,f=this.performanceFuel(r.date,d,n),sf=d.sessionFeedback||{};return{date:r.date,data:d,rpe:Number(d.metrics?.rpe)||0,load:this.trainingLoad(d),volume:Number(d.metrics?.volume)||0,sets:this.trainingDemand(r.date,d).sets,duration:Number(d.metrics?.timeMin)||0,sleep:Number(rv.sleep)||0,energy:Number(rv.energy)||0,soreness:Number(rv.soreness)||0,carb:n?.carb??null,kcal:n?.kcal??null,prot:n?.prot??null,fuel:f.score,performance:Number(sf.performance)||null,technique:Number(sf.technique)||null,feelings:sf.feelings||'',adjustNextTime:sf.adjustNextTime||'',adjustmentOutcome:sf.adjustmentOutcome||'',cyclePhase:sf.cyclePhase||null,feedback:sf}});
     const patterns=[];const add=(kind,text,n,confidence)=>patterns.push({kind,text,n,confidence});
     const comparable=(field,min=6)=>sessions.filter(s=>Number.isFinite(Number(s.rpe))&&s.rpe>0&&s[field]!=null&&Number.isFinite(Number(s[field])));
     const addCorr=(field,label,direction='RPE')=>{const arr=comparable(field);if(arr.length<min)return;const c=this.corr(arr.map(x=>Number(x[field])),arr.map(x=>Number(x[direction==='RPE'?'rpe':'performance'])));if(Math.abs(c)>=.25)add(`${label} ↔ ${direction}`,`Your logged ${label.toLowerCase()} and ${direction.toLowerCase()} show a correlation of ${c.toFixed(2)} across ${arr.length} comparable sessions.`,arr.length,this.clamp(50+Math.abs(c)*45,50,94))};
@@ -5390,10 +5526,10 @@ const TrainingDataCore={
     const foodPreferences=Object.entries(foodMap).map(([food,v])=>{const best=Object.entries(v.byTiming).sort((a,b)=>b[1].sum/b[1].n-a[1].sum/a[1].n)[0];return{food,n:v.n,score:v.sum/v.n,bestTiming:best?Number(best[0]):null}}).filter(x=>x.n>=1).sort((a,b)=>b.score-a.score);if(foodPreferences.length){const strong=foodPreferences.filter(x=>x.n>=2).slice(0,5);if(strong.length)add('Food response',strong.map(x=>`${x.food}: ${x.score.toFixed(1)}/5${x.bestTiming?` around ${x.bestTiming} min`:''}`).join(' · '),foodFeedback.length,this.clamp(50+strong.length*8,50,90));}
     const phaseEvents=events.filter(e=>e.type==='session_feedback'&&e.payload?.cyclePhase);for(const phase of [...new Set(phaseEvents.map(e=>e.payload.cyclePhase))]){const pe=phaseEvents.filter(e=>e.payload.cyclePhase===phase&&Number(e.payload.rpe)>0);if(pe.length>=3){const a=this.avg(pe.map(e=>Number(e.payload.rpe)));add(`Cycle phase ↔ RPE (${phase})`,`Logged sessions in ${phase} averaged RPE ${a.toFixed(1)} across ${pe.length} sessions.`,pe.length,this.clamp(55+pe.length*5,55,88));}}
     const adjustmentEvents=events.filter(e=>e.type==='session_adjustment'&&e.payload);const outcomes=adjustmentEvents.filter(e=>e.payload.outcome);if(outcomes.length>=3){const worked=outcomes.filter(e=>['worked','better','yes','improved'].includes(String(e.payload.outcome).toLowerCase())).length;add('Adjustment ↔ Outcome',`${worked} of ${outcomes.length} logged adjustments were marked as working or improving the next session.`,outcomes.length,this.clamp(50+outcomes.length*7,50,90));}
-    return{generatedAt:new Date().toISOString(),sample:sessions.length,recentSample:sessions.filter(s=>s.date>=this.dayKey(Date.now()-42*86400000)).length,nutritionSample:nutrition.length,nutritionEntrySample:entries.length,patterns,events:events.filter(e=>/feedback|adjustment|cycle|session|nutrition/i.test(e.type||'')),sessions,nutrition,foodPreferences};
+    const baseline=this.personalBaseline(sessions),recentSample=sessions.filter(s=>s.date>=this.dayKey(Date.now()-42*86400000)).length,recoveryLag=this.recoveryLagProfile(sessions,rows),completeFeedbackSample=sessions.filter(s=>{const f=s.feedback||{};return Number(f.performance)>0||Number(f.energyRating)>0||Number(f.technique)>0||String(f.feelings||'').trim()||String(f.adjustNextTime||'').trim()}).length;const rpePerformance=sessions.filter(s=>s.rpe>0&&s.performance!=null);if(rpePerformance.length>=4){const high=rpePerformance.filter(s=>s.rpe>=8),low=rpePerformance.filter(s=>s.rpe<=5);if(high.length>=2&&low.length>=2){const hp=this.avg(high.map(s=>s.performance)),lp=this.avg(low.map(s=>s.performance));if(hp<lp-.5)patterns.push({kind:'RPE ↔ Performance calibration',text:`Higher-RPE sessions averaged ${hp.toFixed(1)}/10 performance vs ${lp.toFixed(1)}/10 at RPE ≤5. Use RPE as a progression gate, not only a target.`,n:rpePerformance.length,confidence:this.clamp(55+Math.abs(hp-lp)*12,55,92)});else if(hp>lp+.5)patterns.push({kind:'RPE ↔ Performance calibration',text:`Higher-RPE sessions averaged ${hp.toFixed(1)}/10 performance vs ${lp.toFixed(1)}/10 at RPE ≤5. Your higher effort has sometimes been productive; keep monitoring recovery.`,n:rpePerformance.length,confidence:this.clamp(55+Math.abs(hp-lp)*12,55,92)});}}const mealTimes=entries.map(e=>e.consumptionTime).filter(Boolean);if(mealTimes.length){const hourOf=v=>{const m=String(v).match(/(?:T|\s)(\d{1,2}):/);return m?Number(m[1]):null};const hours=mealTimes.map(hourOf).filter(h=>h!=null&&h>=0&&h<24);if(hours.length>=3)patterns.push({kind:'FatSecret meal timing',text:`${hours.length} imported meals include a consumption time; Nutri Tracker can use the timing alongside training demand when available.`,n:hours.length,confidence:this.clamp(50+hours.length*4,50,90)})}for(const [h,v] of Object.entries(recoveryLag)){if(v.sample>=3)patterns.push({kind:`Recovery +${h}h`,text:`Average logged recovery ${h}h after sessions: ${v.average}%.`,n:v.sample,confidence:this.clamp(55+v.sample*5,55,90)})}return{generatedAt:new Date().toISOString(),sample:sessions.length,recentSample,nutritionSample:nutrition.length,nutritionEntrySample:entries.length,completeFeedbackSample,baseline,recoveryLag,patterns,events:events.filter(e=>/feedback|adjustment|cycle|session|nutrition/i.test(e.type||'')),sessions,nutrition,foodPreferences,dataConfidence:this.dataConfidence({sample:sessions.length,recentSample,nutritionSample:nutrition.length,completeFeedbackSample,baseline})};
   },
-  adaptation(context,profile){const c=context||{},p=profile||{},actions=[],signals=[];const fuel=c.fuel?.score,recovery=c.recoveryPercent,load=c.loadRatio,cycle=c.cycle||{};if(recovery!=null&&recovery<55){actions.push('Reduce intensity or accessory volume today; keep the main movement technically controlled.');signals.push('Recovery below your observed range')}else if(recovery!=null&&recovery<70){actions.push('Keep planned load stable and use RPE/technique as the progression gate.');signals.push('Recovery moderate')}if(fuel!=null&&fuel<60)actions.push('Prioritize fueling around the session; avoid treating low fuel as a reason to force higher intensity.');if(load!=null&&load>1.18)actions.push('Recent load is elevated versus your prior weeks; avoid adding volume unless execution is clearly strong.');if(cycle.phase==='menstrual')actions.push('Period logged: use your own observed response as the primary guide; if symptoms or recovery are worse than usual, reduce intensity, impact or volume and extend recovery.');const phasePattern=(p.patterns||[]).find(x=>String(x.kind).includes('Cycle phase ↔')&&String(x.kind).includes(cycle.phase||'___'));if(phasePattern)actions.push(`Your history shows a phase-specific response (${phasePattern.text}). Use it as context, not as a fixed rule.`);const food=p.foodPreferences?.filter(x=>x.n>=2)?.[0];if(food&&food.score>=4)actions.push(`A repeatedly well-tolerated option is ${food.food}; Nutri Tracker can prioritize it when timing and training demand match.`);if(!actions.length)actions.push('No strong limiter detected. Follow the planned session and let execution feedback determine progression.');return{actions,signals,cycleImpact:cycle.phase?`Cycle context: ${cycle.phase}.`:'No cycle phase logged.',confidence:p.sample>=12?'High':p.sample>=6?'Moderate':'Low'}},
-  readiness(dayData,context={}){const parts=[],factors=[],rp=this.recoveryPercent(dayData);if(rp!=null){parts.push({value:rp,weight:.4});factors.push({label:'Recovery',value:rp})}if(context.loadRatio!=null){const v=this.clamp(100-Math.abs(context.loadRatio-1)*60,15,100);parts.push({value:v,weight:.25});factors.push({label:'Recent training load',value:v})}if(context.fuelScore!=null){parts.push({value:this.clamp(context.fuelScore),weight:.2});factors.push({label:'Performance fuel',value:context.fuelScore})}if(context.cyclePhase){const v={menstrual:60,follicular:70,ovulatory:72,luteal:64}[context.cyclePhase]??65;parts.push({value:v,weight:.15});factors.push({label:'Cycle context',value:v})}if(!parts.length)return{score:null,status:'No data yet',confidence:'insufficient data',factors:[],mainLimitingFactor:null};const score=Math.round(parts.reduce((s,p)=>s+p.value*p.weight,0)/parts.reduce((s,p)=>s+p.weight,0)),status=score>=75?'Training normally':score>=55?'Adjust intensity':'Recovery-focused session';return{score,status,confidence:factors.length>=3?'Good confidence':factors.length===2?'Moderate confidence':'Low confidence',factors,mainLimitingFactor:factors.reduce((a,b)=>b.value<a.value?b:a).label}},
+  adaptation(context,profile){const c=context||{},p=profile||{},actions=[],signals=[];const fuel=c.fuel?.score,recovery=c.recoveryPercent,load=c.loadRatio,cycle=c.cycle||{},training=c.training||{},baseline=p.baseline||{};if(training.restDay){actions.push('Rest day detected: no training demand. Use the day for recovery, nutrition and optional light mobility only.');signals.push('Explicit or empty training day')}else if(recovery!=null&&recovery<55){actions.push('Reduce intensity or accessory volume today; keep the main movement technically controlled.');signals.push('Recovery below your observed range')}else if(recovery!=null&&recovery<70){actions.push('Keep planned load stable and use RPE/technique as the progression gate.');signals.push('Recovery moderate')}if(baseline.rpe!=null&&training.rpe>=baseline.rpe+1){actions.push(`Today’s RPE is about ${Math.round(training.rpe-baseline.rpe)} point above your personal baseline; avoid automatic progression unless performance and recovery support it.`);signals.push('RPE above personal baseline')}if(fuel!=null&&fuel<60)actions.push('Prioritize fueling around the session; avoid treating low fuel as a reason to force higher intensity.');if(load!=null&&load>1.18)actions.push('Recent load is elevated versus your prior weeks; avoid adding volume unless execution is clearly strong.');if(cycle.phase==='menstrual')actions.push('Period logged: use your own observed response as the primary guide; if symptoms or recovery are worse than usual, reduce intensity, impact or volume and extend recovery.');const phasePattern=(p.patterns||[]).find(x=>String(x.kind).includes('Cycle phase ↔')&&String(x.kind).includes(cycle.phase||'___'));if(phasePattern)actions.push(`Your history shows a phase-specific response (${phasePattern.text}). Use it as context, not as a fixed rule.`);const food=p.foodPreferences?.filter(x=>x.n>=2)?.[0];if(food&&food.score>=4)actions.push(`A repeatedly well-tolerated option is ${food.food}; Nutri Tracker can prioritize it when timing and training demand match.`);if(!actions.length)actions.push('No strong limiter detected. Follow the planned session and let execution feedback determine progression.');return{actions,signals,cycleImpact:cycle.phase?`Cycle context: ${cycle.phase}.`:'No cycle phase logged.',confidence:p.sample>=12?'High':p.sample>=6?'Moderate':'Low'}},
+  readiness(dayData,context={}){if(dayData?.restDay||context.training?.restDay)return{score:null,status:'Rest day',confidence:context.training?.timeSource==='none'?'Detected':'Explicit',factors:[{label:'Training demand',value:0}],mainLimitingFactor:null};const parts=[],factors=[],rp=this.recoveryPercent(dayData);if(rp!=null){parts.push({value:rp,weight:.4});factors.push({label:'Recovery',value:rp})}if(context.loadRatio!=null){const v=this.clamp(100-Math.abs(context.loadRatio-1)*60,15,100);parts.push({value:v,weight:.25});factors.push({label:'Recent training load',value:v})}if(context.fuelScore!=null){parts.push({value:this.clamp(context.fuelScore),weight:.2});factors.push({label:'Performance fuel',value:context.fuelScore})}if(context.cyclePhase){const v={menstrual:60,follicular:70,ovulatory:72,luteal:64}[context.cyclePhase]??65;parts.push({value:v,weight:.15});factors.push({label:'Cycle context',value:v})}if(!parts.length)return{score:null,status:'No data yet',confidence:'insufficient data',factors:[],mainLimitingFactor:null};const score=Math.round(parts.reduce((s,p)=>s+p.value*p.weight,0)/parts.reduce((s,p)=>s+p.weight,0)),status=score>=75?'Training normally':score>=55?'Adjust intensity':'Recovery-focused session';return{score,status,confidence:factors.length>=3?'Good confidence':factors.length===2?'Moderate confidence':'Low confidence',factors,mainLimitingFactor:factors.reduce((a,b)=>b.value<a.value?b:a).label}},
   async getUnifiedProfile(days=365){const to=this.dayKey(),from=this.dayKey(Date.now()-days*86400000);return this.learningProfile(from,to)},
   async getUnifiedContext(date,workout){const c=await this.unifiedContext(date,workout),p=await this.getUnifiedProfile(365);return{...c,profile:p,adaptation:this.adaptation(c,p)}},
   recordEvent(event){const e={...event,id:`${Date.now()}_${Math.random().toString(36).slice(2,8)}`,createdAt:new Date().toISOString()};try{const raw=JSON.parse(localStorage.getItem('training-planner:brain:v1')||'{}');raw.events=[...(raw.events||[]),e].slice(-500);localStorage.setItem('training-planner:brain:v1',JSON.stringify(raw))}catch{};document.dispatchEvent(new CustomEvent('trainmei:core-learning',{detail:e}));return e},
@@ -5403,16 +5539,23 @@ window.TrainingDataCore=TrainingDataCore;
 
 async function renderDayContext(){
   const box=$('#day-context');if(!box||!window.TrainingDataCore)return;
-  const cyclePhase=window.tpCycleSnapshot?window.tpCycleSnapshot().phase:null;
+  const cycleSnapshot=window.tpCycleSnapshot?window.tpCycleSnapshot():null;
+  const cyclePhase=cycleSnapshot?.phase||null;
   let loadRatio=null,fuelScore=null;
   try{
     const li=await TrainingDataCore.recentLoadRatio(selectedDateKey);if(li.hasData)loadRatio=li.ratio;
     const fuel=TrainingDataCore.performanceFuel(selectedDateKey,currentDay);if(fuel.score!=null)fuelScore=fuel.score;
   }catch(e){}
   const readiness=TrainingDataCore.readiness(currentDay,{loadRatio,fuelScore,cyclePhase});
+  let cycleInfo='';
+  if(cycleSnapshot){
+    const cycleDay=cycleSnapshot.cycleDay;
+    const observed=cycleSnapshot.observed?'✓':'est.';
+    cycleInfo=`<div class="brain-cycle-info"><span class="brain-cycle-phase">${esc(cyclePhase||'unknown')}</span><span class="brain-cycle-day">Day ${cycleDay} ${observed}</span></div>`;
+  }
   box.innerHTML=readiness.score!==null
-    ?`<div class="brain-driver"><span>Readiness</span><strong>${readiness.score} · ${readiness.status}</strong></div><div class="brain-legend">${readiness.confidence}${readiness.mainLimitingFactor?' · Main factor: '+readiness.mainLimitingFactor:''}</div>`
-    :'<div class="brain-empty">Log sleep, energy and soreness below to see today\'s readiness.</div>';
+    ?`${cycleInfo}<div class="brain-driver"><span>Readiness</span><strong>${readiness.score} · ${readiness.status}</strong></div><div class="brain-legend">${readiness.confidence}${readiness.mainLimitingFactor?' · Main factor: '+readiness.mainLimitingFactor:''}</div>`
+    :`${cycleInfo}<div class="brain-empty">Log sleep, energy and soreness below to see today\'s readiness.</div>`;
 }
 
 startApp();
@@ -5463,7 +5606,7 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').cat
     set('ios-week-note', week.length ? 'Keep building consistency this week.' : 'No workouts recorded this week yet.');
     set('ios-month-workouts', month.length);
     set('ios-month-distance', sum(month,'distanceKm').toFixed(1));
-    set('ios-month-load', Math.round(sum(month,'load')));
+    set('ios-month-time', Math.round(sum(month,'timeMin')));
     const weekChart=document.getElementById('ios-week-chart');
     if(weekChart){const days=WEEKDAYS.map((name,i)=>{const d=new Date(monday);d.setDate(monday.getDate()+i);const k=key(d);const count=week.filter(r=>r.date===k).length;return {label:name.slice(0,3),count}});const max=Math.max(1,...days.map(x=>x.count));weekChart.innerHTML='<div class="ios-chart-title">Sessions this week</div><div class="ios-bars">'+days.map(x=>'<div class="ios-bar-col"><span>'+x.count+'</span><div class="ios-bar-track"><i style="height:'+Math.max(8,Math.round(x.count/max*100))+'%"></i></div><small>'+x.label+'</small></div>').join('')+'</div>';}
     const monthChart=document.getElementById('ios-month-chart');
@@ -6080,7 +6223,7 @@ const addDays=(k,n)=>{const d=new Date(k+'T12:00:00');d.setDate(d.getDate()+n);r
 const readWorkout=k=>{try{const r=localStorage.getItem('training-planner:workout:'+k);return r?JSON.parse(r):null}catch(e){return null}};
 const readFeedback=()=>{try{const r=localStorage.getItem(FEEDBACK_KEY),v=r?JSON.parse(r):[];return Array.isArray(v)?v:[]}catch(e){return[]}};const saveFeedback=v=>{try{localStorage.setItem(FEEDBACK_KEY,JSON.stringify(v.slice(-30)))}catch(e){}};
 function metrics(w){const ex=(w?.blocks||[]).flatMap(b=>Array.isArray(b.exercises)?b.exercises:[]).filter(e=>String(e?.name||'').trim()),sets=ex.reduce((n,e)=>n+(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0),0),0),volume=ex.reduce((n,e)=>n+(e.setGroups||[e]).reduce((s,g)=>s+(Number(g?.sets)||0)*(Number(String(g?.reps||'').match(/\d+(?:\.\d+)?/)?.[0])||0)*(Number(g?.weight)||0),0),0),text=JSON.stringify(w||{}).toLowerCase(),distance=Number(w?.metrics?.distanceKm)||0,duration=Number(w?.metrics?.timeMin)||0,load=Number(w?.metrics?.load)||0,rpe=Number(w?.metrics?.rpe)||0,running=/run|running|row|cycling|bike/.test(text),strength=/strength|squat|deadlift|bench|press|pull|hypertrophy/.test(text),conditioning=/amrap|for time|emom|time cap|conditioning|hyrox/.test(text),score=Math.min(100,Math.round((running?Math.min(35,distance*2.5):0)+(duration?Math.min(25,duration/3):0)+(volume?Math.min(20,volume/450):0)+(load?Math.min(20,load/5):0)+(rpe?Math.min(12,rpe*1.5):0)+(conditioning?10:0)));return{sets,volume,distance,duration,load,rpe,running,strength,conditioning,type:running?'Running / endurance':conditioning?'Conditioning':strength?'Strength':'Mixed training',demand:score>=72?'High':score>=42?'Moderate':'Low'};}
-function session(){const w=readWorkout(todayKey());if(!w)return{workout:null,title:'No workout planned',type:'No session',demand:'Low',sets:0,volume:0,distance:0,duration:0,load:0,rpe:0};const m=window.TrainingDataCore?.trainingDemand?.(todayKey(),w)||metrics(w);return{workout:w,title:w.focus||w.trainingCategory||'Training session',...m};}
+function session(){const w=readWorkout(todayKey()),m=window.TrainingDataCore?.trainingDemand?.(todayKey(),w)||metrics(w);if(!w)return{workout:null,title:'Rest day',...m};return{workout:w,title:w.focus||w.trainingCategory||'Training session',...m};}
 function nutri(){return window.TrainMeiNutri?.getSnapshot?.()||{targets:{kcal:0,carb:0,prot:0},weight:70,intake:{kcal:0,carb:0,prot:0}}}
 const meals={30:[['Banana + rice cakes',['1 banana','2 rice cakes','15 g skyr or whey']],['Apple + toast',['1 small apple','1 slice white toast','10 g honey']],['Pear + rice cakes',['1 small pear','2 rice cakes','15 g skyr or whey']],['Blueberries + yogurt',['100 g blueberries','120 g skyr','10 g honey']],['Toast + jam',['1–2 slices white toast','15 g jam','15 g skyr']],['Cereal + milk',['25 g corn flakes or rice cereal','120 ml low-fat milk']],['Banana + pretzels',['1 banana','20 g pretzels']],['Applesauce + rice cakes',['100 g unsweetened applesauce','2 rice cakes']]],60:[['Cream of Rice Bowl',['30 g cream of rice','150 g skyr 0%','½ banana','5 g honey']],['Toast + turkey + banana',['2 small slices white toast','50 g turkey breast','½ banana']],['Skyr + rice cereal + banana',['170 g skyr 0%','25 g rice cereal','½ banana']],['Oats + berries + yogurt',['35 g oats','100 g berries','150 g skyr']],['Toast + cottage cheese + fruit',['2 small slices toast','60 g cottage cheese','1 kiwi or small orange']],['Corn flakes + yogurt + banana',['30 g corn flakes','150 g yogurt','½ banana']],['Bagel + turkey + fruit',['½ plain bagel','40 g turkey breast','½ banana']],['Rice cakes + yogurt + mango',['3 rice cakes','120 g skyr','80 g mango']]],120:[['Oats + yogurt + banana',['40 g oats','170 g skyr','1 banana']],['Toast + eggs + fruit',['2 slices toast','1 egg + 100 g egg whites','1 small fruit']],['Oats + berries + honey',['45 g oats','150 g skyr','100 g berries','10 g honey']],['Bagel + turkey + banana',['1 plain bagel','60 g turkey breast','1 banana']],['Cereal + yogurt + berries',['45 g corn flakes or rice cereal','170 g yogurt','100 g berries']],['Rice cakes + peanut butter + banana',['4 rice cakes','10 g peanut butter','1 banana']],['Toast + cottage cheese + kiwi',['2 slices toast','100 g cottage cheese','1 kiwi']],['Cream of rice + mango + yogurt',['45 g cream of rice','100 g mango','150 g skyr']]],180:[['Rice + chicken + fruit',['120 g cooked rice','100 g chicken','1 piece of fruit']],['Oats + yogurt + fruit',['50 g oats','200 g skyr','1 banana']],['Rice + eggs + berries',['120 g cooked rice','2 eggs','100 g berries']],['Pasta + chicken + fruit',['120 g cooked pasta','100 g chicken','1 small orange']],['Potatoes + eggs + fruit',['200 g potatoes','2 eggs','1 kiwi or orange']],['Bagel + turkey + yogurt',['1 plain bagel','70 g turkey breast','150 g yogurt']],['Oats + banana + berries',['55 g oats','1 banana','100 g berries','150 g skyr']],['Toast + eggs + fruit bowl',['3 slices toast','2 eggs','150 g mixed fruit']] ]};
 function target(d,n){const w=Math.max(40,Number(n.weight)||70);let c=Math.round(w*({30:.35,60:.65,120:.9,180:1.05}[timing]||.65)),p=Math.round(w*.2);if(d.running)c+=Math.round((d.distance>8?20:d.distance>5?12:4)+(d.duration>75?12:0));else if(d.strength){c+=d.volume>5000?12:6;p+=d.volume>5000?4:0}if(d.conditioning)c+=10;if(d.rpe>=8)c+=8;if(d.duration>=90)c+=10;if(timing===30){c=Math.round(c*.7);p=Math.round(p*.7)}if(timing===180)p+=5;const i=n.intake||{},hasK=i.kcal!=null,hasC=i.carb!=null,hasP=i.prot!=null,rk=hasK&&n.targets.kcal?Math.max(0,n.targets.kcal-i.kcal):null,rc=hasC&&n.targets.carb?Math.max(0,n.targets.carb-i.carb):null,rp=hasP&&n.targets.prot?Math.max(0,n.targets.prot-i.prot):null;if(rk!=null)c=Math.min(c,Math.max(15,Math.round(rc!=null?rc*.5:c)));if(rp!=null)p=Math.min(p,Math.max(8,Math.round(rp*.45)));return{k:Math.max(120,Math.round(c*4+p*4)),c:Math.max(15,Math.round(c)),p:Math.max(8,Math.round(p))};}
@@ -6089,7 +6232,7 @@ function during(d,n){if(!d.workout)return'No session planned yet.';if(d.duration
 function after(d,next,n){if(!d.workout)return'Complete a session first to generate recovery guidance.';const w=Number(n.weight)||70,p=Math.max(20,Math.round(w*.3)),c=Math.max(25,Math.round((d.duration>=75?(d.distance>=8?1:.8):.6)*w)+(next?.m.duration>=75||next?.m.distance>=8?15:0));return`Post-workout target: ~${c} g carbohydrate + ${p} g protein, adjusted to your daily Nutri Tracker targets.${next?` Next session: ${next.title}.`:' No next session is planned in 7 days.'}`}
 function learning(f){if(f.length<3)return'After at least 3 completed feedback entries, the app will identify patterns in your timing and carbohydrate intake.';const good=f.filter(x=>x.tolerance>=4&&x.energy>=4&&x.performance>=4&&x.hunger<=2);if(good.length<2)return'Your feedback is still mixed. Keep logging sessions so the app can distinguish what consistently works for you.';const c=good.reduce((s,x)=>s+x.carbs,0)/good.length,t=good.reduce((s,x)=>s+x.timing,0)/good.length,mealCounts={};good.forEach(x=>{if(x.mealName)mealCounts[x.mealName]=(mealCounts[x.mealName]||0)+1});const topMeal=Object.entries(mealCounts).sort((a,b)=>b[1]-a[1])[0]?.[0];return`Your logged responses suggest that ~${Math.round(c-5)}–${Math.round(c+5)} g carbs around ${Math.round(t)} min before training has worked best so far (${good.length} positive sessions)${topMeal?`. A recurring successful option is ${topMeal}.`:'. Keep trying different foods so the model can learn your individual tolerance and preferences.'} This is a personal pattern, not a fixed rule.`}
 function pickMeal(set,timing){const prefs=window.TrainingDataCore?.quickFoodPreferences?.(timing)||[];if(!prefs.length)return set[variant%set.length];const ranked=set.map((meal,index)=>{const text=meal.join(' ').toLowerCase();const hits=prefs.reduce((n,p)=>n+(text.includes(p.food)?p.score:0),0);return{meal,index,hits}}).sort((a,b)=>b.hits-a.hits||a.index-(variant%set.length===a.index?1:0));return ranked[0]?.meal||set[variant%set.length]}
-function render(){const d=session(),n=nutri(),t=target(d,n),set=meals[timing]||meals[60],m=pickMeal(set,timing),next=nextSession(),f=readFeedback();const title=document.getElementById('no-session-title'),meta=document.getElementById('no-session-meta');if(!title)return;title.textContent=d.title;meta.textContent=d.workout?`${d.type} · ${d.duration||0} min · ${d.distance?d.distance+' km · ':''}${Math.round(d.volume)} volume · RPE ${d.rpe||'—'}`:'Add today\'s workout to personalize the recommendation.';document.getElementById('no-demand-badge').textContent=d.workout?d.demand.toUpperCase():'NO SESSION';document.getElementById('no-session-tags').innerHTML=d.workout?[d.type,d.duration?`${d.duration} min`:null,d.distance?`${d.distance} km`:null,d.volume?`${Math.round(d.volume)} volume`:null,d.rpe?`RPE ${d.rpe}`:null].filter(Boolean).map(x=>`<span>${escN(x)}</span>`).join(''):'';document.getElementById('no-timing-label').textContent=timing===180?'3+ h':timing===120?'2 h':timing+' min';document.getElementById('no-kcal').textContent=t.k;document.getElementById('no-carbs').textContent=t.c;document.getElementById('no-protein').textContent=t.p;document.getElementById('no-meal-name').textContent=m[0];document.getElementById('no-meal-items').innerHTML=m[1].map(x=>`<div>• ${escN(x)}</div>`).join('');document.getElementById('no-meal-why').textContent=`Built from ${d.type.toLowerCase()}, duration, distance, volume, load/RPE and your Nutri Tracker targets/intake.`;const i=n.intake||{};document.getElementById('no-intake-status').textContent=(i.kcal!=null||i.carb!=null||i.prot!=null)?'FatSecret synced':'No intake synced';document.getElementById('no-nutri-context').innerHTML=[['Target kcal',n.targets.kcal||'—','daily'],['Consumed kcal',i.kcal==null?'—':Math.round(i.kcal),'FatSecret'],['Target carbs',n.targets.carb?`${n.targets.carb} g`:'—','daily'],['Consumed carbs',i.carb==null?'—':`${i.carb} g`,n.weight?`${n.weight} kg bodyweight`:'weight —']].map(x=>`<div><span>${x[0]}</span><strong>${x[1]}</strong><small>${x[2]}</small></div>`).join('');const fuel=window.TrainingDataCore?.performanceFuel?.(todayKey(),d.workout);const fuelScore=document.getElementById('no-fuel-score'),fuelCopy=document.getElementById('no-fuel-copy');if(fuelScore)fuelScore.textContent=fuel?.score!=null?`${fuel.score}% · ${fuel.status}`:'—';if(fuelCopy)fuelCopy.textContent=fuel?.score!=null?`${fuel.demand.demand} demand · ${fuel.limitingFactor||'No limiting factor identified'}`:'Sync FatSecret and log a session to calculate fuel.';document.getElementById('no-analysis-title').textContent=`${d.type} fueling`;document.getElementById('no-analysis-copy').textContent=d.workout?'The recommendation distinguishes short strength, long endurance and mixed sessions instead of relying on one High/Moderate/Low label.':'Add today\'s session to unlock session-specific fueling.';document.getElementById('no-analysis-list').innerHTML=[`${d.duration||0} min · ${d.distance||0} km · ${Math.round(d.volume)} volume · ${d.load||0} load`,n.targets.kcal?`Nutri target: ${n.targets.kcal} kcal · ${n.targets.carb} g carbs · ${n.targets.prot} g protein`:'Set a Nutri Tracker target first',i.kcal!=null?`Remaining today: ${n.targets.kcal?Math.max(0,n.targets.kcal-i.kcal):'—'} kcal · ${n.targets.carb&&i.carb!=null?Math.max(0,n.targets.carb-i.carb):'—'} g carbs`:'Sync FatSecret in Nutri Tracker for budget-aware recommendations'].map(x=>`<div>${escN(x)}</div>`).join('');document.getElementById('no-next-session').textContent=next?`Next · ${next.date}`:'Next session —';document.getElementById('no-nutrition-loop').innerHTML=[['BEFORE',`${t.c} g carbs · ${t.p} g protein · ~${t.k} kcal`,`${timing===180?'3+ h':timing===120?'2 h':timing+' min'} before`],['DURING',during(d,n),'Based on duration, distance and intensity'],['AFTER',after(d,next,n),'Based on completed work + next plan']].map(x=>`<div class="nutrition-loop-step"><strong>${x[0]}</strong>${escN(x[1])}<br><small>${escN(x[2])}</small></div>`).join('');document.getElementById('no-learning-count').textContent=`${f.length} session${f.length===1?'':'s'} · central model`;document.getElementById('no-learning-insight').textContent=learning(f);document.querySelectorAll('[data-nutrition-time]').forEach(b=>b.classList.toggle('active',Number(b.dataset.nutritionTime)===timing));}
+function render(){const d=session(),n=nutri(),t=target(d,n),set=meals[timing]||meals[60],m=pickMeal(set,timing),next=nextSession(),f=readFeedback();const title=document.getElementById('no-session-title'),meta=document.getElementById('no-session-meta');if(!title)return;title.textContent=d.title;meta.textContent=d.workout?`${d.type} · ${d.duration||0} min · ${d.distance?d.distance+' km · ':''}${Math.round(d.volume)} volume · RPE ${d.rpe||'—'}`:'Add today\'s workout to personalize the recommendation.';document.getElementById('no-demand-badge').textContent=d.workout?d.demand.toUpperCase():'NO SESSION';document.getElementById('no-session-tags').innerHTML=d.workout?[d.type,d.duration?`${d.duration} min`:null,d.distance?`${d.distance} km`:null,d.volume?`${Math.round(d.volume)} volume`:null,d.rpe?`RPE ${d.rpe}`:null].filter(Boolean).map(x=>`<span>${escN(x)}</span>`).join(''):'';document.getElementById('no-timing-label').textContent=timing===180?'3+ h':timing===120?'2 h':timing+' min';document.getElementById('no-kcal').textContent=t.k;document.getElementById('no-carbs').textContent=t.c;document.getElementById('no-protein').textContent=t.p;document.getElementById('no-meal-name').textContent=m[0];document.getElementById('no-meal-items').innerHTML=m[1].map(x=>`<div>• ${escN(x)}</div>`).join('');document.getElementById('no-meal-why').textContent=`Built from ${d.type.toLowerCase()}, duration, distance, volume, duration/RPE and your Nutri Tracker targets/intake.`;const i=n.intake||{};document.getElementById('no-intake-status').textContent=(i.kcal!=null||i.carb!=null||i.prot!=null)?'FatSecret synced':'No intake synced';document.getElementById('no-nutri-context').innerHTML=[['Target kcal',n.targets.kcal||'—','daily'],['Consumed kcal',i.kcal==null?'—':Math.round(i.kcal),'FatSecret'],['Target carbs',n.targets.carb?`${n.targets.carb} g`:'—','daily'],['Consumed carbs',i.carb==null?'—':`${i.carb} g`,n.weight?`${n.weight} kg bodyweight`:'weight —']].map(x=>`<div><span>${x[0]}</span><strong>${x[1]}</strong><small>${x[2]}</small></div>`).join('');const fuel=window.TrainingDataCore?.performanceFuel?.(todayKey(),d.workout);const fuelScore=document.getElementById('no-fuel-score'),fuelCopy=document.getElementById('no-fuel-copy');if(fuelScore)fuelScore.textContent=fuel?.score!=null?`${fuel.score}% · ${fuel.status}`:'—';if(fuelCopy)fuelCopy.textContent=fuel?.score!=null?`${fuel.demand.demand} demand · ${fuel.limitingFactor||'No limiting factor identified'}`:(fuel?.fuelTarget?.carbs?`Planned target ~${fuel.fuelTarget.carbs} g carbs · ~${fuel.fuelTarget.preWorkoutCarbs} g in the pre-workout window. Sync FatSecret to compare actual intake.`:'Sync FatSecret and log a session to calculate fuel.');document.getElementById('no-analysis-title').textContent=`${d.type} fueling`;document.getElementById('no-analysis-copy').textContent=d.workout?'The recommendation distinguishes short strength, long endurance and mixed sessions instead of relying on one High/Moderate/Low label.':'Add today\'s session to unlock session-specific fueling.';document.getElementById('no-analysis-list').innerHTML=[`${d.duration||0} min · ${d.distance||0} km · ${Math.round(d.volume)} volume · ${d.duration||0} min`,n.targets.kcal?`Nutri target: ${n.targets.kcal} kcal · ${n.targets.carb} g carbs · ${n.targets.prot} g protein`:'Set a Nutri Tracker target first',i.kcal!=null?`Remaining today: ${n.targets.kcal?Math.max(0,n.targets.kcal-i.kcal):'—'} kcal · ${n.targets.carb&&i.carb!=null?Math.max(0,n.targets.carb-i.carb):'—'} g carbs`:'Sync FatSecret in Nutri Tracker for budget-aware recommendations'].map(x=>`<div>${escN(x)}</div>`).join('');document.getElementById('no-next-session').textContent=next?`Next · ${next.date}`:'Next session —';document.getElementById('no-nutrition-loop').innerHTML=[['BEFORE',`${t.c} g carbs · ${t.p} g protein · ~${t.k} kcal`,`${timing===180?'3+ h':timing===120?'2 h':timing+' min'} before`],['DURING',during(d,n),'Based on duration, distance and intensity'],['AFTER',after(d,next,n),'Based on completed work + next plan']].map(x=>`<div class="nutrition-loop-step"><strong>${x[0]}</strong>${escN(x[1])}<br><small>${escN(x[2])}</small></div>`).join('');document.getElementById('no-learning-count').textContent=`${f.length} session${f.length===1?'':'s'} · central model`;document.getElementById('no-learning-insight').textContent=learning(f);document.querySelectorAll('[data-nutrition-time]').forEach(b=>b.classList.toggle('active',Number(b.dataset.nutritionTime)===timing));}
 function home(){const title=document.getElementById('home-nutrition-title'),time=document.getElementById('home-nutrition-time'),body=document.getElementById('home-nutrition-body');if(!title||!body)return;const d=session(),n=nutri(),t=target(d,n);title.textContent=d.workout?'Nutrition Optimizer':'Nutrition Optimizer';time.textContent=d.workout?d.type:'—';body.innerHTML=d.workout?`<div class="home-nutrition-main"><strong>~${t.k} kcal</strong><span>60 min before training</span></div><div class="home-nutrition-meta"><span>${t.c} g carbs</span><span>${t.p} g protein</span><span>${escN(d.type)}</span></div>`:"<div class='home-empty'>Open today's workout to get a session-specific pre-workout recommendation.</div>"}
 function open(){document.querySelector('#main-nav [data-page="integrations-page"]')?.click();setTimeout(()=>{document.querySelector('.smart-launch-card[data-page="nutrition-page"]')?.click();setTimeout(render,30)},0)}
 function saveFB(){const v={tolerance:+document.getElementById('no-feedback-tolerance')?.value||0,energy:+document.getElementById('no-feedback-energy')?.value||0,hunger:+document.getElementById('no-feedback-hunger')?.value||0,performance:+document.getElementById('no-feedback-performance')?.value||0};if(!Object.values(v).every(Boolean))return;const d=session(),n=nutri(),t=target(d,n),set=meals[timing]||meals[60],meal=set[variant%set.length],event={date:todayKey(),timing,mealName:meal[0],mealItems:meal[1],carbs:t.c,kcal:t.k,protein:t.p,...v,sessionType:d.type,duration:d.duration,distance:d.distance};const a=readFeedback();a.push(event);saveFeedback(a);document.dispatchEvent(new CustomEvent('trainmei:nutrition-feedback',{detail:event}));['no-feedback-tolerance','no-feedback-energy','no-feedback-hunger','no-feedback-performance'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});render()}
@@ -6117,14 +6260,14 @@ document.addEventListener('DOMContentLoaded',()=>{render();home()});window.Train
   }
   function render(){
     if(!model)return;
-    const ctx=model.context||{},a=model.adaptation||{},r=TrainingDataCore.readiness(ctx.workout||null,{loadRatio:ctx.loadRatio,fuelScore:ctx.fuel?.score,cyclePhase:ctx.cycle?.phase}),score=r.score??60,confidence=model.sample>=12?'High':model.sample>=6?'Moderate':'Low';
+    const ctx=model.context||{},a=model.adaptation||{},r=TrainingDataCore.readiness(ctx.workout||null,{loadRatio:ctx.loadRatio,fuelScore:ctx.fuel?.score,cyclePhase:ctx.cycle?.phase,training:ctx.training}),score=r.score??60,confidence=model.dataConfidence?.status||'Building';
     [$(`#brain-ring`),$(`#home-brain-ring`)].forEach(x=>x&&x.style.setProperty('--brain-score',score));['#brain-score','#home-brain-score'].forEach(id=>{const e=$(id);if(e)e.textContent=score});
     if($('#brain-status'))$('#brain-status').textContent=r.status;if($('#brain-score-copy'))$('#brain-score-copy').textContent=`${confidence} confidence · ${model.sample} completed sessions · one unified learning engine`;
     if($('#brain-confidence'))$('#brain-confidence').textContent=`${confidence} confidence`;if($('#home-brain-confidence'))$('#home-brain-confidence').textContent=`${confidence} model`;
     if($('#home-brain-recommendation'))$('#home-brain-recommendation').textContent=a.actions?.[0]||'The unified model is learning your response patterns.';
     if($('#home-brain-pattern'))$('#home-brain-pattern').textContent=model.patterns?.[0]?.text||'No stable personal association yet.';
     if($('#brain-drivers'))$('#brain-drivers').innerHTML=(r.factors||[]).map(f=>`<div class="brain-driver"><span>${esc(f.label)}</span><strong>${Math.round(f.value)}%</strong></div>`).join('');
-    if($('#brain-baselines'))$('#brain-baselines').innerHTML=[['Sessions',model.sample,'observed'],['Nutrition days',model.nutritionSample,'FatSecret'],['Patterns',model.patterns.length,'learned'],['Cycle',ctx.cycle?.phase||'—','context']].map(([n,v,u])=>`<div class="brain-metric"><strong>${esc(String(v))}</strong><span>${esc(n)} · ${esc(u)}</span></div>`).join('');
+    if($('#brain-baselines'))$('#brain-baselines').innerHTML=[['Sessions',model.sample,'observed'],['Nutrition days',model.nutritionSample,'FatSecret'],['Patterns',model.patterns.length,'learned'],['Cycle',ctx.cycle?.phase||'—','context'],['Data confidence',`${model.dataConfidence?.score??0}%`,'evidence'],['Baseline RPE',model.baseline?.rpe??'—','personal'],['Recovery +24h',model.recoveryLag?.[24]?.average!=null?`${model.recoveryLag[24].average}%`:'—','observed']].map(([n,v,u])=>`<div class="brain-metric"><strong>${esc(String(v))}</strong><span>${esc(n)} · ${esc(u)}</span></div>`).join('');
     if($('#brain-baseline-source'))$('#brain-baseline-source').textContent=`${model.sample} completed sessions · ${model.recentSample} in last 42 days · ${model.nutritionSample} nutrition days`;if($('#brain-pattern-count'))$('#brain-pattern-count').textContent=`${model.patterns.length} pattern${model.patterns.length===1?'':'s'}`;
     if($('#brain-patterns'))$('#brain-patterns').innerHTML=model.patterns.length?model.patterns.map(p=>`<div class="brain-pattern"><strong>${esc(p.kind)} · ${p.confidence}% confidence</strong><br>${esc(p.text)}</div>`).join(''):'<div class="brain-empty">The single engine needs more completed sessions and feedback before calling a pattern stable.</div>';
     if($('#brain-recommendation'))$('#brain-recommendation').innerHTML=`<strong>${esc(a.actions?.[0]||'No strong limiter detected')}</strong>${a.actions?.slice(1).map(x=>`<br>${esc(x)}`).join('')||''}`;
@@ -6227,10 +6370,12 @@ document.addEventListener('DOMContentLoaded',()=>{render();home()});window.Train
       const name=String(row.food_name||'Food');
       const kcal=row.calories_kcal==null ? '—' : `${Math.round(Number(row.calories_kcal))} kcal`;
       const serving=row.serving_description ? String(row.serving_description) : '';
+      const mealTime=row.consumption_time??row.meal_time??row.entry_time??row.consumed_at??row.time??null;
+      const timeLabel=mealTime?formatDateTime(mealTime):'';
       return `<div class="fatsecret-entry">
         <div class="fatsecret-entry-main">
           <strong>${escapeHtml(name)}</strong>
-          <small>${escapeHtml(meal)}${serving ? ' · '+escapeHtml(serving) : ''}</small>
+          <small>${escapeHtml(meal)}${serving ? ' · '+escapeHtml(serving) : ''}${timeLabel ? ' · '+escapeHtml(timeLabel) : ''}</small>
         </div>
         <span class="fatsecret-entry-kcal">${escapeHtml(kcal)}</span>
       </div>`;
@@ -6592,7 +6737,7 @@ document.addEventListener('DOMContentLoaded',()=>{render();home()});window.Train
     if(volume!=null)rows.push(['Training volume',String(volume),'Current training context.']);
     const currentWorkout=window.tpAllWorkoutRows?.()?.find(r=>r.date===(n.date||today()))?.data||null;
     const fuel=TrainingDataCore.performanceFuel(n.date||today(),currentWorkout);
-    if(fuel.score!=null)rows.push(['Performance Fuel',`${fuel.score}% · ${fuel.status}`,`${fuel.demand.type} · ${fuel.demand.demand} demand · Limiting factor: ${fuel.limitingFactor||'—'}.`]);
+    if(fuel.score!=null)rows.push(['Performance Fuel',`${fuel.score}% · ${fuel.status}`,`${fuel.demand.type} · ${fuel.demand.demand} demand · Limiting factor: ${fuel.limitingFactor||'—'}.`]);if(fuel.fuelTarget?.carbs)rows.push(['Fuel target',`${fuel.fuelTarget.carbs} g carbs`,`${fuel.fuelTarget.gramsPerKg||'—'} g/kg · ~${fuel.fuelTarget.preWorkoutCarbs} g in the pre-workout window.`]);
     if(i.carb!=null&&t.carb)rows.push(['Fuel availability',`${Math.round(i.carb)} / ${Math.round(t.carb)} g carbs`,i.carb>=t.carb?'Carbohydrate target reached.':'Carbohydrate target still below target.']);
     const ptxt=firstText(pf,['fuel_note','nutrition_note','note','recommendation','summary']);if(ptxt)rows.push(['Performance context','Stored context',ptxt]);
     try{
@@ -6627,6 +6772,196 @@ function renderBody(){
   document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>load(today()).catch(e=>{state.error=e;render()}),120)});
   document.addEventListener('trainmei:nutrition-sync-request',e=>{sync(e.detail?.date||today()).catch(console.error)});
   window.TrainMeiNutritionData={getSnapshot,load,sync,openFatSecret,state};
+})();
+</script>
+
+<style id="trainmei-v7-integrated-responsive">
+/* TrainMei v7 — one controlled responsive layer; no parallel data model. */
+.top-actions .btn[data-page],#templates-btn,#settings-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.nav-label{display:inline}
+.top-actions .btn[data-page] svg,#templates-btn svg,#settings-btn svg{display:none;width:17px;height:17px;flex:0 0 17px}
+.rest-day-inline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;min-width:92px}
+.session-load-inline{display:flex;align-items:center;gap:7px;min-width:0;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.session-load-inline .simple-field{width:72px}
+.day-page .rest-day-inline input:checked + .switch-ui{background:var(--success)}
+.cal-cell.rest-day{background:var(--surface);border-style:dashed}
+.cal-cell.rest-day .cal-focus strong{color:var(--muted)}
+.rest-day-badge{display:inline-flex;align-items:center;justify-content:center;padding:3px 6px;border:1px solid var(--line);border-radius:999px;font-size:8px;text-transform:uppercase;color:var(--muted);letter-spacing:.05em}
+.tp-v6-rest{opacity:.8}
+@media (min-width:561px){
+  .top-actions .btn[data-page],#templates-btn,#settings-btn{min-height:32px}
+}
+@media (max-width:950px) and (min-width:561px) and (orientation:landscape){
+  .topbar{width:100%;box-sizing:border-box;overflow:hidden}
+  .topbar .brand{flex:0 0 auto;font-size:17px;white-space:nowrap}
+  .top-actions{flex:1 1 auto;min-width:0;justify-content:flex-end;flex-wrap:nowrap;overflow:hidden}
+  .top-actions .btn[data-page],#templates-btn,#settings-btn{font-size:9px!important;padding:7px 7px!important;min-width:0!important;white-space:nowrap}
+  .top-actions #export-btn,.top-actions #import-btn,.top-actions #sync-btn,.top-actions #logout-btn{display:none!important}
+  #app,.page,.day-view,.calendar-shell,.plan-shell,.smart-int-wrap,.nutri-shell{max-width:100%;min-width:0;box-sizing:border-box}
+  .page table,.page .table-wrap,.page .block-table-wrap,.page .nutrition-table{max-width:100%;overflow-x:auto}
+  .page input,.page select,.page textarea{max-width:100%;box-sizing:border-box}
+  .day-status-row,.run-meta-inline,.home-grid,.smart-int-hero{min-width:0}
+}
+@media (max-width:560px){
+  /* iPhone vertical: compact, single-column rhythm for newly added metrics */
+  #app{width:100%;min-width:0;overflow-x:hidden}
+  .page{width:100%;min-width:0;padding-left:10px!important;padding-right:10px!important}
+  .home-grid,.home-card,.brain-page,.brain-card,.smart-int-wrap,.nutri-shell,.calendar-shell,.plan-shell,.day-view{min-width:0!important;max-width:100%!important}
+  .home-card-head,.brain-hero,.brain-card-head,.smart-panel-header,.nutri-source-head{min-width:0;gap:8px}
+  .home-card-head h2,.brain-card-head h2,.smart-panel-header strong,.nutri-card-title{overflow-wrap:anywhere}
+  .home-actions,.tool-group,.choice-row,.choice-chips,.weekday-chips{min-width:0;flex-wrap:wrap}
+  .brain-metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+  .brain-metric{min-width:0!important;padding:8px 7px!important}
+  .brain-metric strong{font-size:14px!important}
+  .brain-metric span{font-size:8px!important;line-height:1.2!important;overflow-wrap:anywhere}
+  .day-status-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;align-items:stretch!important}
+  .day-status-row>*{min-width:0!important;width:auto!important}
+  .rest-day-inline,.session-load-inline,.caffeine-inline,.carbohydrates-inline,.recovery-inline{min-width:0!important;max-width:100%!important}
+  .recovery-inline{grid-column:1 / -1!important}
+  .run-meta-inline{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  .run-meta-inline>*{min-width:0!important}
+  .recovery-row{min-width:0!important;flex-wrap:wrap}
+  .recovery-dots{max-width:100%;display:flex;flex-wrap:nowrap}
+  .simple-field,.field input,.field select,.field textarea,.metrics-grid input,.metrics-grid select,.metrics-grid textarea{max-width:100%!important;min-width:0!important}
+  .section,.smart-int-panel,.nutri-card,.home-card,.brain-card{margin-bottom:10px!important}
+  .smart-panel-body,.nutri-collapsible-body{overflow:hidden}
+  .table-wrap,.block-table-wrap,.nutrition-table-wrap,.calendar-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .block-table{min-width:560px}
+  .plan-table{width:100%!important;table-layout:fixed}
+  .plan-table td,.plan-table th{overflow-wrap:anywhere}
+  .top-actions .btn[data-page],#templates-btn,#settings-btn{border-radius:9px!important}
+.topbar{position:relative;width:100%;box-sizing:border-box;overflow:hidden;display:flex!important;align-items:center!important;justify-content:space-between!important}
+  .topbar .brand{flex:0 0 auto;min-width:0;max-width:82px;white-space:nowrap;font-size:11px!important;overflow:hidden;text-overflow:ellipsis}
+  .top-actions{position:absolute!important;left:50%!important;transform:translateX(-50%)!important;flex:0 0 auto!important;width:210px!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;overflow:hidden!important}
+  .top-actions .btn[data-page],#templates-btn,#settings-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:31px!important;min-width:31px!important;height:31px!important;padding:0!important;line-height:1!important;flex:0 0 31px!important}
+  .top-actions .btn[data-page] svg,#templates-btn svg,#settings-btn svg{display:block!important;margin:0!important}
+  .top-actions .nav-label{display:none!important}
+  .top-actions #export-btn,.top-actions #import-btn,.top-actions #sync-btn,.top-actions #logout-btn{display:none!important}
+  .rest-day-inline{grid-column:1 / -1;grid-row:1;justify-content:flex-start;padding-bottom:7px;margin-bottom:1px}
+  .day-status-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:7px!important}
+  .day-status-row .day-completion-row,.day-status-row .day-color-row{min-width:0}
+  .day-status-row .session-load-inline{grid-column:1 / -1!important;grid-row:auto!important;justify-content:space-between}
+  .day-status-row .session-load-inline .simple-field{width:68px}
+  .run-meta-inline{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:auto auto!important}
+  .run-distance-inline{grid-column:1!important;grid-row:1!important}
+  .session-rpe-inline{grid-column:3!important;grid-row:1!important}
+  .recovery-inline{grid-column:1 / -1!important;grid-row:2!important}
+  .page{width:100%;max-width:100%;overflow-x:hidden}
+  .page table{display:block;width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .page .table-wrap,.page .block-table-wrap,.page .nutrition-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .page input,.page select,.page textarea{max-width:100%;box-sizing:border-box}
+  .home-card,.brain-card,.nutri-card,.tp-v5-panel,.smart-int-panel,.plan-focus-card,.section{min-width:0;max-width:100%;box-sizing:border-box}
+  .tp-v5-week-grid{min-width:0!important}
+  .tp-v5-day{min-width:0!important}
+  .training-block-head,.block-table,.conditioning-phase-grid{max-width:100%;min-width:0}
+}
+</style>
+<script id="trainmei-v7-integrated-logic">
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+const cloneSafe=o=>{try{return JSON.parse(JSON.stringify(o))}catch{return o}};
+
+/* Explicit Rest Day: stored inside the existing workout row, so it feeds the
+   same TrainingDataCore without creating another learning/storage engine. */
+function setRestDay(on){
+  if(typeof currentDay==='undefined'||!currentDay)return;
+  currentDay.restDay=!!on;
+  if(on){currentDay.completed=false;currentDay.metrics=currentDay.metrics||{};currentDay.metrics.rpe='';currentDay.metrics.timeMin='';}
+  if(typeof renderDay==='function')renderDay();
+  if(typeof scheduleSave==='function')scheduleSave();
+}
+
+/* Navigation: desktop + horizontal = labels, vertical iPhone = icons. */
+function refreshNav(){
+  const portrait=window.matchMedia('(max-width:560px)').matches;
+  $$('#main-nav .btn[data-page],#templates-btn,#settings-btn').forEach(b=>{
+    const label=b.querySelector('.nav-label');const svg=b.querySelector('svg');
+    if(label)label.hidden=portrait;
+    if(svg)svg.hidden=!portrait;
+  });
+}
+window.addEventListener('resize',refreshNav,{passive:true});
+refreshNav();
+
+/* The calendar renderer already understands day.restDay directly via the
+   existing renderMonth() logic, so no restDayCalendarPatch() is needed. */
+
+/* Improve the single Data Core calculations without adding a second model. */
+function patchCore(){
+ const core=window.TrainingDataCore;if(!core)return false;
+ core.totalTime=d=>d&&!d.restDay?Math.max(0,Number(d.metrics?.timeMin)||0):0;
+ core.fuelRequirement=(date,workout)=>{
+   const w=workout||null;
+   const demand=core.trainingDemand(date,w);
+   if(w?.restDay||demand.restDay)return{date,restDay:true,carbs:0,preWorkoutCarbs:0,gramsPerKg:0,confidence:'High'};
+   const body=Number(core.body()?.weight)||Number(window.TrainMeiNutri?.getSnapshot?.()?.weight)||70;
+   const mins=Math.max(0,demand.duration||0),distance=Math.max(0,demand.distance||0),rpe=Math.max(0,demand.rpe||0);
+   let gramsPerKg=demand.demand==='High'?1.0:demand.demand==='Moderate'?.75:.5;
+   if(mins>=90||distance>=12)gramsPerKg+=.35;
+   else if(mins>=60||distance>=7)gramsPerKg+=.2;
+   if(rpe>=8)gramsPerKg+=.1;
+   const carbs=Math.round(body*gramsPerKg);
+   return{date,restDay:false,carbs,preWorkoutCarbs:Math.round(carbs*.45),gramsPerKg:Number(gramsPerKg.toFixed(2)),confidence:(mins||distance||demand.sets)?'Moderate':'Low'};
+ };
+ const oldDemand=core.trainingDemand.bind(core);
+ core.trainingDemand=(date,workout)=>{
+   const w=workout||null;
+   if(w?.restDay)return{date,hasWorkout:false,planned:false,restDay:true,score:0,demand:'Rest',type:'Rest day',load:0,volume:0,duration:0,distance:0,rpe:0,sets:0,conditioning:false,running:false,strength:false};
+   const d=oldDemand(date,w);
+   if(d.restDay)return d;
+   const explicitTime=Number(w?.metrics?.timeMin)||0;
+   const sets=Number(d.sets)||0;
+   const estimatedTime=explicitTime||((d.running||d.conditioning)?Math.max(0,Number(d.duration)||0):sets*2.5);
+   const score=Math.min(100,Math.round((d.running?Math.min(30,d.distance*2.2):0)+(estimatedTime?Math.min(30,estimatedTime/3):0)+(d.volume?Math.min(20,d.volume/450):0)+(d.rpe?Math.min(12,d.rpe*1.5):0)+(d.conditioning?10:0)));
+   return {...d,duration:estimatedTime,timeSource:explicitTime?'logged':'estimated',score,demand:score>=72?'High':score>=42?'Moderate':'Low'};
+ };
+ const oldFuel=core.performanceFuel.bind(core);
+ core.performanceFuel=(date,workout,nutritionOverride=null)=>{
+   const demand=core.trainingDemand(date,workout);
+   if(workout?.restDay||demand.restDay)return{date,score:null,status:'Rest day',demand,coverage:{kcal:null,carb:null,prot:null},limitingFactor:null,fuelTarget:core.fuelRequirement(date,workout)};
+   const f=oldFuel(date,workout,nutritionOverride),req=core.fuelRequirement(date,workout);
+   return {...f,fuelTarget:req,preWorkoutCarbs:req.preWorkoutCarbs};
+ };
+ return true;
+}
+
+/* Cycle Tracker persistence hardening: sanitize, deduplicate and version the
+   existing local store so previous logs cannot be duplicated by malformed data. */
+function hardenCycleStorage(){
+ const oldKey='cycle_tracker_records_v2',newKey='cycle_tracker_records_v3';
+ try{
+   let raw=localStorage.getItem(newKey);
+   if(!raw){raw=localStorage.getItem(oldKey);if(raw)localStorage.setItem(newKey,raw)}
+   const parsed=raw?JSON.parse(raw):[];
+   const map=new Map();
+   (Array.isArray(parsed)?parsed:[]).forEach(r=>{
+     if(!r||!/^\d{4}-\d{2}-\d{2}$/.test(String(r.date||'')))return;
+     const clean={...r,date:String(r.date),duration:Math.max(1,Math.min(15,Number(r.duration)||5)),symptoms:Array.isArray(r.symptoms)?[...new Set(r.symptoms.map(String))]:[]};
+     map.set(clean.date,clean);
+   });
+   const clean=[...map.values()].sort((a,b)=>a.date.localeCompare(b.date));
+   localStorage.setItem(newKey,JSON.stringify(clean));
+   if(!localStorage.getItem(oldKey))localStorage.setItem(oldKey,JSON.stringify(clean));
+ }catch(e){/* keep existing tracker behavior if storage is unavailable */}
+}
+
+document.addEventListener('change',e=>{
+ if(e.target?.id==='day-rest-toggle')setRestDay(e.target.checked);
+ if(e.target?.id==='day-completed-toggle'&&typeof currentDay!=='undefined'&&currentDay){
+   if(e.target.checked)currentDay.restDay=false;
+ }
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+ hardenCycleStorage();
+ const run=()=>{patchCore();if(typeof renderDayContext==='function')renderDayContext();};
+ if(!patchCore())setTimeout(run,250);else run();
+});
+setTimeout(()=>{patchCore();refreshNav()},0);
+
+/* Re-render calendar/home when an explicit rest day is saved. */
+document.addEventListener('trainmei:core-learning',()=>{if(typeof renderHome==='function'&&document.querySelector('#home-page.active'))renderHome();});
 })();
 </script>
 </body></html>
