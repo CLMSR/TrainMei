@@ -758,7 +758,7 @@ table.plan-table td input{width:100%;border:none;background:transparent;padding:
   .section-bar{padding:7px 2px;font-size:13px}
   .smart-tool-dock{width:100%;margin:7px 0 10px;padding:4px;display:block;overflow:visible;background:var(--card-bg)!important;border:1px solid var(--line);box-shadow:none}
   .smart-tool-dock .tool-group{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;width:100%;align-items:stretch}
-  .smart-tool-dock .tool-group-label{grid-column:1/-1;display:block;padding:1px 5px 3px;font-size:8px}
+  .smart-tool-dock .tool-group-label{grid-column:1/-1;display:block;font-size:8px;text-align:center}
   .smart-tool-dock .btn{min-width:0;padding:6px 2px;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:7px}
   .training-blocks{gap:7px}
   .training-block{border-radius:10px;background:var(--card-bg);box-shadow:none}
@@ -947,7 +947,7 @@ body{color:var(--ink)}
 .home-quick strong{display:block;font-size:11px}
 .home-quick small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
 .home-empty{color:var(--muted);font-size:11px;line-height:1.5}
-.home-session-title{font-weight:900;font-size:15px}
+.home-session-title{font-weight:900;font-size:15px;text-transform:uppercase}
 .home-session-sub{font-size:10px;color:var(--muted);margin-top:4px}
 .home-month-overview{margin-top:8px;padding:10px 12px!important}
 .home-month-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
@@ -2503,6 +2503,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 }
 
 /* ===== Nutrition System: FatSecret -> NutritionDataLayer -> Nutrition Optimizer -> downstream context ===== */
+
 .nutri-source-card{border-color:color-mix(in srgb,var(--primary) 28%,var(--line))!important}
 .nutri-source-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .nutri-source-label{font-size:9px;color:var(--muted);margin-top:3px}
@@ -2576,6 +2577,307 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .home-nutrition-main span{font-size:10px;color:var(--muted)}
 .home-nutrition-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .home-nutrition-meta span{padding:5px 7px;background:var(--surface);border-radius:999px;font-size:9px;color:var(--muted)}
+/* ============================================================
+   NUTRITION OPTIMIZER — MEAL SELECTOR
+   ============================================================ */
+
+.nutrition-meal-selector{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:6px;
+  margin:10px 0 12px;
+}
+
+.nutrition-meal-tab{
+  appearance:none;
+  border:1px solid var(--border,#ddd);
+  background:var(--card,#fff);
+  color:var(--text,#111);
+  border-radius:10px;
+  min-height:36px;
+  padding:7px 8px;
+  font:inherit;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:
+    background .16s ease,
+    border-color .16s ease,
+    transform .12s ease;
+}
+
+.nutrition-meal-tab:hover{
+  transform:translateY(-1px);
+}
+
+.nutrition-meal-tab.active{
+  background:var(--text,#111);
+  color:var(--card,#fff);
+  border-color:var(--text,#111);
+}
+
+.nutrition-meal-context{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 12px;
+  margin-bottom:10px;
+  border:1px solid var(--border,#ddd);
+  border-radius:12px;
+  background:var(--card,#fff);
+}
+
+.nutrition-meal-context > div{
+  min-width:0;
+}
+
+.nutrition-meal-context-label{
+  display:block;
+  margin-bottom:2px;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  opacity:.6;
+}
+
+.nutrition-meal-context strong{
+  display:block;
+  font-size:13px;
+  line-height:1.25;
+}
+
+.nutrition-meal-context-status{
+  flex-shrink:0;
+  font-size:11px;
+  opacity:.65;
+  white-space:nowrap;
+}
+
+.nutrition-meal-target{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 12px;
+  margin-bottom:8px;
+  border-radius:12px;
+  border:1px solid var(--border,#ddd);
+  background:var(--card,#fff);
+}
+
+.nutrition-meal-target > div:first-child span{
+  display:block;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  opacity:.6;
+}
+
+.nutrition-meal-target > div:first-child strong{
+  display:block;
+  margin-top:2px;
+  font-size:13px;
+}
+
+.nutrition-meal-target-macros{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.nutrition-meal-target-macros span{
+  font-size:10px;
+  white-space:nowrap;
+  opacity:.7;
+}
+
+.nutrition-meal-target-macros b{
+  color:inherit;
+  font-size:11px;
+}
+
+.nutrition-plan-options{
+  display:grid;
+  gap:7px;
+}
+
+.nutrition-plan-option{
+  border:1px solid var(--border,#ddd);
+  border-radius:12px;
+  background:var(--card,#fff);
+  overflow:hidden;
+}
+
+.nutrition-plan-option summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  cursor:pointer;
+  list-style:none;
+}
+
+.nutrition-plan-option summary::-webkit-details-marker{
+  display:none;
+}
+
+.nutrition-plan-option-main{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+}
+
+.nutrition-plan-option-number{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:23px;
+  height:23px;
+  flex:0 0 23px;
+  border-radius:7px;
+  background:rgba(127,127,127,.12);
+  font-size:10px;
+  font-weight:700;
+}
+
+.nutrition-plan-option-main > div{
+  min-width:0;
+}
+
+.nutrition-plan-option-main strong{
+  display:block;
+  font-size:12px;
+  line-height:1.25;
+}
+
+.nutrition-plan-option-main small{
+  display:block;
+  margin-top:2px;
+  font-size:10px;
+  opacity:.6;
+}
+
+.nutrition-plan-chevron{
+  font-size:17px;
+  line-height:1;
+  opacity:.5;
+  transition:transform .16s ease;
+}
+
+.nutrition-plan-option[open] .nutrition-plan-chevron{
+  transform:rotate(45deg);
+}
+
+.nutrition-plan-option-body{
+  padding:0 12px 12px;
+}
+
+.nutrition-plan-macro-row{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:5px;
+  margin-bottom:9px;
+}
+
+.nutrition-plan-macro-row span{
+  display:flex;
+  flex-direction:column;
+  padding:7px;
+  border-radius:8px;
+  background:rgba(127,127,127,.07);
+}
+
+.nutrition-plan-macro-row small{
+  font-size:9px;
+  opacity:.55;
+}
+
+.nutrition-plan-macro-row b{
+  margin-top:1px;
+  font-size:11px;
+}
+
+.nutrition-plan-macro-row em{
+  margin-top:1px;
+  font-size:8px;
+  font-style:normal;
+  opacity:.45;
+}
+
+.nutrition-plan-ingredients{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:4px 8px;
+  padding:8px 0;
+  border-top:1px solid var(--border,#ddd);
+}
+
+.nutrition-plan-ingredient{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-size:10px;
+}
+
+.nutrition-plan-ingredient span{
+  opacity:.75;
+}
+
+.nutrition-plan-ingredient strong{
+  font-size:10px;
+}
+
+.nutrition-plan-fit{
+  margin-top:7px;
+  font-size:9px;
+  opacity:.45;
+}
+
+.nutrition-plan-use{
+  width:100%;
+  margin-top:9px;
+  min-height:32px;
+  font-size:11px;
+}
+
+@media(max-width:600px){
+  .nutrition-meal-selector{
+    gap:4px;
+  }
+
+  .nutrition-meal-tab{
+    padding:6px 4px;
+    font-size:10px;
+  }
+
+  .nutrition-meal-context{
+    padding:9px 10px;
+  }
+
+  .nutrition-meal-target{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .nutrition-meal-target-macros{
+    justify-content:flex-start;
+    width:100%;
+    gap:7px;
+  }
+
+  .nutrition-plan-macro-row{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .nutrition-plan-ingredients{
+    grid-template-columns:1fr;
+  }
+}
 /* ===== Cycle training context ===== */
 .cycle-training-card{background:var(--card-bg);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:14px}
 .cycle-training-head h3{margin:3px 0 0;font-size:1rem;color:var(--heading-color,var(--ink))}
@@ -2587,6 +2889,186 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .cycle-training-stat small{display:block;margin-top:4px;color:var(--muted);font-size:9px;line-height:1.4}
 .cycle-training-insight{margin-top:9px;padding:10px 11px;background:var(--surface-soft);border-radius:11px;color:var(--muted);font-size:10px;line-height:1.5}
 .cycle-readiness-wrap{display:flex;align-items:center;gap:10px;margin-top:9px}.cycle-readiness-ring{--readiness:0;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;flex:0 0 62px;background:conic-gradient(var(--primary) calc(var(--readiness) * 1%),var(--line) 0);position:relative}.cycle-readiness-ring::after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--card-bg)}.cycle-readiness-ring strong{position:relative;z-index:1;font-size:15px;color:var(--text);font-weight:900}.cycle-readiness-copy{min-width:0}.cycle-readiness-copy strong{display:block;font-size:11px;color:var(--text)}.cycle-readiness-copy small{display:block;margin-top:3px;font-size:9px;color:var(--muted);line-height:1.35}.cycle-driver-list{display:grid;gap:6px;margin-top:9px}.cycle-driver{padding:8px 9px;background:var(--surface);border-radius:10px;font-size:9px;color:var(--text-secondary);line-height:1.4}.cycle-performance-card{background:var(--card-bg);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:14px}.cycle-performance-table{display:grid;grid-template-columns:minmax(95px,1.1fr) repeat(5,minmax(62px,1fr));overflow-x:auto;margin-top:12px;border:1px solid var(--line);border-radius:12px}.cycle-performance-table>div{padding:8px 7px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:9px;white-space:nowrap}.cycle-performance-table .head{font-weight:800;color:var(--accent);background:var(--surface);text-transform:uppercase;letter-spacing:.04em}.cycle-performance-note{margin-top:9px;font-size:9px;color:var(--muted);line-height:1.45}.nutrition-meal-planner-card{margin-top:10px}.nutrition-meal-plan-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}.nutrition-plan-meal{padding:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;min-width:0}.nutrition-plan-meal .kicker{font-size:8px;color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.06em}.nutrition-plan-meal h3{margin:4px 0;font-size:11px;color:var(--text)}.nutrition-plan-meal p{margin:0;font-size:9px;color:var(--muted);line-height:1.35}.nutrition-plan-meal strong{display:block;margin-top:7px;font-size:9px;color:var(--text)}@media(max-width:950px){.nutrition-meal-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.nutrition-meal-plan-grid{grid-template-columns:1fr}}
+.nutrition-meal-planner-card{
+  margin-top:10px;
+}
+
+.nutrition-meal-tabs{
+  display:flex;
+  gap:5px;
+  overflow-x:auto;
+  padding:10px 0 2px;
+  scrollbar-width:none;
+}
+
+.nutrition-meal-tabs::-webkit-scrollbar{
+  display:none;
+}
+
+.nutrition-meal-tab{
+  flex:0 0 auto;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--text-secondary);
+  border-radius:10px;
+  padding:7px 9px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.03em;
+  cursor:pointer;
+}
+
+.nutrition-meal-tab.active{
+  background:var(--primary);
+  color:var(--on-primary);
+  border-color:var(--primary);
+}
+
+.nutrition-meal-target{
+  display:grid;
+  grid-template-columns:1.25fr repeat(4,1fr);
+  gap:7px;
+  margin-top:8px;
+}
+
+.nutrition-meal-target>div{
+  padding:9px;
+  background:var(--surface);
+  border-radius:10px;
+  min-width:0;
+}
+
+.nutrition-meal-target .meal-target-name{
+  background:var(--surface-soft);
+}
+
+.nutrition-meal-target span,
+.nutrition-meal-target small{
+  display:block;
+  font-size:8px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.nutrition-meal-target strong{
+  display:block;
+  margin-top:3px;
+  font-size:15px;
+  color:var(--text);
+}
+
+.nutrition-meal-options{
+  display:grid;
+  gap:7px;
+  margin-top:9px;
+}
+
+.nutrition-meal-option{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--surface);
+  overflow:hidden;
+}
+
+.nutrition-meal-option summary{
+  list-style:none;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  padding:10px 11px;
+  cursor:pointer;
+}
+
+.nutrition-meal-option summary::-webkit-details-marker{
+  display:none;
+}
+
+.nutrition-meal-option summary:hover{
+  background:var(--surface-soft);
+}
+
+.nutrition-meal-option-title{
+  min-width:0;
+}
+
+.nutrition-meal-option-title strong{
+  display:block;
+  font-size:11px;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.nutrition-meal-option-title small{
+  display:block;
+  margin-top:3px;
+  font-size:8px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.nutrition-meal-option-macros{
+  text-align:right;
+  font-size:9px;
+  color:var(--text-secondary);
+  white-space:nowrap;
+}
+
+.nutrition-meal-option-macros b{
+  font-size:10px;
+  color:var(--text);
+}
+
+.nutrition-meal-option-body{
+  padding:0 11px 11px;
+  border-top:1px solid var(--line);
+}
+
+.nutrition-meal-ingredients{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:5px;
+  margin-top:9px;
+}
+
+.nutrition-meal-ingredient{
+  padding:7px 8px;
+  background:var(--card-bg);
+  border-radius:8px;
+  font-size:9px;
+  color:var(--text-secondary);
+}
+
+.nutrition-meal-ingredient strong{
+  color:var(--text);
+}
+
+.nutrition-meal-fit{
+  margin-top:8px;
+  font-size:9px;
+  color:var(--muted);
+  line-height:1.4;
+}
+
+@media(max-width:560px){
+
+  .nutrition-meal-target{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .nutrition-meal-target .meal-target-name{
+    grid-column:1/-1;
+  }
+
+  .nutrition-meal-ingredients{
+    grid-template-columns:1fr;
+  }
+
+}
 .nutrition-context-card,.nutrition-loop-card,.nutrition-learning-card{background:var(--card-bg);border:1px solid var(--line);border-radius:18px;padding:14px;min-width:0}.nutrition-context-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.nutrition-context-grid>div{padding:9px;background:var(--surface);border-radius:11px;min-width:0}.nutrition-context-grid span{display:block;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.nutrition-context-grid strong{display:block;margin-top:3px;font-size:14px;color:var(--text)}.nutrition-context-grid small{display:block;margin-top:2px;font-size:8px;color:var(--muted)}.nutrition-loop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.nutrition-loop-step{padding:8px 9px;background:var(--surface);border-radius:10px;font-size:9px;color:var(--text-secondary);line-height:1.4}.nutrition-loop-step strong{display:block;color:var(--text);margin-bottom:3px}.nutrition-feedback-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.nutrition-feedback-grid label{display:grid;gap:4px;font-size:9px;color:var(--muted);font-weight:700}.nutrition-feedback-grid select,.nutrition-intake-grid input{width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:9px;padding:8px;font-size:10px}.nutrition-intake-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.nutrition-intake-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:7px;margin-top:10px}.nutrition-intake-row .nutri-input{min-width:0}.nutrition-intake-grid label{display:grid;gap:4px;font-size:8px;color:var(--muted);text-transform:uppercase;font-weight:700}.nutrition-learning{margin-top:9px;padding:9px 10px;background:var(--surface-soft);border-radius:11px;font-size:9px;color:var(--muted);line-height:1.45}
 @media (max-width:850px){.nutrition-grid{grid-template-columns:1fr}.cycle-training-grid{grid-template-columns:1fr 1fr}.nutrition-session-head h2,.nutrition-card-head h2{font-size:19px}}
 @media (max-width:560px) and (orientation:portrait){
@@ -3434,12 +3916,97 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
             <p id="no-analysis-copy">The recommendation changes with training demand and time until the session.</p>
             <div id="no-analysis-list" class="nutrition-analysis-list"></div>
           </aside>
-        </div>
         <div class="nutrition-meal-planner-card nutrition-context-card" id="no-meal-planner-card">
-          <div class="nutrition-card-head"><div><div class="nutrition-section-kicker">MEAL PLANNER</div><h2>Build today's 5 meals</h2></div><span id="no-plan-status" class="nutrition-muted">FatSecret-aware</span></div>
-          <div id="no-plan-summary" class="nutrition-learning">The planner uses your daily target, FatSecret intake, training demand and meal timing. It does not create a second food diary.</div>
-          <div id="no-meal-plan" class="nutrition-meal-plan-grid"></div>
-        </div>
+
+  <div class="nutrition-card-head">
+    <div>
+      <div class="nutrition-section-kicker">MEAL PLANNER</div>
+      <h2>Meal targets & options</h2>
+    </div>
+
+    <span id="no-plan-status" class="nutrition-muted">
+      5 meal targets
+    </span>
+  </div>
+
+  <div id="no-plan-summary" class="nutrition-learning">
+    Each meal has its own protein, carbohydrate and fat target.
+    Choose a meal to see three portioned options that stay close to that target.
+  </div>
+
+  <div
+    id="no-meal-tabs"
+    class="nutrition-meal-tabs"
+    role="tablist"
+    aria-label="Meal targets">
+  </div>
+
+  <div
+    id="no-meal-target"
+    class="nutrition-meal-target">
+  </div>
+
+  <div class="nutrition-meal-selector" id="nutrition-meal-selector">
+
+  <button
+    type="button"
+    class="nutrition-meal-tab active"
+    data-meal="pre"
+  >
+    <span>Pre</span>
+  </button>
+
+  <button
+    type="button"
+    class="nutrition-meal-tab"
+    data-meal="post"
+  >
+    <span>Post</span>
+  </button>
+
+  <button
+    type="button"
+    class="nutrition-meal-tab"
+    data-meal="lunch"
+  >
+    <span>Lunch</span>
+  </button>
+
+  <button
+    type="button"
+    class="nutrition-meal-tab"
+    data-meal="snack"
+  >
+    <span>Snack</span>
+  </button>
+
+  <button
+    type="button"
+    class="nutrition-meal-tab"
+    data-meal="dinner"
+  >
+    <span>Dinner</span>
+  </button>
+
+</div>
+
+<div class="nutrition-meal-context">
+  <div>
+    <span class="nutrition-meal-context-label">Next meal</span>
+    <strong id="no-plan-summary">
+      Select a meal
+    </strong>
+  </div>
+
+  <span
+    class="nutrition-meal-context-status"
+    id="no-plan-status"
+  ></span>
+</div>
+
+<div id="no-meal-plan"></div>
+
+</div>
         <div class="nutrition-loop-card">
           <div class="nutrition-card-head"><div><div class="nutrition-section-kicker">NUTRITION LOOP</div><h2>Before → During → After</h2></div><span id="no-next-session" class="nutrition-muted">Next session —</span></div>
           <div class="nutrition-loop-grid" id="no-nutrition-loop"></div>
@@ -5912,7 +6479,63 @@ document.addEventListener('DOMContentLoaded',init);
 /* ===== Nutrition Optimizer ===== */
 (function(){
 'use strict';
-const FEEDBACK_KEY='nutrition_optimizer_feedback_v1';let timing=60,variant=0;
+const FEEDBACK_KEY='nutrition_optimizer_feedback_v1';let selectedMeal='pre';let timing=60,variant=0;
+function initNutritionMealSelector(){
+
+  const selector=document.getElementById('nutrition-meal-selector');
+
+  if(!selector)return;
+
+  if(selector.dataset.initialized==='true')return;
+
+  selector.dataset.initialized='true';
+
+  selector.addEventListener('click',event=>{
+
+    const button=event.target.closest('[data-meal]');
+
+    if(!button)return;
+
+    const meal=button.dataset.meal;
+
+    if(!MEAL_TARGETS[meal])return;
+
+    selectedMeal=meal;
+
+    selector
+      .querySelectorAll('[data-meal]')
+      .forEach(tab=>{
+        tab.classList.toggle(
+          'active',
+          tab.dataset.meal===selectedMeal
+        );
+      });
+
+    /*
+      Ask the existing Nutrition Optimizer render flow to update
+      the meal plan. No FatSecret write is performed here.
+    */
+    const rawNutri=nutri();
+    const snapshot=
+      window.TrainMeiNutritionData?.getSnapshot?.()||null;
+
+    const n={
+      ...rawNutri,
+      ...(snapshot||{}),
+      intake:{
+        ...(rawNutri.intake||{}),
+        ...(snapshot?.intake||{})
+      },
+      targets:{
+        ...(rawNutri.targets||{}),
+        ...(snapshot?.targets||{})
+      }
+    };
+
+    renderMealPlan(n,null,null);
+  });
+}
+initNutritionMealSelector();
 const escN=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const todayKey=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 const addDays=(k,n)=>{const d=new Date(k+'T12:00:00');d.setDate(d.getDate()+n);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
@@ -5967,20 +6590,1073 @@ async function render(){
       ...(nutritionSnapshot?.targets||{})
     }
   },t=target(d,n,coreCtx),set=meals[timing]||meals[60],m=pickMeal(set,timing),next=nextSession(),f=readFeedback();renderMealPlan(n,d,coreCtx);const title=document.getElementById('no-session-title'),meta=document.getElementById('no-session-meta');if(!title)return;title.textContent=d.title;meta.textContent=d.workout?`${d.type} · ${d.duration||0} min · ${d.distance?d.distance+' km · ':''}${Math.round(d.volume)} volume · RPE ${d.rpe||'—'}`:'Add today\'s workout to personalize the recommendation.';document.getElementById('no-demand-badge').textContent=d.workout?d.demand.toUpperCase():'NO SESSION';document.getElementById('no-session-tags').innerHTML=d.workout?[d.type,d.duration?`${d.duration} min`:null,d.distance?`${d.distance} km`:null,d.volume?`${Math.round(d.volume)} volume`:null,d.rpe?`RPE ${d.rpe}`:null].filter(Boolean).map(x=>`<span>${escN(x)}</span>`).join(''):'';document.getElementById('no-timing-label').textContent=timing===180?'3+ h':timing===120?'2 h':timing+' min';document.getElementById('no-kcal').textContent=t.k;document.getElementById('no-carbs').textContent=t.c;document.getElementById('no-protein').textContent=t.p;document.getElementById('no-meal-name').textContent=m[0];document.getElementById('no-meal-items').innerHTML=m[1].map(x=>`<div>• ${escN(x)}</div>`).join('');document.getElementById('no-meal-why').textContent=`Built from ${d.type.toLowerCase()}, duration, distance, volume, RPE, TrainingDataCore fuel demand and current FatSecret nutrition budget.${coreCtx?.timing?.sessionStartKnown?' Meal timing is compared with the logged session start.':' Consumption times are stored for learning, but this workout does not currently record a session start time.'}`;const i=n.intake||{};document.getElementById('no-intake-status').textContent=(i.kcal!=null||i.carb!=null||i.prot!=null)?'FatSecret synced':'No intake synced';document.getElementById('no-nutri-context').innerHTML=[['Target kcal',n.targets.kcal||'—','daily'],['Consumed kcal',i.kcal==null?'—':Math.round(i.kcal),'FatSecret'],['Target carbs',n.targets.carb?`${n.targets.carb} g`:'—','daily'],['Consumed carbs',i.carb==null?'—':`${i.carb} g`,'FatSecret daily intake']].map(x=>`<div><span>${x[0]}</span><strong>${x[1]}</strong><small>${x[2]}</small></div>`).join('');const fuel=window.TrainingDataCore?.performanceFuel?.(todayKey(),d.workout);const fuelScore=document.getElementById('no-fuel-score'),fuelCopy=document.getElementById('no-fuel-copy');if(fuelScore)fuelScore.textContent=fuel?.score!=null?`${fuel.score}% · ${fuel.status}`:'—';if(fuelCopy)fuelCopy.textContent=fuel?.score!=null?`${fuel.demand.demand} demand · ${fuel.limitingFactor||'No limiting factor identified'}`:(fuel?.fuelTarget?.carbs?`Planned target ~${fuel.fuelTarget.carbs} g carbs · ~${fuel.fuelTarget.preWorkoutCarbs} g in the pre-workout window. Sync FatSecret to compare actual intake.`:'Sync FatSecret and log a session to calculate fuel.');document.getElementById('no-analysis-title').textContent=`${d.type} fueling`;document.getElementById('no-analysis-copy').textContent=d.workout?'The recommendation distinguishes short strength, long endurance and mixed sessions instead of relying on one High/Moderate/Low label.':'Add today\'s session to unlock session-specific fueling.';const b=coreCtx?.budget||null,tm=coreCtx?.timing||null;document.getElementById('no-analysis-list').innerHTML=[`${d.duration||0} min · ${d.distance||0} km · ${Math.round(d.volume)} volume · RPE ${d.rpe||'—'}`,n.targets.kcal?`Daily target: ${n.targets.kcal} kcal · ${n.targets.carb} g carbs · ${n.targets.prot} g protein`:'Calculate your daily target first',b?.remaining?.kcal!=null?`Remaining today: ${Math.round(b.remaining.kcal)} kcal · ${b.remaining.carb!=null?Math.round(b.remaining.carb):'—'} g carbs · ${b.remaining.prot!=null?Math.round(b.remaining.prot):'—'} g protein`:'Daily intake is incomplete; sync FatSecret before using remaining-macro budgeting.',tm?.timedEntries?`${tm.timedEntries} FatSecret meal${tm.timedEntries===1?'':'s'} include consumption time.`:'No timed FatSecret meal entries are available for this date.'].map(x=>`<div>${escN(x)}</div>`).join('');document.getElementById('no-next-session').textContent=next?`Next · ${next.date}`:'Next session —';document.getElementById('no-nutrition-loop').innerHTML=[['BEFORE',`${t.c} g carbs · ${t.p} g protein · ~${t.k} kcal`,`${timing===180?'3+ h':timing===120?'2 h':timing+' min'} before`],['DURING',during(d,n),'Based on duration, distance and intensity'],['AFTER',after(d,next,n),'Based on completed work + next plan']].map(x=>`<div class="nutrition-loop-step"><strong>${x[0]}</strong>${escN(x[1])}<br><small>${escN(x[2])}</small></div>`).join('');document.getElementById('no-learning-count').textContent=`${f.length} session${f.length===1?'':'s'} · central model`;document.getElementById('no-learning-insight').textContent=learning(f);document.querySelectorAll('[data-nutrition-time]').forEach(b=>b.classList.toggle('active',Number(b.dataset.nutritionTime)===timing));}
-const recipes=[
- {meal:'Pre-workout',name:'Toast + turkey + banana',tags:'30–60 min · easy digest',p:15,c:35,f:3,k:227,items:'toast · turkey · banana'},
- {meal:'Post-workout',name:'Protein pancakes + berries',tags:'post-training · high carb',p:30,c:55,f:8,k:412,items:'oats · egg whites · protein · banana · berries'},
- {meal:'Lunch',name:'Chicken teriyaki bowl',tags:'balanced · meal prep',p:32,c:55,f:9,k:429,items:'rice · chicken · vegetables · teriyaki'},
- {meal:'Snack',name:'Protein cheesecake bowl',tags:'quick · sweet',p:20,c:25,f:7,k:243,items:'skyr · berries · cereal · light biscuit'},
- {meal:'Dinner',name:'Chicken quesadilla',tags:'savory · balanced',p:25,c:30,f:8,k:292,items:'tortilla · chicken · cheese · peppers · yogurt sauce'}
-];
-function renderMealPlan(n,d,coreCtx=null){const host=document.getElementById('no-meal-plan');if(!host)return;const t=n.targets||{},i=n.intake||{},b=coreCtx?.budget||window.TrainingDataCore?.nutritionBudget?.(todayKey())||null,rk=b?.remaining?.kcal??(i.kcal!=null?Math.max(0,t.kcal-i.kcal):null),rc=b?.remaining?.carb??(i.carb!=null?Math.max(0,t.carb-i.carb):null),rp=b?.remaining?.prot??(i.prot!=null?Math.max(0,t.prot-i.prot):null);const demand=d.workout?d.demand:'Rest day';let plan=recipes.map((r,idx)=>{let rr={...r};if(idx===0&&demand==='High')rr=recipes[0];if(idx===1&&demand==='High')rr={...recipes[1],name:'Protein pancakes + extra fruit',c:65,k:452,items:'oats · egg whites · protein · banana · berries · honey'};return rr});
-  if(rk!=null&&rc!=null&&rp!=null){plan=plan.map(r=>{const kcalFit=Math.abs(r.k-rk/Math.max(1,plan.length));const carbFit=Math.abs(r.c-rc/Math.max(1,plan.length));const protFit=Math.abs(r.p-rp/Math.max(1,plan.length));return{...r,_fit:kcalFit*.35+carbFit*2+protFit*2}}).sort((a,b)=>a._fit-b._fit);}
-  const status=document.getElementById('no-plan-status');if(status)status.textContent=rk==null?'Sync pending':`${Math.round(rk)} kcal remaining`;const sum=document.getElementById('no-plan-summary');if(sum)sum.textContent=rk==null?'The planner will adapt to the live FatSecret totals after sync.':`Remaining today: ${Math.round(rk)} kcal · ${Math.round(rc||0)} g carbs · ${Math.round(rp||0)} g protein. Training demand: ${demand}. Recipes are ordered to fit the remaining daily budget; portions are not silently altered.`;host.innerHTML=plan.map(r=>`<article class="nutrition-plan-meal"><div class="kicker">${escN(r.meal)}</div><h3>${escN(r.name)}</h3><p>${escN(r.items)}</p><strong>${r.k} kcal · ${r.p} P · ${r.c} C · ${r.f} F</strong><p>${escN(r.tags)}</p></article>`).join('')}
+/* ============================================================ MEAL PLAN — macro-driven meal options.============================================================ */
+const MEAL_TARGETS={
+  pre:{
+    label:'Pre-workout',
+    short:'Pre',
+    protein:15,
+    carbs:35,
+    fat:3,
+    kcal:227
+  },
+  post:{
+    label:'Breakfast / post-workout',
+    short:'Post',
+    protein:30,
+    carbs:55,
+    fat:8,
+    kcal:412
+  },
+  lunch:{
+    label:'Lunch',
+    short:'Lunch',
+    protein:30,
+    carbs:55,
+    fat:10,
+    kcal:430
+  },
+  snack:{
+    label:'Snack',
+    short:'Snack',
+    protein:20,
+    carbs:25,
+    fat:7,
+    kcal:243
+  },
+  dinner:{
+    label:'Dinner',
+    short:'Dinner',
+    protein:25,
+    carbs:30,
+    fat:8,
+    kcal:292
+  }
+};
+/*
+  Nutrition values are per 100 g.
+
+  These are deliberately kept in one local food database so that:
+  - ingredient quantities can be calculated
+  - macros can be recalculated from quantities
+  - recipes do not contain fake fixed macro totals
+*/
+
+const MEAL_FOODS={
+  banana:{
+    name:'Banana',
+    kcal:89,
+    protein:1.1,
+    carbs:22.8,
+    fat:0.3
+  },
+
+  berries:{
+    name:'Berries',
+    kcal:50,
+    protein:0.7,
+    carbs:12,
+    fat:0.3
+  },
+
+  mango:{
+    name:'Mango',
+    kcal:60,
+    protein:0.8,
+    carbs:15,
+    fat:0.4
+  },
+
+  apple:{
+    name:'Apple',
+    kcal:52,
+    protein:0.3,
+    carbs:13.8,
+    fat:0.2
+  },
+
+  whiteBread:{
+    name:'White bread',
+    kcal:265,
+    protein:9,
+    carbs:49,
+    fat:3.2
+  },
+
+  riceCakes:{
+    name:'Rice cakes',
+    kcal:387,
+    protein:8,
+    carbs:81,
+    fat:3
+  },
+
+  oats:{
+    name:'Oats',
+    kcal:389,
+    protein:16.9,
+    carbs:66.3,
+    fat:6.9
+  },
+
+  creamRice:{
+    name:'Cream of rice',
+    kcal:360,
+    protein:7,
+    carbs:80,
+    fat:1
+  },
+
+  cornFlakes:{
+    name:'Corn flakes',
+    kcal:357,
+    protein:7.5,
+    carbs:84,
+    fat:0.4
+  },
+
+  cookedRice:{
+    name:'Cooked rice',
+    kcal:130,
+    protein:2.7,
+    carbs:28,
+    fat:0.3
+  },
+
+  cookedPasta:{
+    name:'Cooked pasta',
+    kcal:158,
+    protein:5.8,
+    carbs:30.9,
+    fat:0.9
+  },
+
+  potato:{
+    name:'Potato',
+    kcal:77,
+    protein:2,
+    carbs:17,
+    fat:0.1
+  },
+
+  chicken:{
+    name:'Chicken breast',
+    kcal:165,
+    protein:31,
+    carbs:0,
+    fat:3.6
+  },
+
+  turkey:{
+    name:'Turkey breast',
+    kcal:110,
+    protein:24,
+    carbs:1,
+    fat:1.5
+  },
+
+  tuna:{
+    name:'Tuna',
+    kcal:116,
+    protein:26,
+    carbs:0,
+    fat:1
+  },
+
+  whiteFish:{
+    name:'White fish',
+    kcal:100,
+    protein:22,
+    carbs:0,
+    fat:1.5
+  },
+
+  egg:{
+    name:'Egg',
+    kcal:143,
+    protein:12.6,
+    carbs:0.7,
+    fat:9.5
+  },
+
+  eggWhites:{
+    name:'Egg whites',
+    kcal:52,
+    protein:10.9,
+    carbs:0.7,
+    fat:0.2
+  },
+
+  skyr:{
+    name:'Skyr 0%',
+    kcal:63,
+    protein:11,
+    carbs:4,
+    fat:0.2
+  },
+
+  greekYogurt:{
+    name:'Greek yogurt 0%',
+    kcal:59,
+    protein:10,
+    carbs:3.6,
+    fat:0.4
+  },
+
+  milk:{
+    name:'Low-fat milk',
+    kcal:47,
+    protein:3.4,
+    carbs:4.8,
+    fat:1.5
+  },
+
+  cottageCheese:{
+    name:'Cottage cheese',
+    kcal:98,
+    protein:11,
+    carbs:3.4,
+    fat:4.3
+  },
+
+  peanutButter:{
+    name:'Peanut butter',
+    kcal:588,
+    protein:25,
+    carbs:20,
+    fat:50
+  },
+
+  honey:{
+    name:'Honey',
+    kcal:304,
+    protein:0.3,
+    carbs:82.4,
+    fat:0
+  },
+
+  jam:{
+    name:'Jam',
+    kcal:250,
+    protein:0.4,
+    carbs:65,
+    fat:0.1
+  },
+
+  oliveOil:{
+    name:'Olive oil',
+    kcal:884,
+    protein:0,
+    carbs:0,
+    fat:100
+  },
+
+  lightCheese:{
+    name:'Light cheese',
+    kcal:250,
+    protein:28,
+    carbs:3,
+    fat:13
+  }
+};
+
+/*
+  Recipe templates.
+  Quantities are starting points.
+  The optimizer will adjust the "variable" ingredients.
+*/
+
+const MEAL_TEMPLATES={
+  pre:[
+    {
+      name:'Toast + turkey + banana',
+      ingredients:[
+        ['whiteBread',40],
+        ['turkey',45],
+        ['banana',100]
+      ],
+      variable:['whiteBread','banana','turkey']
+    },
+    {
+      name:'Cream of rice + skyr + banana',
+      ingredients:[
+        ['creamRice',35],
+        ['skyr',100],
+        ['banana',100],
+        ['honey',5]
+      ],
+      variable:['creamRice','banana','skyr']
+    },
+    {
+      name:'Rice cakes + skyr + mango',
+      ingredients:[
+        ['riceCakes',25],
+        ['skyr',100],
+        ['mango',100]
+      ],
+      variable:['riceCakes','mango','skyr']
+    }
+  ],
+
+  post:[
+    {
+      name:'Oats + skyr + banana',
+      ingredients:[
+        ['oats',45],
+        ['skyr',180],
+        ['banana',100]
+      ],
+      variable:['oats','banana','skyr']
+    },
+    {
+      name:'Toast + turkey + fruit',
+      ingredients:[
+        ['whiteBread',70],
+        ['turkey',80],
+        ['banana',100]
+      ],
+      variable:['whiteBread','banana','turkey']
+    },
+    {
+      name:'Cream of rice + skyr + berries',
+      ingredients:[
+        ['creamRice',55],
+        ['skyr',180],
+        ['berries',100]
+      ],
+      variable:['creamRice','berries','skyr']
+    }
+  ],
+
+  lunch:[
+    {
+      name:'Rice + chicken + vegetables',
+      ingredients:[
+        ['cookedRice',170],
+        ['chicken',90],
+        ['oliveOil',5]
+      ],
+      variable:['cookedRice','chicken','oliveOil']
+    },
+    {
+      name:'Pasta + tuna + olive oil',
+      ingredients:[
+        ['cookedPasta',170],
+        ['tuna',90],
+        ['oliveOil',6]
+      ],
+      variable:['cookedPasta','tuna','oliveOil']
+    },
+    {
+      name:'Potato + chicken + olive oil',
+      ingredients:[
+        ['potato',250],
+        ['chicken',85],
+        ['oliveOil',7]
+      ],
+      variable:['potato','chicken','oliveOil']
+    }
+  ],
+
+  snack:[
+    {
+      name:'Skyr + berries + oats',
+      ingredients:[
+        ['skyr',150],
+        ['berries',100],
+        ['oats',20]
+      ],
+      variable:['skyr','berries','oats']
+    },
+    {
+      name:'Greek yogurt + banana + oats',
+      ingredients:[
+        ['greekYogurt',170],
+        ['banana',80],
+        ['oats',15]
+      ],
+      variable:['greekYogurt','banana','oats']
+    },
+    {
+      name:'Toast + turkey + fruit',
+      ingredients:[
+        ['whiteBread',40],
+        ['turkey',55],
+        ['apple',100]
+      ],
+      variable:['whiteBread','turkey','apple']
+    }
+  ],
+
+  dinner:[
+    {
+      name:'Chicken quesadilla',
+      ingredients:[
+        ['whiteBread',80],
+        ['chicken',70],
+        ['lightCheese',15]
+      ],
+      variable:['whiteBread','chicken','lightCheese']
+    },
+    {
+      name:'Rice + white fish',
+      ingredients:[
+        ['cookedRice',120],
+        ['whiteFish',90],
+        ['oliveOil',5]
+      ],
+      variable:['cookedRice','whiteFish','oliveOil']
+    },
+    {
+      name:'Potato + turkey + olive oil',
+      ingredients:[
+        ['potato',180],
+        ['turkey',80],
+        ['oliveOil',5]
+      ],
+      variable:['potato','turkey','oliveOil']
+    }
+  ]
+};
+
+function mealNutrition(ingredients){
+
+  const result={
+    protein:0,
+    carbs:0,
+    fat:0,
+    kcal:0
+  };
+
+  if(!Array.isArray(ingredients)){
+    return result;
+  }
+
+  ingredients.forEach(item=>{
+
+    const foodKey=
+      typeof item==='string'
+        ?item
+        :(
+          item?.food||
+          item?.key||
+          item?.name||
+          item?.id
+        );
+
+    const food=MEAL_FOODS[foodKey];
+
+    if(!food)return;
+
+    const grams=
+      typeof item==='string'
+        ?100
+        :Math.max(
+          0,
+          Number(
+            item?.grams??
+            item?.amount??
+            item?.quantity??
+            item?.qty??
+            0
+          )||0
+        );
+
+    const factor=grams/100;
+
+    result.protein+=Number(food.protein||0)*factor;
+    result.carbs+=Number(food.carbs||0)*factor;
+    result.fat+=Number(food.fat||0)*factor;
+  });
+
+  /*
+   * Macro-derived calories keep the displayed kcal consistent
+   * with the displayed P/C/F values.
+   */
+  result.kcal=
+    result.protein*4+
+    result.carbs*4+
+    result.fat*9;
+
+  result.protein=Number(result.protein.toFixed(1));
+  result.carbs=Number(result.carbs.toFixed(1));
+  result.fat=Number(result.fat.toFixed(1));
+  result.kcal=Math.round(result.kcal);
+
+  return result;
+}
+
+function mealScore(nutrition,target){
+  if(!nutrition||!target)return Infinity;
+
+  return (
+    Math.abs(nutrition.protein-target.protein)*3+
+    Math.abs(nutrition.carbs-target.carbs)*2+
+    Math.abs(nutrition.fat-target.fat)*3
+  );
+}
+
+/*
+  Search small quantity combinations instead of pretending that a
+  hand-written recipe already hits the target.
+
+  Quantities are constrained to realistic increments.
+*/
+
+function optimizeMeal(template,target){
+
+  if(
+    !template ||
+    !Array.isArray(template.ingredients) ||
+    !template.ingredients.length
+  ){
+    return null;
+  }
+
+  const targetP=Number(target?.protein)||0;
+  const targetC=Number(target?.carbs)||0;
+  const targetF=Number(target?.fat)||0;
+
+  /*
+   * Convert the current template format:
+   *
+   * ['whiteBread',40]
+   *
+   * into:
+   *
+   * {food:'whiteBread',grams:40}
+   */
+  const baseIngredients=template.ingredients
+    .map(item=>{
+
+      if(Array.isArray(item)){
+
+        return {
+          food:item[0],
+          grams:Number(item[1])||100
+        };
+
+      }
+
+      if(item&&typeof item==='object'){
+
+        return {
+          food:
+            item.food||
+            item.key||
+            item.name||
+            item.id||
+            null,
+
+          grams:
+            Number(
+              item.grams??
+              item.amount??
+              item.quantity??
+              item.qty??
+              100
+            )||100
+        };
+
+      }
+
+      return null;
+
+    })
+    .filter(item=>
+      item?.food &&
+      MEAL_FOODS[item.food]
+    );
+
+  if(!baseIngredients.length){
+    return null;
+  }
+
+  /*
+   * Only ingredients explicitly listed in "variable"
+   * are optimized.
+   *
+   * All other ingredients keep their original quantity.
+   */
+  const variableKeys=new Set(
+    Array.isArray(template.variable)
+      ?template.variable
+      :[]
+  );
+
+  const ranges=baseIngredients.map(item=>{
+
+    if(!variableKeys.has(item.food)){
+      return [item.grams];
+    }
+
+    const base=Math.max(
+      5,
+      Number(item.grams)||100
+    );
+
+    const min=Math.max(
+      5,
+      Math.round((base*0.45)/5)*5
+    );
+
+    const max=Math.min(
+      500,
+      Math.round((base*1.80)/5)*5
+    );
+
+    const values=[];
+
+    for(
+      let grams=min;
+      grams<=max;
+      grams+=5
+    ){
+      values.push(grams);
+    }
+
+    return values;
+
+  });
+
+  let best=null;
+
+  function evaluate(index,current){
+
+    if(index===baseIngredients.length){
+
+      const nutrition=mealNutrition(
+        current.map(item=>({
+          food:item.food,
+          grams:item.grams
+        }))
+      );
+
+      if(!nutrition)return;
+
+      const pError=
+        Math.abs(nutrition.protein-targetP);
+
+      const cError=
+        Math.abs(nutrition.carbs-targetC);
+
+      const fError=
+        Math.abs(nutrition.fat-targetF);
+
+      const kcalTarget=
+        targetP*4+
+        targetC*4+
+        targetF*9;
+
+      const kcalError=
+        Math.abs(
+          nutrition.kcal-kcalTarget
+        );
+
+      /*
+       * Macro accuracy has priority over calories.
+       */
+      const score=
+        pError*4+
+        cError*4+
+        fError*5+
+        kcalError*0.15;
+
+      if(
+        !best ||
+        score<best.score
+      ){
+
+        best={
+
+          name:
+            template.name||
+            template.title||
+            'Meal option',
+
+          score,
+
+          nutrition,
+
+          ingredients:
+            current.map(item=>({
+
+              food:item.food,
+
+              name:
+                MEAL_FOODS[item.food]?.name||
+                item.food,
+
+              grams:
+                Math.round(item.grams)
+
+            }))
+
+        };
+
+      }
+
+      return;
+    }
+
+    const ingredient=
+      baseIngredients[index];
+
+    for(
+      const grams of ranges[index]
+    ){
+
+      current.push({
+
+        food:ingredient.food,
+
+        grams
+
+      });
+
+      evaluate(
+        index+1,
+        current
+      );
+
+      current.pop();
+
+    }
+
+  }
+
+  evaluate(0,[]);
+
+  return best;
+}
+
+function getMealOptions(mealKey,target){
+  const templates=MEAL_TEMPLATES[mealKey]||[];
+
+  return templates
+    .map(template=>{
+      const optimized=optimizeMeal(template,target);
+
+      if(!optimized)return null;
+
+      return {
+        ...optimized,
+
+        /*
+         * Keep the template identity after the optimizer sorts
+         * the candidates by macro accuracy.
+         */
+        name:
+          optimized.name||
+          template.name||
+          `${mealKeyLabel(mealKey)} option`,
+
+        templateName:
+          template.name||
+          optimized.name||
+          `${mealKeyLabel(mealKey)} option`
+      };
+    })
+    .filter(Boolean)
+    .sort((a,b)=>
+      Number(a.score??Infinity)-Number(b.score??Infinity)
+    );
+}
+
+function mealTargetFromDaily(targets,mealKey){
+  /*
+    The meal distribution remains explicit, but daily targets can
+    replace it when the calculator provides complete macro targets.
+  */
+  const fallback=MEAL_TARGETS[mealKey];
+
+  if(!targets)return fallback;
+
+  return {
+    ...fallback
+  };
+}
+
+function mealKeyLabel(key){
+  return MEAL_TARGETS[key]?.label||key;
+}
+
+function mealTargetKcal(target){
+  return Math.round(
+    target.protein*4+
+    target.carbs*4+
+    target.fat*9
+  );
+}
+ 
+function renderMealPlan(n,d,coreCtx=null){
+  const host=document.getElementById('no-meal-plan');
+  if(!host)return;
+
+  const targets=n.targets||{};
+  const intake=n.intake||{};
+
+  /*
+   * Remaining nutrition is derived from the real Nutrition Data Layer.
+   * We intentionally do NOT call TrainingDataCore.nutritionBudget()
+   * because that API is not guaranteed to exist.
+   */
+  const remaining={
+    kcal:
+      coreCtx?.budget?.remaining?.kcal ??
+      (intake.kcal!=null&&targets.kcal
+        ?Math.max(0,Number(targets.kcal)-Number(intake.kcal))
+        :null),
+
+    carbs:
+      coreCtx?.budget?.remaining?.carb ??
+      (intake.carb!=null&&targets.carb
+        ?Math.max(0,Number(targets.carb)-Number(intake.carb))
+        :null),
+
+    protein:
+      coreCtx?.budget?.remaining?.prot ??
+      (intake.prot!=null&&targets.prot
+        ?Math.max(0,Number(targets.prot)-Number(intake.prot))
+        :null),
+
+    fat:
+      coreCtx?.budget?.remaining?.fat ??
+      (intake.fat!=null&&targets.fat
+        ?Math.max(0,Number(targets.fat)-Number(intake.fat))
+        :null)
+  };
+
+  const mealKey=selectedMeal;
+  const target=mealTargetFromDaily(targets,mealKey);
+  const options=getMealOptions(mealKey,target).slice(0,3);
+  const targetKcal=mealTargetKcal(target);
+
+  const mealRemaining={
+    kcal:remaining.kcal,
+    carbs:remaining.carbs,
+    protein:remaining.protein,
+    fat:remaining.fat
+  };
+
+  const status=document.getElementById('no-plan-status');
+
+  if(status){
+    status.textContent=
+      remaining.kcal!=null
+        ?`${Math.round(remaining.kcal)} kcal remaining today`
+        :'Daily intake pending';
+  }
+
+  const summary=document.getElementById('no-plan-summary');
+
+  if(summary){
+    summary.textContent=
+      `Target for ${mealKeyLabel(mealKey)}: `+
+      `${target.protein} g protein · `+
+      `${target.carbs} g carbs · `+
+      `${target.fat} g fat · `+
+      `~${targetKcal} kcal.`;
+  }
+
+  host.innerHTML=`
+    <div class="nutrition-meal-target">
+      <div>
+        <span class="nutrition-meal-target-label">Meal target</span>
+        <strong>${mealKeyLabel(mealKey)}</strong>
+      </div>
+
+      <div class="nutrition-meal-target-macros">
+        <span><b>${target.protein} g</b> P</span>
+        <span><b>${target.carbs} g</b> C</span>
+        <span><b>${target.fat} g</b> F</span>
+        <span><b>~${targetKcal}</b> kcal</span>
+      </div>
+    </div>
+
+    <div class="nutrition-meal-remaining">
+      <span>Today remaining</span>
+      <strong>
+        ${
+          mealRemaining.kcal!=null
+            ?`${Math.round(mealRemaining.kcal)} kcal`
+            :'—'
+        }
+      </strong>
+      <small>
+        ${
+          mealRemaining.carbs!=null
+            ?`${Math.round(mealRemaining.carbs)} C`
+            :'— C'
+        }
+        ·
+        ${
+          mealRemaining.protein!=null
+            ?`${Math.round(mealRemaining.protein)} P`
+            :'— P'
+        }
+        ·
+        ${
+          mealRemaining.fat!=null
+            ?`${Math.round(mealRemaining.fat)} F`
+            :'— F'
+        }
+      </small>
+    </div>
+
+    <div class="nutrition-plan-options">
+      ${
+        options.length
+          ?options.map((option,index)=>{
+
+              const name=option.name||`Option ${index+1}`;
+              const nutrition=option.nutrition||{
+                protein:0,
+                carbs:0,
+                fat:0,
+                kcal:0
+              };
+
+              const ingredients=Array.isArray(option.ingredients)
+                ?option.ingredients
+                :[];
+
+              const pDiff=Number(nutrition.protein)-Number(target.protein);
+              const cDiff=Number(nutrition.carbs)-Number(target.carbs);
+              const fDiff=Number(nutrition.fat)-Number(target.fat);
+
+              const diff=(value)=>{
+                const n=Number(value)||0;
+                return `${n>0?'+':''}${n.toFixed(1)} g`;
+              };
+
+              return `
+                <details class="nutrition-plan-option">
+                  <summary>
+                    <div class="nutrition-plan-option-head">
+                      <span class="nutrition-plan-option-index">
+                        ${index+1}
+                      </span>
+
+                      <div class="nutrition-plan-option-title">
+                        <strong>${escN(name)}</strong>
+                        <span>
+                          ${Math.round(nutrition.kcal)} kcal ·
+                          ${Math.round(nutrition.protein)} P ·
+                          ${Math.round(nutrition.carbs)} C ·
+                          ${Math.round(nutrition.fat)} F
+                        </span>
+                      </div>
+                    </div>
+
+                    <span class="nutrition-plan-option-chevron">+</span>
+                  </summary>
+
+                  <div class="nutrition-plan-option-body">
+
+                    <div class="nutrition-plan-macro-row">
+                      <span>
+                        <b>${nutrition.protein.toFixed(1)} g</b> P
+                        <small>${diff(pDiff)}</small>
+                      </span>
+
+                      <span>
+                        <b>${nutrition.carbs.toFixed(1)} g</b> C
+                        <small>${diff(cDiff)}</small>
+                      </span>
+
+                      <span>
+                        <b>${nutrition.fat.toFixed(1)} g</b> F
+                        <small>${diff(fDiff)}</small>
+                      </span>
+
+                      <span>
+                        <b>${Math.round(nutrition.kcal)}</b> kcal
+                      </span>
+                    </div>
+
+                    <div class="nutrition-plan-ingredients">
+                      <div class="nutrition-plan-ingredients-title">
+                        Ingredients
+                      </div>
+
+                      ${
+                        ingredients.length
+                          ?ingredients.map(item=>`
+                            <div class="nutrition-plan-ingredient">
+                              <span>${escN(item.name||item.food||'Food')}</span>
+                              <strong>${Math.round(Number(item.grams)||0)} g</strong>
+                            </div>
+                          `).join('')
+                          :'<div class="nutrition-plan-empty">No ingredient data.</div>'
+                      }
+                    </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-small nutrition-plan-use"
+                      data-meal-option="${index}">
+                      Use this option
+                    </button>
+
+                  </div>
+                </details>
+              `;
+            }).join('')
+          :`
+            <div class="nutrition-plan-empty">
+              No meal options are available for this target yet.
+            </div>
+          `
+      }
+    </div>
+  `;
+
+  host.querySelectorAll('[data-meal-option]').forEach(button=>{
+    button.addEventListener('click',event=>{
+      event.preventDefault();
+      event.stopPropagation();
+
+      const index=Number(button.dataset.mealOption);
+      const selected=options[index];
+
+      if(!selected)return;
+
+      window.TrainMeiNutritionOptimizerSelection={
+        date:todayKey(),
+        meal:mealKey,
+        target:{...target},
+        remaining:{...remaining},
+        option:JSON.parse(JSON.stringify(selected))
+      };
+
+      button.textContent='Selected';
+      button.disabled=true;
+      button.closest('.nutrition-plan-option')?.setAttribute('data-selected','true');
+    });
+  });
+}
+
 function home(){const title=document.getElementById('home-nutrition-title'),time=document.getElementById('home-nutrition-time'),body=document.getElementById('home-nutrition-body');if(!title||!body)return;const d=session(),n=nutri(),i=n.intake||{},t=n.targets||{},fuel=window.TrainingDataCore?.performanceFuel?.(todayKey(),d.workout)||null;title.textContent='Nutrition Optimizer';time.textContent=d.workout?d.type:(n.connected?'FatSecret synced':'—');if(!n.connected&&!((i.kcal!=null)||(i.carb!=null)||(i.prot!=null))){body.innerHTML="<div class='home-empty'>Connect and sync FatSecret to make today's nutrition available across TrainMei.</div>";return}const kcal=i.kcal!=null?Math.round(i.kcal):null,carb=i.carb!=null?Math.round(i.carb):null,prot=i.prot!=null?Math.round(i.prot):null,remaining=kcal!=null&&t.kcal?Math.max(0,Math.round(t.kcal-kcal)):null;body.innerHTML=`<div class="home-nutrition-main"><strong>${remaining!=null?'~'+remaining+' kcal':'FatSecret'}</strong><span>${fuel?.score!=null?`Fuel ${fuel.score}% · ${fuel.status}`:'Live intake synced'}</span></div><div class="home-nutrition-meta"><span>${carb!=null?carb+' g carbs':'— carbs'}</span><span>${prot!=null?prot+' g protein':'— protein'}</span><span>${kcal!=null?kcal+' kcal logged':'No kcal total'}</span></div>`}
-function open(){document.querySelector('#main-nav [data-page="integrations-page"]')?.click();setTimeout(()=>{document.querySelector('.smart-launch-card[data-page="nutrition-page"]')?.click();setTimeout(render,30)},0)}
+function open(){if(typeof showPage==='function'){showPage('nutrition-page');}else{document.querySelectorAll('.page').forEach(page=>{page.classList.remove('active');});const page=document.getElementById('nutrition-page');if(page){page.classList.add('active');}}window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{render().catch?.(error=>{console.warn('[Nutrition Optimizer] Could not refresh after opening:',error);});},30);}
 async function saveFB(){const v={tolerance:+document.getElementById('no-feedback-tolerance')?.value||0,energy:+document.getElementById('no-feedback-energy')?.value||0,hunger:+document.getElementById('no-feedback-hunger')?.value||0,performance:+document.getElementById('no-feedback-performance')?.value||0};if(!Object.values(v).every(Boolean))return;const d=session(),n=nutri(),t=target(d,n),set=meals[timing]||meals[60],meal=set[variant%set.length],event={date:todayKey(),timing,mealName:meal[0],mealItems:meal[1],carbs:t.c,kcal:t.k,protein:t.p,...v,sessionType:d.type,duration:d.duration,distance:d.distance};const a=readFeedback();a.push(event);saveFeedback(a);if(window.TrainingDataCore?.recordNutritionFeedback){await window.TrainingDataCore.recordNutritionFeedback(event,d.workout||null)}else{document.dispatchEvent(new CustomEvent('trainmei:nutrition-feedback',{detail:event}))}['no-feedback-tolerance','no-feedback-energy','no-feedback-hunger','no-feedback-performance'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});render()}
-document.addEventListener('click',e=>{const t=e.target.closest('[data-nutrition-time]');if(t){timing=+t.dataset.nutritionTime;variant=0;render();return}if(e.target.closest('#no-change-meal')){variant++;render();return}if(e.target.closest('#no-open-nutri')){document.querySelector('#main-nav [data-page="nutri-page"]')?.click();return}if(e.target.closest('#no-save-feedback')){saveFB();return}if(e.target.closest('[data-home-action="nutrition"]')){open();return}const p=e.target.closest('[data-page]');if(p?.dataset.page==='nutrition-page')setTimeout(render,30);if(p?.dataset.page==='home-page')setTimeout(home,80);});
+document.addEventListener('click',e=>{const t=e.target.closest('[data-nutrition-time]');if(t){
+  timing=+t.dataset.nutritionTime;
+  variant=0;
+  selectedMeal=mealKeyFromTiming(timing);
+  render();
+  return;
+}
+
+const mealTab=e.target.closest('[data-nutrition-meal]');
+
+if(mealTab){
+  selectedMeal=mealTab.dataset.nutritionMeal||'post';
+  render();
+  return;
+}
+
+if(e.target.closest('#no-change-meal')){variant++;render();return}if(e.target.closest('#no-open-nutri')){if(typeof showPage==='function'){showPage('nutri-page');}else{document.querySelectorAll('.page').forEach(page=>{page.classList.remove('active');});const page=document.getElementById('nutri-page');if(page){page.classList.add('active');}}window.scrollTo({top:0,behavior:'smooth'});return;}if(e.target.closest('#no-save-feedback')){saveFB();return}if(e.target.closest('[data-home-action="nutrition"]')){open();return}const p=e.target.closest('[data-page]');if(p?.dataset.page==='nutrition-page')setTimeout(render,30);if(p?.dataset.page==='home-page')setTimeout(home,80);});
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>render().catch?.(()=>{}),180);setTimeout(()=>home(),220)});window.TrainMeiNutrition={render,home,open};
 })();
 </script>
