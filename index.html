@@ -276,13 +276,270 @@ table.plan-table td input{width:100%;border:none;background:transparent;padding:
   .smart-result-summary{grid-template-columns:1fr}
   .smart-recognition-grid{grid-template-columns:1fr}
 }
-.auth-overlay{position:fixed;inset:0;background:rgba(238,234,225,.97);display:flex;align-items:center;justify-content:center;padding:20px;z-index:30}
-.auth-box{width:min(420px,100%);border:2px solid var(--ink);background:var(--white);padding:22px}
-.auth-box h1{font-size:34px;margin:0 0 8px;text-transform:uppercase}
-.auth-box p{font-size:12px;color:var(--muted)}
-.auth-box input{width:100%;padding:10px;border:1px solid var(--line);margin-bottom:8px;background:var(--paper)}
-.auth-actions{display:flex;gap:8px}
-.auth-msg{font-size:11px;color:var(--danger);min-height:16px;margin:6px 0}
+/* === LOGIN — glassmorphism oscuro === */
+.auth-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:30;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(255, 140, 170, .35), transparent 55%),
+    radial-gradient(circle at 85% 85%, rgba(255, 170, 120, .30), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(180, 100, 200, .35), transparent 65%),
+    linear-gradient(135deg, #3a1f4a 0%, #5a2d55 45%, #3d2247 100%);
+  overflow:hidden;
+}
+/* Eliminar el fondo blanco del autofill */
+.auth-field input:-webkit-autofill,
+.auth-field input:-webkit-autofill:hover,
+.auth-field input:-webkit-autofill:focus,
+.auth-field input:-webkit-autofill:active{
+  -webkit-box-shadow:0 0 0 1000px rgba(255,255,255,.06) inset !important;
+  -webkit-text-fill-color:#f2ecff !important;
+  transition:background-color 5000s ease-in-out 0s;
+  caret-color:#f2ecff;
+}
+.auth-field input{
+  -webkit-text-fill-color:#f2ecff;
+  caret-color:#f2ecff;
+}
+
+/* Firefox */
+.auth-field input:autofill{
+  filter:none;
+  box-shadow:0 0 0 1000px rgba(255,255,255,.06) inset;
+  -webkit-text-fill-color:#f2ecff;
+}
+/* Estrellitas sutiles de fondo */
+.auth-overlay::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.45) 50%, transparent 51%),
+    radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,.35) 50%, transparent 51%),
+    radial-gradient(1px 1px at 45% 75%, rgba(255,255,255,.4) 50%, transparent 51%),
+    radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,.3) 50%, transparent 51%),
+    radial-gradient(1px 1px at 10% 85%, rgba(255,255,255,.35) 50%, transparent 51%),
+    radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,.25) 50%, transparent 51%);
+  pointer-events:none;
+  opacity:.6;
+}
+
+.auth-box{
+  position:relative;
+  width:min(380px,100%);
+  padding:28px 26px 22px;
+  border-radius:24px;
+  background:rgba(45, 30, 60, .55);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(22px) saturate(140%);
+  -webkit-backdrop-filter:blur(22px) saturate(140%);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  color:#f2ecff;
+  text-align:left;
+}
+
+/* Avatar circular */
+.auth-avatar{
+  width:64px;
+  height:64px;
+  margin:0 auto 16px;
+  border-radius:50%;
+  overflow:hidden;                  
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.15);
+  color:#cfc4e8;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+  padding:0;                       
+}
+.auth-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+  display:block;
+}
+
+/* Título */
+.auth-title{
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:-.02em;
+  margin:0 0 18px;
+  text-align:left;
+  color:#ffffff;
+  text-transform:none;
+}
+
+/* Campos con icono */
+.auth-field{
+  position:relative;
+  display:flex;
+  align-items:center;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;
+  padding:0 14px;
+  margin-bottom:12px;
+  transition:border-color .15s, background .15s;
+}
+.auth-field:focus-within{
+  border-color:rgba(160,140,255,.55);
+  background:rgba(255,255,255,.09);
+}
+.auth-field-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#a89ec8;
+  margin-right:10px;
+  flex:0 0 auto;
+}
+.auth-field input{
+  flex:1;
+  width:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#f2ecff;
+  padding:12px 0;
+  font-size:13.5px;
+  font-family:inherit;
+  margin:0;
+}
+.auth-field input::placeholder{
+  color:#8f87ad;
+}
+
+/* Fila: Remember me + Forgot */
+.auth-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:4px 2px 14px;
+  font-size:11.5px;
+  color:#c5bcdd;
+}
+.auth-remember{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  user-select:none;
+}
+.auth-remember input{
+  appearance:none;
+  -webkit-appearance:none;
+  width:14px;
+  height:14px;
+  border-radius:4px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.06);
+  display:inline-block;
+  position:relative;
+  cursor:pointer;
+  margin:0;
+  padding:0;
+}
+.auth-remember input:checked{
+  background:linear-gradient(135deg,#7a5cff,#4da3ff);
+  border-color:transparent;
+}
+.auth-remember input:checked::after{
+  content:"✓";
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:10px;
+  color:#fff;
+  font-weight:700;
+}
+
+/* Botón link (Forgot / Register) */
+.auth-link{
+  background:none;
+  border:0;
+  padding:0;
+  color:#b9a9ff;
+  font-size:11.5px;
+  font-family:inherit;
+  cursor:pointer;
+  text-decoration:none;
+  transition:color .15s;
+}
+.auth-link:hover{
+  color:#d9cdff;
+  text-decoration:underline;
+}
+
+/* Mensaje de error */
+.auth-msg{
+  font-size:11px;
+  color:#ff9aa8;
+  min-height:14px;
+  margin:0 0 10px;
+  text-align:center;
+}
+
+/* Botón principal Sign in */
+.auth-submit{
+  display:block;
+  width:100%;
+  padding:13px 18px;
+  border:0;
+  border-radius:999px;
+  background:linear-gradient(135deg, #6a4bff 0%, #4da3ff 100%);
+  color:#ffffff;
+  font-size:13.5px;
+  font-weight:600;
+  font-family:inherit;
+  letter-spacing:.01em;
+  cursor:pointer;
+  box-shadow:
+    0 10px 24px rgba(90, 70, 255, .35),
+    inset 0 1px 0 rgba(255,255,255,.25);
+  transition:transform .12s, box-shadow .12s, filter .12s;
+}
+.auth-submit:hover{
+  filter:brightness(1.06);
+  box-shadow:
+    0 12px 28px rgba(90, 70, 255, .45),
+    inset 0 1px 0 rgba(255,255,255,.3);
+}
+.auth-submit:active{
+  transform:scale(.98);
+}
+.auth-submit:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+/* Footer: Don't have an account? Register */
+.auth-footer{
+  margin:16px 0 0;
+  text-align:center;
+  font-size:11.5px;
+  color:#a89ec8;
+}
+
+/* Ajustes para el tema minimalista y otros */
+body[data-theme="minimal"] .auth-box,
+body[data-theme="clinical"] .auth-box{
+  background:rgba(30, 40, 60, .6);
+}
+
 @media (max-width:850px){
   .stat-grid{grid-template-columns:repeat(3,1fr)}
   .metrics-grid{grid-template-columns:repeat(3,1fr)}
@@ -904,7 +1161,7 @@ body{color:var(--ink)}
 .home-hero h1{margin:3px 0 4px;font-size:42px;letter-spacing:-.04em}
 .home-date-label{margin:0;color:var(--muted);font-size:13px}
 .home-primary{padding:11px 16px}
-.home-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
+.home-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:10px}
 .home-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:17px;min-width:0}
 .home-card-head{display:grid;align-items:flex-start;justify-content:space-between}
 .home-card h2{font-size:18px;line-height:1.1;margin:4px 0 0;letter-spacing:-.02em}
@@ -949,7 +1206,7 @@ body{color:var(--ink)}
 .home-empty{color:var(--muted);font-size:11px;line-height:1.5}
 .home-session-title{font-weight:900;font-size:15px;text-transform:uppercase}
 .home-session-sub{font-size:10px;color:var(--muted);margin-top:4px}
-.home-month-overview{margin-top:8px;padding:10px 12px!important}
+.home-month-overview{padding:10px 12px!important}
 .home-month-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
 .home-month-title{font-size:11px;font-weight:800}
 .home-month-note{font-size:8px;color:var(--muted)}
@@ -1356,7 +1613,7 @@ body:has(#day-page.active) .caffeine-inline,body:has(#day-page.active) .run-dist
   body:has(#day-page.active) .conditioning-add-block{margin-top:4px;padding:5px;font-size:8px}
 }
 @media (min-width:561px){
-  #home-page .home-month-overview{display:flex;flex-direction:column;min-height:100%;box-sizing:border-box}
+  #home-page .home-month-overview{display:flex;flex-direction:column;min-height:100%;max-width:fit-content;box-sizing:border-box}
   #home-page .home-heatmap{width:100%;flex:1;grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:4px;justify-content:stretch;align-content:stretch}
   #home-page .home-heat-labels{width:100%;grid-template-columns:repeat(7,minmax(0,1fr));justify-content:stretch}
   #home-page .home-heat-day{width:100%;height:auto;min-height:0}
@@ -3239,16 +3496,169 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   .home-quick-actions .home-quick:active{transform:scale(.95);}
   @keyframes home-quick-fly{from{transform:translateY(.1em)}to{transform:translateY(-.1em)}}
 }
+
+/* === Smart Launch Cards: grid icono + nombre corto en iPhone vertical === */
+@media (max-width:560px) and (orientation:portrait){
+  /* Grid de 3 columnas */
+  .smart-launch-grid{
+    display:grid !important;
+    grid-template-columns:repeat(3,1fr) !important;
+    gap:10px !important;
+    margin-top:14px !important;
+    padding:0 4px !important;
+  }
+  
+  /* Cada tarjeta: icono arriba, nombre abajo */
+  .smart-launch-card{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:center !important;
+    min-height:0 !important;
+    height:auto !important;
+    padding:10px 6px !important;
+    border:1px solid var(--line) !important;
+    border-radius:16px !important;
+    background:var(--card-bg) !important;
+    box-shadow:0 4px 14px rgba(0,0,0,.06) !important;
+    transform:none !important;
+    text-align:center !important;
+    gap:6px !important;
+  }
+  
+  .smart-launch-card:hover,
+  .smart-launch-card:active{
+    transform:scale(.96) !important;
+    box-shadow:0 2px 8px rgba(0,0,0,.08) !important;
+  }
+  
+  /* Icono */
+  .smart-launch-icon{
+    width:44px !important;
+    height:44px !important;
+    border-radius:14px !important;
+    font-size:24px !important;
+    background:var(--surface) !important;
+    color:var(--accent) !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    margin:0 !important;
+    flex:0 0 auto !important;
+  }
+  
+  /* Copia: mostrar solo el <strong>, ocultar el <small> y la flecha */
+  .smart-launch-copy{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    gap:0 !important;
+    margin:0 !important;
+    min-width:0 !important;
+    width:100% !important;
+  }
+  
+  .smart-launch-copy strong{
+    display:block !important;
+    font-size:10px !important;
+    font-weight:700 !important;
+    line-height:1.15 !important;
+    letter-spacing:-.01em !important;
+    text-align:center !important;
+    color:var(--ink) !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+    hyphens:auto !important;
+  }
+  
+  /* Ocultar descripción */
+  .smart-launch-copy small{
+    display:none !important;
+  }
+  
+  /* Ocultar flecha */
+  .smart-launch-arrow{
+    display:none !important;
+  }
+  
+  /* Ajuste del contenedor principal */
+  .smart-int-wrap{
+    padding:0 !important;
+    margin:0 !important;
+  }
+  
+  .smart-int-wrap .dashboard-head{
+    padding:8px 12px 10px !important;
+    margin:0 !important;
+  }
+  
+  .smart-int-wrap .dashboard-title{
+    font-size:22px !important;
+    letter-spacing:-.02em !important;
+  }
+  
+  .smart-int-wrap .hint{
+    font-size:11px !important;
+    margin-top:4px !important;
+  }
+  
+  .si-two-col{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+    margin-top:12px !important;
+  }
+  .smart-launch-copy strong{
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+  max-width:100% !important;
+}
 </style>
 </head>
 <body data-theme="original">
 <div id="auth-overlay" class="auth-overlay">
   <div class="auth-box">
-    <h1>TRAIN MEI</h1><p>Sign in to keep your training data synced across devices.</p>
-    <input id="auth-email" type="email" placeholder="Email">
-    <input id="auth-password" type="password" placeholder="Password">
+   <div class="auth-avatar">
+  <img src="https://i.pinimg.com/1200x/01/ef/11/01ef11ef3a535f42037ed42abe4aa60c.jpg" alt="Avatar" loading="lazy">
+</div>
+    <h1 class="auth-title">Login</h1>
+
+    <div class="auth-field">
+      <span class="auth-field-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16">
+          <path fill="currentColor" d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.69-8 6v2h16v-2c0-3.31-3.58-6-8-6Z"/>
+        </svg>
+      </span>
+      <input id="auth-email" type="email" placeholder="Username" autocomplete="username">
+    </div>
+
+    <div class="auth-field">
+      <span class="auth-field-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16">
+          <path fill="currentColor" d="M17 9V7a5 5 0 0 0-10 0v2H5v12h14V9h-2ZM9 7a3 3 0 0 1 6 0v2H9V7Z"/>
+        </svg>
+      </span>
+      <input id="auth-password" type="password" placeholder="Password" autocomplete="current-password">
+    </div>
+
+    <div class="auth-row">
+      <label class="auth-remember">
+        <input type="checkbox" id="auth-remember">
+        <span>Remember me</span>
+      </label>
+      <button type="button" class="auth-link" id="forgot-btn">Forgot Password?</button>
+    </div>
+
     <div class="auth-msg" id="auth-msg"></div>
-    <div class="auth-actions"><button class="btn" id="login-btn">Log in</button><button class="btn" id="signup-btn">Sign up</button></div>
+
+    <button class="auth-submit" id="login-btn">Sign in</button>
+
+    <p class="auth-footer">
+      Don't have an account?
+      <button type="button" class="auth-link" id="signup-btn">Register</button>
+    </p>
   </div>
 </div>
 <div id="app">
@@ -3277,13 +3687,13 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
           <h1 id="home-greeting">Today</h1>
           <p id="home-date-label" class="home-date-label">—</p>
         </div>
-        <button class="btn home-primary" data-home-action="open-today">Open today</button>
+<button class="btn home-primary" data-home-action="open-today">Open workout</button>
       </div>
       <div class="home-grid">
         <section class="home-card home-today-card">
           <div class="home-card-head"><div><div class="eyebrow">Today</div><h2 id="home-today-title">No workout planned</h2></div><span id="home-today-status" class="home-status">—</span></div>
           <div id="home-today-body" class="home-today-body"></div>
-          <div class="home-actions"><button class="btn" data-home-action="open-today">Open workout</button><button class="btn" data-home-action="quick-add">+ Quick add</button></div>
+<div class="home-actions"><button class="btn" data-home-action="open-today">Open workout</button></div>
         </section>
         <section class="home-card home-readiness-card">
           <div class="home-card-head"><div><div class="eyebrow">Today's readiness</div><h2 id="home-readiness-score">—</h2></div><span id="home-readiness-status" class="home-status">—</span></div>
@@ -3321,7 +3731,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
         </section>
       </div>
       <div class="home-quick-actions">
-        <button class="home-quick" data-home-action="quick-add"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M12 5v14m-7-7h14"></path></svg></div></div><span><strong>Add workout</strong><small>Start from today</small></span></button>
+        <button class="home-quick" data-home-action="quick-add" style="display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:0 0 28px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" style="display:block;width:24px;height:24px;color:currentColor;"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M12 5v14m-7-7h14"></path></svg></span><span style="display:flex;flex-direction:column;align-items:flex-start;min-width:0;"><strong style="display:block;font-size:12px;line-height:1.2;white-space:nowrap;">Add workout</strong><small style="display:block;font-size:9px;line-height:1.2;margin-top:2px;color:rgba(255,255,255,.75);white-space:nowrap;">Start from today</small></span></button>
         <button class="home-quick" data-home-action="scan"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path></svg></div></div><span><strong>Open Smart Integrations</strong><small>Know your Fitness</small></span></button>
         <button class="home-quick" data-home-action="templates"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg></div></div><span><strong>Templates</strong><small>Pick a session</small></span></button>
         <button class="home-quick" data-home-page="calendar-page"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 16H5V9h14z"></path></svg></div></div><span><strong>Calendar</strong><small>See your month</small></span></button>
@@ -3459,38 +3869,78 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
   <section id="integrations-page" class="page">
     <div class="smart-int-wrap">
       <div class="dashboard-head"><div><div class="dashboard-title">SMART INTEGRATIONS</div><div class="hint">Choose a tool to open its dedicated workspace.</div></div></div>
-      <div class="smart-launch-grid" aria-label="Smart Integrations">
-        <button type="button" class="smart-launch-card" data-page="ocr-page">
-          <span class="smart-launch-icon">⌁</span>
-          <span class="smart-launch-copy"><strong>OCR Scan</strong><small>Import a workout screenshot and turn it into an editable session.</small></span>
-          <span class="smart-launch-arrow">→</span>
-        </button>
-        <button type="button" class="smart-launch-card" data-page="nutri-page">
-          <span class="smart-launch-icon">◌</span>
-          <span class="smart-launch-copy"><strong>Nutri Tracker</strong><small>Calculate daily calorie and macro targets.</small></span>
-          <span class="smart-launch-arrow">→</span>
-        </button>
-        <button type="button" class="smart-launch-card" data-page="workout-creator-page">
-          <span class="smart-launch-icon">✦</span>
-          <span class="smart-launch-copy"><strong>Workout Creator</strong><small>Generate, build and time functional workouts.</small></span>
-          <span class="smart-launch-arrow">→</span>
-        </button>
-        <button type="button" class="smart-launch-card" data-page="cycle-page">
-          <span class="smart-launch-icon">🌸</span>
-          <span class="smart-launch-copy"><strong>Cycle Tracker</strong><small>Track your menstrual cycle, phases, fertility and hormonal curve.</small></span>
-          <span class="smart-launch-arrow">→</span>
-        </button>
-        <button type="button" class="smart-launch-card" data-page="nutrition-page">
-          <span class="smart-launch-icon">🍅</span>
-          <span class="smart-launch-copy"><strong>Nutrition Optimizer</strong><small>Adapt your pre-workout meal to today's session and training demand.</small></span>
-          <span class="smart-launch-arrow">→</span>
-        </button>
-        <button type="button" class="smart-launch-card" data-page="fatsecret-page" id="fatsecret-launch-card">
-          <span class="smart-launch-icon">🥗</span>
-          <span class="smart-launch-copy"><strong>FatSecret · Food Source</strong><small>Manage the FatSecret connection used by Nutrition Optimizer and the central nutrition data layer.</small><span class="fatsecret-launch-status" id="fatsecret-launch-status">Checking connection…</span></span>
-          <span class="smart-launch-arrow">→</span>
-        </button>
-      </div>
+     <div class="smart-launch-grid" aria-label="Smart Integrations">
+  <button type="button" class="smart-launch-card" data-page="ocr-page">
+    <span class="smart-launch-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 8V6a2 2 0 0 1 2-2h2"/>
+        <path d="M20 8V6a2 2 0 0 0-2-2h-2"/>
+        <path d="M4 16v2a2 2 0 0 0 2 2h2"/>
+        <path d="M20 16v2a2 2 0 0 1-2 2h-2"/>
+        <path d="M4 12h16"/>
+      </svg>
+    </span>
+    <span class="smart-launch-copy"><strong>OCR Scan</strong><small>Import a workout screenshot and turn it into an editable session.</small></span>
+    <span class="smart-launch-arrow">→</span>
+  </button>
+
+  <button type="button" class="smart-launch-card" data-page="nutri-page">
+    <span class="smart-launch-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 3v9l6.5 4.5"/>
+      </svg>
+    </span>
+    <span class="smart-launch-copy"><strong>Nutri Tracker</strong><small>Calculate daily calorie and macro targets.</small></span>
+    <span class="smart-launch-arrow">→</span>
+  </button>
+
+  <button type="button" class="smart-launch-card" data-page="workout-creator-page">
+    <span class="smart-launch-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2 14.9 8.6 22 9.5l-5.2 4.8L18.2 22 12 18.3 5.8 22l1.4-7.7L2 9.5l7.1-.9L12 2Z"/>
+      </svg>
+    </span>
+    <span class="smart-launch-copy"><strong>Workout Creator</strong><small>Generate, build and time functional workouts.</small></span>
+    <span class="smart-launch-arrow">→</span>
+  </button>
+
+  <button type="button" class="smart-launch-card" data-page="cycle-page">
+    <span class="smart-launch-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3c-2.5 3-5 6-5 9a5 5 0 0 0 10 0c0-3-2.5-6-5-9Z"/>
+        <path d="M12 21v-3"/>
+      </svg>
+    </span>
+    <span class="smart-launch-copy"><strong>Cycle Tracker</strong><small>Track your menstrual cycle, phases, fertility and hormonal curve.</small></span>
+    <span class="smart-launch-arrow">→</span>
+  </button>
+
+  <button type="button" class="smart-launch-card" data-page="nutrition-page">
+    <span class="smart-launch-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 18h16"/>
+        <path d="M6 14a6 6 0 0 1 12 0"/>
+        <path d="M12 8V6"/>
+        <path d="M10 4h4"/>
+      </svg>
+    </span>
+    <span class="smart-launch-copy"><strong>Nutrition Optimizer</strong><small>Adapt your pre-workout meal to today's session and training demand.</small></span>
+    <span class="smart-launch-arrow">→</span>
+  </button>
+
+  <button type="button" class="smart-launch-card" data-page="fatsecret-page" id="fatsecret-launch-card">
+    <span class="smart-launch-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v18"/>
+        <path d="M8 7c0-2 2-3.5 4-3.5S16 5 16 7c0 3-4 5-4 5s-4-2-4-5Z"/>
+        <path d="M8 17c0-2 2-3.5 4-3.5s4 1.5 4 3.5c0 3-4 4.5-4 4.5S8 20 8 17Z"/>
+      </svg>
+    </span>
+    <span class="smart-launch-copy"><strong>FatSecret · Food Source</strong><small>Manage the FatSecret connection used by Nutrition Optimizer and the central nutrition data layer.</small><span class="fatsecret-launch-status" id="fatsecret-launch-status">Checking connection…</span></span>
+    <span class="smart-launch-arrow">→</span>
+  </button>
+</div>
       <!-- Smart Training: 2-column layout -->
       <div class="si-two-col">
         <!-- Garmin Panel -->
@@ -3924,26 +4374,6 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
       <h2>Meal targets & options</h2>
     </div>
 
-    <span id="no-plan-status" class="nutrition-muted">
-      5 meal targets
-    </span>
-  </div>
-
-  <div id="no-plan-summary" class="nutrition-learning">
-    Each meal has its own protein, carbohydrate and fat target.
-    Choose a meal to see three portioned options that stay close to that target.
-  </div>
-
-  <div
-    id="no-meal-tabs"
-    class="nutrition-meal-tabs"
-    role="tablist"
-    aria-label="Meal targets">
-  </div>
-
-  <div
-    id="no-meal-target"
-    class="nutrition-meal-target">
   </div>
 
   <div class="nutrition-meal-selector" id="nutrition-meal-selector">
@@ -5301,7 +5731,6 @@ $('#smart-select-btn').onclick=()=>$('#smart-screenshot-file').click();$('#close
 /* Bridge selected first-layer actions to Smart Training navigation */
 window.__trainingPlannerOpenBlockLibrary = (i=null) => openBlockLibrary(i);
 window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
-window.__trainingPlannerOpenBlockLibrary = (i=null) => openBlockLibrary(i);
 window.__tpApplySmartToDay = applySmartToDay;
 window.__tpCreateSmartTemplate = createSmartTemplate;
 /* Expose training-planner internals for the OCR IIFE (separate scope). */
@@ -5477,7 +5906,45 @@ window.__tp = {
   function openSearch(){const m=$s('#smart-search-modal');if(m)m.classList.add('show');const i=$s('#smart-search-input');if(i){i.value='';i.focus()}renderSearch('')}
   function renderSearch(q){const out=$s('#smart-search-results');if(!out)return;const needle=clean(q);let rows=getRows();if(needle)rows=rows.filter(r=>clean(r.date+' '+dayText(r.data)+' '+deriveTags(r.data).join(' ')).includes(needle));rows=rows.slice().reverse().slice(0,40);out.innerHTML=rows.length?rows.map(r=>{const d=r.data, names=nonEmptyExercises(d).slice(0,4).map(e=>canonical(e.name)).join(' · '),meta=smartMeta(r.date);return `<button class="search-result smart-search-result" data-smart-date="${r.date}"><div><strong>${esc2(d.focus||d.trainingCategory||'Workout')}</strong><div class="search-result-meta">${r.date}${names?' · '+esc2(names):''}</div><div class="smart-tags">${meta.tags.slice(0,4).map(t=>`<span class="smart-tag">${esc2(t)}</span>`).join('')}</div></div><span class="search-result-status">${esc2(meta.status||'planned')}</span></button>`}).join(''):'<div class="smart-search-empty">No workouts match this search.</div>'}
   function openAnalyzer(){if(!currentDay)return;const a=analyzeDay();const m=document.createElement('div');m.className='modal-backdrop show';m.id='smart-analyzer-modal';m.innerHTML=`<div class="modal smart-modal"><div class="modal-head"><div><div class="eyebrow">Smart Workout Analyzer</div><div class="modal-title">${esc2(currentDay.focus||currentDay.trainingCategory||'Workout')}</div></div><button class="icon-btn" data-close-smart>×</button></div><div class="smart-dashboard-card"><div class="smart-dashboard-stats"><div class="smart-dashboard-stat"><strong>${a.exerciseCount}</strong><span>Exercises</span></div><div class="smart-dashboard-stat"><strong>${a.sets}</strong><span>Sets</span></div><div class="smart-dashboard-stat"><strong>${a.reps}</strong><span>Reps</span></div><div class="smart-dashboard-stat"><strong>${a.score}</strong><span>Load index</span></div></div></div><div class="smart-suite"><div class="smart-suite-title">Smart tags</div><div class="smart-tags">${a.tags.map(t=>`<span class="smart-tag">${esc2(t)}</span>`).join('')}</div></div><div class="smart-suite"><div class="smart-suite-title">Exercise recognition</div><div class="smart-progress-list">${a.canonicalized.map((e,i)=>`<div class="smart-progress-row"><div><strong>${esc2(e.name)}</strong><small>Original: ${esc2(nonEmptyExercises(currentDay)[i]?.name||'')}</small></div><div class="smart-progress-value">${esc2(exerciseSetText(e)||'—')}</div></div>`).join('')}</div><button class="btn" data-normalize-exercises style="margin-top:9px">Normalize exercise names</button></div><div class="smart-suite"><div class="smart-suite-title">Progression</div>${progressionHTML()}</div></div>`;document.body.appendChild(m)}
-  function duplicateSmart(){if(!currentDay||!selectedDateKey)return;const date=prompt('Duplicate to date (YYYY-MM-DD):',nextDate(selectedDateKey));if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return;const copy=normalizeDay(clone(currentDay));copy.tagline='';copy.strap='';copy.trainingCategory='';copy.metrics={distanceKm:'',timeMin:'',pace:'',rpe:'',load:''};copy.caffeine={taken:false,mg:''};copy.carbohydratesGrams='';copy.recovery={sleep:0,energy:0,soreness:0};copy.completed=false;copy.notes='';copy.noteTags=[];copy.color='';copy.sessionFeedback={feelings:'',adjustNextTime:'',nextFocus:'',tags:[],performance:'',energyRating:'',technique:'',pain:''};copy.previousFeedback=null;templateEditorMode=false;templateEditorId=null;selectedDateKey=date;currentDay=copy;saveDay().then(()=>openDay(date))}
+  function duplicateSmart(){
+    if(!currentDay||!selectedDateKey)return;
+    const date=prompt('Duplicate to date (YYYY-MM-DD):',nextDate(selectedDateKey));
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return;
+
+    /*
+     * Duplicate Workout copies only the reusable workout structure:
+     * title/focus + training blocks + conditioning/running tables.
+     * All session-specific state is intentionally reset.
+     */
+    const source=normalizeDay(clone(currentDay));
+    const copy=normalizeDay(defaultDay());
+    copy.focus=source.focus||'';
+    copy.blocks=clone(source.blocks||[]);
+    copy.exercises=copy.blocks.flatMap(b=>b.exercises||[]);
+    copy.isRunDay=!!source.isRunDay;
+    copy.runningRowing=clone(source.runningRowing||copy.runningRowing);
+
+    copy.tagline='';
+    copy.strap='';
+    copy.trainingCategory='';
+    copy.color='';
+    copy.metrics={distanceKm:'',timeMin:'',pace:'',rpe:'',load:''};
+    copy.caffeine={taken:false,mg:''};
+    copy.carbohydratesGrams='';
+    copy.recovery={sleep:0,energy:0,soreness:0};
+    copy.completed=false;
+    copy.restDay=false;
+    copy.notes='';
+    copy.noteTags=[];
+    copy.sessionFeedback={feelings:'',adjustNextTime:'',nextFocus:'',tags:[],performance:'',energyRating:'',technique:'',pain:'',adjustmentOutcome:''};
+    copy.previousFeedback=null;
+
+    templateEditorMode=false;
+    templateEditorId=null;
+    selectedDateKey=date;
+    currentDay=normalizeDay(copy);
+    saveDay().then(()=>openDay(date));
+  }
   function nextDate(k){const d=new Date(k+'T12:00:00');d.setDate(d.getDate()+7);return dateKey(d.getFullYear(),d.getMonth(),d.getDate())}
   function saveSmartBlock(){if(!currentDay||typeof window.__trainingPlannerSaveCurrentBlock!=='function')return;const n=prompt('Block name:',currentDay?.focus||'New block');if(!n)return;$s('#block-name-input').value=n;window.__trainingPlannerSaveCurrentBlock();$s('#block-library-modal')?.classList.add('show');}
   function smartTemplate(){if(!currentDay)return;const name=prompt('Template name:',currentDay.focus||'Smart workout');if(!name)return;const vars=prompt('Variables (comma separated, e.g. distance, weight, reps):','');const arr=read(TEMPLATES,[]);arr.unshift({id:'st_'+Date.now(),name,data:clone(currentDay),variables:(vars||'').split(',').map(x=>x.trim()).filter(Boolean),tags:deriveTags(currentDay)});write(TEMPLATES,arr);alert('Smart template saved locally.');}
@@ -7363,17 +7830,65 @@ function getMealOptions(mealKey,target){
     );
 }
 
-function mealTargetFromDaily(targets,mealKey){
-  /*
-    The meal distribution remains explicit, but daily targets can
-    replace it when the calculator provides complete macro targets.
-  */
+function mealTargetFromDaily(targets,mealKey,coreCtx=null){
   const fallback=MEAL_TARGETS[mealKey];
+  if(!fallback)return null;
 
-  if(!targets)return fallback;
+  const daily={
+    protein:Number(targets?.prot??targets?.protein),
+    carbs:Number(targets?.carb??targets?.carbs),
+    fat:Number(targets?.fat)
+  };
 
-  return {
-    ...fallback
+  const hasDaily=Object.values(daily).every(Number.isFinite)&&Object.values(daily).every(v=>v>0);
+  if(!hasDaily)return {...fallback};
+
+  const baseTotals=Object.keys(MEAL_TARGETS).reduce((sum,key)=>{
+    const t=MEAL_TARGETS[key];
+    return{
+      protein:sum.protein+t.protein,
+      carbs:sum.carbs+t.carbs,
+      fat:sum.fat+t.fat
+    };
+  },{protein:0,carbs:0,fat:0});
+
+  const meals=Object.keys(MEAL_TARGETS);
+  const carbWeights={};
+  meals.forEach(key=>{carbWeights[key]=MEAL_TARGETS[key].carbs/baseTotals.carbs});
+
+  /*
+   * Training demand changes carbohydrate distribution, not the daily
+   * carbohydrate target. Higher-demand sessions shift more of the
+   * available carbohydrate budget toward pre/post-workout meals.
+   */
+  const demand=String(coreCtx?.demand?.demand||'').toLowerCase();
+  const hasTraining=coreCtx?.demand?.hasWorkout||coreCtx?.demand?.planned||demand!=='rest day';
+  const factor=demand==='high'?1.35:demand==='moderate'?1.18:hasTraining?1.08:0.9;
+
+  if(hasTraining){
+    carbWeights.pre*=factor;
+    carbWeights.post*=factor;
+  }else{
+    carbWeights.pre*=0.85;
+    carbWeights.post*=0.9;
+  }
+
+  const carbWeightTotal=Object.values(carbWeights).reduce((a,b)=>a+b,0);
+  const carbShare=carbWeights[mealKey]/carbWeightTotal;
+
+  const proteinShare=MEAL_TARGETS[mealKey].protein/baseTotals.protein;
+  const fatShare=MEAL_TARGETS[mealKey].fat/baseTotals.fat;
+
+  const protein=Math.round(daily.protein*proteinShare*10)/10;
+  const carbs=Math.round(daily.carbs*carbShare*10)/10;
+  const fat=Math.round(daily.fat*fatShare*10)/10;
+
+  return{
+    ...fallback,
+    protein,
+    carbs,
+    fat,
+    kcal:Math.round(protein*4+carbs*4+fat*9)
   };
 }
 
@@ -7428,7 +7943,7 @@ function renderMealPlan(n,d,coreCtx=null){
   };
 
   const mealKey=selectedMeal;
-  const target=mealTargetFromDaily(targets,mealKey);
+  const target=mealTargetFromDaily(targets,mealKey,coreCtx);
   const options=getMealOptions(mealKey,target).slice(0,3);
   const targetKcal=mealTargetKcal(target);
 
@@ -8435,6 +8950,64 @@ const daySync=date=>window.TrainMeiFatSecret?.sync?.(date);
   .tp-v5-day{min-width:0!important}
   .training-block-head,.block-table,.conditioning-phase-grid{max-width:100%;min-width:0}
 }
+/* Final Smart Training grid stabilization. */
+@media (max-width:950px) and (min-width:561px) and (orientation:landscape){
+  #smart-training-nav{min-width:0!important;overflow:visible!important}
+  #smart-training-nav .tool-group{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-rows:auto repeat(2,minmax(32px,auto))!important;
+    gap:4px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  #smart-training-nav .tool-group-label{grid-column:1/-1!important;min-width:0!important}
+  #smart-training-nav .btn{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+}
+@media (max-width:560px) and (orientation:portrait){
+  #smart-training-nav{min-width:0!important;overflow:visible!important}
+  #smart-training-nav .tool-group{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-template-rows:auto repeat(2,minmax(32px,auto))!important;
+    gap:4px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  #smart-training-nav .tool-group-label{grid-column:1/-1!important}
+  #smart-training-nav .btn{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+}
+/* SVG dentro de smart-launch-icon */
+.smart-launch-icon svg{
+  width:60%;
+  height:60%;
+  display:block;
+  stroke:currentColor;
+  fill:none;
+  flex:0 0 auto;
+}
+
+/* En iPhone vertical, iconos SVG más grandes */
+@media (max-width:560px) and (orientation:portrait){
+  .smart-launch-icon svg{
+    width:32px !important;
+    height:32px !important;
+  }
+}
 </style>
 <script id="trainmei-v7-integrated-logic">
 (()=>{
@@ -8499,7 +9072,11 @@ function hardenCycleStorage(){
 document.addEventListener('change',e=>{
  if(e.target?.id==='day-rest-toggle')setRestDay(e.target.checked);
  if(e.target?.id==='day-completed-toggle'&&typeof currentDay!=='undefined'&&currentDay){
-   if(e.target.checked)currentDay.restDay=false;
+   if(e.target.checked){
+     currentDay.restDay=false;
+     if(typeof renderDay==='function')renderDay();
+     if(typeof scheduleSave==='function')scheduleSave();
+   }
  }
 });
 
