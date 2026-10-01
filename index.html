@@ -7075,17 +7075,16 @@ if (!document.querySelector('style[data-animations]')) {
   document.head.appendChild(style);
 }
 
-// Detectar cambios de página y guardar estado
+// Detectar cambios de página y guardar estado - VERSIÓN OPTIMIZADA PARA MÓVIL
 document.addEventListener('click', (e) => {
-  // Guardar estado cuando se cambia de página
-  if (e.target.closest('.btn[data-page]') || 
-      e.target.closest('#templates-btn') || 
-      e.target.closest('#settings-btn')) {
-    setTimeout(() => PWAStateManager.saveState(), 100);
+  // Guardar estado SOLO cuando se cambia de página (lo más importante)
+  if (e.target.closest('.btn[data-page]')) {
+    setTimeout(() => {
+      PWAStateManager.saveState();
+    }, 200);
   }
   
   // Copy/Paste con atajos
-  // Buscar botones de copy/paste por data-action
   if (e.target.closest('[data-action="copy-block"]')) {
     BlockClipboard.copyBlock(e.target);
     e.preventDefault();
@@ -7094,44 +7093,52 @@ document.addEventListener('click', (e) => {
     BlockClipboard.pasteBlock(e.target);
     e.preventDefault();
   }
-});
+}, { passive: true });
 
-// Guardar estado cuando se completan cambios importantes
-document.addEventListener('change', () => {
-  PWAStateManager.saveState();
-});
-
-// Guardar estado antes de cerrar/recargar
-window.addEventListener('beforeunload', () => {
-  PWAStateManager.saveState();
-});
-
-// Restaurar estado al cargar
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    const state = PWAStateManager.restoreState();
-    if (state) {
-      PWAStateManager.applyState(state);
-    }
-  }, 500);
-});
-
-// También intentar restaurar sin esperar a DOMContentLoaded
-setTimeout(() => {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      const state = PWAStateManager.restoreState();
-      if (state) {
-        PWAStateManager.applyState(state);
-      }
-    });
-  } else {
-    const state = PWAStateManager.restoreState();
-    if (state) {
-      PWAStateManager.applyState(state);
-    }
+// Guardar estado SOLO cuando el navegador se oculta (importante para PWA)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    PWAStateManager.saveState();
   }
-}, 0);
+}, { passive: true });
+
+// Restaurar estado INMEDIATAMENTE (antes de que startApp lo sobrescriba)
+let savedPWAState = null;
+let PWAStateRestored = false;
+
+function restorePWAStateNow() {
+  if (PWAStateRestored) return;
+  PWAStateRestored = true;
+  
+  savedPWAState = PWAStateManager.restoreState();
+  
+  // Log para debugging en móvil
+  if (savedPWAState) {
+    console.log('PWA State restaurado:', savedPWAState.activePage);
+  }
+  
+  return savedPWAState;
+}
+
+// Restaurar inmediatamente
+restorePWAStateNow();
+
+// Hook: interceptar startApp para restaurar estado DESPUÉS
+const originalStartApp = window.startApp;
+if (originalStartApp && savedPWAState) {
+  window.startApp = async function() {
+    const result = await originalStartApp.call(this);
+    
+    // Restaurar SOLO UNA VEZ después de que startApp termine
+    if (savedPWAState.activePage !== 'home-page') {
+      setTimeout(() => {
+        PWAStateManager.applyState(savedPWAState);
+      }, 300);
+    }
+    
+    return result;
+  };
+}
 
 })();
 </script>
