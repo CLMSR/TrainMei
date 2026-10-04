@@ -1,15 +1,198 @@
 {
-  "name": "TrainMei",
-  "short_name": "TrainMei",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#FFFFFF",
-  "icons": [
+  "phase": "post-change-final-audit",
+  "idCount": 331,
+  "uniqueIdCount": 331,
+  "duplicateIds": {},
+  "missingLocalRefs": [
+    "icons/trainmei-icon.png",
+    "manifest.json"
+  ],
+  "trainingDataCoreImplementations": 1,
+  "files": [
     {
-      "src": "icons/trainmei-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
+      "path": "CHANGES_13_REQUESTED.md",
+      "bytes": 5806,
+      "sha256": "7b335f137a9b790161c1120e4ebe706354cf15f03ce01434ffcd053ecb2f1d5c"
+    },
+    {
+      "path": "HOME_FIX_AUDIT.md",
+      "bytes": 1107,
+      "sha256": "a1f9484c4ca94e7601e477a8b6d05b797b0704c6e7b9837192c8d56eddd8690a"
+    },
+    {
+      "path": "PHASE2_AUDIT.md",
+      "bytes": 2886,
+      "sha256": "8c44fb5914bd8f35ec23f9964420011d401ba7597a646006dea82f12550d5737"
+    },
+    {
+      "path": "PHASE3_AUDIT.md",
+      "bytes": 1686,
+      "sha256": "4019c5f8ea4d229ef254cec7549adad72fc99a4b16279adc6328396b8d074f08"
+    },
+    {
+      "path": "PHASE4_AUDIT.md",
+      "bytes": 4512,
+      "sha256": "015996d2b3eaf042baf47db62baff04d4775934a8c5c5484323d45f8f9cbe6dd"
+    },
+    {
+      "path": "PHASE5_AUDIT.md",
+      "bytes": 2866,
+      "sha256": "c223e76d7d34908736825ac2854af0d433dcfc91479392bc0d4632c89c26ca88"
+    },
+    {
+      "path": "PHASE5_CORRECTION_AUDIT.md",
+      "bytes": 1526,
+      "sha256": "a333433805a809ba3e7dabbb07ec0ba2554aaf61e34a2c324c6658e78bfeccba"
+    },
+    {
+      "path": "PHASE6_AUDIT.md",
+      "bytes": 3655,
+      "sha256": "6287b1247b7a38f4c41c7a215d0c0a0d8b367c290ca5687d76cb384d9b361670"
+    },
+    {
+      "path": "PHASE6_FINAL_AUDIT.md",
+      "bytes": 2903,
+      "sha256": "cf39dd1a7a481b61b4ae1e5d51c2ebb5269fda7e32893983ee86c9ec05786c63"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3317,
+      "sha256": "9e73d01e4f47af662537638da25da7c11662378cd87abd7998018f4346702cbf"
+    },
+    {
+      "path": "css/responsive.css",
+      "bytes": 10913,
+      "sha256": "b8333a8af20932459b3acdd510253a211117ebc5ff8fe889f90eed59a40ad28c"
+    },
+    {
+      "path": "css/style.css",
+      "bytes": 275858,
+      "sha256": "724e1a804750fd75b5dab111f2c1e4edfdc31d4ca7013e3fd8ab82c7f86451fa"
+    },
+    {
+      "path": "index.html",
+      "bytes": 84279,
+      "sha256": "1542941f3f6a4e3c9943aba162a7c501dece2c55cd3bd836709e31899a625714"
+    },
+    {
+      "path": "js/app-bootstrap.js",
+      "bytes": 104,
+      "sha256": "232464de35916c1debffd94fc2b579c4cd570fbd4c894e1f8d1078502970b59c"
+    },
+    {
+      "path": "js/calendar.js",
+      "bytes": 6825,
+      "sha256": "02bd0111c91f9b3f2bf0232705303ca9bb7ae76effc2b7bb0adff3e5673b2e1b"
+    },
+    {
+      "path": "js/cycle-tracker.js",
+      "bytes": 48664,
+      "sha256": "a46947eef562f159f623373342af35da151af35e0e5d73f103b4b1905ce62d4c"
+    },
+    {
+      "path": "js/data-core.js",
+      "bytes": 34409,
+      "sha256": "d0b39e1e155a3f4ea98fb2726c14e0920009b692017fd5de55a1c1d257f48f1f"
+    },
+    {
+      "path": "js/day-view.js",
+      "bytes": 12193,
+      "sha256": "ce8a7699d24c99664bd16f4df2a278e4d0444345b3ec61ca204a4ccefb00becd"
+    },
+    {
+      "path": "js/fatsecret.js",
+      "bytes": 16445,
+      "sha256": "a15e50212702014d52be053d665af59e2e62bab5a0d6ba28504ef528bd01ca0e"
+    },
+    {
+      "path": "js/integrated-logic.js",
+      "bytes": 13962,
+      "sha256": "f75f978eb009262c1f50f8a28aee86fe18fb1caa8b4821da4432c47139419b24"
+    },
+    {
+      "path": "js/keyboard-shortcuts.js",
+      "bytes": 8952,
+      "sha256": "1368a3dd8e9517249dcb154e609f6e3c128b075da70e9e8b0dc16ba58366bb5c"
+    },
+    {
+      "path": "js/mobile-navigation.js",
+      "bytes": 3748,
+      "sha256": "47fef859e6bba1829530817d6a2f25d0c0b2fa7e69b9c7f90944b79cf79aad08"
+    },
+    {
+      "path": "js/nutrition-calculator.js",
+      "bytes": 4477,
+      "sha256": "122b8f27192b2ea4fa65865ce9d810344cb4ef1081bdd476e7c641057726760d"
+    },
+    {
+      "path": "js/nutrition-data-layer.js",
+      "bytes": 9358,
+      "sha256": "b8a03b81baa6d083e0909fa2a156750df243441a588da32d3b1e09c3cb935d6f"
+    },
+    {
+      "path": "js/nutrition-optimizer.js",
+      "bytes": 43756,
+      "sha256": "87b4bce87902d409cab284dc6e1929f109b648aefd62e3f5cc31e7fd85d8c3cc"
+    },
+    {
+      "path": "js/nutrition-sync.js",
+      "bytes": 1591,
+      "sha256": "95f4032c3f5ab3cb7f9d02085385fbb56d00a5f16c652816bbaa353090316a62"
+    },
+    {
+      "path": "js/ocr.js",
+      "bytes": 15228,
+      "sha256": "f3b17fce8b194086ab7d352343e0685b8bf23a3649a793471fa82267312633d7"
+    },
+    {
+      "path": "js/planning.js",
+      "bytes": 9868,
+      "sha256": "059b3d0fa0265b3b3d6637f0f096ef8a24e5d690ad1c899e177e23c6b4712ea3"
+    },
+    {
+      "path": "js/settings-theme.js",
+      "bytes": 2390,
+      "sha256": "1fb240130f94604fb6f8c6362ce2c6b5b3f06f4b8df9eae799adb3e52286b649"
+    },
+    {
+      "path": "js/smart-integrations-router.js",
+      "bytes": 2724,
+      "sha256": "97ac2474599a3ea11654045a550bfe0b71c058b42a5ed1d08cd7c47935dfe21e"
+    },
+    {
+      "path": "js/smart-training.js",
+      "bytes": 20175,
+      "sha256": "fe9ac3634d8f67adddf3cd65f049ffb256ee2750c807119edcee583c0920b631"
+    },
+    {
+      "path": "js/smart-workout.js",
+      "bytes": 18857,
+      "sha256": "8a879fbb4ab92f3a77c0a7b51be989fb6b836c99a7c687eb26bd7b90ed4420c3"
+    },
+    {
+      "path": "js/templates.js",
+      "bytes": 7686,
+      "sha256": "4b604ba244b014d61ea09bd203c0732c36bec61ec25648d3f45203703a2e81e1"
+    },
+    {
+      "path": "js/training-brain.js",
+      "bytes": 8185,
+      "sha256": "c7de69640ee3e612d0c7bc2970e64cecf965718e2236b2446d40a2b9e76c33af"
+    },
+    {
+      "path": "js/training-planner-core.js",
+      "bytes": 77740,
+      "sha256": "022ad9e991232268ab576b5c17c62b0bd11f5ce481034a002a0f0c0e9ade119b"
+    },
+    {
+      "path": "js/unified-state.js",
+      "bytes": 2897,
+      "sha256": "73f5111fb514adb42fa8d4bbefb497a3f5ebe9e34c824db53861986c342f7a3f"
+    },
+    {
+      "path": "js/workout-editor.js",
+      "bytes": 8784,
+      "sha256": "0dde4f48908940ae56ca572bc52415f3a1c41d3bf414b0e3ff1ee88dcc38b7e3"
     }
   ]
 }

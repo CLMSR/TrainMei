@@ -1,0 +1,189 @@
+.nutri-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.nutri-form-grid .nutri-form-group{min-width:0}.nutri-form-grid .nutri-label{display:block;margin-bottom:5px}.nutri-form-grid .nutri-input,.nutri-form-grid .nutri-select{width:100%;box-sizing:border-box}@media(max-width:560px){.nutri-form-grid{grid-template-columns:1fr}}
+
+/* TrainMei v7 — one controlled responsive layer; no parallel data model. */
+.top-actions .btn[data-page],#templates-btn,#settings-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.nav-label{display:inline}
+.top-actions .btn[data-page] svg,#templates-btn svg,#settings-btn svg{display:none;width:17px;height:17px;flex:0 0 17px}
+.rest-day-inline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;min-width:92px}
+.session-load-inline{display:flex;align-items:center;gap:7px;min-width:0;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.session-load-inline .simple-field{width:72px}
+.day-page .rest-day-inline input:checked + .switch-ui{background:var(--success)}
+.cal-cell.rest-day{background:var(--surface-soft,#ececec)!important;border-style:dashed!important;border-color:var(--muted,#8a8a8a)!important}
+.cal-cell.rest-day .cal-focus strong{color:var(--muted,#666)!important}
+.rest-day-badge{display:inline-flex;align-items:center;justify-content:center;padding:3px 6px;border:1px solid var(--line);border-radius:999px;font-size:8px;text-transform:uppercase;color:var(--muted);letter-spacing:.05em}
+.tp-v6-rest{opacity:.8}
+@media (min-width:561px){
+  .top-actions .btn[data-page],#templates-btn,#settings-btn{min-height:32px}
+}
+@media (max-width:950px) and (min-width:561px) and (orientation:landscape){
+  .topbar{width:100%;box-sizing:border-box;overflow:hidden}
+  .topbar .brand{flex:0 0 auto;font-size:17px;white-space:nowrap}
+  .top-actions{flex:1 1 auto;min-width:0;justify-content:flex-end;flex-wrap:nowrap;overflow:hidden}
+  .top-actions .btn[data-page],#templates-btn,#settings-btn{font-size:9px!important;padding:7px 7px!important;min-width:0!important;white-space:nowrap}
+  .top-actions #export-btn,.top-actions #import-btn,.top-actions #sync-btn,.top-actions #logout-btn{display:none!important}
+  #app,.page,.day-view,.calendar-shell,.plan-shell,.smart-int-wrap,.nutri-shell{max-width:100%;min-width:0;box-sizing:border-box}
+  .page table,.page .table-wrap,.page .block-table-wrap,.page .nutrition-table{max-width:100%;overflow-x:auto}
+  .page input,.page select,.page textarea{max-width:100%;box-sizing:border-box}
+  .day-status-row,.run-meta-inline,.home-grid,.smart-int-hero{min-width:0}
+}
+@media (max-width:560px){
+  /* iPhone vertical: compact, single-column rhythm for newly added metrics */
+  #app{width:100%;min-width:0;overflow-x:hidden}
+  .page{width:100%;min-width:0;}
+  .home-grid,.home-card,.brain-page,.brain-card,.smart-int-wrap,.nutri-shell,.calendar-shell,.plan-shell,.day-view{min-width:0!important;max-width:100%!important}
+  .home-card-head,.brain-hero,.brain-card-head,.smart-panel-header,.nutri-source-head{min-width:0;gap:8px}
+  .home-card-head h2,.brain-card-head h2,.smart-panel-header strong,.nutri-card-title{overflow-wrap:anywhere}
+  .home-actions,.tool-group,.choice-row,.choice-chips,.weekday-chips{min-width:0;flex-wrap:wrap}
+  .brain-metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+  .brain-metric{min-width:0!important;padding:8px 7px!important}
+  .brain-metric strong{font-size:14px!important}
+  .brain-metric span{font-size:8px!important;line-height:1.2!important;overflow-wrap:anywhere}
+  .day-status-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;align-items:stretch!important}
+  .day-status-row>*{min-width:0!important;width:auto!important}
+  .rest-day-inline,.session-load-inline,.caffeine-inline,.carbohydrates-inline,.recovery-inline{min-width:0!important;max-width:100%!important}
+  .recovery-inline{grid-column:1 / -1!important}
+  .run-meta-inline{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  .run-meta-inline>*{min-width:0!important}
+  .recovery-row{min-width:0!important;flex-wrap:wrap}
+  .recovery-dots{max-width:100%;display:flex;flex-wrap:nowrap}
+  .simple-field,.field input,.field select,.field textarea,.metrics-grid input,.metrics-grid select,.metrics-grid textarea{max-width:100%!important;min-width:0!important}
+  .section,.smart-int-panel,.nutri-card,.home-card,.brain-card{margin-bottom:10px!important}
+  .smart-panel-body,.nutri-collapsible-body{overflow:hidden}
+  .table-wrap,.block-table-wrap,.nutrition-table-wrap,.calendar-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .block-table{min-width:560px}
+  .plan-table{width:100%!important;table-layout:fixed}
+  .plan-table td,.plan-table th{overflow-wrap:anywhere}
+  .top-actions .btn[data-page],#templates-btn,#settings-btn{border-radius:9px!important}
+.topbar{position:relative;width:100%;box-sizing:border-box;overflow:hidden;display:flex!important;align-items:center!important;justify-content:space-between!important}
+  .topbar .brand{flex:0 0 auto;min-width:0;max-width:82px;white-space:nowrap;font-size:11px!important;overflow:hidden;text-overflow:ellipsis}
+  .top-actions{position:absolute!important;left:50%!important;transform:translateX(-50%)!important;flex:0 0 auto!important;width:210px!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;overflow:hidden!important}
+  .top-actions .btn[data-page],#templates-btn,#settings-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:31px!important;min-width:31px!important;height:31px!important;padding:0!important;line-height:1!important;flex:0 0 31px!important}
+  .top-actions .btn[data-page] svg,#templates-btn svg,#settings-btn svg{display:block!important;margin:0!important}
+  .top-actions .nav-label{display:none!important}
+  .top-actions #export-btn,.top-actions #import-btn,.top-actions #sync-btn,.top-actions #logout-btn{display:none!important}
+  .rest-day-inline{grid-column:1 / -1;grid-row:1;justify-content:flex-start;padding-bottom:7px;margin-bottom:1px}
+  .day-status-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:7px!important}
+  .day-status-row .day-completion-row,.day-status-row .day-color-row{min-width:0}
+  .day-status-row .session-load-inline{grid-column:1 / -1!important;grid-row:auto!important;justify-content:space-between}
+  .day-status-row .session-load-inline .simple-field{width:68px}
+  .run-meta-inline{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:auto auto!important}
+  .run-distance-inline{grid-column:1!important;grid-row:1!important}
+  .session-rpe-inline{grid-column:3!important;grid-row:1!important;margin-left:40px}
+  .recovery-inline{grid-column:1 / -1!important;grid-row:2!important}
+  .page{width:100%;max-width:100%;overflow-x:hidden}
+  .page table{display:block;width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .page .table-wrap,.page .block-table-wrap,.page .nutrition-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .page input,.page select,.page textarea{max-width:100%;box-sizing:border-box}
+  .home-card,.brain-card,.nutri-card,.tp-v5-panel,.smart-int-panel,.plan-focus-card,.section{min-width:0;max-width:100%;box-sizing:border-box}
+  .tp-v5-week-grid{min-width:0!important}
+  .tp-v5-day{min-width:0!important}
+  .training-block-head,.block-table,.conditioning-phase-grid{max-width:100%;min-width:0}
+}
+/* Final Smart Training grid stabilization. */
+@media (max-width:950px) and (min-width:561px) and (orientation:landscape){
+  #smart-training-nav{min-width:0!important;overflow:visible!important}
+  #smart-training-nav .tool-group{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-rows:auto repeat(2,minmax(32px,auto))!important;
+    gap:4px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  #smart-training-nav .tool-group-label{grid-column:1/-1!important;min-width:0!important}
+  #smart-training-nav .btn{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+}
+@media (max-width:560px) and (orientation:portrait){
+  #smart-training-nav{min-width:0!important;overflow:visible!important}
+  #smart-training-nav .tool-group{
+    display:grid!important;
+    gap:4px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  #smart-training-nav .tool-group-label{grid-column:1/-1!important}
+  #smart-training-nav .btn{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+}
+/* Final iPhone portrait gutter: every page uses the same symmetric viewport margin. */
+@media (max-width:560px) and (orientation:portrait){
+  /* iPhone: one consistent symmetric gutter for every page. */
+  #app{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    padding-left:16px!important;
+    padding-right:16px!important;
+    box-sizing:border-box;
+    overflow-x:hidden;
+  }
+  .page{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+
+    box-sizing:border-box;
+    overflow-x:hidden;
+  }
+  .smart-tool-page{
+
+  }
+  .smart-tool-page .smart-tool-shell{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin:0!important;
+    
+    box-sizing:border-box;
+    overflow-x:hidden;
+  }
+  .fatsecret-app,
+  .fatsecret-card,
+  .fatsecret-range,
+  .fatsecret-flow-card,
+  .fatsecret-summary-grid,
+  .fatsecret-connection-grid{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box;
+  }
+  .fatsecret-card{padding:14px!important;}
+  .fatsecret-card-head,
+  .fatsecret-range-head,
+  .fatsecret-range-meta{min-width:0;max-width:100%;}
+  .fatsecret-card-head>*{min-width:0;max-width:100%;}
+  .fatsecret-card-head input[type="date"]{width:100%;max-width:100%;box-sizing:border-box;margin-top:10px;}
+}
+
+/* SVG dentro de smart-launch-icon */
+.smart-launch-icon svg{
+  width:60%;
+  height:60%;
+  display:block;
+  stroke:currentColor;
+  fill:none;
+  flex:0 0 auto;
+}
+
+/* En iPhone vertical, iconos SVG más grandes */
+@media (max-width:560px) and (orientation:portrait){
+  .smart-launch-icon svg{
+    width:32px !important;
+    height:32px !important;
+  }
+}
+
