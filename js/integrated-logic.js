@@ -3,11 +3,17 @@
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 const cloneSafe=o=>{try{return JSON.parse(JSON.stringify(o))}catch{return o}};
 
-/* Explicit Rest Day: stored inside the existing workout row, so it feeds the
-   same TrainingDataCore without creating another learning/storage engine. */
+/* ─── Helpers: always read from TP so mutations apply to the right day object ─── */
+const getTP=()=>window.TrainMeiState||window.__tp;
+const getDay=()=>getTP()?.currentDay;
+const doRenderDay=()=>{const tp=getTP();if(tp?.renderDay)tp.renderDay();else if(typeof renderDay==='function')renderDay();};
+const doScheduleSave=()=>{const tp=getTP();if(tp?.scheduleSave)tp.scheduleSave();else if(typeof scheduleSave==='function')scheduleSave();};
+
+/* Explicit Rest Day */
 function syncExclusiveDaySwitches(){
-  const rest=typeof currentDay!=='undefined'&&!!currentDay?.restDay;
-  const completed=typeof currentDay!=='undefined'&&!!currentDay?.completed;
+  const d=getDay();
+  const rest=!!d?.restDay;
+  const completed=!!d?.completed;
   const restInput=document.getElementById('day-rest-toggle'),completedInput=document.getElementById('day-completed-toggle');
   const restRow=restInput?.closest('.switch-row'),completedRow=completedInput?.closest('.switch-row');
   if(restInput){restInput.checked=rest;restInput.disabled=completed;}
@@ -15,14 +21,15 @@ function syncExclusiveDaySwitches(){
   restRow?.classList.toggle('disabled',completed);
   completedRow?.classList.toggle('disabled',rest);
 }
+
 function setRestDay(on){
-  if(typeof currentDay==='undefined'||!currentDay)return;
-  currentDay.restDay=!!on;
-  if(on){currentDay.completed=false;currentDay.metrics=currentDay.metrics||{};currentDay.metrics.rpe='';currentDay.metrics.timeMin='';}
+  const d=getDay();if(!d)return;
+  d.restDay=!!on;
+  if(on){d.completed=false;d.metrics=d.metrics||{};d.metrics.rpe='';d.metrics.timeMin='';}
   syncExclusiveDaySwitches();
-  if(typeof renderDay==='function')renderDay();
+  doRenderDay();
   syncExclusiveDaySwitches();
-  if(typeof scheduleSave==='function')scheduleSave();
+  doScheduleSave();
 }
 
 /* Navigation: desktop + horizontal = labels, vertical iPhone = icons. */
@@ -37,20 +44,14 @@ function refreshNav(){
 window.addEventListener('resize',refreshNav,{passive:true});
 refreshNav();
 
-/* The calendar renderer already understands day.restDay directly via the
-   existing renderMonth() logic, so no restDayCalendarPatch() is needed. */
-
 /* Improve the single Data Core calculations without adding a second model. */
 function patchCore(){
  const core=window.TrainingDataCore;if(!core)return false;
- // Compatibility shim only. Core calculations now live in TrainingDataCore itself;
- // do not wrap trainingDemand/performanceFuel here or create a second calculation path.
  if(typeof core.totalTime!=='function')core.totalTime=d=>d&&!d.restDay?Math.max(0,Number(d.metrics?.timeMin)||0):0;
  return true;
 }
 
-/* Cycle Tracker persistence hardening: sanitize, deduplicate and version the
-   existing local store so previous logs cannot be duplicated by malformed data. */
+/* Cycle Tracker persistence hardening */
 function hardenCycleStorage(){
  const oldKey='cycle_tracker_records_v2',newKey='cycle_tracker_records_v3';
  try{
@@ -70,15 +71,17 @@ function hardenCycleStorage(){
 }
 
 document.addEventListener('trainmei:day-rendered',()=>syncExclusiveDaySwitches());
+
 document.addEventListener('change',e=>{
  if(e.target?.id==='day-rest-toggle'){setRestDay(e.target.checked);return;}
- if(e.target?.id==='day-completed-toggle'&&typeof currentDay!=='undefined'&&currentDay){
-   currentDay.completed=!!e.target.checked;
-   if(currentDay.completed)currentDay.restDay=false;
+ if(e.target?.id==='day-completed-toggle'){
+   const d=getDay();if(!d)return;
+   d.completed=!!e.target.checked;
+   if(d.completed)d.restDay=false;
    syncExclusiveDaySwitches();
-   if(typeof renderDay==='function')renderDay();
+   doRenderDay();
    syncExclusiveDaySwitches();
-   if(typeof scheduleSave==='function')scheduleSave();
+   doScheduleSave();
  }
 });
 
@@ -94,39 +97,39 @@ document.addEventListener('trainmei:core-learning',()=>{if(typeof renderHome==='
 
 /* === PWA STATE PERSISTENCE & COPY/PASTE BLOCK SYSTEM === */
 
-// Sistema de persistencia de estado para iPhone/PWA
 const PWAStateManager = {
   STORAGE_KEY: 'trainmei_pwa_state',
-  
-  // Guardar el estado actual (página activa, fecha, etc.)
+
   saveState() {
     try {
+      const tp = getTP();
       const activePage = document.querySelector('.page.active');
-      const activeDayView = document.querySelector('.day-view.active');
-      
+
       const state = {
         timestamp: Date.now(),
+        /* ─── FIX BUG 2 (part A): save the selectedDateKey from TP, NOT from
+           bare currentDate/currentYear/currentMonth globals which are stale
+           on iPhone after the day view is opened. ─────────────────────────── */
         activePage: activePage ? activePage.id : 'home-page',
-        currentDate: typeof currentDate !== 'undefined' ? currentDate : null,
-        currentYear: typeof currentYear !== 'undefined' ? currentYear : new Date().getFullYear(),
-        currentMonth: typeof currentMonth !== 'undefined' ? currentMonth : new Date().getMonth(),
-        isDayView: !!activeDayView,
-        dayViewId: activeDayView ? activeDayView.id : null
+        selectedDateKey: tp?.selectedDateKey || null,
+        monthCursorISO: tp?.monthCursor ? tp.monthCursor().toISOString() : null,
+        /* Never save that we're mid-day-view: restoring into the day view
+           would let the PWA try to re-open a day without a valid currentDay
+           object, which can then mutate unintended dates on save. */
+        isDayView: false
       };
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(state));
     } catch (e) {
       console.warn('PWA State save failed:', e);
     }
   },
-  
-  // Restaurar el estado guardado
+
   restoreState() {
     try {
       const saved = localStorage.getItem(this.STORAGE_KEY);
       if (!saved) return null;
-      
       const state = JSON.parse(saved);
-      // Solo restaurar si es relativamente reciente (menos de 30 días)
+      // Only restore if less than 30 days old
       if (Date.now() - state.timestamp > 30 * 24 * 60 * 60 * 1000) {
         localStorage.removeItem(this.STORAGE_KEY);
         return null;
@@ -137,31 +140,44 @@ const PWAStateManager = {
       return null;
     }
   },
-  
-  // Aplicar el estado restaurado
+
+  /* ─── FIX BUG 2 (part B): applyState must NEVER open a day view or
+     mutate TP.currentDay. It only restores the high-level page (calendar /
+     home). Calling renderMonth() or renderHome() is safe because those
+     functions do NOT write to storage — they only read. ─────────────────── */
   applyState(state) {
     if (!state) return;
-    
     try {
-      // Restaurar página activa
-      const targetPage = document.getElementById(state.activePage);
+      const tp = getTP();
+
+      // Restore the month cursor on TP so the calendar renders the right month
+      if (state.monthCursorISO && tp && typeof tp.setMonthCursor === 'function') {
+        try { tp.setMonthCursor(new Date(state.monthCursorISO)); } catch {}
+      }
+
+      // Restore selectedDateKey without opening the day view
+      if (state.selectedDateKey && tp) {
+        tp.selectedDateKey = state.selectedDateKey;
+      }
+
+      const targetPageId = state.activePage || 'home-page';
+      // Safety: never auto-restore into a day-view page — always fall back to calendar
+      const safePageId = (targetPageId === 'day-page' || targetPageId === 'day-view') ? 'calendar-page' : targetPageId;
+      const targetPage = document.getElementById(safePageId);
+
       if (targetPage) {
-        // Desactivar todas las páginas
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        // Activar la página guardada
         targetPage.classList.add('active');
-        
-        // Actualizar botón de navegación activo
+
         document.querySelectorAll('.btn[data-page]').forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-page') === state.activePage);
+          btn.classList.toggle('active', btn.getAttribute('data-page') === safePageId);
         });
-        
-        // Si es una página que necesita renderizado, dispara el evento apropiado
-        if (typeof renderMonth === 'function' && state.activePage === 'calendar-page') {
-          setTimeout(() => renderMonth(), 100);
-        }
-        if (typeof renderHome === 'function' && state.activePage === 'home-page') {
-          setTimeout(() => renderHome(), 100);
+
+        if (safePageId === 'calendar-page') {
+          const renderFn = tp?.TrainMeiCalendar?.renderMonth || (typeof renderMonth === 'function' ? renderMonth : null);
+          if (renderFn) setTimeout(() => renderFn(), 150);
+        } else if (safePageId === 'home-page') {
+          if (typeof renderHome === 'function') setTimeout(() => renderHome(), 150);
         }
       }
     } catch (e) {
@@ -170,91 +186,53 @@ const PWAStateManager = {
   }
 };
 
-// Sistema de Copy/Paste Block
+// Copy/Paste Block system
 const BlockClipboard = {
   STORAGE_KEY: 'trainmei_block_clipboard',
-  
-  // Copiar un bloque (fila de tabla o sección)
+
   copyBlock(element) {
     try {
-      // Encuentra el bloque más cercano (tr, section, .block, etc.)
-      let block = element.closest('tr') || 
-                  element.closest('section') || 
+      let block = element.closest('tr') ||
+                  element.closest('section') ||
                   element.closest('.block') ||
                   element.closest('[data-block]');
-      
-      if (!block) {
-        console.warn('No block found to copy');
-        return false;
-      }
-      
-      // Extraer datos del bloque según su tipo
-      let blockData = this.extractBlockData(block);
-      
-      // Guardar en clipboard local
+      if (!block) { console.warn('No block found to copy'); return false; }
       const clipboard = {
         timestamp: Date.now(),
         type: block.tagName.toLowerCase(),
-        data: blockData,
+        data: this.extractBlockData(block),
         source: block.className
       };
-      
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(clipboard));
-      
-      // Feedback visual
       this.showFeedback(element, 'Bloque copiado ✓');
-      
       return true;
-    } catch (e) {
-      console.error('Copy block failed:', e);
-      return false;
-    }
+    } catch (e) { console.error('Copy block failed:', e); return false; }
   },
-  
-  // Extraer datos de un bloque
+
   extractBlockData(block) {
     const data = {};
-    
-    // Si es una fila de tabla
     if (block.tagName.toLowerCase() === 'tr') {
-      const cells = block.querySelectorAll('td input, td textarea, td select');
-      cells.forEach((cell, i) => {
+      block.querySelectorAll('td input, td textarea, td select').forEach((cell, i) => {
         data['col_' + i] = cell.value || cell.textContent;
       });
-    } 
-    // Si es una sección o div
-    else {
-      const inputs = block.querySelectorAll('input, textarea, select');
-      inputs.forEach((input, i) => {
+    } else {
+      block.querySelectorAll('input, textarea, select').forEach((input, i) => {
         const key = input.name || input.id || 'field_' + i;
         data[key] = input.value || input.textContent;
       });
     }
-    
     return data;
   },
-  
-  // Pegar un bloque
+
   pasteBlock(targetElement) {
     try {
       const clipboard = localStorage.getItem(this.STORAGE_KEY);
-      if (!clipboard) {
-        this.showFeedback(targetElement, 'Sin bloques copiados');
-        return false;
-      }
-      
+      if (!clipboard) { this.showFeedback(targetElement, 'Sin bloques copiados'); return false; }
       const clipData = JSON.parse(clipboard);
       const block = targetElement.closest('tr') || targetElement.closest('section');
-      
-      if (!block) {
-        console.warn('No target block found to paste');
-        return false;
-      }
-      
-      // Pegar datos según el tipo
+      if (!block) { console.warn('No target block found to paste'); return false; }
       if (block.tagName.toLowerCase() === 'tr') {
-        const cells = block.querySelectorAll('td input, td textarea, td select');
-        cells.forEach((cell, i) => {
+        block.querySelectorAll('td input, td textarea, td select').forEach((cell, i) => {
           const key = 'col_' + i;
           if (clipData.data[key]) {
             cell.value = clipData.data[key];
@@ -263,8 +241,7 @@ const BlockClipboard = {
           }
         });
       } else {
-        const inputs = block.querySelectorAll('input, textarea, select');
-        inputs.forEach((input) => {
+        block.querySelectorAll('input, textarea, select').forEach((input) => {
           const key = input.name || input.id;
           if (key && clipData.data[key]) {
             input.value = clipData.data[key];
@@ -273,22 +250,12 @@ const BlockClipboard = {
           }
         });
       }
-      
       this.showFeedback(targetElement, 'Bloque pegado ✓');
-      
-      // Guardar cambios
-      if (typeof scheduleSave === 'function') {
-        scheduleSave();
-      }
-      
+      doScheduleSave();
       return true;
-    } catch (e) {
-      console.error('Paste block failed:', e);
-      return false;
-    }
+    } catch (e) { console.error('Paste block failed:', e); return false; }
   },
-  
-  // Mostrar feedback temporal
+
   showFeedback(element, message) {
     const feedback = document.createElement('div');
     feedback.style.cssText = `
@@ -304,7 +271,6 @@ const BlockClipboard = {
       animation: slideUp 0.3s ease-out;
     `;
     feedback.textContent = message;
-    
     document.body.appendChild(feedback);
     setTimeout(() => {
       feedback.style.animation = 'slideDown 0.3s ease-in';
@@ -313,7 +279,7 @@ const BlockClipboard = {
   }
 };
 
-// Agregar estilos de animación si no existen
+// Animation styles
 if (!document.querySelector('style[data-animations]')) {
   const style = document.createElement('style');
   style.setAttribute('data-animations', 'true');
@@ -330,16 +296,11 @@ if (!document.querySelector('style[data-animations]')) {
   document.head.appendChild(style);
 }
 
-// Detectar cambios de página y guardar estado - VERSIÓN OPTIMIZADA PARA MÓVIL
+// Save state on page navigation and on hide
 document.addEventListener('click', (e) => {
-  // Guardar estado SOLO cuando se cambia de página (lo más importante)
   if (e.target.closest('.btn[data-page]')) {
-    setTimeout(() => {
-      PWAStateManager.saveState();
-    }, 200);
+    setTimeout(() => { PWAStateManager.saveState(); }, 200);
   }
-  
-  // Copy/Paste con atajos
   if (e.target.closest('[data-action="copy-block"]')) {
     BlockClipboard.copyBlock(e.target);
     e.preventDefault();
@@ -350,47 +311,41 @@ document.addEventListener('click', (e) => {
   }
 }, { passive: true });
 
-// Guardar estado SOLO cuando el navegador se oculta (importante para PWA)
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
+  /* ─── FIX BUG 2 (part C): only save page state when hiding, NEVER when
+     a day edit is in progress (currentDay is set). Saving mid-edit was
+     recording a stale selectedDateKey that then got re-applied on resume,
+     causing subsequent saves to land on the wrong date on iPhone. ──────── */
+  if (document.hidden && !getDay()) {
     PWAStateManager.saveState();
   }
 }, { passive: true });
 
-// Restaurar estado INMEDIATAMENTE (antes de que startApp lo sobrescriba)
+// Restore state once, after startApp finishes
 let savedPWAState = null;
 let PWAStateRestored = false;
 
 function restorePWAStateNow() {
   if (PWAStateRestored) return;
   PWAStateRestored = true;
-  
   savedPWAState = PWAStateManager.restoreState();
-  
-  // Log para debugging en móvil
-  if (savedPWAState) {
-    console.log('PWA State restaurado:', savedPWAState.activePage);
-  }
-  
+  if (savedPWAState) console.log('PWA State loaded:', savedPWAState.activePage);
   return savedPWAState;
 }
-
-// Restaurar inmediatamente
 restorePWAStateNow();
 
-// Hook: interceptar startApp para restaurar estado DESPUÉS
-const originalStartApp = window.startApp;
-if (originalStartApp && savedPWAState) {
+/* ─── FIX BUG 2 (part D): hook into startApp only to restore page/month,
+   never to re-open a day view. The original hook could call applyState
+   while TP.currentDay pointed to a newly-saved Tuesday workout, causing
+   the PWA to re-render with Tuesday's data erroneously set as the active
+   day for the next tap — writing that data to empty days on iPhone. ─────── */
+const _origStartApp = window.startApp;
+if (_origStartApp) {
   window.startApp = async function() {
-    const result = await originalStartApp.call(this);
-    
-    // Restaurar SOLO UNA VEZ después de que startApp termine
-    if (savedPWAState.activePage !== 'home-page') {
-      setTimeout(() => {
-        PWAStateManager.applyState(savedPWAState);
-      }, 300);
+    const result = await _origStartApp.call(this);
+    if (savedPWAState && savedPWAState.activePage !== 'home-page') {
+      setTimeout(() => { PWAStateManager.applyState(savedPWAState); }, 350);
     }
-    
     return result;
   };
 }
