@@ -1393,7 +1393,7 @@ body{color:var(--ink)}
   body:has(#day-page.active) #day-page{padding-top:58px}
 }
 .day-completion-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:7px 0;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.recovery-inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-left:8px;border-left:1px solid var(--line)}
+.recovery-inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-left:8px;border-left:1px solid var(--line);justify-content:space-evenly}
 .recovery-title{font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800}
 .recovery-row{display:flex;align-items:center;gap:3px;font-size:8px;color:var(--muted)}
 .recovery-dots{display:flex;gap:0}
