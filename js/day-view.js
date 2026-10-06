@@ -1,4 +1,3 @@
-/* TrainMei Phase 6 — Day / Workout View domain */
 (()=>{
   const TP=window.TrainMeiState;
   if(!TP){console.error('TrainMei Day View: unified state unavailable');return;}
@@ -36,7 +35,30 @@
     $$('[data-day-color]').forEach(b=>b.classList.toggle('active',(d.color||'')===b.dataset.dayColor));
     document.dispatchEvent(new CustomEvent('trainmei:day-rendered',{detail:{date:TP.selectedDateKey}}));
   }
-  function renderRecoveryInputs(){const d=currentDay(),r=d?.recovery||{sleep:0,energy:0,soreness:0};$$('[data-recovery-group]').forEach(group=>{const key=group.dataset.recoveryGroup,value=Math.max(0,Math.min(5,Number(r[key])||0));group.innerHTML=Array.from({length:5},(_,i)=>`<button type="button" class="recovery-dot${i<value?' active':''}" data-recovery-key="${key}" data-recovery-value="${i+1}" aria-label="${key} ${i+1} of 5">○</button>`).join('')})}
+
+  function renderRecoveryInputs(){
+    const d=currentDay(),r=d?.recovery||{sleep:0,energy:0,soreness:0};
+    $$('[data-recovery-group]').forEach(group=>{
+      const key=group.dataset.recoveryGroup,value=Math.max(0,Math.min(5,Number(r[key])||0));
+      group.innerHTML=Array.from({length:5},(_,i)=>`<button type="button" class="recovery-dot${i<value?' active':''}" data-recovery-key="${key}" data-recovery-value="${i+1}" aria-label="${key} ${i+1} of 5">○</button>`).join('');
+      // Replace node to shed any previous listener, then attach fresh one
+      const fresh=group.cloneNode(true);
+      group.parentNode.replaceChild(fresh,group);
+      fresh.addEventListener('click',e=>{
+        const btn=e.target.closest('.recovery-dot');if(!btn)return;
+        const d2=currentDay();if(!d2)return;
+        d2.recovery=d2.recovery||{sleep:0,energy:0,soreness:0};
+        const clickedVal=Number(btn.dataset.recoveryValue);
+        const currentVal=Math.max(0,Math.min(5,Number(d2.recovery[key])||0));
+        // Tap same value → toggle off (set to 0); tap different → set new value
+        d2.recovery[key]=clickedVal===currentVal?0:clickedVal;
+        const newVal=d2.recovery[key];
+        fresh.querySelectorAll('.recovery-dot').forEach((b,i)=>b.classList.toggle('active',i<newVal));
+        scheduleSave();
+      });
+    });
+  }
+
   function renderTrainingBlocks(){
     const d=currentDay(),c=$('#training-blocks');if(!c||!d)return;
     const cats=['Warm-up','Mobility','Stretching','Strength','Conditioning','AMRAP','FOR TIME','EMOM','TIME CAP','Running','Accessory','Recovery','Cool-down','Other'];
@@ -55,5 +77,6 @@
     const readiness=core.readiness(currentDay(),{loadRatio,fuelScore,cyclePhase});let cycleInfo='';if(cycleSnapshot){const observed=cycleSnapshot.observed?'✓':'est.';cycleInfo=`<div class="brain-cycle-info"><span class="brain-cycle-phase">${esc(cyclePhase||'unknown')}</span><span class="brain-cycle-day">Day ${cycleSnapshot.cycleDay} ${observed}</span></div>`}
     box.innerHTML=readiness.score!==null?`${cycleInfo}<div class="brain-driver"><span>Readiness</span><strong>${readiness.score} · ${readiness.status}</strong></div><div class="brain-legend">${readiness.confidence}${readiness.mainLimitingFactor?' · Main factor: '+readiness.mainLimitingFactor:''}</div>`:`${cycleInfo}<div class="brain-empty">Log sleep, energy and soreness below to see today's readiness.</div>`;
   }
+
   window.TrainMeiDayView={renderDay,renderRecoveryInputs,renderTrainingBlocks,conditioningFields,renderConditioningBlocks,addConditioningBlock,renderDayContext};
 })();
