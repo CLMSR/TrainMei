@@ -35,7 +35,7 @@ function setRestDay(on){
 /* Navigation: desktop + horizontal = labels, vertical iPhone = icons. */
 function refreshNav(){
   const portrait=window.matchMedia('(max-width:560px)').matches;
-  $$('#main-nav .btn[data-page],#templates-btn,#settings-btn').forEach(b=>{
+$$('#main-nav .btn[data-page],#templates-btn,#daily-briefing-btn,#settings-btn').forEach(b=>{
     const label=b.querySelector('.nav-label');const svg=b.querySelector('svg');
     if(label)label.hidden=portrait;
     if(svg)svg.hidden=!portrait;
@@ -44,11 +44,8 @@ function refreshNav(){
 window.addEventListener('resize',refreshNav,{passive:true});
 refreshNav();
 
-/* Improve the single Data Core calculations without adding a second model. */
 function patchCore(){
- const core=window.TrainingDataCore;if(!core)return false;
- if(typeof core.totalTime!=='function')core.totalTime=d=>d&&!d.restDay?Math.max(0,Number(d.metrics?.timeMin)||0):0;
- return true;
+ return !!window.TrainingDataCore;
 }
 
 /* Cycle Tracker persistence hardening */
@@ -141,10 +138,6 @@ const PWAStateManager = {
     }
   },
 
-  /* ─── FIX BUG 2 (part B): applyState must NEVER open a day view or
-     mutate TP.currentDay. It only restores the high-level page (calendar /
-     home). Calling renderMonth() or renderHome() is safe because those
-     functions do NOT write to storage — they only read. ─────────────────── */
   applyState(state) {
     if (!state) return;
     try {
@@ -312,16 +305,12 @@ document.addEventListener('click', (e) => {
 }, { passive: true });
 
 document.addEventListener('visibilitychange', () => {
-  /* ─── FIX BUG 2 (part C): only save page state when hiding, NEVER when
-     a day edit is in progress (currentDay is set). Saving mid-edit was
-     recording a stale selectedDateKey that then got re-applied on resume,
-     causing subsequent saves to land on the wrong date on iPhone. ──────── */
+
   if (document.hidden && !getDay()) {
     PWAStateManager.saveState();
   }
 }, { passive: true });
 
-// Restore state once, after startApp finishes
 let savedPWAState = null;
 let PWAStateRestored = false;
 
@@ -334,11 +323,6 @@ function restorePWAStateNow() {
 }
 restorePWAStateNow();
 
-/* ─── FIX BUG 2 (part D): hook into startApp only to restore page/month,
-   never to re-open a day view. The original hook could call applyState
-   while TP.currentDay pointed to a newly-saved Tuesday workout, causing
-   the PWA to re-render with Tuesday's data erroneously set as the active
-   day for the next tap — writing that data to empty days on iPhone. ─────── */
 const _origStartApp = window.startApp;
 if (_origStartApp) {
   window.startApp = async function() {

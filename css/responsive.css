@@ -1,7 +1,7 @@
 .nutri-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.nutri-form-grid .nutri-form-group{min-width:0}.nutri-form-grid .nutri-label{display:block;margin-bottom:5px}.nutri-form-grid .nutri-input,.nutri-form-grid .nutri-select{width:100%;box-sizing:border-box}@media(max-width:560px){.nutri-form-grid{grid-template-columns:1fr}}
 
 /* TrainMei v7 — one controlled responsive layer; no parallel data model. */
-.top-actions .btn[data-page],#templates-btn,#settings-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.top-actions .btn[data-page],#templates-btn,#settings-btn,#briefing{display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .nav-label{display:inline}
 .top-actions .btn[data-page] svg,#templates-btn svg,#settings-btn svg{display:none;width:17px;height:17px;flex:0 0 17px}
 .rest-day-inline{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;min-width:92px}
@@ -56,7 +56,7 @@
   .top-actions .btn[data-page],#templates-btn,#settings-btn{border-radius:9px!important}
 .topbar{position:relative;width:100%;box-sizing:border-box;overflow:hidden;display:flex!important;align-items:center!important;justify-content:space-between!important}
   .topbar .brand{flex:0 0 auto;min-width:0;max-width:82px;white-space:nowrap;font-size:11px!important;overflow:hidden;text-overflow:ellipsis}
-  .top-actions{position:absolute!important;left:50%!important;transform:translateX(-50%)!important;flex:0 0 auto!important;width:210px!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;overflow:hidden!important}
+  .top-actions{position:absolute!important;left:50%!important;transform:translateX(-50%)!important;flex:0 0 auto!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;overflow:hidden!important}
   .top-actions .btn[data-page],#templates-btn,#settings-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:31px!important;min-width:31px!important;height:31px!important;padding:0!important;line-height:1!important;flex:0 0 31px!important}
   .top-actions .btn[data-page] svg,#templates-btn svg,#settings-btn svg{display:block!important;margin:0!important}
   .top-actions .nav-label{display:none!important}

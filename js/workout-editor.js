@@ -51,7 +51,21 @@ function addSetGroup(bi,ei){const e=currentDay().blocks[bi].exercises[ei];if(!Ar
 function duplicateBlock(i){if(!currentDay()?.blocks?.[i])return;const copy=clone(currentDay().blocks[i]);copy.id='blk_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);copy.name=(copy.name||`Block ${i+1}`)+' copy';currentDay().blocks.splice(i+1,0,copy);TP.activeBlockIndex=i+1;renderDay();scheduleSave()}
 function addQuickSet(i){const b=currentDay()?.blocks?.[i];if(!b?.exercises?.length)return;let ei=b.exercises.findIndex(e=>String(e.name||'').trim());if(ei<0)ei=0;addSetGroup(i,ei)}
 function removeSetGroup(bi,ei,gi){const e=currentDay().blocks[bi].exercises[ei];if(!Array.isArray(e.setGroups))e.setGroups=[normalizeSetGroup(e)];if(e.setGroups.length<=1){setStatus('Keep at least one set group');return}e.setGroups.splice(gi,1);syncExerciseLegacyFields(e);TP.activeBlockIndex=bi;renderDay();scheduleSave()}
-function moveExerciseDrag(fb,fe,tb,te){const x=currentDay().blocks[fb].exercises.splice(fe,1)[0];if(fb===tb&&fe<te)te--;currentDay().blocks[tb].exercises.splice(Math.max(0,te),0,x);TP.activeBlockIndex=tb;renderDay();scheduleSave()}
+function moveExerciseDrag(fb,fe,tb,te){
+  /* FIX #9: guard against stale drag indices (common on iOS when the user
+     scrolls during a drag). If any index is out of range we abort silently
+     rather than splicing into undefined and losing the exercise. */
+  const d=currentDay();if(!d)return;
+  const blocks=d.blocks||[];
+  if(!blocks[fb]||!blocks[tb])return;
+  const srcEx=blocks[fb].exercises||[];
+  if(fe<0||fe>=srcEx.length)return;
+  const x=srcEx.splice(fe,1)[0];
+  if(fb===tb&&fe<te)te--;
+  const tgtEx=blocks[tb].exercises||(blocks[tb].exercises=[]);
+  tgtEx.splice(Math.max(0,Math.min(te,tgtEx.length)),0,x);
+  TP.activeBlockIndex=tb;renderDay();scheduleSave();
+}
 
   window.TrainMeiWorkoutEditor={getBlockLibrary,saveBlockLibraryData,normalizeTags,deriveBlockTags,getBlockTags,renderBlockTagFilters,saveBlockLibrary,saveBlockFromSession,renderBlockLibrary,insertLibraryBlock,deleteLibraryBlock,pasteBlock,copyBlockToClipboard,blankExercise,addBlock,addBlockExercise,addSetGroup,duplicateBlock,addQuickSet,removeSetGroup,moveExerciseDrag};
 })();

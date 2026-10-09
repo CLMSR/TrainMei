@@ -57,5 +57,21 @@
       c.onclick=()=>{TP.selectedDateKey=c.dataset.key;$$('#cal-grid .cal-cell.selected').forEach(x=>x.classList.remove('selected'));c.classList.add('selected');const mobileLandscape=window.matchMedia('(min-width:561px) and (max-width:950px) and (orientation:landscape)').matches,mobilePortrait=window.matchMedia('(max-width:560px) and (orientation:portrait)').matches;if(mobileLandscape||mobilePortrait){TP.openDay(c.dataset.key);return}renderCalendarQuickView(c.dataset.key);TP.setStatus('')}});
     TP.setStatus('');document.dispatchEvent(new CustomEvent('trainmei:month-rendered',{detail:{monthCursor:new Date(cursor),selectedDateKey:initial}}));
   }
+  /* FIX #8: event delegation for the "Open workout" button injected by
+     renderCalendarQuickView(). The button lives inside innerHTML so it has no
+     direct listener. Previously this relied on a handler in unified-state.js
+     that may not exist, leaving the button inert on desktop. Registering the
+     delegation here in calendar.js makes this module fully self-contained.
+     Guard: only register once even if calendar.js is re-evaluated. */
+  if(!window._tpCalendarQuickOpenBound){
+    window._tpCalendarQuickOpenBound=true;
+    document.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-quick-open]');
+      if(!btn)return;
+      const dateKey=btn.dataset.quickOpen;
+      if(dateKey&&TP.openDay)TP.openDay(dateKey);
+    });
+  }
+
   window.TrainMeiCalendar={fetchMonth,renderCalendarQuickView,renderMonth};
 })();

@@ -1,12 +1,20 @@
-/* ===== CENTRAL NUTRITION DATA LAYER =====
-   FatSecret is the source. NutritionDataLayer normalizes it. Downstream
-   modules consume this snapshot / TrainingDataCore context instead of maintaining
-   their own intake copy. Nutri Tracker is calculator-only.
-*/
 (function(){
   'use strict';
   const SB=window.supabaseClient;
-  const state={date:null,connection:null,summary:null,entries:[],loaded:false,error:null,lastRefreshAt:null};
+const state={
+  date:null,
+  connection:null,
+  summary:null,
+  entries:[],
+  loaded:false,
+  error:null,
+  lastRefreshAt:null
+};
+
+let resolveReady;
+const readyPromise=new Promise(resolve=>{
+  resolveReady=resolve;
+});
   const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
   const num=v=>v==null||v===''||!Number.isFinite(Number(v))?null:Number(v);
   const firstNum=(o,keys)=>{for(const k of keys){const v=num(o?.[k]);if(v!=null)return v}return null};
@@ -29,9 +37,18 @@
     state.connection=conn;state.entries=window.TrainMeiNutritionUtils.dedupeNutritionEntries(entries||[]);state.summary=mergeSummaryWithEntries(summary,state.entries,date);state.lastRefreshAt=new Date().toISOString();
     // Every date loaded from the FatSecret Data Layer also warms the shared Core cache.
     try{if(window.TrainingDataCore&&typeof window.TrainingDataCore._cacheNutritionRow==='function')window.TrainingDataCore._cacheNutritionRow(state.summary)}catch(e){}
-    state.loaded=true;state.error=null;
-    document.dispatchEvent(new CustomEvent('trainmei:nutrition-updated',{detail:getSnapshot()}));
-    return getSnapshot();
+    state.loaded=true;
+state.error=null;
+
+resolveReady(getSnapshot());
+
+document.dispatchEvent(
+  new CustomEvent('trainmei:nutrition-updated',{
+    detail:getSnapshot()
+  })
+);
+
+return getSnapshot();
   }
   function snapshot(){
     const s=state.summary||{};
@@ -82,6 +99,11 @@
   }
   function getSnapshot(){return snapshot()}
 
+  function whenReady(){
+  return state.loaded
+    ? Promise.resolve(getSnapshot())
+    : readyPromise;
+}
   async function sync(date=today()){
     if(!SB)return null;
     const {data,error}=await SB.functions.invoke('fatsecret-sync',{body:{date}});
@@ -89,7 +111,18 @@
     await load(date);document.dispatchEvent(new CustomEvent('trainmei:nutrition-sync-complete',{detail:{from:date,to:date,days:1,processed:Number(data?.synced||data?.upsertCount||0),failed:0,source:'TrainMeiNutritionData'}}));return data;
   }
   function openFatSecret(){document.querySelector('#main-nav [data-page="integrations-page"]')?.click();setTimeout(()=>document.querySelector('.smart-launch-card[data-page="fatsecret-page"]')?.click(),0)}
-  document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>load(today()).catch(e=>{state.error=e;try{window.TrainMeiNutrition?.render?.()}catch(_){}}),120)});
+  document.addEventListener('DOMContentLoaded',()=>{
+  load(today()).catch(e=>{
+    state.error=e;
+    state.loaded=true;
+
+    resolveReady(null);
+
+    try{
+      window.TrainMeiNutrition?.render?.();
+    }catch(_){}
+  });
+});
   document.addEventListener('trainmei:nutrition-sync-request',e=>{sync(e.detail?.date||today()).catch(console.error)});
   async function loadHistory(from,to){
     if(!SB)return {summaries:[],entries:[]};
@@ -112,7 +145,13 @@
     return {summaries,entries,source:'fatsecret',from,to};
   }
 
-  async function syncRange(from,to){
+  const rangeState={
+  preset:'custom',
+  from:null,
+  to:null
+};
+
+async function syncRange(from,to){
     rangeState.preset='custom';
     rangeState.from=from;rangeState.to=to;
     const dateDiff=(a,b)=>Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/86400000);const nextDate=d=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+1);return x.toISOString().slice(0,10)};
@@ -132,6 +171,17 @@ const daySync=date=>window.TrainMeiFatSecret?.sync?.(date);
     return {from,to,days:count,processed,failed};
   }
 
-  window.TrainMeiNutritionData={getSnapshot,load,loadHistory,sync,syncRange,openFatSecret,state,normalizeNutritionEntry:window.TrainMeiNutritionUtils.normalizeNutritionEntry,dedupeNutritionEntries:window.TrainMeiNutritionUtils.dedupeNutritionEntries,
+window.TrainMeiNutritionData={
+  getSnapshot,
+  whenReady,
+  load,
+  loadHistory,
+  sync,
+  syncRange,
+  openFatSecret,
+  state,
+  normalizeNutritionEntry:window.TrainMeiNutritionUtils.normalizeNutritionEntry,
+  dedupeNutritionEntries:window.TrainMeiNutritionUtils.dedupeNutritionEntries,
   refreshActive:()=>load(state.date||today()),
-  getActiveDate:()=>state.date||today()};})();
+  getActiveDate:()=>state.date||today()
+};})();

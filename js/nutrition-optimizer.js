@@ -946,6 +946,15 @@ function mealTargetFromDaily(targets,mealKey,coreCtx=null){
     kcal:Math.round(protein*4+carbs*4+fat*9)
   };
 }
+function mealKeyFromTiming(value){
+  const t=Number(value);
+
+  if(t===30||t===60||t===120||t===180){
+    return 'pre';
+  }
+
+  return 'pre';
+}
 
 function mealKeyLabel(key){
   return MEAL_TARGETS[key]?.label||key;
@@ -1207,7 +1216,27 @@ function renderMealPlan(n,d,coreCtx=null){
   });
 }
 
-function home(){const title=document.getElementById('home-nutrition-title'),time=document.getElementById('home-nutrition-time'),body=document.getElementById('home-nutrition-body');if(!title||!body)return;const d=session(),n=nutri(),i=n.intake||{},t=n.targets||{},fuel=window.TrainingDataCore?.performanceFuel?.(todayKey(),d.workout)||null;title.textContent='Nutrition Optimizer';time.textContent=d.workout?d.type:(n.connected?'FatSecret synced':'—');if(!n.connected&&!((i.kcal!=null)||(i.carb!=null)||(i.prot!=null))){body.innerHTML="<div class='home-empty'>Connect and sync FatSecret to make today's nutrition available across TrainMei.</div>";return}const kcal=i.kcal!=null?Math.round(i.kcal):null,carb=i.carb!=null?Math.round(i.carb):null,prot=i.prot!=null?Math.round(i.prot):null,remaining=kcal!=null&&t.kcal?Math.max(0,Math.round(t.kcal-kcal)):null;body.innerHTML=`<div class="home-nutrition-main"><strong>${remaining!=null?'~'+remaining+' kcal':'FatSecret'}</strong><span>${fuel?.score!=null?`Fuel ${fuel.score}% · ${fuel.status}`:'Live intake synced'}</span></div><div class="home-nutrition-meta"><span>${carb!=null?carb+' g carbs':'— carbs'}</span><span>${prot!=null?prot+' g protein':'— protein'}</span><span>${kcal!=null?kcal+' kcal logged':'No kcal total'}</span></div>`}
+function home(){const title=document.getElementById('home-nutrition-title'),time=document.getElementById('home-nutrition-time'),body=document.getElementById('home-nutrition-body');if(!title||!body)return;const d=session(),n=nutri(),i=n.intake||{},t=n.targets||{},fuel=window.TrainingDataCore?.performanceFuel?.(todayKey(),d.workout)||null;title.textContent='Nutrition Optimizer';const hasIntake=
+  i.kcal!=null||
+  i.carb!=null||
+  i.prot!=null||
+  i.fat!=null;
+
+time.textContent=
+  d.workout
+    ?d.type
+    :(hasIntake
+      ?'FatSecret synced'
+      :(n.connected
+        ?'FatSecret connected'
+        :'—'));
+
+if(!n.connected&&!hasIntake){
+  body.innerHTML=
+    "<div class='home-empty'>Connect and sync FatSecret to make today's nutrition available across TrainMei.</div>";
+  return;
+}
+const kcal=i.kcal!=null?Math.round(i.kcal):null,carb=i.carb!=null?Math.round(i.carb):null,prot=i.prot!=null?Math.round(i.prot):null,remaining=kcal!=null&&t.kcal?Math.max(0,Math.round(t.kcal-kcal)):null;body.innerHTML=`<div class="home-nutrition-main"><strong>${remaining!=null?'~'+remaining+' kcal':'FatSecret'}</strong><span>${fuel?.score!=null?`Fuel ${fuel.score}% · ${fuel.status}`:'Live intake synced'}</span></div><div class="home-nutrition-meta"><span>${carb!=null?carb+' g carbs':'— carbs'}</span><span>${prot!=null?prot+' g protein':'— protein'}</span><span>${kcal!=null?kcal+' kcal logged':'No kcal total'}</span></div>`}
 function open(){if(typeof showPage==='function'){showPage('nutrition-page');}else{document.querySelectorAll('.page').forEach(page=>{page.classList.remove('active');});const page=document.getElementById('nutrition-page');if(page){page.classList.add('active');}}window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{render().catch?.(error=>{console.warn('[Nutrition Optimizer] Could not refresh after opening:',error);});},30);}
 let feedbackSaveTimer=null;let feedbackSaveInFlight=false;
 function feedbackComplete(){return ['no-feedback-tolerance','no-feedback-energy','no-feedback-hunger','no-feedback-performance'].every(id=>Number(document.getElementById(id)?.value||0)>0)}
@@ -1220,7 +1249,6 @@ document.addEventListener('trainmei:nutrition-updated',()=>{if(document.querySel
 document.addEventListener('click',e=>{const t=e.target.closest('[data-nutrition-time]');if(t){
   timing=+t.dataset.nutritionTime;
   variant=0;
-  selectedMeal=mealKeyFromTiming(timing);
   render();
   return;
 }
@@ -1234,5 +1262,21 @@ if(mealTab){
 }
 
 if(e.target.closest('#no-change-meal')){variant++;render();return}if(e.target.closest('#no-open-nutri')){if(typeof showPage==='function'){showPage('nutri-page');}else{document.querySelectorAll('.page').forEach(page=>{page.classList.remove('active');});const page=document.getElementById('nutri-page');if(page){page.classList.add('active');}}window.scrollTo({top:0,behavior:'smooth'});return;}if(e.target.closest('#no-save-feedback')){saveFB();return}if(e.target.closest('[data-home-action="nutrition"]')){open();return}const p=e.target.closest('[data-page]');if(p?.dataset.page==='nutrition-page')setTimeout(render,30);if(p?.dataset.page==='home-page')setTimeout(home,80);});
-document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>render().catch?.(()=>{}),180);setTimeout(()=>home(),220)});window.TrainMeiNutrition={render,home,open};
+document.addEventListener('DOMContentLoaded',async()=>{
+  try{
+    if(window.TrainMeiNutritionData?.whenReady){
+      await window.TrainMeiNutritionData.whenReady();
+    }
+
+    await render();
+    home();
+  }catch(error){
+    console.warn(
+      '[Nutrition Optimizer] Initial render failed:',
+      error
+    );
+  }
+});
+
+window.TrainMeiNutrition={render,home,open};
 })();

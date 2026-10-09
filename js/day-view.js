@@ -1,3 +1,4 @@
+/* TrainMei Phase 6 — Day / Workout View domain */
 (()=>{
   const TP=window.TrainMeiState;
   if(!TP){console.error('TrainMei Day View: unified state unavailable');return;}
@@ -36,6 +37,11 @@
     document.dispatchEvent(new CustomEvent('trainmei:day-rendered',{detail:{date:TP.selectedDateKey}}));
   }
 
+  /* ─── FIX: Recovery dots toggle ───────────────────────────────────────────
+     Original: clicking a dot always set the value — no way to deactivate.
+     Fixed: clicking the dot that matches the current stored value resets
+     that field to 0, allowing the user to clear an accidental selection.
+     Uses event delegation on the container — no stale listeners on re-render. */
   function renderRecoveryInputs(){
     const d=currentDay(),r=d?.recovery||{sleep:0,energy:0,soreness:0};
     $$('[data-recovery-group]').forEach(group=>{

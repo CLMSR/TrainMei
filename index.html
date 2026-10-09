@@ -3,7 +3,7 @@
   
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#EEEAE1">
 <link rel="apple-touch-icon" href="icons/trainmei-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,6 +17,7 @@
 
 
 </head>
+
 <body data-theme="original">
 <div id="auth-overlay" class="auth-overlay">
   <div class="auth-box">
@@ -71,6 +72,7 @@
       <button class="btn" data-page="plan-page" aria-label="Plan" title="Plan"><span class="nav-label">Plan</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="3.5" cy="5" r=".9" fill="currentColor"/><circle cx="3.5" cy="12" r=".9" fill="currentColor"/><circle cx="3.5" cy="19" r=".9" fill="currentColor"/></svg></button>
       <button class="btn" data-page="integrations-page" aria-label="Smart Integrations" title="Smart Integrations"><span class="nav-label">Smart Integrations</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="6" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8 11 7.8-4M8 13l7.8 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
       <button class="btn" id="templates-btn" aria-label="Templates" title="Templates"><span class="nav-label">Templates</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 20h11a2 2 0 0 0 2-2V7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 8h5M8 12h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <button type="button" class="btn" id="daily-briefing-btn" aria-label="Daily Briefing" title="Daily Briefing"><span class="nav-label">Daily Briefing</span></button>
       <button class="btn" id="settings-btn" aria-label="Open settings" title="Settings"><span class="nav-label">Settings</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m19.4 15 .9 1.7-2 2-1.7-.9a7.8 7.8 0 0 1-2.1.9l-.5 1.9h-2.8l-.5-1.9a7.8 7.8 0 0 1-2.1-.9l-1.7.9-2-2 .9-1.7a7.8 7.8 0 0 1-.9-2.1l-1.9-.5V9.6l1.9-.5a7.8 7.8 0 0 1 .9-2.1L5.1 5.3l2-2 1.7.9a7.8 7.8 0 0 1 2.1-.9l.5-1.9h2.8l.5 1.9a7.8 7.8 0 0 1 2.1.9l1.7-.9 2 2-.9 1.7a7.8 7.8 0 0 1 .9 2.1l1.9.5v2.8l-1.9.5a7.8 7.8 0 0 1-.9 2.1Z" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/></svg></button>
       <button class="btn" id="export-btn">Backup</button>
       <button class="btn" id="import-btn">Restore</button>
@@ -89,52 +91,88 @@
         </div>
 <button class="btn home-primary" data-home-action="open-today">Open workout</button>
       </div>
-      <div class="home-grid">
+        <div class="home-grid">
         <section class="home-card home-today-card">
           <div class="home-card-head"><div><div class="eyebrow">Today</div><h2 id="home-today-title">No workout planned</h2></div><span id="home-today-status" class="home-status">—</span></div>
           <div id="home-today-body" class="home-today-body"></div>
-<div class="home-actions"><button class="btn" data-home-action="open-today">Open workout</button></div>
+          <div class="home-actions"><button class="btn" data-home-action="open-today">Open workout</button></div>
         </section>
+
+        <section class="home-card home-week-card">
+          <div class="home-card-head"><div><div class="eyebrow">This week</div><h2 id="home-week-title">Week —</h2></div><button class="btn" data-home-page="plan-page">Plan week</button></div>
+          <div class="home-week-progress"><div class="home-progress-track"><span id="home-week-progress-bar"></span></div><strong id="home-week-progress-text">0 / 0 completed</strong></div>
+          <div id="home-week-days" class="home-week-days"></div>
+        </section>
+
         <section class="home-card home-readiness-card">
           <div class="home-card-head"><div><div class="eyebrow">Today's readiness</div><h2 id="home-readiness-score">—</h2></div><span id="home-readiness-status" class="home-status">—</span></div>
           <div class="home-readiness-bars" id="home-readiness-bars"></div>
         </section>
+
         <section class="home-card home-brain-card">
           <div class="home-card-head"><div><div class="eyebrow">Training Brain</div><h2 id="home-brain-title">Learning from your training</h2></div><span id="home-brain-confidence" class="home-status">—</span></div>
           <div class="brain-score"><div class="brain-ring" id="home-brain-ring"><strong id="home-brain-score">—</strong></div><div class="brain-score-copy"><strong id="home-brain-recommendation">Building your personal model</strong><span id="home-brain-pattern">Log completed sessions and feedback to make the model more personal.</span></div></div>
           <div class="home-actions"><button class="btn" data-brain-open>Open Training Brain</button></div>
         </section>
-        <section class="home-card home-nutrition-card">
-          <div class="home-card-head"><div><div class="eyebrow">Fuel for today</div><h2 id="home-nutrition-title">Nutrition Optimizer</h2></div><span id="home-nutrition-time" class="home-status">—</span></div>
-          <div id="home-nutrition-body" class="home-nutrition-body"></div>
-          <div class="home-actions"><button class="btn" data-home-action="nutrition">Optimize meal</button></div>
-        </section>
+
         <section class="home-card home-load-card">
           <div class="home-card-head"><div><div class="eyebrow">Total time</div><h2>This week</h2></div><span id="home-load-status" class="home-status">—</span></div>
           <div class="home-load-bars" id="home-load-bars"></div>
           <div class="home-load-recovery"><span>Recovery</span><strong id="home-load-recovery-pct">—</strong></div>
         </section>
-        <section class="home-card">
-          <div class="home-card-head"><div><div class="eyebrow">This week</div><h2 id="home-week-title">Week —</h2></div><button class="btn" data-home-page="plan-page">Plan week</button></div>
-          <div class="home-week-progress"><div class="home-progress-track"><span id="home-week-progress-bar"></span></div><strong id="home-week-progress-text">0 / 0 completed</strong></div>
-          <div id="home-week-days" class="home-week-days"></div>
+
+        <section class="home-card home-nutrition-card">
+          <div class="home-card-head"><div><div class="eyebrow">Fuel for today</div><h2 id="home-nutrition-title">Nutrition Optimizer</h2></div><span id="home-nutrition-time" class="home-status">—</span></div>
+          <div id="home-nutrition-body" class="home-nutrition-body"></div>
+          <div class="home-actions"><button class="btn" data-home-action="nutrition">Optimize meal</button></div>
         </section>
-        <section class="home-card home-month-overview"><div class="home-month-head"><span class="home-month-title" id="home-month-title">—</span><span class="home-month-note">completed sessions</span></div><div class="home-heat-labels"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div id="home-month-heatmap" class="home-heatmap"></div></section>
+
         <section class="home-card home-stat-card">
           <div class="home-card-head"><div><div class="eyebrow">At a glance</div><h2>Training snapshot</h2></div></div>
           <div class="home-stats" id="home-stats"></div>
         </section>
+
         <section class="home-card home-next-card">
           <div class="home-card-head"><div><div class="eyebrow">Next up</div><h2 id="home-next-title">—</h2></div><span id="home-next-date" class="home-status">—</span></div>
           <div id="home-next-body" class="home-next-body"></div>
           <div class="home-actions"><button class="btn" data-home-action="open-next">Open next session</button><button class="btn" data-home-page="templates-modal">Templates</button></div>
         </section>
+
+        <section class="home-card home-month-overview">
+          <div class="home-month-head"><span class="home-month-title" id="home-month-title">—</span><span class="home-month-note">completed sessions</span></div>
+          <div class="home-heat-labels"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+          <div id="home-month-heatmap" class="home-heatmap"></div>
+        </section>
       </div>
-      <div class="home-quick-actions">
-        <button class="home-quick" data-home-action="quick-add" style="display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:0 0 28px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" style="display:block;width:24px;height:24px;color:currentColor;"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M12 5v14m-7-7h14"></path></svg></span><span style="display:flex;flex-direction:column;align-items:flex-start;min-width:0;"><strong style="display:block;font-size:12px;line-height:1.2;white-space:nowrap;">Add workout</strong><small style="display:block;font-size:9px;line-height:1.2;margin-top:2px;color:rgba(255,255,255,.75);white-space:nowrap;">Start from today</small></span></button>
-        <button class="home-quick" data-home-action="scan"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"></path></svg></div></div><span><strong>Open Smart Integrations</strong><small>Know your Fitness</small></span></button>
-        <button class="home-quick" data-home-action="templates"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg></div></div><span><strong>Templates</strong><small>Pick a session</small></span></button>
-        <button class="home-quick" data-home-page="calendar-page"><div class="svg-wrapper-1"><div class="svg-wrapper"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 16H5V9h14z"></path></svg></div></div><span><strong>Calendar</strong><small>See your month</small></span></button>
+           <div class="home-desktop-cta" aria-label="Acciones rápidas">
+        <button type="button" class="btn home-primary-cta" data-home-action="quick-add">
+          <span class="home-cta-icon" aria-hidden="true">＋</span>
+          <span class="home-cta-copy">
+            <strong>Add workout</strong>
+            <small>Start from today</small>
+          </span>
+        </button>
+        <button type="button" class="btn home-secondary-cta" data-home-action="scan">
+          <span class="home-cta-icon" aria-hidden="true">◎</span>
+          <span class="home-cta-copy">
+            <strong>Smart Integrations</strong>
+            <small>Know your fitness</small>
+          </span>
+        </button>
+        <button type="button" class="btn home-secondary-cta" data-home-action="templates">
+          <span class="home-cta-icon" aria-hidden="true">☆</span>
+          <span class="home-cta-copy">
+            <strong>Templates</strong>
+            <small>Pick a session</small>
+          </span>
+        </button>
+        <button type="button" class="btn home-secondary-cta" data-home-page="calendar-page">
+          <span class="home-cta-icon" aria-hidden="true">▦</span>
+          <span class="home-cta-copy">
+            <strong>Calendar</strong>
+            <small>See your month</small>
+          </span>
+        </button>
       </div>
     </div>
   </section>
@@ -210,22 +248,89 @@
     </div>
   </section>
   <section id="plan-page" class="page">
-    <div class="plan-head"><div><div class="eyebrow">Weekly training planner</div><div class="plan-title page-title">Plan</div><div class="hint">Plan the week first, reuse templates, and move the structure forward without rebuilding sessions.</div></div><button class="btn" id="save-plan-btn">Save plan</button></div>
-    <div class="plan-week-toolbar">
-      <button class="btn" id="plan-prev-week">‹ Previous week</button>
-      <div class="plan-week-title-wrap"><div class="eyebrow" id="plan-week-number">WEEK</div><strong id="plan-week-title">—</strong></div>
-      <div class="plan-week-actions"><button class="btn" id="plan-this-week">This week</button><button class="btn" id="plan-next-week">Next week ›</button></div>
-    </div>
-    <div class="plan-focus-card"><div><div class="eyebrow">Week focus</div><input id="plan-week-focus" class="plan-focus-input" placeholder="What is the main focus of this week?"></div><textarea id="plan-week-notes" class="plan-week-notes" placeholder="Week notes — volume, intensity, recovery, things to remember…"></textarea></div>
-    <div class="plan-week-grid" id="plan-week-grid"></div>
-    <div class="plan-plan-actions"><button class="btn" id="plan-duplicate-week">Duplicate week → next week</button><button class="btn" id="plan-move-week">Move plan → next week</button><button class="btn danger" id="plan-clear-week">Clear planned week</button></div>
-    <div class="plan-grid plan-secondary-grid">
-      <div class="plan-card"><div class="plan-card-head"><h3>Training blocks</h3><button class="btn" id="add-plan-block">+ Add</button></div><div id="blocks-list" class="block-list"></div></div>
-      <div class="plan-card"><div class="plan-card-head"><h3>Week templates</h3><button class="btn" id="add-week-template">+ Save current week</button></div><div id="week-template-list" class="block-list"></div></div>
-      <div class="plan-card full"><div class="plan-card-head"><div><h3>Season blocks</h3><div class="hint">Use these for multi-week phases such as Base, Build, Peak or Deload.</div></div><button class="btn" id="add-season-block">+ Add block</button></div><div id="season-block-list" class="season-block-list"></div></div>
-    </div>
-  </section>
+  <div class="plan2-shell">
 
+    <header class="plan2-header">
+      <div class="plan2-header-copy">
+        <div class="eyebrow">Long term planification</div>
+        <div class="plan-title page-title">Plan</div>
+      </div>
+      <button class="btn" id="save-plan-btn">Save plan</button>
+    </header>
+
+    <section class="plan2-phases">
+      <div class="plan2-section-head">
+        <div>
+          <div class="eyebrow">Periodization</div>
+          <h2>Phases & Weeks</h2>
+        </div>
+        <button class="btn" id="plan-add-phase">+ Add Phase</button>
+      </div>
+      <div id="plan-phase-list" class="plan2-phase-list"></div>
+    </section>
+
+    <section class="plan2-week">
+      <div class="plan2-week-head">
+        <div class="plan2-week-nav">
+          <button class="btn plan2-icon-btn" id="plan-prev-week" aria-label="Semana anterior">‹</button>
+          <div class="plan2-week-title-wrap">
+            <div class="eyebrow" id="plan-week-number">WEEK</div>
+            <strong id="plan-week-title">—</strong>
+          </div>
+          <button class="btn plan2-icon-btn" id="plan-next-week" aria-label="Semana siguiente">›</button>
+        </div>
+        <div class="plan2-week-actions">
+          <button class="btn" id="plan-this-week">Today</button>
+          <button class="btn" id="plan-duplicate-week">Duplicate</button>
+          <button class="btn" id="plan-move-week">Move</button>
+          <button class="btn danger" id="plan-clear-week">Clean</button>
+        </div>
+      </div>
+
+      <div class="plan2-week-context">
+        <label class="plan2-field">
+          <span class="eyebrow">Week Focys</span>
+          <input id="plan-week-focus" class="plan-focus-input" placeholder="What is the main focus?">
+        </label>
+        <label class="plan2-field plan2-field-wide">
+          <span class="eyebrow">Notes</span>
+          <textarea id="plan-week-notes" class="plan-week-notes" placeholder="Volumen, intensity, recovery, reminders..."></textarea>
+        </label>
+      </div>
+
+      <div class="plan2-week-grid" id="plan-week-grid"></div>
+    </section>
+
+    <details class="plan2-advanced">
+      <summary>
+        <span>Resources</span>
+        <span class="plan2-chevron" aria-hidden="true">▾</span>
+      </summary>
+      <div class="plan2-advanced-grid">
+        <div class="plan-card">
+          <div class="plan-card-head">
+            <h3>Week templates</h3>
+            <button class="btn" id="add-week-template">+ Save Week</button>
+          </div>
+          <div id="week-template-list" class="block-list"></div>
+        </div>
+        <div class="plan-card">
+          <div class="plan-card-head">
+            <h3>Legacy blocks</h3>
+            <button class="btn" id="add-plan-block">+ Add</button>
+          </div>
+          <div id="blocks-list" class="block-list"></div>
+          <div class="plan-card-head plan-card-head-sep">
+            <h3>Season blocks</h3>
+            <button class="btn" id="add-season-block">+ Add</button>
+          </div>
+          <div id="season-block-list" class="season-block-list"></div>
+        </div>
+      </div>
+    </details>
+
+  </div>
+</section>
   <section id="brain-page" class="page brain-page">
     <div class="brain-shell">
       <div class="brain-hero"><div><div class="eyebrow">Personal model</div><div class="brain-title page-title">Training Brain</div><div class="brain-subtitle">A deterministic learning layer built from your own training history. It uses rules, personal baselines, trends, associations and feedback — not generative AI.</div></div><button class="btn" data-brain-back>Back to Home</button></div>
@@ -872,6 +977,7 @@
 </section>
 <div class="modal-backdrop" id="smart-result-modal"><div class="modal smart-result-modal"><div class="modal-head"><div class="modal-title">Smart workout</div><button class="icon-btn" id="close-smart-result">×</button></div><div id="smart-result-content"></div><div class="smart-result-actions"><button class="btn" id="smart-apply-date-btn">Add to a day</button><button class="btn" id="smart-keep-btn">Keep template</button></div></div></div>
 <div class="modal-backdrop" id="smart-review-modal"><div class="modal smart-review-modal"><div class="smart-review-head"><div><div class="smart-review-kicker">Smart Import · Review</div><div class="modal-title">Detected workout</div></div><button class="icon-btn" id="close-smart-review">×</button></div><div id="smart-review-summary" class="smart-review-summary"></div><div id="smart-review-warning" class="smart-review-warning" hidden></div><div id="smart-review-content"></div><div class="smart-review-actions"><button class="btn" id="smart-review-add-day">Add to a day</button><button class="btn" id="smart-review-template">Save as template</button><button class="btn" id="smart-review-close">Keep editing later</button></div></div></div>
+
 <div class="modal-backdrop" id="templates-modal">
   <div class="modal template-library-modal">
     <div class="template-library-head">
@@ -959,11 +1065,12 @@
           <span class="theme-swatches"><i class="theme-swatch" style="background:#FFF4EC"></i><i class="theme-swatch" style="background:#FFFFFF"></i><i class="theme-swatch" style="background:#FF4B1F"></i><i class="theme-swatch" style="background:#FFB020"></i></span>
           <span class="theme-option-desc">Orange/red, compact blocks, metrics front and center.</span>
         </button>
-      </div>
+            </div>
       <div class="theme-note">Your selection is saved on this device and restored automatically the next time you open Training Planner.</div>
           </div><!-- /settings-panel-body-inner -->
         </div><!-- /settings-panel-body -->
       </div><!-- /settings-panel -->
+    </section><!-- /settings-section appearance -->
 
     <section class="settings-section" aria-labelledby="shortcuts-title">
       <div class="settings-panel" id="shortcuts-panel">
@@ -1044,7 +1151,7 @@
 <script src="js/nutrition-data-layer.js"></script>
 
 <script src="js/nutrition-sync.js"></script>
-
+<script src="js/morning-briefing.js"></script> 
 
 <script src="js/integrated-logic.js"></script>
 <script src="js/app-bootstrap.js"></script>

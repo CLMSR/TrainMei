@@ -1,4 +1,3 @@
-/* Training Planner — main runtime (unchanged apart from Cycle Tracker additions) */
 (()=>{
 const SUPABASE_URL='https://vjgsezfjslevjbiotfoq.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_IzFrnMtQjVxTHQ3_BVmbLg_Ww2zzi2F';
@@ -7,7 +6,7 @@ window.supabaseClient=supabaseClient;
 const WEEKDAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const PREFIX='training-planner:';
-let currentUser=null, view='month', monthCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1), selectedDateKey=null, currentDay=null, monthIndicators={}, templatesCache=[], planData=defaultPlan(), saveTimer=null, smartWorkout=null, smartFileName='', activeBlockIndex=0;
+let currentUser=null, view='month', monthCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1), selectedDateKey=null, currentDay=null, monthIndicators={}, templatesCache=[], planData=defaultPlan(), saveTimer=null, smartWorkout=null, smartFileName='', activeBlockIndex=0, activePhaseId=null;
 let templateEditorMode=false, templateEditorId=null;
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 function setStatus(t){$('#status-row').textContent=t||''} function pad(n){return String(n).padStart(2,'0')} function dateKey(y,m,d){return `${y}-${pad(m+1)}-${pad(d)}`} function todayKey(){const d=new Date();return dateKey(d.getFullYear(),d.getMonth(),d.getDate())}
@@ -29,8 +28,107 @@ out.restDay=!!src.restDay;
 out.caffeine={taken:!!src.caffeine?.taken,mg:src.caffeine?.mg??''};out.carbohydratesGrams=src.carbohydratesGrams??src.carbsGrams??'';
 out.recovery={sleep:Math.min(5,Math.max(0,Number(src.recovery?.sleep)||0)),energy:Math.min(5,Math.max(0,Number(src.recovery?.energy)||0)),soreness:Math.min(5,Math.max(0,Number(src.recovery?.soreness)||0))};
 out.completed=!!src.completed;out.color=src.color||'';out.noteTags=Array.isArray(src.noteTags)?src.noteTags:[];const sf=src.sessionFeedback||{};out.sessionFeedback={feelings:sf.feelings??'',adjustNextTime:sf.adjustNextTime??'',nextFocus:sf.nextFocus??'',tags:Array.isArray(sf.tags)?sf.tags:[],performance:sf.performance??'',energyRating:sf.energyRating??'',technique:sf.technique??'',pain:sf.pain??'',adjustmentOutcome:sf.adjustmentOutcome??''};out.previousFeedback=src.previousFeedback&&typeof src.previousFeedback==='object'?src.previousFeedback:null;return out}
-function defaultPlan(){return {goals:[],blocks:[],mesocycles:[],microcycles:[],periodization:[],weeks:{},weekTemplates:[]}}
-function normalizePlan(p){const x={...defaultPlan(),...(p||{})};x.weeks=x.weeks&&typeof x.weeks==='object'?x.weeks:{};x.weekTemplates=Array.isArray(x.weekTemplates)?x.weekTemplates:[];x.blocks=Array.isArray(x.blocks)?x.blocks:[];return x}
+function defaultPlan(){
+  return {
+    version:2,
+    meta:{name:'',startDate:'',notes:''},
+    phases:[],
+    weeks:{},
+    weekTemplates:[],
+    goals:[],
+    blocks:[],
+    mesocycles:[],
+    microcycles:[],
+    periodization:[]
+  };
+}
+function normalizePlan(p){
+  const base=defaultPlan();
+  const x={...base,...(p&&typeof p==='object'?p:{})};
+  x.version=2;
+  x.meta={...base.meta,...(x.meta&&typeof x.meta==='object'?x.meta:{})};
+  x.weeks=x.weeks&&typeof x.weeks==='object'?x.weeks:{};
+  x.goals=Array.isArray(x.goals)?x.goals:[];
+  x.blocks=Array.isArray(x.blocks)?x.blocks:[];
+  x.mesocycles=Array.isArray(x.mesocycles)?x.mesocycles:[];
+  x.microcycles=Array.isArray(x.microcycles)?x.microcycles:[];
+  x.periodization=Array.isArray(x.periodization)?x.periodization:[];
+
+  x.weekTemplates=Array.isArray(x.weekTemplates)?x.weekTemplates.map((t,i)=>({
+    id:t?.id||`week_template_${Date.now()}_${i}`,
+    name:t?.name||`Week template ${i+1}`,
+    focus:t?.focus||'',
+    notes:t?.notes||'',
+    days:Array.from({length:7},(_,dayIndex)=>{
+      const d=Array.isArray(t?.days)?t.days[dayIndex]:null;
+      return {
+        templateId:d?.templateId||d?.workoutTemplateId||'',
+        title:d?.title||'',
+        status:d?.status||'Planned'
+      };
+    })
+  })):[];
+
+  Object.keys(x.weeks).forEach(key=>{
+    const w=x.weeks[key]&&typeof x.weeks[key]==='object'?x.weeks[key]:{};
+    const days=w.days&&typeof w.days==='object'?w.days:{};
+    x.weeks[key]={focus:w.focus||'',notes:w.notes||'',days};
+  });
+
+  if(!Array.isArray(x.phases))x.phases=[];
+  if(!x.phases.length&&x.blocks.length){
+    x.phases=x.blocks.map((b,i)=>({
+      id:`phase_${Date.now()}_${i}`,
+      name:b?.name||`Phase ${i+1}`,
+      type:'custom',
+      startDate:b?.start||'',
+      durationWeeks:Math.max(1,Number(b?.durationWeeks)||4),
+      goal:b?.focus||'',
+      nutrition:{strategy:'',kcalTarget:null,proteinPct:null,carbsPct:null,fatPct:null,notes:''},
+      training:{focus:b?.focus||'',notes:''},
+      goals:[],events:[],weekOverrides:{}
+    }));
+  }
+
+  x.phases=x.phases.map((phase,i)=>{
+    const source=phase&&typeof phase==='object'?phase:{};
+    const legacyWeeks=source.weekOverrides&&typeof source.weekOverrides==='object'?source.weekOverrides:{};
+    const modernWeeks=source.weeks&&typeof source.weeks==='object'?source.weeks:{};
+    const weekSource=Object.keys(legacyWeeks).length?legacyWeeks:modernWeeks;
+    const weekOverrides={};
+    Object.keys(weekSource).forEach(k=>{
+      const w=weekSource[k]||{};
+      weekOverrides[k]={
+        type:w.type||'training',
+        goal:w.goal||'',
+        focus:w.focus||'',
+        weeklyTemplateId:w.weeklyTemplateId||w.templateId||'',
+        notes:w.notes||''
+      };
+    });
+    const nutrition={
+      strategy:'',kcalTarget:null,proteinPct:null,carbsPct:null,fatPct:null,notes:'',
+      ...(source.nutrition&&typeof source.nutrition==='object'?source.nutrition:{})
+    };
+    const goals=Array.isArray(source.goals)?source.goals.map((g,j)=>typeof g==='string'?{id:`goal_${i}_${j}`,text:g,done:false}:{id:g?.id||`goal_${i}_${j}`,text:g?.text||g?.title||'',done:!!g?.done}):[];
+    const events=Array.isArray(source.events)?source.events.map((ev,j)=>({id:ev?.id||`event_${i}_${j}`,type:ev?.type||'custom',weekNumber:Math.max(1,Number(ev?.weekNumber)||1),title:ev?.title||'',description:ev?.description||''})):[];
+    const durationWeeks=Math.max(1,Number(source.durationWeeks)||0);
+    return {
+      id:source.id||`phase_${Date.now()}_${i}`,
+      name:source.name||`Phase ${i+1}`,
+      type:source.type||'custom',
+      startDate:source.startDate||'',
+      durationWeeks,
+      goal:source.goal||'',
+      nutrition,
+      training:{focus:'',notes:'',...(source.training&&typeof source.training==='object'?source.training:{})},
+      goals,
+      events,
+      weekOverrides
+    };
+  });
+  return x;
+}
 const localApi={get(k){const v=localStorage.getItem(PREFIX+k);return v===null?null:{value:v}},set(k,v){localStorage.setItem(PREFIX+k,v);return true},list(prefix){return {keys:Object.keys(localStorage).filter(k=>k.startsWith(PREFIX+prefix)).map(k=>k.slice(PREFIX.length))}}};
 function loadDayLocal(key){try{const r=localApi.get('workout:'+key);if(r)return normalizeDay(JSON.parse(r.value))}catch{}return defaultDay()}
 async function loadDay(key){if(currentUser){const {data,error}=await supabaseClient.from('workouts').select('data').eq('user_id',currentUser.id).eq('date',key).maybeSingle();if(!error&&data?.data)return normalizeDay(data.data)}return loadDayLocal(key)}
@@ -203,6 +301,11 @@ async function applySmartToDay(){
     alert('Fecha inválida. Usa el formato YYYY-MM-DD.');
     return;
   }
+  const parsedDate = new Date(date + 'T12:00:00');
+if(isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0,10) !== date){
+  alert('Fecha inválida.');
+  return;
+}
   try{
     selectedDateKey=date;
     currentDay=smartDayData();
@@ -277,7 +380,52 @@ function openPlanDay(k){return window.TrainMeiPlanning?.openPlanDay?.(k)}
 function getWeekNumber(d){return window.TrainMeiPlanning?.getWeekNumber?.(d)||0}
 
 async function savePlanCloud(){localStorage.setItem(PREFIX+'plan',JSON.stringify(planData));if(!currentUser){setStatus('Plan saved locally');return}const {error}=await supabaseClient.from('training_plans').upsert({user_id:currentUser.id,data:planData,updated_at:new Date().toISOString()},{onConflict:'user_id'});setStatus(error?'Plan saved locally — cloud table missing or unavailable':'Plan saved')}
-async function loadPlanCloud(){planData=normalizePlan(JSON.parse(localStorage.getItem(PREFIX+'plan')||'null'));if(currentUser){const {data,error}=await supabaseClient.from('training_plans').select('data').eq('user_id',currentUser.id).maybeSingle();if(!error&&data?.data)planData=normalizePlan(data.data)}renderPlan()}
+async function loadPlanCloud(){
+  const localRaw=JSON.parse(localStorage.getItem(PREFIX+'plan')||'null');
+  const localPlan=normalizePlan(localRaw);
+
+  if(!currentUser){
+    planData=localPlan;
+    renderPlan();
+    return;
+  }
+
+  const {data,error}=await supabaseClient
+    .from('training_plans')
+    .select('data')
+    .eq('user_id',currentUser.id)
+    .maybeSingle();
+
+  if(error||!data?.data){
+    planData=localPlan;
+    renderPlan();
+    return;
+  }
+
+  const remotePlan=normalizePlan(data.data);
+
+  // Merge local-only Plan 2.0 entities so a stale/empty cloud row cannot
+  // silently erase newly created phases, weekly templates, goals or weeks.
+  const mergeById=(remoteArr,localArr)=>{
+    const out=Array.isArray(remoteArr)?remoteArr.map(clone):[];
+    const ids=new Set(out.map(x=>String(x?.id||'')));
+    for(const item of (Array.isArray(localArr)?localArr:[])){
+      const id=String(item?.id||'');
+      if(id&&!ids.has(id)){out.push(clone(item));ids.add(id);}
+    }
+    return out;
+  };
+
+  remotePlan.phases=mergeById(remotePlan.phases,localPlan.phases);
+  remotePlan.weekTemplates=mergeById(remotePlan.weekTemplates,localPlan.weekTemplates);
+  remotePlan.goals=mergeById(remotePlan.goals,localPlan.goals);
+  remotePlan.blocks=mergeById(remotePlan.blocks,localPlan.blocks);
+  remotePlan.weeks={...localPlan.weeks,...remotePlan.weeks};
+
+  planData=normalizePlan(remotePlan);
+  localStorage.setItem(PREFIX+'plan',JSON.stringify(planData));
+  renderPlan();
+}
 function showAuth(msg=''){if(msg)$('#auth-msg').textContent=msg;$('#auth-overlay').style.display='flex'}
 let appStartPromise=null;
 async function startApp(){if(!window.__tpModulesReady)return; if(appStartPromise)return appStartPromise;appStartPromise=(async()=>{const {data}=await supabaseClient.auth.getSession();currentUser=data.session?.user||null;if(!currentUser){showAuth();return}$('#auth-overlay').style.display='none';await Promise.all([loadTemplates(),loadPlanCloud(),renderMonth()]);showPage('home-page')})();try{return await appStartPromise}finally{appStartPromise=null}}
@@ -309,8 +457,64 @@ $('#day-page').addEventListener('click',e=>{const b=e.target.closest('button');i
 $('#sync-btn').onclick=syncLocal;$('#export-btn').onclick=exportData;$('#import-btn').onclick=()=>$('#import-file').click();$('#import-file').onchange=e=>{importData(e.target.files[0]);e.target.value=''};
 $('#templates-btn').onclick=async()=>{$('#templates-modal').classList.add('show');await loadTemplates()};$('#template-search').oninput=renderTemplates;$('#close-templates').onclick=()=>$('#templates-modal').classList.remove('show');$('#create-template-btn').onclick=createTemplateEditor;$('#save-template-btn').onclick=saveCurrentAsTemplate;$('#save-template-from-editor').onclick=saveTemplateFromEditor;$('#apply-template-date-btn').onclick=()=>{selectedDateKey=$('#template-date').value||selectedDateKey};$('#template-list').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.templateUse)useTemplate(b.dataset.templateUse);if(b.dataset.templateEdit)editTemplate(b.dataset.templateEdit);if(b.dataset.templateDelete)deleteTemplate(b.dataset.templateDelete)});
 function TPPlanWeek(){return window.__tp?.planWeekKey||''} function TPPlanSetWeek(v){if(window.__tp)window.__tp.planWeekKey=v} function TPPlanData(){return window.__tp?.planData||{blocks:[],weekTemplates:[]}}
-$('#save-plan-btn').onclick=savePlanCloud;$('#plan-prev-week').onclick=()=>setPlanWeekFrom(-1);$('#plan-next-week').onclick=()=>setPlanWeekFrom(1);$('#plan-this-week').onclick=()=>{TPPlanSetWeek(planMondayKey());renderPlan()};$('#plan-duplicate-week').onclick=duplicatePlanWeek;$('#plan-move-week').onclick=movePlanWeek;$('#plan-clear-week').onclick=clearPlannedWeek;$('#add-plan-block').onclick=addPlanBlock;$('#add-season-block').onclick=addSeasonBlock;$('#add-week-template').onclick=saveWeekTemplate;$('#plan-week-focus').addEventListener('input',e=>{weekData(TPPlanWeek()).focus=e.target.value;clearTimeout(window._planSaveTimer);window._planSaveTimer=setTimeout(savePlanCloud,500)});$('#plan-week-notes').addEventListener('input',e=>{weekData(TPPlanWeek()).notes=e.target.value;clearTimeout(window._planSaveTimer);window._planSaveTimer=setTimeout(savePlanCloud,500)});$('#plan-page').addEventListener('change',async e=>{const t=e.target;if(t.dataset.planDayTemplate){planDayInfo(t.dataset.planDayTemplate).templateId=t.value;renderPlan()}if(t.dataset.planDayStatus){planDayInfo(t.dataset.planDayStatus).status=t.value;savePlanCloud()}if(t.dataset.planDayTitle){planDayInfo(t.dataset.planDayTitle).title=t.value;clearTimeout(window._planSaveTimer);window._planSaveTimer=setTimeout(savePlanCloud,400)}if(t.dataset.planBlockIndex!==undefined){TPPlanData().blocks[+t.dataset.planBlockIndex][t.dataset.field]=t.value;renderPlan()}if(t.dataset.seasonIndex!==undefined){TPPlanData().blocks[+t.dataset.seasonIndex][t.dataset.seasonField]=t.value;renderSeasonBlocks()}});$('#plan-page').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.planOpenDay){openPlanDay(b.dataset.planOpenDay);return}if(b.dataset.planApplyTemplate){await applyPlanTemplate(b.dataset.planApplyTemplate);return}if(b.dataset.planBlockRemove!==undefined){TPPlanData().blocks.splice(+b.dataset.planBlockRemove,1);renderPlan();return}if(b.dataset.seasonRemove!==undefined){TPPlanData().blocks.splice(+b.dataset.seasonRemove,1);renderPlan();return}if(b.dataset.weekTemplateApply!==undefined){applyWeekTemplate(+b.dataset.weekTemplateApply);return}if(b.dataset.weekTemplateDelete!==undefined){TPPlanData().weekTemplates.splice(+b.dataset.weekTemplateDelete,1);renderPlan();savePlanCloud();return}});
+$('#save-plan-btn').onclick=savePlanCloud;$('#plan-prev-week').onclick=()=>setPlanWeekFrom(-1);$('#plan-next-week').onclick=()=>setPlanWeekFrom(1);$('#plan-this-week').onclick=()=>{TPPlanSetWeek(planMondayKey());renderPlan()};$('#plan-duplicate-week').onclick=duplicatePlanWeek;$('#plan-move-week').onclick=movePlanWeek;$('#plan-clear-week').onclick=clearPlannedWeek;$('#add-plan-block').onclick=addPlanBlock;$('#add-season-block').onclick=addSeasonBlock;$('#add-week-template').onclick=saveWeekTemplate;$('#plan-week-focus').addEventListener('input',e=>{weekData(TPPlanWeek()).focus=e.target.value;clearTimeout(window._planSaveTimer);window._planSaveTimer=setTimeout(savePlanCloud,500)});$('#plan-week-notes').addEventListener('input',e=>{weekData(TPPlanWeek()).notes=e.target.value;clearTimeout(window._planSaveTimer);window._planSaveTimer=setTimeout(savePlanCloud,500)});$('#plan-page').addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.planDayTemplate){
+    const info=planDayInfo(t.dataset.planDayTemplate);
+    if(info){info.templateId=t.value;renderPlan();savePlanCloud();}
+    return;
+  }
+  if(t.dataset.planDayStatus){
+    const info=planDayInfo(t.dataset.planDayStatus);
+    if(info){info.status=t.value;savePlanCloud();}
+    return;
+  }
+  if(t.dataset.planBlockIndex!==undefined){
+    const plan=TPPlanData();
+    const item=plan.blocks?.[+t.dataset.planBlockIndex];
+    if(item){item[t.dataset.field]=t.value;renderPlan();savePlanCloud();}
+    return;
+  }
+  if(t.dataset.seasonIndex!==undefined){
+    const plan=TPPlanData();
+    const item=plan.blocks?.[+t.dataset.seasonIndex];
+    if(item){item[t.dataset.seasonField]=t.value;renderSeasonBlocks();savePlanCloud();}
+  }
+});
+
+$('#plan-page').addEventListener('click',async e=>{
+  const b=e.target.closest('button');
+  if(!b)return;
+
+  if(b.id==='plan-empty-add-phase'||b.id==='plan-add-phase'){
+    window.TrainMeiPlanning?.addPhase?.();
+    return;
+  }
+  if(b.dataset.planPhaseRemove!==undefined){
+    window.TrainMeiPlanning?.removePhase?.(+b.dataset.planPhaseRemove);
+    return;
+  }
+  if(b.dataset.phaseWeekApply!==undefined){
+    await window.TrainMeiPlanning?.applyPhaseWeekToCalendar?.(
+      Number(b.dataset.phaseWeekApply),Number(b.dataset.phaseWeek)
+    );
+    return;
+  }
+  if(b.dataset.planOpenDay){openPlanDay(b.dataset.planOpenDay);return;}
+  if(b.dataset.planApplyTemplate){await applyPlanTemplate(b.dataset.planApplyTemplate);return;}
+  if(b.dataset.planBlockRemove!==undefined){TPPlanData().blocks.splice(+b.dataset.planBlockRemove,1);renderPlan();savePlanCloud();return;}
+  if(b.dataset.seasonRemove!==undefined){TPPlanData().blocks.splice(+b.dataset.seasonRemove,1);renderPlan();savePlanCloud();return;}
+  if(b.dataset.weekTemplateApply!==undefined){applyWeekTemplate(+b.dataset.weekTemplateApply);return;}
+  if(b.dataset.weekTemplateDelete!==undefined){
+    TPPlanData().weekTemplates.splice(+b.dataset.weekTemplateDelete,1);
+    renderPlan();
+    savePlanCloud();
+    return;
+  }
+});
+
 $('#smart-select-btn').onclick=()=>$('#smart-screenshot-file').click();$('#close-smart-result').onclick=()=>$('#smart-result-modal').classList.remove('show');$('#smart-apply-date-btn').onclick=applySmartToDay;$('#smart-keep-btn').onclick=()=>$('#smart-result-modal').classList.remove('show');
+
 /* Bridge selected first-layer actions to Smart Training navigation */
 window.__trainingPlannerOpenBlockLibrary = (i=null) => openBlockLibrary(i);
 window.__trainingPlannerSaveCurrentBlock = (i=null) => saveBlockFromSession(i);
@@ -325,7 +529,7 @@ window.__tp = {
   set selectedDateKey(v){ selectedDateKey=v; },
   get smartWorkout(){ return smartWorkout; },
   set smartWorkout(v){ smartWorkout=v; },
-  todayKey, dateKey, openDay, saveDay, normalizeDay, defaultDay, clone,
+  todayKey, dateKey, openDay, saveDay, normalizeDay, defaultDay, clone, normalizePlan,
   monthCursor: () => monthCursor,
   setMonthCursor: (d) => { monthCursor = d; },
   setStatus, loadTemplates, renderTemplates,
@@ -333,7 +537,9 @@ window.__tp = {
   get templateEditorMode(){ return templateEditorMode; }, set templateEditorMode(v){ templateEditorMode=!!v; },
   get templateEditorId(){ return templateEditorId; }, set templateEditorId(v){ templateEditorId=v; },
   clearSaveTimer:()=>clearTimeout(saveTimer),
-  get planData(){ return planData; }, set planData(v){ planData=normalizePlan(v); },
+  get planData(){return planData; }, set planData(v){planData=normalizePlan(v); },
+  get activePhaseId(){return window.TrainMeiPlanning?.getActivePhaseId?.()||null; },
+  set activePhaseId(v){window.TrainMeiPlanning?.setActivePhaseId?.(v);},
   getAnalyticsRows, allWorkoutRows, totalExerciseSets, totalExerciseReps, exerciseSetText, exerciseSetGroups,
   renderDay, renderMonth, scheduleSave, applyRecurring, showPage,
   get monthIndicators(){ return monthIndicators; }, set monthIndicators(v){ monthIndicators=v||{}; },
@@ -341,7 +547,10 @@ window.__tp = {
   supabaseClient:()=>supabaseClient,
   TrainingDataCore: () => window.TrainingDataCore || null,
   setVal,
-  get activeBlockIndex(){ return activeBlockIndex; }, set activeBlockIndex(v){ activeBlockIndex=Number.isInteger(v)?v:0; },
+  get activeBlockIndex(){ return activeBlockIndex; },
+  set activeBlockIndex(v){ activeBlockIndex=Number.isInteger(v)?v:0; },
+  get activePhaseId(){ return activePhaseId; },
+  set activePhaseId(v){ activePhaseId=v==null?'':String(v); },
   savePlanCloud: (...args)=>window.TrainMeiPlanning?.savePlanCloud?.(...args),
   get planWeekKey(){ return window.TrainMeiPlanning?.getPlanWeekKey?.()||''; },
   set planWeekKey(v){ window.TrainMeiPlanning?.setPlanWeekKey?.(v); }

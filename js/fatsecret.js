@@ -1,8 +1,3 @@
-/* ============================================================
-   FATSECRET — authenticated connection + food diary sync
-   Frontend only handles session state and invokes Edge Functions.
-   OAuth/access credentials never reach the browser.
-   ============================================================ */
 (()=> {
   'use strict';
 

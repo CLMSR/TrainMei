@@ -17,6 +17,7 @@
     get planData(){return TP.planData},set planData(v){TP.planData=v},
     get activeBlockIndex(){return TP.activeBlockIndex},set activeBlockIndex(v){TP.activeBlockIndex=v},
     get planWeekKey(){return TP.planWeekKey},set planWeekKey(v){TP.planWeekKey=v},
+    get activePhaseId(){return TP.activePhaseId},set activePhaseId(v){TP.activePhaseId=v},
     todayKey:TP.todayKey,dateKey:TP.dateKey,clone:TP.clone,normalizeDay:TP.normalizeDay,defaultDay:TP.defaultDay,
     openDay:TP.openDay,saveDay:TP.saveDay,scheduleSave:TP.scheduleSave,setStatus:TP.setStatus,
     loadTemplates:TP.loadTemplates,renderTemplates:TP.renderTemplates,renderDay:TP.renderDay,renderMonth:TP.renderMonth,savePlanCloud:(...args)=>TP.savePlanCloud?.(...args),
@@ -31,7 +32,16 @@
     get templates(){return window.TrainMeiTemplates||null},
     emit(name,detail){document.dispatchEvent(new CustomEvent(name,{detail}))},
     on(name,handler,options){document.addEventListener(name,handler,options);return()=>document.removeEventListener(name,handler,options)},
-    snapshot(){return {date:this.selectedDateKey,day:this.currentDay,user:this.currentUser,plan:this.planData}}
+   snapshot(){
+  return {
+    date:this.selectedDateKey,
+    day:this.currentDay,
+    user:this.currentUser,
+    plan:this.planData,
+    activePhaseId:this.activePhaseId,
+    planWeekKey:this.planWeekKey
+  };
+}
   };
   window.TrainMeiState=State;
 })();
