@@ -1,7 +1,7 @@
 /* ===== SETTINGS / THEME ===== */
 (function(){
   const STORAGE_KEY='training-planner:theme';
-  const THEMES=['original','minimal','calm','mono','memphis','editorial','chic','athletic','clinical','performance'];
+  const THEMES=['original','calm','mono','athletic','performance','pixel','pixel-light','brutalist'];
   const root=document.body;
   const modal=document.getElementById('settings-modal');
   const metaTheme=document.querySelector('meta[name="theme-color"]');
@@ -11,7 +11,7 @@
     const theme=normalizeTheme(value);
     root.dataset.theme=theme;
     if(metaTheme){
-      const colors={original:'#EEEAE1',minimal:'#FAFBFC',calm:'#F6F1E8',mono:'#F2F1EE',memphis:'#FDF0E0',editorial:'#F4F1EA',chic:'#FAF9F7',athletic:'#0D0D0D',clinical:'#F0F4F8',performance:'#1C1C1C'};
+      const colors={original:'#EEEAE1',calm:'#F6F1E8',mono:'#F2F1EE',athletic:'#0D0D0D',performance:'#FFF4EC',pixel:'#65619d','pixel-light':'#FFF7D6',brutalist:'#F7F4EC'};
       metaTheme.setAttribute('content',colors[theme]);
     }
     document.querySelectorAll('[data-theme-choice]').forEach(option=>{

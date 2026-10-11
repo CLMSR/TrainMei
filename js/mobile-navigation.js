@@ -12,7 +12,7 @@
   function updateIOSNav(activePage){if(!isMobile())return;$$('.ios-tab').forEach(b=>b.classList.remove('active'));const target=$$('.ios-tab[data-ios-page="'+activePage+'"]')[0];if(target)target.classList.add('active')}
   $$('.ios-tab[data-ios-page]').forEach(btn=>btn.addEventListener('click',()=>{TP.showPage(btn.dataset.iosPage);updateIOSNav(btn.dataset.iosPage)}));
   const addTab=document.getElementById('ios-add-tab');if(addTab)addTab.addEventListener('click',()=>{TP.openDay(TP.todayKey());updateIOSNav('calendar-page')});
-  const templatesTab=document.getElementById('ios-templates-tab');if(templatesTab)templatesTab.addEventListener('click',async()=>{const modal=document.getElementById('templates-modal');if(modal)modal.classList.add('show');await TP.loadTemplates()});
+  const templatesTab=document.getElementById('ios-templates-tab');if(templatesTab)templatesTab.addEventListener('click',async()=>{const modal=document.getElementById('templates-modal');if(modal)(modal?.__openTemplatesModal||(()=>modal?.classList.add('show')))();await TP.loadTemplates()});
 
   function updateIOSSummary(){
     if(!isMobile())return;

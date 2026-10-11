@@ -1216,6 +1216,81 @@ function renderMealPlan(n,d,coreCtx=null){
   });
 }
 
+/* Custom craving mode: reuses MEAL_FOODS + mealNutrition; never writes to FatSecret. */
+const CRAVING_ALIASES=[
+  ['eggWhites',['egg whites','egg white','claras','clara']],['greekYogurt',['greek yogurt','yogur griego','yogurt griego']],
+  ['whiteBread',['white bread','bread','toast','tostada','pan','pan blanco']],['cottageCheese',['cottage cheese','queso cottage','requeson','requesón']],
+  ['peanutButter',['peanut butter','crema de cacahuete','mantequilla de cacahuete']],['creamRice',['cream of rice','crema de arroz']],
+  ['cornFlakes',['corn flakes','cereal','cereales']],['riceCakes',['rice cakes','tortitas de arroz']],
+  ['cookedRice',['cooked rice','rice','arroz']],['cookedPasta',['cooked pasta','pasta']],['potato',['potato','potatoes','patata','patatas']],
+  ['chicken',['chicken','pollo']],['turkey',['turkey','pavo']],['whiteFish',['white fish','pescado blanco']],['tuna',['tuna','atun','atún']],
+  ['egg',['egg','eggs','huevo','huevos']],['skyr',['skyr']],['greekYogurt',['yogurt','yoghurt','yogur']],['milk',['milk','leche']],
+  ['banana',['banana','platano','plátano']],['berries',['berries','frutos rojos','frutos del bosque','blueberries','arandanos','arándanos']],
+  ['mango',['mango']],['apple',['apple','manzana']],['oats',['oats','oatmeal','avena']],['honey',['honey','miel']],['jam',['jam','mermelada']],['oliveOil',['olive oil','aceite de oliva']],['lightCheese',['light cheese','queso light','queso bajo en grasa']]
+];
+const normalizeFoodText=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function detectCravingFoods(text){
+  const source=normalizeFoodText(text),found=[];
+  CRAVING_ALIASES.slice().sort((a,b)=>Math.max(...b[1].map(x=>x.length))-Math.max(...a[1].map(x=>x.length))).forEach(([key,aliases])=>{
+    if(found.includes(key))return;
+    if(aliases.some(alias=>new RegExp('(^|[^a-z])'+normalizeFoodText(alias).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'([^a-z]|$)').test(source)))found.push(key);
+  });
+  return found.filter((key,index)=>!(key==='egg'&&found.includes('eggWhites')&&source.includes('egg white'))).slice(0,4);
+}
+function renderCravingFoodPicker(selected){
+  const host=document.getElementById('meal-craving-results');if(!host)return;
+  const foods=Object.entries(MEAL_FOODS).map(([key,food])=>({key,name:food.name}));
+  host.innerHTML=`<div class="meal-craving-food-picker"><strong>Foods to include (up to 4)</strong><p>Confirm the detected foods or add/correct them manually.</p><div>${foods.map(f=>`<label><input type="checkbox" data-craving-food="${escN(f.key)}" ${selected.includes(f.key)?'checked':''}> ${escN(f.name)}</label>`).join('')}</div><button type="button" class="btn" id="meal-craving-calculate">Calculate portions</button></div>`;
+}
+function calculateCraving(){
+  const host=document.getElementById('meal-craving-results');if(!host)return;
+  const text=document.getElementById('meal-craving-text')?.value.trim()||'';
+  const kcalRaw=document.getElementById('meal-craving-kcal')?.value;
+  const pRaw=document.getElementById('meal-craving-protein')?.value;
+  const cRaw=document.getElementById('meal-craving-carbs')?.value;
+  const fRaw=document.getElementById('meal-craving-fat')?.value;
+  const kcal=kcalRaw===''||kcalRaw==null?null:Number(kcalRaw),protein=pRaw===''||pRaw==null?null:Number(pRaw),carbs=cRaw===''||cRaw==null?null:Number(cRaw),fat=fRaw===''||fRaw==null?null:Number(fRaw);
+  if(!text){host.innerHTML='<p class="meal-craving-error">Describe the meal you want first.</p>';return}
+  if(kcal==null&&protein==null&&carbs==null&&fat==null){host.innerHTML='<p class="meal-craving-error">Add at least one nutrition target. Calories are treated as a maximum limit.</p>';return}
+  if(kcal!=null&&protein!=null&&carbs!=null&&fat!=null&&(protein*4+carbs*4+fat*9)>kcal*1.12){host.innerHTML=`<p class="meal-craving-error"><strong>Targets look incompatible.</strong> The requested macros imply about ${Math.round(protein*4+carbs*4+fat*9)} kcal, above the ${Math.round(kcal)} kcal limit. Increase the calorie limit or lower one or more macro targets.</p>`;return}
+  let selected=[...host.querySelectorAll('[data-craving-food]:checked')].map(el=>el.dataset.cravingFood);
+  if(!selected.length)selected=detectCravingFoods(text);
+  selected=[...new Set(selected)].filter(key=>MEAL_FOODS[key]).slice(0,4);
+  if(!selected.length){renderCravingFoodPicker([]);host.insertAdjacentHTML('afterbegin','<p class="meal-craving-error">I could not confidently match the words to foods. Select the foods below; no ingredients will be guessed.</p>');return}
+  if(selected.length>4)selected=selected.slice(0,4);
+  const candidates=[],gramsOptions=[];for(let g=10;g<=250;g+=10)gramsOptions.push(g);
+  const current=[];
+  function walk(i){
+    if(i===selected.length){
+      const items=current.map(x=>({...x})),n=mealNutrition(items);if(!n||n.kcal<=0)return;
+      const overKcal=kcal!=null?Math.max(0,n.kcal-kcal):0;
+      const shortProtein=protein!=null?Math.max(0,protein-n.protein):0;
+      const macroError=(carbs!=null?Math.abs(n.carbs-carbs)*2.2:0)+(fat!=null?Math.abs(n.fat-fat)*2.5:0);
+      const score=overKcal*1000+shortProtein*100+macroError+(kcal!=null?Math.max(0,kcal-n.kcal)*.15:0)-n.protein*.05;
+      const candidate={items,n,score,overKcal,shortProtein};
+      let insertAt=candidates.findIndex(existing=>score<existing.score);
+      if(insertAt<0)insertAt=candidates.length;
+      candidates.splice(insertAt,0,candidate);
+      if(candidates.length>3)candidates.pop();
+      return;
+    }
+    const food=selected[i];for(const grams of gramsOptions){current.push({food,grams});walk(i+1);current.pop()}
+  }
+  walk(0);const best=candidates;
+  const selectedNames=selected.map(k=>MEAL_FOODS[k].name).join(', ');
+  const momentLabel=document.getElementById('meal-craving-moment')?.selectedOptions?.[0]?.textContent||'Meal';
+  const warning=best[0]?.overKcal>0?'No combination found under the calorie limit; showing the closest candidate.':best[0]?.shortProtein>0?'The selected foods cannot reach the protein minimum within the current calorie limit.':null;
+  host.innerHTML=`<div class="meal-craving-confirmed"><strong>${escN(momentLabel)} · matched foods</strong><span>${escN(selectedNames)}</span><button type="button" class="meal-craving-edit" id="meal-craving-edit-foods">Edit foods</button></div>${warning?`<p class="meal-craving-warning">${escN(warning)}</p>`:''}<div class="meal-craving-options">${best.map((item,i)=>`<article class="meal-craving-option"><div class="meal-craving-option-head"><strong>${i===0?'Best fit':`Alternative ${i}`}</strong><span>${Math.round(item.n.kcal)} kcal${kcal!=null?` / ${kcal} max`:''}</span></div><div class="meal-craving-portions">${item.items.map(it=>`<span>${escN(MEAL_FOODS[it.food].name)} <b>${it.grams} g</b></span>`).join('')}</div><div class="meal-craving-macros"><span>${item.n.protein.toFixed(1)} g protein</span><span>${item.n.carbs.toFixed(1)} g carbs</span><span>${item.n.fat.toFixed(1)} g fat</span></div></article>`).join('')}</div><p class="meal-craving-note">Estimates use the local food catalogue, not brand-specific labels. These are proposals only; nothing was added to your real intake or FatSecret.</p>`;
+  document.getElementById('meal-craving-edit-foods')?.addEventListener('click',()=>renderCravingFoodPicker(selected));
+}
+function initCravingPlanner(){
+  const panel=document.getElementById('meal-craving-panel'),ideas=document.getElementById('meal-ideas-panel');if(!panel||panel.dataset.bound)return;panel.dataset.bound='true';
+  document.querySelectorAll('[data-meal-planner-mode]').forEach(button=>button.addEventListener('click',()=>{const custom=button.dataset.mealPlannerMode==='custom';document.querySelectorAll('[data-meal-planner-mode]').forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active))});panel.hidden=!custom;if(ideas)ideas.hidden=custom}));
+  document.getElementById('meal-craving-run')?.addEventListener('click',()=>{const detected=detectCravingFoods(document.getElementById('meal-craving-text')?.value||'');renderCravingFoodPicker(detected);calculateCraving()});
+  panel.addEventListener('click',event=>{if(event.target.closest('#meal-craving-calculate'))calculateCraving()});
+}
+initCravingPlanner();
+
 function home(){const title=document.getElementById('home-nutrition-title'),time=document.getElementById('home-nutrition-time'),body=document.getElementById('home-nutrition-body');if(!title||!body)return;const d=session(),n=nutri(),i=n.intake||{},t=n.targets||{},fuel=window.TrainingDataCore?.performanceFuel?.(todayKey(),d.workout)||null;title.textContent='Nutrition Optimizer';const hasIntake=
   i.kcal!=null||
   i.carb!=null||

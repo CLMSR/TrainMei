@@ -76,7 +76,7 @@
       $s('#open-smart-search-inline').onclick=()=>openSearch();
       $s('#open-block-library-inline').onclick=()=>{try{openBlockLibrary();}catch(err){console.error(err);const m=$s('#block-library-modal');if(m)m.classList.add('show');}};
       $s('#open-recurring-inline').onclick=()=>openRecurring();
-      $s('#open-templates-inline').onclick=async()=>{$s('#templates-modal').classList.add('show');await loadTemplates()};
+      $s('#open-templates-inline').onclick=async()=>{(document.getElementById('templates-modal')?.__openTemplatesModal||(()=>document.getElementById('templates-modal')?.classList.add('show')))();await loadTemplates()};
       $s('#open-smart-duplicate-inline').onclick=()=>duplicateSmart();
       const smartCollapse=$s('#smart-suite-collapse');
       if(smartCollapse&&!smartCollapse.dataset.bound){
@@ -93,7 +93,7 @@
     if(completionTools && !completionTools.dataset.ready){
       completionTools.dataset.ready='1';
       completionTools.innerHTML='<button type="button" class="btn completion-tool" id="open-templates-completion">Templates</button><button type="button" class="btn completion-tool" id="open-duplicate-completion">Duplicate</button>';
-      $s('#open-templates-completion').onclick=async()=>{$s('#templates-modal').classList.add('show');await loadTemplates()};
+      $s('#open-templates-completion').onclick=async()=>{(document.getElementById('templates-modal')?.__openTemplatesModal||(()=>document.getElementById('templates-modal')?.classList.add('show')))();await loadTemplates()};
       $s('#open-duplicate-completion').onclick=()=>duplicateSmart();
     }
   }

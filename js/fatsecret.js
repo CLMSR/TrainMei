@@ -5,6 +5,10 @@
   if (!SB) return;
 
   const $f = (s) => document.querySelector(s);
+  const AUTO_SYNC_SUCCESS_KEY='trainmei_fatsecret_auto_sync_success_v1';
+  const AUTO_SYNC_ATTEMPT_KEY='trainmei_fatsecret_auto_sync_attempt_v1';
+  const AUTO_SYNC_INTERVAL_MS=2*60*60*1000;
+  let autoSyncPromise=null;
   const today = () => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -333,6 +337,41 @@ window.TrainMeiNutritionUtils={
     }
   }
 
+  async function autoSyncOnAppEntry(){
+    if(autoSyncPromise)return autoSyncPromise;
+    autoSyncPromise=(async()=>{
+      let connection;try{connection=await getConnection()}catch(error){console.warn('FatSecret automatic sync status check failed:',error);setMessage(`Automatic sync check failed · ${error?.message||'connection unavailable'}.` ,true);return {skipped:true,reason:'connection-check-failed'}}
+      if(connection?.status!=='connected')return {skipped:true,reason:'not-connected'};
+      const now=Date.now();
+      const serverLast=Date.parse(connection.last_sync_at||'')||0;
+      let localSuccess=0,localAttempt=0;
+      try{localSuccess=Number(localStorage.getItem(AUTO_SYNC_SUCCESS_KEY))||0;localAttempt=Number(localStorage.getItem(AUTO_SYNC_ATTEMPT_KEY))||0}catch(_){}
+      const lastSuccess=Math.max(serverLast,localSuccess);
+      if(lastSuccess&&now-lastSuccess<AUTO_SYNC_INTERVAL_MS)return {skipped:true,reason:'recent-sync'};
+      // A short failure cooldown prevents repeated requests if a user reopens the app
+      // while FatSecret or the network is unavailable. A successful sync uses 2 hours.
+      if(localAttempt&&now-localAttempt<15*60*1000)return {skipped:true,reason:'recent-attempt'};
+      try{localStorage.setItem(AUTO_SYNC_ATTEMPT_KEY,String(now))}catch(_){}
+      const todayDate=today(),yesterday=addDays(todayDate,-1);
+      try{
+        setMessage('Automatic FatSecret sync started…');
+        // Refresh yesterday as well as today, so a late diary edit is less likely to be missed.
+        await sync(yesterday);
+        await sync(todayDate);
+        try{localStorage.setItem(AUTO_SYNC_SUCCESS_KEY,String(Date.now()))}catch(_){}
+        await refresh();
+        setMessage('Automatic sync complete · today and yesterday refreshed.');
+        document.dispatchEvent(new CustomEvent('trainmei:nutrition-sync-complete',{detail:{from:yesterday,to:todayDate,days:2,source:'FatSecret',automatic:true}}));
+        return {skipped:false,from:yesterday,to:todayDate};
+      }catch(error){
+        console.warn('FatSecret automatic sync failed:',error);
+        setMessage(`Automatic sync failed · ${error?.message||'check your connection'}. Existing data has been kept.`,true);
+        return {skipped:false,error:String(error?.message||error)};
+      }
+    })().finally(()=>{autoSyncPromise=null});
+    return autoSyncPromise;
+  }
+
   function bind(){
     const date=$f('#fatsecret-sync-date');
     const todayKey=today();
@@ -380,5 +419,5 @@ window.TrainMeiNutritionUtils={
     bind();
   }
 
-  window.TrainMeiFatSecret={refresh,sync,connect,getRange:currentRange};
+  window.TrainMeiFatSecret={refresh,sync,connect,getRange:currentRange,autoSyncOnAppEntry};
 })();

@@ -187,3 +187,161 @@
   }
 }
 
+
+
+/* === Consolidated responsive component styles === */
+@media(max-width:560px) and (orientation:portrait){
+  #daily-briefing-btn{width:31px!important;min-width:31px!important;height:31px!important;padding:0!important;flex:0 0 31px!important;justify-content:center!important;gap:0!important}
+  #daily-briefing-btn svg{display:block!important;width:18px;height:18px;flex:0 0 auto}
+  #daily-briefing-btn .nav-label{display:none!important}
+}
+
+@media(max-width:560px) and (orientation:portrait){
+  #home-page .home-load-card{padding:14px!important}
+  #home-page .home-load-card .home-card-head{margin-bottom:12px;align-items:flex-start}
+  #home-page .home-load-bars{min-height:0}
+  #home-page .home-load-chart{display:none}
+  #home-page .home-load-mobile{display:grid;gap:8px;padding:2px 0 4px}
+  #home-page .home-load-row{display:grid;grid-template-columns:34px minmax(0,1fr) 42px;gap:9px;align-items:center;min-width:0}
+  #home-page .home-load-day{font-size:10px;font-weight:750;color:var(--muted);text-transform:uppercase}
+  #home-page .home-load-track{height:8px;min-width:0;overflow:hidden;border-radius:999px;background:var(--surface,var(--paper-dim))}
+  #home-page .home-load-track i{display:block;height:100%;min-width:0;border-radius:999px;background:var(--accent,var(--ink));transition:width .25s ease}
+  #home-page .home-load-row strong{font-size:11px;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+  #home-page .home-load-recovery{margin-top:10px}
+}
+
+@media(max-width:560px){.db-visual-summary{padding:11px}.db-visual-grid{grid-template-columns:1fr;gap:7px}.db-visual-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(70px,.65fr);gap:3px 10px;align-items:center;padding:10px}.db-visual-top{grid-row:1;grid-column:1}.db-visual-top strong{font-size:13px}.db-visual-card>.db-visual-track,.db-visual-card>.db-demand-steps{grid-column:2;grid-row:1;align-self:center;margin:0}.db-visual-card small{grid-column:1/-1;margin-top:4px}.db-visual-caption{font-size:9px}}
+
+@media(max-width:560px){.ti-duration-chart{gap:5px;height:125px}.ti-duration-track{height:82px}.ti-body-map-wrap{padding:11px}.ti-body-map-grid{gap:7px}.ti-body-view{padding:5px}.ti-body-view>strong{font-size:8px}.ti-body-map-head{align-items:flex-start;flex-direction:column;gap:5px}.ti-map-legend{white-space:normal}}
+
+@media(max-width:760px){.ih-panel{padding:13px}.ih-flow{grid-template-columns:minmax(0,1fr);gap:5px}.ih-flow>i{transform:rotate(90deg);height:14px;font-size:14px}.ih-flow-node{padding:10px}.ih-status-grid{grid-template-columns:minmax(0,1fr)}}
+
+@media(max-width:560px){.ih-head{flex-direction:column}.ih-head>.btn{width:100%}.ih-head h2{font-size:19px}.ih-flow-node{display:grid;grid-template-columns:minmax(0,1fr);gap:4px}.ih-status-top{flex-wrap:wrap}}
+
+@media(max-width:700px){.ti-quality-grid{grid-template-columns:minmax(0,1fr)}}
+
+@media(max-width:560px){#templates-modal .template-save-btn{grid-column:auto!important}.ti-quality-grid article{padding:10px}}
+
+@media(max-width:760px){.ih-panel{padding:9px!important}.ih-flow{display:flex!important;flex-direction:row!important;gap:4px!important}.ih-flow>i{transform:none!important;height:auto!important}.ih-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.ih-status-card{padding:7px!important}}
+
+@media(max-width:560px){.ih-head{flex-direction:row!important}.ih-head h2{font-size:12px!important}.ih-head>.btn{width:auto!important;flex:0 0 auto!important}.ih-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.ih-flow-node strong{font-size:8px!important}}
+
+@media(max-width:420px){.ti-body-map-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}.ti-body-view{padding:5px!important}.ti-body-view svg{max-width:145px}}
+
+@media(max-width:760px){.ti-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ti-grid-two,.ti-adaptive-list,.ti-pattern-list{grid-template-columns:1fr}.ti-hero{align-items:flex-start}.ti-hero .btn{flex:0 0 auto}.ti-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.ti-tab{padding:10px 6px}.ti-list-row{grid-template-columns:62px minmax(0,1fr);}.ti-list-row .ti-pill{grid-column:2;justify-self:start}.ti-muscle-label{align-items:flex-start;flex-direction:column;gap:3px}.ti-muscle-label span{text-align:left}}
+
+@media(max-width:420px){.ti-hero{flex-direction:column}.ti-hero .btn{width:100%}.ti-metric,.ti-panel,.ti-exercise-card,.ti-pattern-card{padding:12px}.ti-section-head{flex-direction:column;align-items:flex-start}.ti-weekbars{gap:5px}}
+@media(max-width:560px){.home-decision-assistant{padding:12px;margin-bottom:10px}.hda-head{flex-direction:column;gap:5px}.hda-confidence{white-space:normal}.hda-actions .btn{flex:1;min-width:0}.db-decision-signals{grid-template-columns:1fr}.db-decision-top{flex-direction:column;gap:5px}.exercise-rir-row{margin-left:18px;gap:6px}.exercise-rir-row input{width:62px;min-width:62px;max-width:62px;height:28px}.workflow-hint{font-size:9px;padding:7px 8px}.ih-audit{min-width:0}.ih-audit-item summary{align-items:flex-start}}
+@media(min-width:561px){.home-decision-assistant{max-width:100%}.db-decision-signals{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+@media(max-width:560px){.ti-feedback-actions{align-items:stretch}.ti-feedback-actions>span{width:100%;margin:0 0 3px}.ti-feedback-actions .btn{flex:1}}
+
+@media(max-width:560px){.ti-pattern-detail summary{font-size:11px}.ti-pattern-detail p{font-size:10px}}
+
+
+/* Portrait-safe gutters for Training Insights: avoid cards touching the viewport edges. */
+@media (max-width:560px) and (orientation:portrait){
+  #insights-page{padding-left:12px!important;padding-right:12px!important;box-sizing:border-box!important;}
+  #insights-page .ti-shell{width:calc(100% - 30px);max-width:none;margin:15px!important;padding:24px 22px 40px!important;box-sizing:border-box;}
+  #insights-page .ti-content,#insights-page .ti-hero,#insights-page .ti-tabs,#insights-page .ti-status{min-width:0;max-width:100%;box-sizing:border-box;}
+  #insights-page .ti-panel,#insights-page .ti-metric,#insights-page .ti-exercise-card,#insights-page .ti-pattern-card{min-width:0;box-sizing:border-box;}
+}
+
+/* Weight % / Weight Tracker: compact portrait layout, including iPhone widths */
+@media(max-width:760px){
+  .wp-exercise-grid{grid-template-columns:minmax(0,1fr)}
+  .wp-exercise-form{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wp-percent-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
+@media(max-width:560px) and (orientation:portrait){
+  .weight-percent-shell{padding-left:0;padding-right:0}
+  .weight-percent-shell .smart-tool-topbar{align-items:flex-start;gap:9px}
+  .weight-percent-shell .smart-tool-topbar>div{min-width:0}
+  .weight-percent-shell .smart-tool-topbar p{font-size:11px;line-height:1.45}
+  .wp-intro-card{align-items:stretch;flex-direction:column;padding:13px;gap:12px}
+  .wp-intro-card h2{font-size:17px}.wp-intro-card p{font-size:11px}
+  .wp-intro-card>.btn{width:100%;justify-content:center}
+  .wp-exercise-form{grid-template-columns:minmax(0,1fr);padding:12px;gap:9px}
+  .wp-form-actions{display:grid;grid-template-columns:1fr 1fr}
+  .wp-exercise-card{padding:11px;border-radius:12px}
+  .wp-card-title-wrap h3{font-size:16px}.wp-card-rm{font-size:24px}
+  .wp-card-actions{flex-direction:column}.wp-card-actions button{min-width:54px;padding:5px 6px}
+  .wp-progress-summary{grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,.75fr));gap:5px}
+  .wp-progress-status,.wp-progress-stat{padding:7px 5px}.wp-progress-status{gap:4px}.wp-progress-status strong{font-size:9px}.wp-progress-stat small{font-size:8px}.wp-progress-stat strong{font-size:12px}
+  .wp-percent-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+  .wp-percent-cell{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;padding:9px 10px}
+  .wp-percent-cell>span{font-size:10px;margin:0;flex:0 0 34px}.wp-percent-cell>strong{font-size:13px;text-align:right}.wp-percent-cell .wp-exact{display:none}
+  #nutri-page .nt-progress-grid{display:block}
+  #nutri-page .nt-progress-card{width:100%;min-width:0;padding:12px}
+  #nutri-page .nt-inline-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  #nutri-page .nt-inline-form label{min-width:0}
+  #nutri-page .nt-inline-form .btn{grid-column:1/-1;width:100%;min-height:42px}
+  #nutri-page .nt-weight-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  #nutri-page .nt-weight-stats>div{padding:8px 6px}
+  #nutri-page .nt-weight-stats span{font-size:8px}
+  #nutri-page .nt-weight-stats strong{font-size:14px}
+  #nutri-page .nt-chart-wrap{height:190px;min-width:0}
+  #nutri-page .nt-history-row{gap:6px}
+  #nutri-page .nt-history-row-actions{gap:4px}
+  #nutri-page .nt-history-row-actions button{padding:5px 6px;font-size:9px}
+}
+@media(max-width:560px) and (orientation:portrait){
+  .wp-percent-cell{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:3px 8px}
+  .wp-percent-cell>span{grid-column:1;grid-row:1/3;flex:none}
+  .wp-percent-cell>strong{grid-column:2;grid-row:1;text-align:right}
+  .wp-percent-cell .wp-exact{display:block;grid-column:2;grid-row:2;text-align:right;font-size:8px}
+}
+
+
+/* Theme-specific mobile behavior: keep visual personality without sacrificing touch targets. */
+@media(max-width:560px) and (orientation:portrait){
+  body[data-theme="pixel"] .brand{font-size:12px!important;text-shadow:1px 1px 0 #FF6B9A;letter-spacing:0!important}
+  body[data-theme="pixel"] .section-bar{font-size:12px;padding:8px 9px;box-shadow:2px 2px 0 #FF6B9A}
+  body[data-theme="pixel"] .training-block,body[data-theme="pixel"] .home-card,body[data-theme="pixel"] .stat-card{box-shadow:2px 2px 0 rgba(0,0,0,.22)}
+  body[data-theme="brutalist"] .brand{font-size:12px!important;letter-spacing:-.04em!important}
+  body[data-theme="brutalist"] .training-block,body[data-theme="brutalist"] .home-card,body[data-theme="brutalist"] .stat-card,body[data-theme="brutalist"] .smart-int-panel,body[data-theme="brutalist"] .nutri-card{box-shadow:3px 3px 0 #171717}
+  .theme-grid{grid-template-columns:minmax(0,1fr)!important}
+  .theme-option{min-width:0}
+}
+@media(max-width:950px) and (orientation:landscape){
+  body[data-theme="pixel"] .section-bar{font-size:12px}
+  body[data-theme="brutalist"] .training-block,body[data-theme="brutalist"] .home-card{box-shadow:3px 3px 0 #171717}
+}
+
+
+/* Home · Total time: clear weekly comparison on desktop and landscape. */
+@media (min-width:561px){
+  #home-page .home-load-bars{display:block;height:auto;min-height:0;overflow:visible}
+  #home-page .home-load-chart{display:none!important}
+  #home-page .home-load-mobile{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;padding:2px 0 4px}
+  #home-page .home-load-row{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 9px;gap:9px 6px;align-items:center;min-width:0;padding:10px 9px;background:var(--surface-soft,var(--paper-dim));border:1px solid var(--line-soft,var(--line));border-radius:11px;box-sizing:border-box}
+  #home-page .home-load-day{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;min-width:0}
+  #home-page .home-load-track{grid-column:1/-1;grid-row:2;height:8px;width:100%;min-width:0;overflow:hidden;border-radius:999px;background:var(--paper-dim,var(--line-soft))}
+  #home-page .home-load-track i{display:block;height:100%;min-width:0;border-radius:999px;background:var(--accent,var(--primary));transition:width .25s ease}
+  #home-page .home-load-row strong{font-size:10px;line-height:1.2;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink)}
+  #home-page .home-load-recovery{margin-top:12px}
+}
+@media (min-width:561px) and (max-width:1000px){
+  #home-page .home-load-mobile{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+  #home-page .home-load-row{padding:9px 8px}
+}
+@media (min-width:561px) and (max-width:1000px) and (orientation:landscape){
+  #home-page .home-load-mobile{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:560px) and (orientation:portrait){
+  #home-page .home-load-chart{display:none!important}
+  #home-page .home-load-mobile{display:grid!important;grid-template-columns:minmax(0,1fr);gap:8px}
+}
+
+
+/* Home Total Time: keep the weekly grid inside the card at desktop and landscape widths. */
+@media (min-width:561px){
+  #home-page .home-load-card{min-width:0;overflow:hidden}
+  #home-page .home-load-bars{display:block!important;width:100%!important;max-width:100%!important;min-width:0;flex:0 0 100%;margin-left:0!important;margin-right:0!important;align-self:stretch;box-sizing:border-box;overflow:hidden}
+  #home-page .home-load-mobile{width:100%!important;max-width:100%!important;min-width:0;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px;box-sizing:border-box}
+  #home-page .home-load-row{min-width:0;width:100%;padding:9px 8px;box-sizing:border-box}
+  #home-page .home-load-track{width:100%;min-width:0}
+}
+@media (min-width:561px) and (max-width:760px){
+  #home-page .home-load-mobile{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px}
+}

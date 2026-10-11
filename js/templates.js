@@ -114,9 +114,9 @@
     await load();TP.setStatus('Template saved to library');
   }
 
-  async function createEditor(){if(!TP.currentUser){alert('Log in first to create templates.');return}TP.clearSaveTimer();TP.templateEditorMode=true;TP.templateEditorId=null;TP.selectedDateKey=TP.todayKey();TP.currentDay=cleanEditorDay(TP.normalizeDay(TP.defaultDay()));$('#templates-modal').classList.remove('show');TP.showPage('day-page');TP.renderDay();TP.setStatus('Create template')}
-  async function edit(id){const t=TP.templatesCache.find(x=>x.id===id);if(!t)return;TP.clearSaveTimer();TP.templateEditorMode=true;TP.templateEditorId=id;TP.selectedDateKey=TP.todayKey();TP.currentDay=cleanEditorDay(TP.normalizeDay(TP.clone(t.data||{})));$('#templates-modal').classList.remove('show');TP.showPage('day-page');TP.renderDay();TP.setStatus('Edit template')}
-  async function saveEditor(){if(!TP.templateEditorMode||!TP.currentDay||!TP.currentUser)return;const existing=TP.templateEditorId?TP.templatesCache.find(x=>x.id===TP.templateEditorId):null,name=prompt('Template name:',existing?.name||TP.currentDay.focus||'My workout');if(name===null||!name.trim())return;const data=cleanEditorDay(TP.normalizeDay(TP.currentDay));const payload={name:name.trim(),category:data.trainingCategory||null,data,updated_at:new Date().toISOString()};const query=TP.templateEditorId?TP.supabaseClient().from('workout_templates').update(payload).eq('id',TP.templateEditorId).eq('user_id',TP.currentUser.id):TP.supabaseClient().from('workout_templates').insert({user_id:TP.currentUser.id,...payload});const {error}=await query;if(error){alert(error.message);return}TP.templateEditorMode=false;TP.templateEditorId=null;await load();TP.showPage('calendar-page');$('#templates-modal').classList.add('show');TP.setStatus('Template saved to library')}
+  async function createEditor(){if(!TP.currentUser){alert('Log in first to create templates.');return}TP.clearSaveTimer();TP.templateEditorMode=true;TP.templateEditorId=null;TP.selectedDateKey=TP.todayKey();TP.currentDay=cleanEditorDay(TP.normalizeDay(TP.defaultDay()));(document.getElementById('templates-modal')?.__closeTemplatesModal||(()=>document.getElementById('templates-modal')?.classList.remove('show')))();TP.showPage('day-page');TP.renderDay();TP.setStatus('Create template')}
+  async function edit(id){const t=TP.templatesCache.find(x=>x.id===id);if(!t)return;TP.clearSaveTimer();TP.templateEditorMode=true;TP.templateEditorId=id;TP.selectedDateKey=TP.todayKey();TP.currentDay=cleanEditorDay(TP.normalizeDay(TP.clone(t.data||{})));(document.getElementById('templates-modal')?.__closeTemplatesModal||(()=>document.getElementById('templates-modal')?.classList.remove('show')))();TP.showPage('day-page');TP.renderDay();TP.setStatus('Edit template')}
+  async function saveEditor(){if(!TP.templateEditorMode||!TP.currentDay||!TP.currentUser)return;const existing=TP.templateEditorId?TP.templatesCache.find(x=>x.id===TP.templateEditorId):null,name=prompt('Template name:',existing?.name||TP.currentDay.focus||'My workout');if(name===null||!name.trim())return;const data=cleanEditorDay(TP.normalizeDay(TP.currentDay));const payload={name:name.trim(),category:data.trainingCategory||null,data,updated_at:new Date().toISOString()};const query=TP.templateEditorId?TP.supabaseClient().from('workout_templates').update(payload).eq('id',TP.templateEditorId).eq('user_id',TP.currentUser.id):TP.supabaseClient().from('workout_templates').insert({user_id:TP.currentUser.id,...payload});const {error}=await query;if(error){alert(error.message);return}TP.templateEditorMode=false;TP.templateEditorId=null;await load();TP.showPage('calendar-page');(document.getElementById('templates-modal')?.__openTemplatesModal||(()=>document.getElementById('templates-modal')?.classList.add('show')))();TP.setStatus('Template saved to library')}
 
   /* FIX #2b + #3: use() — apply cleanEditorDay so old templates with stale feedback
      don't contaminate new days; also validate the date is a real calendar date. */
@@ -126,7 +126,7 @@
     if(!isRealDate(date))return;
     TP.templateEditorMode=false;TP.templateEditorId=null;TP.selectedDateKey=date;
     TP.currentDay=cleanEditorDay(TP.normalizeDay(TP.clone(t.data)));
-    await TP.saveDay();await TP.openDay(date);$('#templates-modal').classList.remove('show');
+    await TP.saveDay();await TP.openDay(date);(document.getElementById('templates-modal')?.__closeTemplatesModal||(()=>document.getElementById('templates-modal')?.classList.remove('show')))();
   }
 
   function templateToast(message){
@@ -181,8 +181,17 @@
     const MODAL_ID='templates-modal';
     const closeTemplatesModal=()=>{
       const m=document.getElementById(MODAL_ID);
-      if(m&&m.classList.contains('show'))m.classList.remove('show');
+      if(m&&m.classList.contains('show')){m.classList.remove('show');m.setAttribute('aria-hidden','true');document.body.style.overflow='';}
     };
+    const modal=document.getElementById(MODAL_ID);
+    if(modal&&!modal.dataset.dbStyleBound){
+      modal.dataset.dbStyleBound='true';
+      const openTemplatesModal=()=>{modal.classList.add('show');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';requestAnimationFrame(()=>document.getElementById('close-templates')?.focus());};
+      document.addEventListener('click',event=>{if(event.target===modal)closeTemplatesModal();});
+      document.getElementById('close-templates')?.addEventListener('click',closeTemplatesModal);
+      modal.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();closeTemplatesModal();}if(event.key==='Tab'){const focusable=[...modal.querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(el=>el.offsetParent!==null);if(!focusable.length)return;const first=focusable[0],last=focusable[focusable.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}}});
+      modal.__openTemplatesModal=openTemplatesModal;modal.__closeTemplatesModal=closeTemplatesModal;
+    }
 
     document.addEventListener('click',(e)=>{
       const modal=document.getElementById(MODAL_ID);

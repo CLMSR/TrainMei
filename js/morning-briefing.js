@@ -417,12 +417,11 @@
       ? { phase: ctx.cycle.phase }
       : null;
 
-    const focus = synthesise(
-      training,
-      recoveryModel,
-      nutrition,
-      adaptation
-    );
+    let timing = null, decision = null;
+    try { timing = await core.nutritionTimingContext?.(date, workout) || null; } catch (_) {}
+    try { decision = await core.decisionSupport?.(date, workout) || null; } catch (_) {}
+    nutrition.timing = timing;
+    const focus = synthesise(training, recoveryModel, nutrition, adaptation);
 
     return {
       date,
@@ -431,6 +430,7 @@
       nutrition,
       cycle,
       adaptation,
+      decision,
       focus,
 
       dataStatus: {
@@ -699,6 +699,17 @@
       </div>`;
   }
 
+  function renderVisualSummary(m) {
+    const t=m.training||{},r=m.recovery||{},n=m.nutrition||{};
+    const recovery=r.recoveryPercent;
+    const fuel=n.fuelScore;
+    const demand=t.status==='rest'?'Rest day':t.status==='unknown'?'Not confirmed':(t.demand||'Not classified');
+    const demandLevel=t.status==='rest'?0:t.status==='unknown'?null:t.demand==='High'?3:t.demand==='Moderate'?2:t.demand==='Low'?1:null;
+    const segments=level=>[1,2,3].map(i=>`<i class="${level!=null&&i<=level?'is-on':''}"></i>`).join('');
+    const gauge=(label,value,detail,kind='score')=>`<article class="db-visual-card"><div class="db-visual-top"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>${kind==='demand'?`<div class="db-demand-steps ${demandLevel===null?'is-unknown':''}">${segments(demandLevel)}</div>`:`<div class="db-visual-track"><i style="width:${value==='—'?0:Math.max(0,Math.min(100,Number(value)||0))}%"></i></div>`}<small>${esc(detail)}</small></article>`;
+    return `<section class="db-visual-summary" aria-label="Daily training overview"><div class="db-visual-heading"><span class="eyebrow">TODAY AT A GLANCE</span><span class="db-visual-caption">Only signals currently available</span></div><div class="db-visual-grid">${gauge('Training demand',demand,t.status==='rest'?'No training demand recorded':t.status==='unknown'?'Plan or rest day not confirmed':t.duration!=null?`${t.duration} min ${t.planned?'planned':'logged'}`:'Based on available session details','demand')}${gauge('Readiness',recovery==null?'—':`${recovery}`,recovery==null?'Recovery score unavailable':`${r.status||'Model estimate'} · ${r.confidence||'confidence unavailable'}`)}${gauge('Performance fuel',fuel==null?'—':`${fuel}`,fuel==null?(n.connected?'No fuel score available':'Nutrition not confirmed as synced'):(n.fuelStatus||'Fuel estimate'))}</div></section>`;
+  }
+
   function renderFocus(focus) {
     return `
       <section class="db-focus ${priorityClass(focus.priority)}">
@@ -806,6 +817,8 @@
   }
 
   function renderNutrition(nutrition) {
+    const timing = nutrition.timing || null;
+    const timingHtml = timing ? `<div class="db-meal-timing"><strong>Meal timing</strong><span>${timing.totalEntries ? `${timing.timedEntries} of ${timing.totalEntries} entries include a time` : 'No nutrition entries available for this date'}</span>${timing.sessionStartKnown ? `<small>${timing.preSessionMeals.length} recorded meal(s) before the session start</small>` : '<small>Session start time is unknown; pre-workout timing cannot be confirmed.</small>'}</div>` : '';
     if (!nutrition.connected && !nutrition.hasIntake) {
       return `
         <section class="db-block">
@@ -813,7 +826,7 @@
           <div class="db-block-empty">
             FatSecret is not confirmed as synced for today.
             Intake values are hidden until current-day data is available.
-          </div>
+          </div>${timingHtml}
         </section>`;
     }
 
@@ -823,7 +836,7 @@
           <div class="db-block-label">Nutrition today</div>
           <div class="db-block-empty">
             No intake values are available for today yet.
-          </div>
+          </div>${timingHtml}
         </section>`;
     }
 
@@ -855,12 +868,18 @@
                 ${label}${unit === 'kcal' ? ' · kcal' : ''}
               </span>
               ${coverage != null
-                ? `<span class="db-nutri-cov">${coverage}% of target</span>`
+                ? `<span class="db-nutri-cov">${coverage}% of target</span><span class="db-nutri-track"><i style="width:${Math.max(0,Math.min(100,coverage))}%"></i></span>`
                 : ''}
             </div>
           `).join('')}
-        </div>
+        </div>${timingHtml}
       </section>`;
+  }
+
+  function renderDecision(decision) {
+    if (!decision) return '';
+    const items = (decision.signals || []).slice(0,4).map(x => `<div class="db-decision-signal"><span>${esc(x.label)}</span><strong>${esc(x.value)}</strong></div>`).join('');
+    return `<section class="db-decision-card"><div class="db-decision-top"><div><div class="db-block-label">DECISION SUPPORT</div><h3>${esc(decision.action || 'Follow the plan and review your response')}</h3></div><span class="db-decision-confidence">${esc(decision.confidence || 'Limited')} evidence</span></div>${(decision.actions||[]).length?`<p>${esc(decision.actions.join(' '))}</p>`:''}<div class="db-decision-signals">${items}</div><small>Based on available logged data · no workout is changed automatically.</small></section>`;
   }
 
   function renderModel(m) {
@@ -872,6 +891,8 @@
 
     body.innerHTML = `
       ${renderTraining(m.training)}
+      ${renderDecision(m.decision)}
+      ${renderVisualSummary(m)}
       ${renderPillars(m)}
       ${renderFocus(m.focus)}
       ${renderPreWorkout(m)}
