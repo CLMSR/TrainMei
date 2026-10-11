@@ -241,10 +241,10 @@
 
 /* Portrait-safe gutters for Training Insights: avoid cards touching the viewport edges. */
 @media (max-width:560px) and (orientation:portrait){
-  #insights-page{padding-left:12px!important;padding-right:12px!important;box-sizing:border-box!important;}
-  #insights-page .ti-shell{width:calc(100% - 30px);max-width:none;margin:15px!important;padding:24px 22px 40px!important;box-sizing:border-box;}
-  #insights-page .ti-content,#insights-page .ti-hero,#insights-page .ti-tabs,#insights-page .ti-status{min-width:0;max-width:100%;box-sizing:border-box;}
-  #insights-page .ti-panel,#insights-page .ti-metric,#insights-page .ti-exercise-card,#insights-page .ti-pattern-card{min-width:0;box-sizing:border-box;}
+  .home-insights-section{padding-left:12px!important;padding-right:12px!important;box-sizing:border-box!important;}
+  .home-insights-section .ti-shell{width:100%;max-width:none;margin:0!important;padding:0!important;box-sizing:border-box;}
+  .home-insights-section .ti-content,.home-insights-section .ti-hero,.home-insights-section .ti-tabs,.home-insights-section .ti-status{min-width:0;max-width:100%;box-sizing:border-box;}
+  .home-insights-section .ti-panel,.home-insights-section .ti-metric,.home-insights-section .ti-exercise-card,.home-insights-section .ti-pattern-card{min-width:0;box-sizing:border-box;}
 }
 
 /* Weight % / Weight Tracker: compact portrait layout, including iPhone widths */
@@ -271,19 +271,19 @@
   .wp-percent-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
   .wp-percent-cell{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;padding:9px 10px}
   .wp-percent-cell>span{font-size:10px;margin:0;flex:0 0 34px}.wp-percent-cell>strong{font-size:13px;text-align:right}.wp-percent-cell .wp-exact{display:none}
-  #nutri-page .nt-progress-grid{display:block}
-  #nutri-page .nt-progress-card{width:100%;min-width:0;padding:12px}
-  #nutri-page .nt-inline-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-  #nutri-page .nt-inline-form label{min-width:0}
-  #nutri-page .nt-inline-form .btn{grid-column:1/-1;width:100%;min-height:42px}
-  #nutri-page .nt-weight-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
-  #nutri-page .nt-weight-stats>div{padding:8px 6px}
-  #nutri-page .nt-weight-stats span{font-size:8px}
-  #nutri-page .nt-weight-stats strong{font-size:14px}
-  #nutri-page .nt-chart-wrap{height:190px;min-width:0}
-  #nutri-page .nt-history-row{gap:6px}
-  #nutri-page .nt-history-row-actions{gap:4px}
-  #nutri-page .nt-history-row-actions button{padding:5px 6px;font-size:9px}
+  #user-weight-content .nt-progress-grid{display:block}
+  #user-weight-content .nt-progress-card{width:100%;min-width:0;padding:12px}
+  #user-weight-content .nt-inline-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  #user-weight-content .nt-inline-form label{min-width:0}
+  #user-weight-content .nt-inline-form .btn{grid-column:1/-1;width:100%;min-height:42px}
+  #user-weight-content .nt-weight-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  #user-weight-content .nt-weight-stats>div{padding:8px 6px}
+  #user-weight-content .nt-weight-stats span{font-size:8px}
+  #user-weight-content .nt-weight-stats strong{font-size:14px}
+  #user-weight-content .nt-chart-wrap{height:190px;min-width:0}
+  #user-weight-content .nt-history-row{gap:6px}
+  #user-weight-content .nt-history-row-actions{gap:4px}
+  #user-weight-content .nt-history-row-actions button{padding:5px 6px;font-size:9px}
 }
 @media(max-width:560px) and (orientation:portrait){
   .wp-percent-cell{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:3px 8px}

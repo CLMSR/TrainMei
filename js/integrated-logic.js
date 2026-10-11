@@ -35,7 +35,7 @@ function setRestDay(on){
 /* Navigation: desktop + horizontal = labels, vertical iPhone = icons. */
 function refreshNav(){
   const portrait=window.matchMedia('(max-width:560px)').matches;
-$$('#main-nav .btn[data-page],#templates-btn,#daily-briefing-btn,#settings-btn').forEach(b=>{
+$$('#main-nav .btn[data-page],#templates-btn,#settings-btn').forEach(b=>{
     const label=b.querySelector('.nav-label');const svg=b.querySelector('svg');
     if(label)label.hidden=portrait;
     if(svg)svg.hidden=!portrait;
@@ -323,15 +323,53 @@ function restorePWAStateNow() {
 }
 restorePWAStateNow();
 
-const _origStartApp = window.startApp;
-if (_origStartApp) {
-  window.startApp = async function() {
-    const result = await _origStartApp.call(this);
-    if (savedPWAState && savedPWAState.activePage !== 'home-page') {
-      setTimeout(() => { PWAStateManager.applyState(savedPWAState); }, 350);
-    }
-    return result;
-  };
-}
+/* Navigation restoration is owned by training-planner-core.js. Do not
+   re-apply this older PWA snapshot after startApp: it can be stale and
+   overwrite the latest page (historically forcing Calendar on every launch).
+   PWAStateManager remains available for non-navigation state, while the
+   canonical per-user navigation key is restored by restoreLastNavigation(). */
 
+})();
+
+/* Unified Home + User workspace. Move existing functional modules instead of cloning their IDs. */
+(function setupUnifiedWorkspaces(){
+  function moveExistingWorkspaces(){
+    const weight=document.getElementById('nt-weight-tracker');
+    const weightTarget=document.getElementById('user-weight-content');
+    if(weight&&weightTarget&&!weightTarget.contains(weight))weightTarget.appendChild(weight);
+    const wp=document.getElementById('weight-percent-page');
+    const strengthTarget=document.getElementById('user-strength-content');
+    if(wp&&strengthTarget&&!strengthTarget.contains(wp)){
+      const shell=wp.querySelector('.smart-tool-shell');
+      if(shell){const intro=shell.querySelector('.smart-tool-topbar');if(intro)intro.remove();const introCard=shell.querySelector('.wp-intro-card');if(introCard){introCard.querySelector('.wp-eyebrow')?.remove();introCard.querySelector('p')?.remove();const h=introCard.querySelector('h2');if(h)h.textContent='Exercise library';}strengthTarget.appendChild(shell);wp.remove();}
+    }
+    const planner=document.getElementById('no-meal-planner-card');
+    const nutri=document.getElementById('nutri-calculator');
+    const optimizer=document.getElementById('nutrition-optimizer');
+    const sessionCard=optimizer?.querySelector('.nutrition-session-card');
+    const fuelCard=optimizer?.querySelector('.nutrition-context-card:not(#no-meal-planner-card)');
+    if(nutri&&sessionCard){let contextSlot=document.getElementById('nutri-training-context-slot');if(!contextSlot){contextSlot=document.createElement('section');contextSlot.id='nutri-training-context-slot';contextSlot.className='nutri-training-context-slot';contextSlot.innerHTML='<div class="user-panel-head"><div><div class="eyebrow">TRAINING × NUTRITION</div><h2>Today’s fuel</h2></div></div>';nutri.closest('.smart-tool-shell')?.appendChild(contextSlot);}if(!contextSlot.contains(sessionCard))contextSlot.appendChild(sessionCard);if(fuelCard&&!contextSlot.contains(fuelCard))contextSlot.appendChild(fuelCard);}
+    if(planner&&nutri){
+      let slot=document.getElementById('nutri-meal-planner-slot');
+      if(!slot){slot=document.createElement('section');slot.id='nutri-meal-planner-slot';slot.className='nutri-meal-planner-slot';slot.innerHTML='<div class="user-panel-head"><div><div class="eyebrow">MEAL PLANNER</div><h2>Planned meals & ideas</h2></div></div>';nutri.closest('.smart-tool-shell')?.appendChild(slot);}
+      if(!slot.contains(planner))slot.appendChild(planner);
+      const optimizer=document.getElementById('nutrition-optimizer');
+      const preCard=optimizer?.querySelector('.nutrition-main-card');
+      const whyCard=optimizer?.querySelector('.nutrition-side-card');
+      let prePanel=document.getElementById('meal-preworkout-panel');
+      if(!prePanel){prePanel=document.createElement('section');prePanel.id='meal-preworkout-panel';prePanel.className='meal-preworkout-panel';prePanel.hidden=true;prePanel.setAttribute('role','tabpanel');prePanel.setAttribute('aria-label','Pre-workout nutrition');}
+      if(preCard&&!prePanel.contains(preCard))prePanel.appendChild(preCard);
+      if(whyCard&&!prePanel.contains(whyCard))prePanel.appendChild(whyCard);
+      if(!prePanel.parentElement)planner.appendChild(prePanel);
+      const oldPage=document.getElementById('nutrition-page');if(oldPage)oldPage.dataset.retired='true';
+    }
+    const brainGrid=document.querySelector('.home-brain-grid');
+    if(brainGrid){brainGrid.querySelectorAll('[data-brain-back]').forEach(b=>b.remove());brainGrid.querySelector('#brain-drivers')?.closest('.brain-card')?.remove();brainGrid.querySelector('#brain-recommendation')?.closest('.brain-card')?.remove();brainGrid.querySelectorAll('.brain-card.full').forEach(card=>card.remove());}
+  }
+  function loadMetrics(){try{const d=JSON.parse(localStorage.getItem('trainmei_user_metrics_v1')||'{}');[['label','user-metric-label'],['sex','user-metric-sex'],['age','user-metric-age'],['height','user-metric-height'],['bodyfat','user-metric-bodyfat']].forEach(([k,id])=>{const el=document.getElementById(id);if(el&&d[k]!=null)el.value=d[k]});const sex=document.getElementById('nt-sexo'),age=document.getElementById('nt-edad'),height=document.getElementById('nt-altura');if(sex&&d.sex)sex.value=d.sex==='female'?'mujer':d.sex==='male'?'hombre':sex.value;if(age&&d.age&&!age.value)age.value=d.age;if(height&&d.height&&!height.value)height.value=d.height;}catch(_){} }
+  function saveMetrics(){const d={label:document.getElementById('user-metric-label')?.value.trim()||'',sex:document.getElementById('user-metric-sex')?.value||'',age:document.getElementById('user-metric-age')?.value||'',height:document.getElementById('user-metric-height')?.value||'',bodyfat:document.getElementById('user-metric-bodyfat')?.value||'',updatedAt:new Date().toISOString()};try{localStorage.setItem('trainmei_user_metrics_v1',JSON.stringify(d));const sex=document.getElementById('nt-sexo'),age=document.getElementById('nt-edad'),height=document.getElementById('nt-altura');if(sex&&d.sex)sex.value=d.sex==='female'?'mujer':d.sex==='male'?'hombre':sex.value;if(age&&d.age)age.value=d.age;if(height&&d.height)height.value=d.height;const status=document.getElementById('user-metrics-status');if(status)status.textContent='Metrics saved on this device.';}catch(_){const status=document.getElementById('user-metrics-status');if(status)status.textContent='Could not save metrics in this browser.'}}
+  document.addEventListener('DOMContentLoaded',()=>{moveExistingWorkspaces();loadMetrics();});
+  document.addEventListener('click',e=>{if(e.target.closest('#user-metrics-save'))saveMetrics();if(e.target.closest('#home-refresh-intelligence'))window.TrainMeiDailyBriefing?.refresh?.();});
+  // Scripts are loaded at the end of the document, so perform the move immediately too.
+  moveExistingWorkspaces();
 })();

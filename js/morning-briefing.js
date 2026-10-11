@@ -4,7 +4,7 @@
   if (window.TrainMeiDailyBriefing) return;
 
   const MODAL_ID = 'daily-briefing-modal';
-  const BUTTON_SELECTOR = '#daily-briefing-btn, #briefing-btn';
+  const BUTTON_SELECTOR = '#daily-briefing-btn, #briefing-btn'; // Legacy selectors; navigation button removed.
 
   let model = null;
   let isOpen = false;
@@ -883,21 +883,19 @@
   }
 
   function renderModel(m) {
-    const body = $('#db-body');
+    const body = $('#home-briefing-body') || $('#db-body');
     if (!body) return;
 
-    const date = $('#db-date');
+    const date = $('#home-date-label') || $('#db-date');
     if (date) date.textContent = dayLabel();
 
     body.innerHTML = `
-      ${renderTraining(m.training)}
       ${renderDecision(m.decision)}
       ${renderVisualSummary(m)}
       ${renderPillars(m)}
       ${renderFocus(m.focus)}
       ${renderPreWorkout(m)}
       ${renderRecovery(m.recovery)}
-      ${renderNutrition(m.nutrition)}
 
       <div class="db-footnote">
         Uses TrainMei’s unified data model.
@@ -906,7 +904,7 @@
   }
 
   function renderLoading() {
-    const body = $('#db-body');
+    const body = $('#home-briefing-body') || $('#db-body');
 
     if (body) {
       body.innerHTML = `
@@ -918,7 +916,7 @@
   }
 
   function renderError() {
-    const body = $('#db-body');
+    const body = $('#home-briefing-body') || $('#db-body');
     if (!body) return;
 
     body.innerHTML = `
@@ -944,23 +942,23 @@
 
     refreshing = true;
 
-    if (isOpen) renderLoading();
+    if ($('#home-briefing-body') || isOpen) renderLoading();
 
     try {
       model = await buildModel();
 
-      if (isOpen) renderModel(model);
+      if ($('#home-briefing-body') || isOpen) renderModel(model);
     } catch (error) {
       console.error('[DailyBriefing] refresh failed:', error);
 
-      if (isOpen) renderError();
+      if ($('#home-briefing-body') || isOpen) renderError();
     } finally {
       refreshing = false;
 
       if (refreshQueued) {
         refreshQueued = false;
 
-        if (isOpen) refresh();
+        if ($('#home-page')?.classList.contains('active') || isOpen) refresh();
       }
     }
   }
@@ -1007,7 +1005,7 @@
     'trainmei:day-saved'
   ].forEach(name => {
     document.addEventListener(name, () => {
-      if (isOpen) refresh();
+      if ($('#home-page')?.classList.contains('active') || isOpen) refresh();
     });
   });
 
@@ -1037,6 +1035,7 @@
     }
   }, true);
 
+  document.addEventListener('DOMContentLoaded', () => { if ($('#home-page')) setTimeout(refresh, 350); });
   window.TrainMeiDailyBriefing = {
     open,
     close,

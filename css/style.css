@@ -4381,7 +4381,6 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 #nutri-page .nutri-calculator-only{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
 #nutri-page .nutri-calculator-only>.nutri-card:nth-of-type(1){grid-column:1 / -1}
 #nutri-page .nutri-calculator-only>.nutri-card:nth-of-type(2){grid-column:1}
-#nutri-page .nutri-calculator-only>.nutri-card:nth-of-type(3){grid-column:2}
 #nutri-page .nutri-calculator-only>#nt-calcBtn{grid-column:1 / -1}
 #nutri-page .nutri-card{background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(22,22,22,.04);min-width:0}
 #nutri-page .nutri-big-number{font-size:44px}
@@ -6094,31 +6093,39 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 
 
 /* Nutri Tracker: body-weight history */
-#nutri-page .nt-progress-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:14px;align-items:start}
-#nutri-page .nt-progress-card{min-width:0;margin:0}
-#nutri-page .nt-helper{margin:-2px 0 13px;color:var(--muted);font-size:11px;line-height:1.5}
-#nutri-page .nt-inline-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px;align-items:end}
-#nutri-page .nt-inline-form label{display:flex;flex-direction:column;gap:5px;min-width:0;color:var(--muted);font-size:10px;font-weight:700}
-#nutri-page .nt-inline-form input{width:100%;min-width:0;min-height:38px;border:1px solid var(--line);border-radius:9px;padding:8px 9px;background:var(--card-bg);color:var(--text);font:inherit;font-size:12px}
-#nutri-page .nt-inline-form .btn{min-height:38px;white-space:nowrap;padding:8px 11px;font-size:11px}
-#nutri-page .nt-weight-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0}
-#nutri-page .nt-weight-stats>div{background:var(--surface,rgba(128,128,128,.07));border:1px solid var(--line);border-radius:10px;padding:9px;min-width:0}
-#nutri-page .nt-weight-stats span{display:block;color:var(--muted);font-size:9px;line-height:1.35;margin-bottom:5px}
-#nutri-page .nt-weight-stats strong{display:block;color:var(--heading-color,var(--text));font-size:17px;overflow-wrap:anywhere}
-#nutri-page .nt-chart-wrap{height:205px;position:relative;margin:8px 0 14px}
-#nutri-page .nt-chart-wrap canvas{width:100%!important;height:100%!important}
-#nutri-page .nt-history-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid var(--line);font-size:11px}
-#nutri-page .nt-history-head span{font-size:10px;color:var(--muted)}
-#nutri-page .nt-history-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
-#nutri-page .nt-history-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;min-width:0}
-#nutri-page .nt-history-row-main{min-width:0;display:flex;flex-direction:column;gap:2px}
-#nutri-page .nt-history-row-main strong{font-size:11px;color:var(--heading-color,var(--text));overflow-wrap:anywhere}
-#nutri-page .nt-history-row-main small{font-size:9px;color:var(--muted)}
-#nutri-page .nt-history-row-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-#nutri-page .nt-history-row-actions button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:7px;padding:5px 7px;font-size:10px}
-#nutri-page .nt-empty{margin:4px 0;color:var(--muted);font-size:10px;line-height:1.5}
-@media(max-width:760px){#nutri-page .nt-progress-grid{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:560px) and (orientation:portrait){#nutri-page .nt-inline-form{grid-template-columns:1fr 1fr}#nutri-page .nt-inline-form .btn{grid-column:1/-1;width:100%}#nutri-page .nt-weight-stats{gap:5px}#nutri-page .nt-weight-stats>div{padding:8px 6px}#nutri-page .nt-weight-stats strong{font-size:15px}#nutri-page .nt-chart-wrap{height:180px}}
+#user-weight-content .nt-progress-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:14px;align-items:start}
+#user-weight-content .nt-progress-card{min-width:0;margin:0}
+#user-weight-content .nt-helper{margin:-2px 0 13px;color:var(--muted);font-size:11px;line-height:1.5}
+#user-weight-content .nt-inline-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:8px;align-items:end}
+#user-weight-content .nt-inline-form label{display:flex;flex-direction:column;gap:5px;min-width:0;color:var(--muted);font-size:10px;font-weight:700}
+#user-weight-content .nt-inline-form input{width:100%;min-width:0;min-height:38px;border:1px solid var(--line);border-radius:9px;padding:8px 9px;background:var(--card-bg);color:var(--text);font:inherit;font-size:12px}
+#user-weight-content .nt-inline-form .btn{min-height:38px;white-space:nowrap;padding:8px 11px;font-size:11px}
+#user-weight-content .nt-weight-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0}
+#user-weight-content .nt-weight-stats>div{background:var(--surface,rgba(128,128,128,.07));border:1px solid var(--line);border-radius:10px;padding:9px;min-width:0}
+#user-weight-content .nt-weight-stats span{display:block;color:var(--muted);font-size:9px;line-height:1.35;margin-bottom:5px}
+#user-weight-content .nt-weight-stats strong{display:block;color:var(--heading-color,var(--text));font-size:17px;overflow-wrap:anywhere}
+#user-weight-content .nt-chart-wrap{height:205px;position:relative;margin:8px 0 14px}
+#user-weight-content .nt-chart-wrap canvas{width:100%!important;height:100%!important}
+#user-weight-content .nt-history-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid var(--line);font-size:11px}
+#user-weight-content .nt-history-head span{font-size:10px;color:var(--muted)}
+#user-weight-content .nt-history-details {margin-top: 10px;border-top: 1px solid var(--line);}
+#user-weight-content .nt-history-head {display: flex;align-items: center;justify-content: space-between;gap: 10px;padding: 11px 2px;cursor: pointer;list-style: none;border-top: 0;font-size: 12px;}
+#user-weight-content .nt-history-head::-webkit-details-marker {display: none;}
+#user-weight-content .nt-history-summary-right {display: flex;align-items: center;gap: 10px;color: var(--muted);font-size: 11px;}
+#user-weight-content .nt-history-chevron {transition: transform 160ms ease;}
+#user-weight-content .nt-history-details[open] .nt-history-chevron {transform: rotate(180deg);}
+#user-weight-content .nt-history-details:not([open]) .nt-history-list {display: none;}
+#user-weight-content .nt-history-list {padding-bottom: 8px;}
+#user-weight-content .nt-history-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+#user-weight-content .nt-history-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;min-width:0}
+#user-weight-content .nt-history-row-main{min-width:0;display:flex;flex-direction:column;gap:2px}
+#user-weight-content .nt-history-row-main strong{font-size:11px;color:var(--heading-color,var(--text));overflow-wrap:anywhere}
+#user-weight-content .nt-history-row-main small{font-size:9px;color:var(--muted)}
+#user-weight-content .nt-history-row-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+#user-weight-content .nt-history-row-actions button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:7px;padding:5px 7px;font-size:10px}
+#user-weight-content .nt-empty{margin:4px 0;color:var(--muted);font-size:10px;line-height:1.5}
+@media(max-width:760px){#user-weight-content .nt-progress-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:560px) and (orientation:portrait){#user-weight-content .nt-inline-form{grid-template-columns:1fr 1fr}#user-weight-content .nt-inline-form .btn{grid-column:1/-1;width:100%}#user-weight-content .nt-weight-stats{gap:5px}#user-weight-content .nt-weight-stats>div{padding:8px 6px}#user-weight-content .nt-weight-stats strong{font-size:15px}#user-weight-content .nt-chart-wrap{height:180px}}
 
 /* Weight % — dedicated Smart Integrations workspace */
 .weight-percent-shell{max-width:1180px;margin-inline:auto;min-width:0}
@@ -6141,6 +6148,104 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .wp-percent-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.wp-percent-cell{min-width:0;border:1px solid var(--line);border-radius:8px;padding:8px 5px;text-align:center;background:var(--surface)}.wp-percent-cell>span{display:block;font-size:9px;font-weight:800;color:var(--muted);margin-bottom:5px}.wp-percent-cell>strong{display:block;font-size:12px;line-height:1.2;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.wp-percent-cell>strong small{font-size:8px;font-weight:600;color:var(--muted)}.wp-percent-cell .wp-exact{display:block;font-size:8px;line-height:1.3;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
 .wp-empty{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;text-align:center;padding:34px 16px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.5}.wp-empty strong{font-size:13px;color:var(--heading-color,var(--text))}.wp-footnote{font-size:9px;line-height:1.55;color:var(--muted);margin:14px 0 0}
 
-#nutri-page .nt-progress-grid{grid-template-columns:minmax(0,1fr)}
+#user-weight-content .nt-progress-grid{grid-template-columns:minmax(0,1fr)}
 .nt-progress-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}.nt-progress-head .nutri-card-title{margin:0}.nt-sync-state{font-size:9px;line-height:1.35;color:var(--muted);text-align:right;max-width:45%;overflow-wrap:anywhere}
 @media(max-width:560px) and (orientation:portrait){.nt-progress-head{align-items:flex-start;flex-direction:column;gap:4px}.nt-sync-state{text-align:left;max-width:100%}}
+
+/* Unified Home intelligence dashboard */
+.home-intelligence-section,.home-brain-details{margin:14px 0;min-width:0;border:1px solid var(--line);border-radius:16px;background:var(--card-bg,var(--surface));padding:clamp(12px,2vw,20px)}
+.home-intelligence-head,.user-hero,.user-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.home-intelligence-head h2,.user-panel-head h2{margin:4px 0 0;font-size:clamp(17px,2vw,22px);color:var(--heading-color,var(--text))}
+.home-briefing-body{padding:0!important;max-height:none!important;overflow:visible!important;background:transparent!important}
+.home-briefing-body .db-footnote{display:none}
+.home-insights-section .ti-shell{max-width:none;margin:0;padding:0}
+.home-insights-section .ti-hero{margin-bottom:12px}
+.home-insights-section .ti-hero p,.home-insights-section .ti-footnote{display:none}
+.home-insights-section .ti-tabs{margin-bottom:10px;position:static}
+.home-brain-details{padding:0;overflow:hidden}
+.home-brain-details>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;cursor:pointer;list-style:none}
+.home-brain-details>summary::-webkit-details-marker{display:none}
+.home-brain-details>summary strong,.home-brain-details>summary small{display:block}
+.home-brain-details>summary strong{font-size:14px;color:var(--heading-color,var(--text))}
+.home-brain-details>summary small{font-size:11px;color:var(--muted);margin-top:3px}
+.home-brain-summary-icon{font-size:22px;color:var(--muted)}
+.home-brain-details[open] .home-brain-summary-icon{transform:rotate(45deg)}
+.home-brain-grid{padding:0 14px 14px}
+.home-brain-grid .brain-hero{display:none}
+.user-shell{max-width:1240px;margin:0 auto;padding:clamp(12px,2vw,24px);min-width:0}
+.user-hero{margin-bottom:16px}.user-subtitle{color:var(--muted);font-size:12px;margin:6px 0 0}
+.user-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.user-panel{min-width:0;padding:clamp(12px,2vw,18px);border:1px solid var(--line);border-radius:15px;overflow:hidden}
+.user-metrics-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.user-metrics-form label{display:flex;flex-direction:column;gap:5px;min-width:0;font-size:10px;font-weight:750;color:var(--muted)}
+.user-metrics-form input,.user-metrics-form select{width:100%;min-width:0;min-height:38px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;background:var(--input-bg,var(--card-bg));color:var(--text);font:inherit;font-size:12px}
+.user-metrics-form button{grid-column:1/-1;min-height:38px}
+.user-metrics-status{font-size:10px;color:var(--muted);margin:10px 0 0}
+.user-weight-panel,.user-strength-panel{grid-column:span 1}
+#user-weight-content .nt-progress-grid{display:block;margin-top:12px}
+#user-weight-content #nt-weight-tracker{padding:0;border:0;background:transparent;box-shadow:none}
+#user-weight-content .nt-inline-form{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+#user-weight-content .nt-inline-form .btn{grid-column:1/-1}
+#user-strength-content .weight-percent-shell{max-width:none;margin:12px 0 0}
+#user-strength-content .wp-exercise-form{grid-template-columns:repeat(2,minmax(0,1fr))}
+#user-strength-content .wp-exercise-grid{grid-template-columns:minmax(0,1fr)}
+#nutri-meal-planner-slot{margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card-bg,var(--surface))}
+#nutri-meal-planner-slot .user-panel-head{margin-bottom:10px}
+#nutri-meal-planner-slot #no-meal-planner-card{margin:0;padding:0;border:0;background:transparent;box-shadow:none}
+@media(max-width:760px){.user-profile-grid{grid-template-columns:minmax(0,1fr)}.user-weight-panel,.user-strength-panel{grid-column:auto}.home-intelligence-section{padding:12px}.home-brain-grid{padding:0 10px 10px}}
+@media(max-width:560px) and (orientation:portrait){.user-shell{padding:10px}.user-metrics-form{grid-template-columns:minmax(0,1fr)}.user-metrics-form button{grid-column:auto}.home-intelligence-head{align-items:flex-start}.home-insights-section .ti-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.home-insights-section .ti-tab{min-width:0}.home-brain-details>summary{padding:13px}}
+#nutri-training-context-slot,#nutri-meal-planner-slot{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card-bg,var(--surface))}
+#nutri-training-context-slot .user-panel-head,#nutri-meal-planner-slot .user-panel-head{margin-bottom:10px}
+#nutri-training-context-slot .nutrition-session-card,#nutri-training-context-slot .nutrition-context-card{margin:8px 0}
+#nutri-meal-planner-slot .nutrition-meal-planner-subtitle{display:none}
+.home-insights-section .ti-model-quality,.home-insights-section .ti-pattern-detail,.home-insights-section .ti-footnote{display:none!important}
+
+
+/* v13 refinement: Home hierarchy, compact User profile, unified nutrition workspace */
+#home-page .home-week-card,
+#home-page .home-nutrition-card,
+#home-page .home-next-card{display:none!important}
+#home-page .home-grid{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;align-items:stretch;gap:14px}
+#home-page .home-today-card{grid-column:1;grid-row:1;min-width:0}
+#home-page .home-month-overview{grid-column:2;grid-row:1;min-width:0;width:100%!important}
+#home-page .home-intelligence-section{margin-top:14px}
+#home-page .home-intelligence-head h2{margin-bottom:0}
+@media(max-width:650px){#home-page .home-grid{grid-template-columns:minmax(0,1fr)!important;gap:10px}#home-page .home-today-card,#home-page .home-month-overview{grid-column:1;grid-row:auto}}
+.user-profile-grid{grid-template-columns:minmax(210px,.48fr) minmax(0,1fr) minmax(0,1fr)!important;gap:12px!important}
+#user-metrics-panel{padding:12px!important}
+#user-metrics-panel .user-panel-head h2{font-size:15px}
+#user-metrics-panel .user-metrics-form{grid-template-columns:minmax(0,1fr)!important;gap:7px!important;margin-top:9px!important}
+#user-metrics-panel .user-metrics-form label{font-size:10px;gap:3px}
+#user-metrics-panel .user-metrics-form input,#user-metrics-panel .user-metrics-form select{min-height:32px;padding:6px 8px;font-size:11px}
+#user-metrics-panel .user-metrics-form button{grid-column:auto;min-height:33px;padding:7px 10px}
+#user-metrics-panel .user-metrics-status{font-size:9px;line-height:1.35;margin-top:7px}
+#user-weight-slot,#user-strength-slot{min-width:0}
+@media(max-width:1100px){.user-profile-grid{grid-template-columns:minmax(190px,.45fr) minmax(0,1fr)!important}.user-weight-panel,.user-strength-panel{grid-column:2!important}}
+@media(max-width:760px){.user-profile-grid{grid-template-columns:minmax(0,1fr)!important}.user-weight-panel,.user-strength-panel{grid-column:1!important}}
+/* The calorie calculator reads as one compact panel instead of three separate cards. */
+#nutri-calculator{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:10px;padding:12px;border:1px solid var(--line);border-radius:15px;background:var(--card-bg,var(--surface));align-items:start}
+#nutri-calculator>.nutri-card{min-width:0;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+#nutri-calculator>#nt-resultCard{grid-column:2;padding:12px!important;border:1px solid var(--line)!important;border-radius:11px!important;background:var(--surface,var(--card-bg))!important}
+#nutri-calculator>.nutri-card:nth-child(2){grid-column:1;grid-row:1}
+#nutri-calculator>.nutri-card:nth-child(3){grid-column:1;grid-row:2}
+#nutri-calculator .nutri-card-title{font-size:12px;margin-bottom:8px}
+#nutri-calculator .nutri-form-grid{gap:7px}
+#nutri-calculator .nutri-form-group{gap:3px}
+#nutri-calculator .nutri-input,#nutri-calculator .nutri-select{min-height:32px;padding:6px 8px;font-size:11px}
+#nutri-calculator .nutri-slider-group{margin:6px 0}
+#nutri-calculator #nt-calcBtn{grid-column:1/-1;grid-row:3;width:auto!important;margin:0!important;padding:9px 12px!important;min-height:36px}
+#nutri-calculator .nutri-big-number{font-size:clamp(25px,3vw,38px)}
+#nutri-calculator #nt-macroChartBody{max-width:155px;margin:8px auto 0}
+#nutri-meal-planner-slot{margin-top:12px!important;padding:12px!important}
+#nutri-meal-planner-slot>.user-panel-head{display:none}
+#no-meal-planner-card{padding:0!important}
+#no-meal-planner-card .nutrition-card-head{margin-bottom:8px}
+#no-meal-planner-card .meal-planner-modes{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+#no-meal-planner-card .meal-planner-mode{flex:1 1 110px;min-width:0}
+#meal-preworkout-panel[hidden],#meal-craving-panel[hidden],#meal-ideas-panel[hidden]{display:none!important}
+#meal-preworkout-panel{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,.8fr);gap:12px;align-items:start}
+#meal-preworkout-panel .nutrition-main-card,#meal-preworkout-panel .nutrition-side-card{min-width:0;margin:0!important}
+#meal-preworkout-panel .nutrition-main-card{padding:12px!important}
+#meal-preworkout-panel .nutrition-side-card{padding:12px!important}
+#nutrition-page{display:none!important}
+@media(max-width:760px){#nutri-calculator{grid-template-columns:minmax(0,1fr);padding:10px}#nutri-calculator>#nt-resultCard,#nutri-calculator>.nutri-card:nth-child(2),#nutri-calculator>.nutri-card:nth-child(3),#nutri-calculator #nt-calcBtn{grid-column:1;grid-row:auto}#nutri-calculator>#nt-resultCard{display:grid!important;grid-template-columns:1fr;align-items:center}#nutri-calculator #nt-macroChartBody{max-width:125px}#meal-preworkout-panel{grid-template-columns:minmax(0,1fr)}}

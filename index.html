@@ -72,8 +72,7 @@
       <button class="btn" data-page="plan-page" aria-label="Plan" title="Plan"><span class="nav-label">Plan</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="3.5" cy="5" r=".9" fill="currentColor"/><circle cx="3.5" cy="12" r=".9" fill="currentColor"/><circle cx="3.5" cy="19" r=".9" fill="currentColor"/></svg></button>
       <button class="btn" data-page="integrations-page" aria-label="Smart Integrations" title="Smart Integrations"><span class="nav-label">Smart Integrations</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="6" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m8 11 7.8-4M8 13l7.8 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
       <button class="btn" id="templates-btn" aria-label="Templates" title="Templates"><span class="nav-label">Templates</span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 20h11a2 2 0 0 0 2-2V7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8 8h5M8 12h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-      <button type="button" class="btn" id="daily-briefing-btn" aria-label="Daily Briefing" title="Daily Briefing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2M12 19v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M3 12h2m14 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m10 12 1.4 1.4L14.5 10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-label">Daily Briefing</span></button>
-      <button type="button" class="btn" data-page="insights-page" aria-label="Insights" title="Insights"><span class="nav-label">Insights</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h17M7 15l4-4 3 2 5-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="btn" data-page="user-page" aria-label="User" title="User"><span class="nav-label">User</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
       <button class="btn" id="settings-btn" aria-label="Open settings" title="Settings"><span class="nav-label">Settings</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m19.4 15 .9 1.7-2 2-1.7-.9a7.8 7.8 0 0 1-2.1.9l-.5 1.9h-2.8l-.5-1.9a7.8 7.8 0 0 1-2.1-.9l-1.7.9-2-2 .9-1.7a7.8 7.8 0 0 1-.9-2.1l-1.9-.5V9.6l1.9-.5a7.8 7.8 0 0 1 .9-2.1L5.1 5.3l2-2 1.7.9a7.8 7.8 0 0 1 2.1-.9l.5-1.9h2.8l.5 1.9a7.8 7.8 0 0 1 2.1.9l1.7-.9 2 2-.9 1.7a7.8 7.8 0 0 1 .9 2.1l1.9.5v2.8l-1.9.5a7.8 7.8 0 0 1-.9 2.1Z" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/></svg></button>
       <button class="btn" id="export-btn">Backup</button>
       <button class="btn" id="import-btn">Restore</button>
@@ -105,32 +104,10 @@
           <div id="home-week-days" class="home-week-days"></div>
         </section>
 
-        <section class="home-card home-readiness-card">
-          <div class="home-card-head"><div><div class="eyebrow">Today's readiness</div><h2 id="home-readiness-score">—</h2></div><span id="home-readiness-status" class="home-status">—</span></div>
-          <div class="home-readiness-bars" id="home-readiness-bars"></div>
-        </section>
-
-        <section class="home-card home-brain-card">
-          <div class="home-card-head"><div><div class="eyebrow">Training Brain</div><h2 id="home-brain-title">Learning from your training</h2></div><span id="home-brain-confidence" class="home-status">—</span></div>
-          <div class="brain-score"><div class="brain-ring" id="home-brain-ring"><strong id="home-brain-score">—</strong></div><div class="brain-score-copy"><strong id="home-brain-recommendation">Building your personal model</strong><span id="home-brain-pattern">Log completed sessions and feedback to make the model more personal.</span></div></div>
-          <div class="home-actions"><button class="btn" data-brain-open>Open Training Brain</button></div>
-        </section>
-
-        <section class="home-card home-load-card">
-          <div class="home-card-head"><div><div class="eyebrow">Total time</div><h2>This week</h2></div><span id="home-load-status" class="home-status">—</span></div>
-          <div class="home-load-bars" id="home-load-bars"></div>
-          <div class="home-load-recovery"><span>Recovery</span><strong id="home-load-recovery-pct">—</strong></div>
-        </section>
-
         <section class="home-card home-nutrition-card">
           <div class="home-card-head"><div><div class="eyebrow">Fuel for today</div><h2 id="home-nutrition-title">Nutrition Optimizer</h2></div><span id="home-nutrition-time" class="home-status">—</span></div>
           <div id="home-nutrition-body" class="home-nutrition-body"></div>
           <div class="home-actions"><button class="btn" data-home-action="nutrition">Optimize meal</button></div>
-        </section>
-
-        <section class="home-card home-stat-card">
-          <div class="home-card-head"><div><div class="eyebrow">At a glance</div><h2>Training snapshot</h2></div></div>
-          <div class="home-stats" id="home-stats"></div>
         </section>
 
         <section class="home-card home-next-card">
@@ -145,6 +122,50 @@
           <div id="home-month-heatmap" class="home-heatmap"></div>
         </section>
       </div>
+      <section class="home-intelligence-section" aria-label="Daily decision support">
+        <div class="home-intelligence-head"><div><div class="eyebrow">YOUR TRAINING SIGNALS</div><h2>Today at a glance</h2></div><button type="button" class="btn" id="home-refresh-intelligence">Refresh</button></div>
+        <div id="home-briefing-body" class="db-body home-briefing-body" aria-live="polite"><div class="db-loading"><span class="db-loading-ring" aria-hidden="true"></span><span>Preparing your training signals…</span></div></div>
+      </section>
+      <section class="home-intelligence-section home-insights-section" aria-label="Training trends and insights">
+        <div class="ti-shell">
+          <div class="ti-hero"><div><div class="eyebrow">TRAINMEI · YOUR TRENDS</div><h2 class="page-title">Training trends</h2></div><button type="button" class="btn" id="ti-refresh-btn">Refresh</button></div>
+          <div class="ti-tabs" role="tablist" aria-label="Training trend views">
+            <button type="button" class="ti-tab active" role="tab" aria-selected="true" data-ti-tab="weekly">Weekly</button>
+            <button type="button" class="ti-tab" role="tab" aria-selected="false" data-ti-tab="adaptive">Progression</button>
+            <button type="button" class="ti-tab" role="tab" aria-selected="false" data-ti-tab="muscles">Muscles</button>
+            <button type="button" class="ti-tab" role="tab" aria-selected="false" data-ti-tab="patterns">Patterns</button>
+          </div>
+          <div id="ti-status" class="ti-status" aria-live="polite">Loading training trends…</div>
+          <div id="ti-content" class="ti-content"></div>
+        </div>
+      </section>
+      <details class="home-intelligence-section home-brain-details">
+        <summary><span><strong>Training Brain</strong><small>Personal baselines, feedback and the evidence behind recommendations</small></span><span class="home-brain-summary-icon">＋</span></summary>
+        <div class="brain-grid home-brain-grid">
+        <section class="brain-card">
+          <div class="brain-card-head"><div><div class="brain-kicker">Readiness 2.0</div><h2>Today's preparation</h2></div><span id="brain-confidence" class="home-status">—</span></div>
+          <div class="brain-score"><div class="brain-ring" id="brain-ring"><strong id="brain-score">—</strong></div><div class="brain-score-copy"><strong id="brain-status">—</strong><span id="brain-score-copy">—</span></div></div>
+          <div class="brain-driver-list" id="brain-drivers" style="margin-top:12px"></div>
+        </section>
+        <section class="brain-card">
+          <div class="brain-card-head"><div><div class="brain-kicker">Personal baselines</div><h2>What your data says</h2></div></div>
+          <div class="brain-metric-grid" id="brain-baselines"></div>
+          <div class="brain-source" id="brain-baseline-source">Calculated from completed sessions available to the model.</div>
+        </section>
+        <section class="brain-card full">
+          <div class="brain-card-head"><div><div class="brain-kicker">Personal associations</div><h2>Patterns observed in your data</h2></div><span id="brain-pattern-count" class="home-status">0 patterns</span></div>
+          <div class="brain-pattern-list" id="brain-patterns"></div>
+          <div class="brain-legend">Associations are descriptive, not proof of causation. The model only promotes a pattern when there is enough data and a meaningful difference between groups.</div>
+        </section>
+        <section class="brain-card">
+          <div class="brain-card-head"><div><div class="brain-kicker">Adaptation engine</div><h2>Next-session adjustment</h2></div></div>
+          <div class="brain-recommendation" id="brain-recommendation">Collecting enough data to make a personal adjustment.</div>
+          <div class="brain-actions"><button class="btn" data-brain-feedback="accepted">Use this</button><button class="btn" data-brain-feedback="modified">Modify</button><button class="btn" data-brain-feedback="rejected">Skip</button></div>
+        </section>
+        <section class="brain-card">
+          <div class="brain-card-head"><div><div class="brain-kicker">Learning loop</div><h2>Tell the model what happened</h2></div></div>
+          <div class="brain-feedback"><label>Outcome<select id="brain-feedback-outcome"><option value="better">Better than expected</option><option value="expected" selected>As expected</option><option value="worse">Worse than expected</option></select></label><label>Energy<select id="brain-feedback-energy"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></label><label>Performance<select id="brain-feedback-performance"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></label><textarea id="brain-feedback-note" placeholder="Optional note about how the session actually felt…"></textarea><div class="brain-feedback-actions"><button class="btn" id="brain-save-feedback">Save feedback</button></div></div></section></div>
+      </details>
            <div class="home-desktop-cta" aria-label="Acciones rápidas">
         <button type="button" class="btn home-primary-cta" data-home-action="quick-add">
           <span class="home-cta-icon" aria-hidden="true">＋</span>
@@ -177,6 +198,26 @@
       </div>
     </div>
   </section>
+
+<section id="user-page" class="page user-page">
+  <div class="user-shell">
+    <div class="user-hero"><div><div class="eyebrow">YOUR PROFILE</div><h1 class="page-title">User</h1>></div></div>
+    <div class="user-profile-grid">
+      <section class="user-panel" id="user-metrics-panel"><div class="user-panel-head"><div><div class="eyebrow">PERSONAL METRICS</div><h2>Your metrics</h2></div></div>
+        <div class="user-metrics-form">
+          <label>Name / label<input id="user-metric-label" type="text" maxlength="40" placeholder="Optional"></label>
+          <label>Sex<select id="user-metric-sex"><option value="">Not specified</option><option value="female">Female</option><option value="male">Male</option><option value="other">Other / prefer not to say</option></select></label>
+          <label>Age<input id="user-metric-age" type="number" min="13" max="110" placeholder="—"></label>
+          <label>Height (cm)<input id="user-metric-height" type="number" min="100" max="250" step="0.1" placeholder="—"></label>
+          <label>Body fat (%)<input id="user-metric-bodyfat" type="number" min="1" max="70" step="0.1" placeholder="Optional"></label>
+          <button class="btn active" id="user-metrics-save" type="button">Save metrics</button>
+        </div><p class="user-metrics-status" id="user-metrics-status" aria-live="polite">Optional profile metrics are stored on this device.</p>
+      </section>
+      <section class="user-panel user-weight-panel" id="user-weight-slot"><div class="user-panel-head"><div><div class="eyebrow">BODY TREND</div><h2>Weight Tracker</h2></div></div><div id="user-weight-content"></div></section>
+      <section class="user-panel user-strength-panel" id="user-strength-slot"><div class="user-panel-head"><div><div class="eyebrow">STRENGTH</div><h2>RPM %</h2></div></div><div id="user-strength-content"></div></section>
+    </div>
+  </div>
+</section>
   <section id="calendar-page" class="page active"><div class="calendar-desktop-layout">
       <div class="calendar-main">
         <div class="ios-mobile-header">
@@ -330,67 +371,9 @@
 
   </div>
 </section>
-  <section id="brain-page" class="page brain-page">
-    <div class="brain-shell">
-      <div class="brain-hero"><div><div class="eyebrow">Personal model</div><div class="brain-title page-title">Training Brain</div><div class="brain-subtitle">A deterministic learning layer built from your own training history. It uses rules, personal baselines, trends, associations and feedback — not generative AI.</div></div><button class="btn" data-brain-back>Back to Home</button></div>
-      <div class="brain-grid">
-        <section class="brain-card">
-          <div class="brain-card-head"><div><div class="brain-kicker">Readiness 2.0</div><h2>Today's preparation</h2></div><span id="brain-confidence" class="home-status">—</span></div>
-          <div class="brain-score"><div class="brain-ring" id="brain-ring"><strong id="brain-score">—</strong></div><div class="brain-score-copy"><strong id="brain-status">—</strong><span id="brain-score-copy">—</span></div></div>
-          <div class="brain-driver-list" id="brain-drivers" style="margin-top:12px"></div>
-        </section>
-        <section class="brain-card">
-          <div class="brain-card-head"><div><div class="brain-kicker">Personal baselines</div><h2>What your data says</h2></div></div>
-          <div class="brain-metric-grid" id="brain-baselines"></div>
-          <div class="brain-source" id="brain-baseline-source">Calculated from completed sessions available to the model.</div>
-        </section>
-        <section class="brain-card full">
-          <div class="brain-card-head"><div><div class="brain-kicker">Personal associations</div><h2>Patterns observed in your data</h2></div><span id="brain-pattern-count" class="home-status">0 patterns</span></div>
-          <div class="brain-pattern-list" id="brain-patterns"></div>
-          <div class="brain-legend">Associations are descriptive, not proof of causation. The model only promotes a pattern when there is enough data and a meaningful difference between groups.</div>
-        </section>
-        <section class="brain-card">
-          <div class="brain-card-head"><div><div class="brain-kicker">Adaptation engine</div><h2>Next-session adjustment</h2></div></div>
-          <div class="brain-recommendation" id="brain-recommendation">Collecting enough data to make a personal adjustment.</div>
-          <div class="brain-actions"><button class="btn" data-brain-feedback="accepted">Use this</button><button class="btn" data-brain-feedback="modified">Modify</button><button class="btn" data-brain-feedback="rejected">Skip</button></div>
-        </section>
-        <section class="brain-card">
-          <div class="brain-card-head"><div><div class="brain-kicker">Learning loop</div><h2>Tell the model what happened</h2></div></div>
-          <div class="brain-feedback"><label>Outcome<select id="brain-feedback-outcome"><option value="better">Better than expected</option><option value="expected" selected>As expected</option><option value="worse">Worse than expected</option></select></label><label>Energy<select id="brain-feedback-energy"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></label><label>Performance<select id="brain-feedback-performance"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></label><textarea id="brain-feedback-note" placeholder="Optional note about how the session actually felt…"></textarea><div class="brain-feedback-actions"><button class="btn" id="brain-save-feedback">Save feedback</button></div></div>
-        </section>
-        <section class="brain-card full" id="brain-nutrition-context-card">
-          <div class="brain-card-head"><div><div class="brain-kicker">Nutrition context</div><h2>Fuel entering the model</h2></div><span id="brain-nutrition-source" class="home-status">—</span></div>
-          <div class="brain-metric-grid" id="brain-nutrition-context"></div>
-          <div class="brain-source">FatSecret intake is normalized by the central NutritionDataLayer and consumed by Nutrition Optimizer and Training Brain; missing nutrition data is left unavailable.</div>
-        </section>
-        <section class="brain-card full">
-          <div class="brain-card-head"><div><div class="brain-kicker">History</div><h2>Recent learning events</h2></div></div>
-          <details class="brain-history-details"><summary>History</summary><div class="brain-history-list" id="brain-history"></div></details>
-        </section>
-      </div>
-    </div>
-  </section>
-
-  <section id="insights-page" class="page">
-  <div class="ti-shell">
-    <div class="ti-hero">
-      <div><div class="eyebrow">TRAINMEI · UNIFIED LEARNING</div><h1 class="page-title">Training Insights</h1><p class="ti-subtitle">Weekly review, exercise progression, muscle-group balance and personal patterns — using the existing TrainingDataCore.</p></div>
-      <button type="button" class="btn" id="ti-refresh-btn">Refresh analysis</button>
-    </div>
-    <div class="ti-tabs" role="tablist" aria-label="Training insight sections">
-      <button type="button" class="ti-tab active" role="tab" aria-selected="true" data-ti-tab="weekly">Weekly Review</button>
-      <button type="button" class="ti-tab" role="tab" aria-selected="false" data-ti-tab="adaptive">Adaptive Training</button>
-      <button type="button" class="ti-tab" role="tab" aria-selected="false" data-ti-tab="muscles">Muscle Groups</button>
-      <button type="button" class="ti-tab" role="tab" aria-selected="false" data-ti-tab="patterns">Pattern Discovery</button>
-    </div>
-    <div id="ti-status" class="ti-status" aria-live="polite">Loading your training history…</div>
-    <div id="ti-content" class="ti-content"></div>
-    <p class="ti-footnote">Suggestions are decision support, not automatic workout edits. Associations in logged data do not establish causation. Missing data is shown as unavailable rather than estimated.</p>
-  </div>
-</section>
 <section id="integrations-page" class="page">
     <div class="smart-int-wrap">
-      <div class="dashboard-head"><div><div class="dashboard-title page-title">SMART INTEGRATIONS</div><div class="hint">Choose a tool to open its dedicated workspace.</div></div></div>
+      <div class="dashboard-head"><div><div class="dashboard-title page-title">SMART INTEGRATIONS</div></div></div>
      <div class="smart-launch-grid" aria-label="Smart Integrations">
   <button type="button" class="smart-launch-card" data-page="ocr-page">
     <span class="smart-launch-icon">
@@ -438,28 +421,6 @@
     <span class="smart-launch-arrow">→</span>
   </button>
 
-  <button type="button" class="smart-launch-card" data-page="nutrition-page">
-    <span class="smart-launch-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 18h16"/>
-        <path d="M6 14a6 6 0 0 1 12 0"/>
-        <path d="M12 8V6"/>
-        <path d="M10 4h4"/>
-      </svg>
-    </span>
-    <span class="smart-launch-copy"><strong>Nutrition Optimizer</strong><small>Adapt your pre-workout meal to today's session and training demand.</small></span>
-    <span class="smart-launch-arrow">→</span>
-  </button>
-
-  <button type="button" class="smart-launch-card" data-page="weight-percent-page" id="weight-percent-launch-card">
-    <span class="smart-launch-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 7h16M4 17h16M7 4v6M12 4v6M17 4v6M7 14v6M12 14v6M17 14v6"/>
-      </svg>
-    </span>
-    <span class="smart-launch-copy"><strong>Weight %</strong><small>Exercise RM library, percentage tables and progression from your logged sessions.</small></span>
-    <span class="smart-launch-arrow">→</span>
-  </button>
 
   <button type="button" class="smart-launch-card" data-page="fatsecret-page" id="fatsecret-launch-card">
     <span class="smart-launch-icon">
@@ -807,10 +768,10 @@
       <button type="button" class="btn smart-tool-back" data-smart-back>← Smart Integrations</button>
       <div>
         <h1 class="page-title">Nutri Tracker</h1>
-        <p>Calculate daily calorie and macro targets, and track your body-weight trend.</p>
+        <p>Daily targets, meal ideas and training fuel.</p>
       </div>
     </div>
-     <div class="nutri-calculator-only" id="nutri-calculator">
+     <div class="nutri-calculator-only nutri-single-panel" id="nutri-calculator">
       <div class="nutri-card" id="nt-resultCard" style="display:none;">
         <div class="nutri-card-title">Calculated daily target</div>
         <div class="nutri-big-number" id="nt-totalKcal">—</div>
@@ -844,10 +805,9 @@
     <section class="nt-progress-grid" aria-label="Progress and strength calculators">
       <div class="nutri-card nt-progress-card" id="nt-weight-tracker">
         <div class="nt-progress-head"><div class="nutri-card-title">Weight Tracker</div><span id="nt-weight-sync-status" class="nt-sync-state">Checking storage…</span></div>
-        <p class="nt-helper">Log your daily weigh-in and follow the trend, not just day-to-day fluctuations.</p>
         <form id="nt-weight-form" class="nt-inline-form">
           <label>Date<input id="nt-weight-date" type="date" required></label>
-          <label>Weight (kg)<input id="nt-weight-value" type="number" min="20" max="350" step="0.1" inputmode="decimal" placeholder="e.g. 54.2" required></label>
+          <label>Weight (kg)<input id="nt-weight-value" type="number" min="20" max="350" step="0.1" inputmode="decimal" placeholder="e.g. 50" required></label>
           <button class="btn active" type="submit">Save weight</button>
         </form>
         <div class="nt-weight-stats">
@@ -856,8 +816,20 @@
           <div><span>7-day average</span><strong id="nt-weight-average">—</strong></div>
         </div>
         <div class="nt-chart-wrap"><canvas id="nt-weight-chart" aria-label="Weight history and trend chart"></canvas></div>
-        <div class="nt-history-head"><strong>Recent entries</strong><span id="nt-weight-count">0 entries</span></div>
-        <div id="nt-weight-history" class="nt-history-list"><p class="nt-empty">Your weigh-ins will appear here.</p></div>
+        
+<details class="nt-history-details" id="nt-weight-history-details">
+  <summary class="nt-history-head">
+    <strong>Recent entries</strong>
+    <span class="nt-history-summary-right">
+      <span id="nt-weight-count">0 entries</span>
+      <span class="nt-history-chevron" aria-hidden="true">⌄</span>
+    </span>
+  </summary>
+  <div id="nt-weight-history" class="nt-history-list">
+    <p class="nt-empty">Your weigh-ins will appear here.</p>
+  </div>
+</details>
+
       </div>
 
 
@@ -906,7 +878,7 @@
       <button type="button" class="btn smart-tool-back" data-smart-back>← Smart Integrations</button>
       <div>
         <h1 class="page-title">Nutrition Optimizer</h1>
-        <p>Use FatSecret intake, training demand and your remaining macros to plan meals, timing and recipes.</p>
+        
       </div>
     </div>
     <div id="nutrition-tool-slot" class="smart-tool-slot">
@@ -952,10 +924,11 @@
 
   </div>
 
-  <p class="nutrition-meal-planner-subtitle">Your targets. Your cravings. Your choice.</p>
+  
   <div class="meal-planner-modes" role="tablist" aria-label="Meal Planner mode">
     <button type="button" class="meal-planner-mode active" data-meal-planner-mode="ideas" role="tab" aria-selected="true">Meal ideas</button>
     <button type="button" class="meal-planner-mode" data-meal-planner-mode="custom" role="tab" aria-selected="false">My craving</button>
+    <button type="button" class="meal-planner-mode" data-meal-planner-mode="preworkout" role="tab" aria-selected="false">Pre-workout</button>
   </div>
   <section class="meal-craving-panel" id="meal-craving-panel" hidden>
     <div class="meal-craving-intro"><h3>What are you craving?</h3><p>Describe your meal. TrainMei will match foods from its existing nutrition catalogue and calculate portions locally — no AI and no diary write.</p></div>
@@ -1219,11 +1192,10 @@
 <script src="js/smart-integrations-router.js"></script>
 <script src="js/integration-health.js"></script>
 <div class="ios-tabbar" id="ios-tabbar">
+  <button class="ios-tab" data-ios-page="home-page" aria-label="Home"><span class="tab-icon">⌂</span><span>Home</span></button>
+  <button class="ios-tab" data-ios-page="user-page" aria-label="User"><span class="tab-icon">◉</span><span>User</span></button>
   <button class="ios-tab active" data-ios-page="calendar-page">
     <span class="tab-icon">▦</span><span>Calendar</span>
-  </button>
-  <button class="ios-tab" data-ios-page="insights-page" aria-label="Insights">
-    <span class="tab-icon">⌁</span><span>Insights</span>
   </button>
   <button class="ios-tab add" id="ios-add-tab">
     <span class="tab-icon">+</span><span>Add</span>

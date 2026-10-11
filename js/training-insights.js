@@ -170,7 +170,7 @@
     const target=$('#ti-content'),status=$('#ti-status');if(!target||!status)return;
     if(!cache){target.innerHTML=empty('Analysis not ready','Refresh after TrainMei finishes loading its data.');return;}
     if(cache.error){status.textContent=cache.error;target.innerHTML=empty('Insights unavailable',cache.error);return;}
-    status.textContent=`Updated ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})} · source: TrainingDataCore · no separate learning engine`;
+    status.textContent=`Updated ${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
     target.innerHTML=activeTab==='weekly'?renderWeekly(cache):activeTab==='adaptive'?renderAdaptive(cache):activeTab==='muscles'?renderMuscles(cache):renderPatterns(cache);
   }
   async function refresh(){
@@ -190,9 +190,9 @@
     const feedback=e.target.closest('[data-ti-adjustment-feedback]');if(feedback){const c=core();if(c?.recordEvent){c.recordEvent({type:'session_adjustment',date:todayKey(),status:'Post-adjustment outcome recorded',note:`${feedback.dataset.tiExercise}: ${feedback.dataset.tiAdjustmentFeedback}`,payload:{exercise:feedback.dataset.tiExercise,outcome:feedback.dataset.tiAdjustmentFeedback,recommendation:feedback.dataset.tiRecommendation,recordedAfterComparableSession:true}});feedback.textContent='Recorded';feedback.disabled=true;}return;}
     const tab=e.target.closest('[data-ti-tab]');if(tab){setTab(tab.dataset.tiTab);return}
     if(e.target.closest('#ti-refresh-btn')){refresh();return}
-    const nav=e.target.closest('[data-page="insights-page"],[data-ios-page="insights-page"]');if(nav){refresh()}
+    const nav=e.target.closest('[data-page="home-page"],[data-ios-page="home-page"]');if(nav){refresh()}
   });
-  ['trainmei:core-learning','trainmei:data-core-refreshed','trainmei:day-saved','trainmei:nutrition-updated','trainmei:nutrition-sync-complete'].forEach(name=>document.addEventListener(name,()=>{if($('#insights-page')?.classList.contains('active'))refresh()}));
+  ['trainmei:core-learning','trainmei:data-core-refreshed','trainmei:day-saved','trainmei:nutrition-updated','trainmei:nutrition-sync-complete'].forEach(name=>document.addEventListener(name,()=>{if($('#home-page')?.classList.contains('active'))refresh()}));
   window.TrainMeiTrainingInsights={refresh,getModel:()=>cache,setTab};
-  // Initial data is loaded lazily when the user opens the page.
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(refresh,400));
 })();

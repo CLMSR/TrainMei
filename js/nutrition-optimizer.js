@@ -1285,7 +1285,7 @@ function calculateCraving(){
 }
 function initCravingPlanner(){
   const panel=document.getElementById('meal-craving-panel'),ideas=document.getElementById('meal-ideas-panel');if(!panel||panel.dataset.bound)return;panel.dataset.bound='true';
-  document.querySelectorAll('[data-meal-planner-mode]').forEach(button=>button.addEventListener('click',()=>{const custom=button.dataset.mealPlannerMode==='custom';document.querySelectorAll('[data-meal-planner-mode]').forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active))});panel.hidden=!custom;if(ideas)ideas.hidden=custom}));
+  document.querySelectorAll('[data-meal-planner-mode]').forEach(button=>button.addEventListener('click',()=>{const mode=button.dataset.mealPlannerMode;const custom=mode==='custom';const pre=mode==='preworkout';document.querySelectorAll('[data-meal-planner-mode]').forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active))});if(panel)panel.hidden=!custom;if(ideas)ideas.hidden=custom||pre;const prePanel=document.getElementById('meal-preworkout-panel');if(prePanel)prePanel.hidden=!pre}));
   document.getElementById('meal-craving-run')?.addEventListener('click',()=>{const detected=detectCravingFoods(document.getElementById('meal-craving-text')?.value||'');renderCravingFoodPicker(detected);calculateCraving()});
   panel.addEventListener('click',event=>{if(event.target.closest('#meal-craving-calculate'))calculateCraving()});
 }
@@ -1312,7 +1312,7 @@ if(!n.connected&&!hasIntake){
   return;
 }
 const kcal=i.kcal!=null?Math.round(i.kcal):null,carb=i.carb!=null?Math.round(i.carb):null,prot=i.prot!=null?Math.round(i.prot):null,remaining=kcal!=null&&t.kcal?Math.max(0,Math.round(t.kcal-kcal)):null;body.innerHTML=`<div class="home-nutrition-main"><strong>${remaining!=null?'~'+remaining+' kcal':'FatSecret'}</strong><span>${fuel?.score!=null?`Fuel ${fuel.score}% · ${fuel.status}`:'Live intake synced'}</span></div><div class="home-nutrition-meta"><span>${carb!=null?carb+' g carbs':'— carbs'}</span><span>${prot!=null?prot+' g protein':'— protein'}</span><span>${kcal!=null?kcal+' kcal logged':'No kcal total'}</span></div>`}
-function open(){if(typeof showPage==='function'){showPage('nutrition-page');}else{document.querySelectorAll('.page').forEach(page=>{page.classList.remove('active');});const page=document.getElementById('nutrition-page');if(page){page.classList.add('active');}}window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{render().catch?.(error=>{console.warn('[Nutrition Optimizer] Could not refresh after opening:',error);});},30);}
+function open(){if(typeof showPage==='function'){showPage('nutri-page');}else{document.querySelectorAll('.page').forEach(page=>{page.classList.remove('active');});const page=document.getElementById('nutri-page');if(page){page.classList.add('active');}}window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{render().catch?.(error=>{console.warn('[Nutrition Optimizer] Could not refresh after opening:',error);});},30);}
 let feedbackSaveTimer=null;let feedbackSaveInFlight=false;
 function feedbackComplete(){return ['no-feedback-tolerance','no-feedback-energy','no-feedback-hunger','no-feedback-performance'].every(id=>Number(document.getElementById(id)?.value||0)>0)}
 function flashFeedbackSaved(){const b=document.getElementById('no-save-feedback');if(!b)return;const old=b.textContent;b.textContent='Guardado ✓';b.dataset.saved='true';setTimeout(()=>{b.textContent=old;b.dataset.saved='false'},1500)}
@@ -1320,7 +1320,7 @@ async function saveFB({auto=false}={}){const v={tolerance:+document.getElementBy
 function scheduleFeedbackAutoSave(){clearTimeout(feedbackSaveTimer);if(!feedbackComplete())return;feedbackSaveTimer=setTimeout(()=>saveFB({auto:true}),800)}
 
 ['no-feedback-tolerance','no-feedback-energy','no-feedback-hunger','no-feedback-performance'].forEach(id=>document.getElementById(id)?.addEventListener('change',scheduleFeedbackAutoSave));
-document.addEventListener('trainmei:nutrition-updated',()=>{if(document.querySelector('#nutrition-page.active'))render().catch?.(()=>{});});
+document.addEventListener('trainmei:nutrition-updated',()=>{if(document.querySelector('#nutri-page.active'))render().catch?.(()=>{});});
 document.addEventListener('click',e=>{const t=e.target.closest('[data-nutrition-time]');if(t){
   timing=+t.dataset.nutritionTime;
   variant=0;
@@ -1336,7 +1336,7 @@ if(mealTab){
   return;
 }
 
-if(e.target.closest('#no-change-meal')){variant++;render();return}if(e.target.closest('#no-open-nutri')){if(typeof showPage==='function'){showPage('nutri-page');}else{document.querySelectorAll('.page').forEach(page=>{page.classList.remove('active');});const page=document.getElementById('nutri-page');if(page){page.classList.add('active');}}window.scrollTo({top:0,behavior:'smooth'});return;}if(e.target.closest('#no-save-feedback')){saveFB();return}if(e.target.closest('[data-home-action="nutrition"]')){open();return}const p=e.target.closest('[data-page]');if(p?.dataset.page==='nutrition-page')setTimeout(render,30);if(p?.dataset.page==='home-page')setTimeout(home,80);});
+if(e.target.closest('#no-change-meal')){variant++;render();return}if(e.target.closest('#no-open-nutri')){if(typeof showPage==='function'){showPage('nutri-page');}else{document.querySelectorAll('.page').forEach(page=>{page.classList.remove('active');});const page=document.getElementById('nutri-page');if(page){page.classList.add('active');}}window.scrollTo({top:0,behavior:'smooth'});return;}if(e.target.closest('#no-save-feedback')){saveFB();return}if(e.target.closest('[data-home-action="nutrition"]')){open();return}const p=e.target.closest('[data-page]');if(p?.dataset.page==='nutri-page')setTimeout(render,30);if(p?.dataset.page==='home-page')setTimeout(home,80);});
 document.addEventListener('DOMContentLoaded',async()=>{
   try{
     if(window.TrainMeiNutritionData?.whenReady){
