@@ -1251,7 +1251,6 @@ body{color:var(--ink)}
   .top-actions .btn{flex:0 0 auto;border:0!important;border-radius:7px!important;box-shadow:none!important;padding:6px 7px!important;font-size:9px!important;white-space:nowrap}
   .top-actions #export-btn,.top-actions #import-btn,.top-actions #sync-btn,.top-actions #logout-btn{display:none}
   .home-shell{padding:20px 12px 32px}
-  .home-grid{grid-template-columns:1.15fr .85fr}
   .home-hero h1{font-size:32px}
 }
 .smart-int-wrap{max-width:1040px;margin:0 auto 30px}
@@ -2837,7 +2836,6 @@ body:has(#day-page.active) .tagline-input{white-space:pre-wrap}
   /* ---- Grid principal ---- */
   #home-page .home-grid{
     display:grid;
-    grid-template-columns:repeat(3, minmax(0,1fr));
     gap:10px;
     align-items:stretch;
   }
@@ -3061,9 +3059,6 @@ body:has(#day-page.active) .tagline-input{white-space:pre-wrap}
 
 /* Tablet horizontal: 2 columnas */
 @media (min-width:561px) and (max-width:1000px){
-  #home-page .home-grid{
-    grid-template-columns:repeat(2, minmax(0,1fr));
-  }
   #home-page .home-today-card{ grid-column:span 2; }
   #home-page .home-week-card { grid-column:span 2; }
   #home-page .home-month-overview{ grid-column:1 / -1; }
@@ -4381,6 +4376,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 #nutri-page .nutri-calculator-only{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
 #nutri-page .nutri-calculator-only>.nutri-card:nth-of-type(1){grid-column:1 / -1}
 #nutri-page .nutri-calculator-only>.nutri-card:nth-of-type(2){grid-column:1}
+#nutri-page .nutri-calculator-only>.nutri-card:nth-of-type(3){grid-column:2}
 #nutri-page .nutri-calculator-only>#nt-calcBtn{grid-column:1 / -1}
 #nutri-page .nutri-card{background:var(--card-bg);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(22,22,22,.04);min-width:0}
 #nutri-page .nutri-big-number{font-size:44px}
@@ -5539,7 +5535,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .undo-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;max-width:calc(100vw - 32px);padding:10px 12px 10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card-bg,var(--paper));color:var(--ink);box-shadow:0 12px 34px rgba(0,0,0,.18);z-index:12000;font-size:11px;font-weight:700}
 .undo-toast button{border:0;border-radius:8px;padding:6px 10px;background:var(--accent);color:var(--on-accent,#fff);font:inherit;cursor:pointer}
 .undo-toast button:hover{filter:brightness(.96)}
-.page-title{font-size:clamp(24px,5vw,42px)!important;font-weight:900!important;letter-spacing:-.04em!important;line-height:.95!important;color:var(--heading-color,var(--ink))!important;text-transform:none!important}
+.page-title{font-weight:900!important;letter-spacing:-.04em!important;line-height:.95!important;color:var(--heading-color,var(--ink))!important}
 .page-title.dashboard-title{ text-transform:uppercase!important }
 .ios-summary-head{border:0;background:transparent;appearance:none;-webkit-appearance:none;color:inherit}
 .brain-pattern-meta{margin-bottom:4px;font-size:9px;font-weight:700;letter-spacing:.03em;color:var(--muted);text-transform:none}
@@ -6108,15 +6104,13 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 #user-weight-content .nt-chart-wrap canvas{width:100%!important;height:100%!important}
 #user-weight-content .nt-history-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid var(--line);font-size:11px}
 #user-weight-content .nt-history-head span{font-size:10px;color:var(--muted)}
+#user-weight-content .nt-history-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
 #user-weight-content .nt-history-details {margin-top: 10px;border-top: 1px solid var(--line);}
 #user-weight-content .nt-history-head {display: flex;align-items: center;justify-content: space-between;gap: 10px;padding: 11px 2px;cursor: pointer;list-style: none;border-top: 0;font-size: 12px;}
 #user-weight-content .nt-history-head::-webkit-details-marker {display: none;}
 #user-weight-content .nt-history-summary-right {display: flex;align-items: center;gap: 10px;color: var(--muted);font-size: 11px;}
 #user-weight-content .nt-history-chevron {transition: transform 160ms ease;}
-#user-weight-content .nt-history-details[open] .nt-history-chevron {transform: rotate(180deg);}
-#user-weight-content .nt-history-details:not([open]) .nt-history-list {display: none;}
-#user-weight-content .nt-history-list {padding-bottom: 8px;}
-#user-weight-content .nt-history-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+#user-weight-content .nt-history-details[open] .nt-history-chevron {transform: rotate(180deg);}#user-weight-content .nt-history-details:not([open]) .nt-history-list {display: none;}#user-weight-content .nt-history-list {padding-bottom: 8px;}
 #user-weight-content .nt-history-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;min-width:0}
 #user-weight-content .nt-history-row-main{min-width:0;display:flex;flex-direction:column;gap:2px}
 #user-weight-content .nt-history-row-main strong{font-size:11px;color:var(--heading-color,var(--text));overflow-wrap:anywhere}
@@ -6175,7 +6169,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .user-shell{max-width:1240px;margin:0 auto;padding:clamp(12px,2vw,24px);min-width:0}
 .user-hero{margin-bottom:16px}.user-subtitle{color:var(--muted);font-size:12px;margin:6px 0 0}
 .user-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
-.user-panel{min-width:0;padding:clamp(12px,2vw,18px);border:1px solid var(--line);border-radius:15px;overflow:hidden}
+.user-panel{min-width:0;padding:clamp(12px,2vw,18px);border:1px solid var(--line);border-radius:15px;background:var(--card-bg,var(--surface));overflow:hidden}
 .user-metrics-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
 .user-metrics-form label{display:flex;flex-direction:column;gap:5px;min-width:0;font-size:10px;font-weight:750;color:var(--muted)}
 .user-metrics-form input,.user-metrics-form select{width:100%;min-width:0;min-height:38px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;background:var(--input-bg,var(--card-bg));color:var(--text);font:inherit;font-size:12px}
@@ -6205,9 +6199,8 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 #home-page .home-week-card,
 #home-page .home-nutrition-card,
 #home-page .home-next-card{display:none!important}
-#home-page .home-grid{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;align-items:stretch;gap:14px}
 #home-page .home-today-card{grid-column:1;grid-row:1;min-width:0}
-#home-page .home-month-overview{grid-column:2;grid-row:1;min-width:0;width:100%!important}
+#home-page .home-month-overview{grid-column:2;grid-row:1;min-width:0;width:100%!important;max-width:none!important}
 #home-page .home-intelligence-section{margin-top:14px}
 #home-page .home-intelligence-head h2{margin-bottom:0}
 @media(max-width:650px){#home-page .home-grid{grid-template-columns:minmax(0,1fr)!important;gap:10px}#home-page .home-today-card,#home-page .home-month-overview{grid-column:1;grid-row:auto}}
@@ -6225,7 +6218,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 /* The calorie calculator reads as one compact panel instead of three separate cards. */
 #nutri-calculator{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:10px;padding:12px;border:1px solid var(--line);border-radius:15px;background:var(--card-bg,var(--surface));align-items:start}
 #nutri-calculator>.nutri-card{min-width:0;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
-#nutri-calculator>#nt-resultCard{grid-column:2;padding:12px!important;border:1px solid var(--line)!important;border-radius:11px!important;background:var(--surface,var(--card-bg))!important}
+#nutri-calculator>#nt-resultCard{grid-column:2;grid-row:1 / span 2;align-self:stretch;padding:10px!important;border:1px solid var(--line)!important;border-radius:11px!important;background:var(--surface,var(--card-bg))!important}
 #nutri-calculator>.nutri-card:nth-child(2){grid-column:1;grid-row:1}
 #nutri-calculator>.nutri-card:nth-child(3){grid-column:1;grid-row:2}
 #nutri-calculator .nutri-card-title{font-size:12px;margin-bottom:8px}
@@ -6249,3 +6242,218 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 #meal-preworkout-panel .nutrition-side-card{padding:12px!important}
 #nutrition-page{display:none!important}
 @media(max-width:760px){#nutri-calculator{grid-template-columns:minmax(0,1fr);padding:10px}#nutri-calculator>#nt-resultCard,#nutri-calculator>.nutri-card:nth-child(2),#nutri-calculator>.nutri-card:nth-child(3),#nutri-calculator #nt-calcBtn{grid-column:1;grid-row:auto}#nutri-calculator>#nt-resultCard{display:grid!important;grid-template-columns:1fr;align-items:center}#nutri-calculator #nt-macroChartBody{max-width:125px}#meal-preworkout-panel{grid-template-columns:minmax(0,1fr)}}
+
+
+/* Home · button-first pre-workout readiness */
+.home-readiness-panel{border-color:color-mix(in srgb,var(--line) 72%,var(--accent,#6b8afd));}
+.home-readiness-head{align-items:flex-start;margin-bottom:16px}
+.home-readiness-subtitle{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
+.home-readiness-save{flex:0 0 auto;padding:5px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:10px;font-weight:700;white-space:nowrap}
+.home-readiness-save[data-state="synced"]{color:#22a06b}.home-readiness-save[data-state="error"]{color:#dc5656}
+.home-readiness-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch}
+.home-readiness-group{min-width:0;padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2,var(--card-bg,var(--surface)))}
+.home-readiness-group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:13px}
+.home-readiness-group-head h3{margin:0;font-size:13px;color:var(--heading-color,var(--text))}
+.home-readiness-group-head>span{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.home-readiness-dot-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.home-readiness-dot-row:first-of-type{border-top:0}
+.home-readiness-dot-row strong,.home-readiness-choice-block>strong{display:block;font-size:11px;color:var(--text)}
+.home-readiness-dot-row small{display:block;margin-top:3px;color:var(--muted);font-size:9px;line-height:1.35}
+.home-readiness-dots{display:flex;align-items:center;gap:4px;flex:0 0 auto}
+.home-readiness-dot{display:inline-flex;align-items:center;justify-content:center;width:27px;height:31px;border:0;border-radius:8px;background:transparent;color:var(--control,var(--muted));font-size:19px;line-height:1;cursor:pointer;transition:background .15s,color .15s,transform .15s}
+.home-readiness-dot.active{color:var(--accent,#6b8afd);background:color-mix(in srgb,var(--accent,#6b8afd) 12%,transparent)}
+.home-readiness-dot:focus-visible,.home-readiness-chips button:focus-visible{outline:2px solid var(--accent,#6b8afd);outline-offset:2px}
+.home-readiness-dot:active{transform:scale(.94)}
+.home-readiness-choice-block{padding:10px 0;border-top:1px solid var(--line)}
+.home-readiness-choice-block:first-of-type{border-top:0}
+.home-readiness-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.home-readiness-chips button{min-height:30px;padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface,var(--card-bg));color:var(--text);font-size:10px;font-weight:650;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.home-readiness-chips button.active{border-color:var(--accent,#6b8afd);background:color-mix(in srgb,var(--accent,#6b8afd) 14%,var(--surface,var(--card-bg)));color:var(--heading-color,var(--text))}
+.home-readiness-range-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.home-readiness-range-head strong{font-size:11px}
+.home-readiness-range-head output{font-size:11px;font-weight:800;color:var(--accent,#6b8afd);font-variant-numeric:tabular-nums}
+.home-readiness-choice-block input[type="range"]{display:block;width:100%;margin:13px 0 6px;accent-color:var(--accent,#6b8afd);cursor:pointer}
+.home-readiness-range-scale{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:9px}
+.home-readiness-intensity{margin-top:7px}
+.home-readiness-recommendation{margin-top:13px;padding:14px 15px;border:1px solid var(--line);border-radius:12px;background:color-mix(in srgb,var(--accent,#6b8afd) 7%,var(--surface,var(--card-bg)));display:flex;flex-direction:column;gap:6px}
+.home-readiness-recommendation-kicker{font-size:9px;font-weight:800;letter-spacing:.09em;color:var(--muted)}
+.home-readiness-recommendation>strong{font-size:14px;line-height:1.45;color:var(--heading-color,var(--text))}
+.home-readiness-recommendation-context{font-size:11px;color:var(--muted)}
+.home-readiness-recommendation ul{margin:2px 0 0;padding-left:17px;color:var(--muted);font-size:11px;line-height:1.55}
+.home-readiness-recommendation li+li{margin-top:3px}
+@media(max-width:950px){.home-readiness-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-readiness-group:last-child{grid-column:1/-1}}
+@media(max-width:560px){.home-readiness-head{gap:8px}.home-readiness-save{font-size:9px;padding:5px 7px}.home-readiness-grid{grid-template-columns:minmax(0,1fr);gap:9px}.home-readiness-group:last-child{grid-column:auto}.home-readiness-group{padding:12px}.home-readiness-dot-row{gap:5px}.home-readiness-dot{width:30px;height:34px;font-size:20px}.home-readiness-chips button{min-height:34px;font-size:11px}.home-readiness-recommendation{padding:12px}}
+
+/* Home layout refinement: two-column overview and compact decision panels. */
+#home-page .home-grid{gap:12px}
+#home-page .home-today-card{grid-column:1;grid-row:1}
+#home-page .home-month-overview{grid-column:2;grid-row:1}
+#home-page .home-insight-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start;margin-top:12px}
+#home-page .home-readiness-panel{grid-column:1/-1;margin:0;padding:13px 15px}
+#home-page .home-readiness-head{margin-bottom:9px}
+#home-page .home-readiness-subtitle{display:none}
+#home-page .home-readiness-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#home-page .home-readiness-group{padding:9px}
+#home-page .home-readiness-group-head{margin-bottom:7px}
+#home-page .home-readiness-dot-row{padding:6px 0;gap:5px}
+#home-page .home-readiness-dot-row small{display:none}
+#home-page .home-readiness-choice-block{padding:7px 0}
+#home-page .home-readiness-chips{gap:4px;margin-top:5px}
+#home-page .home-readiness-chips button{min-height:27px;padding:4px 7px;font-size:9px}
+#home-page .home-readiness-recommendation{margin-top:8px;padding:10px 12px}
+#home-page .home-insight-grid>.home-intelligence-section{min-width:0;margin:0;padding:13px}
+#home-page .home-insight-grid>.home-intelligence-section .home-intelligence-head h2{font-size:17px}
+#home-page .home-briefing-body{font-size:12px}
+#home-page .home-insights-section .ti-hero{margin-bottom:7px}
+#home-page .home-insights-section .ti-tabs{display:none!important}
+#home-page .home-insights-section .ti-content{font-size:12px}
+#home-page .home-insights-section .ti-section-head{margin-bottom:8px}
+#home-page .home-insights-section .ti-panel{padding:10px}
+@media(max-width:760px){
+  #home-page .home-grid{grid-template-columns:minmax(0,1fr)!important}
+  #home-page .home-today-card,#home-page .home-month-overview{grid-column:1;grid-row:auto}
+  #home-page .home-insight-grid{grid-template-columns:minmax(0,1fr)}
+  #home-page .home-readiness-panel{grid-column:1}
+  #home-page .home-readiness-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #home-page .home-readiness-group:last-child{grid-column:1/-1}
+}
+@media(max-width:560px){
+  #home-page .home-readiness-grid{grid-template-columns:minmax(0,1fr)}
+  #home-page .home-readiness-group:last-child{grid-column:auto}
+}
+
+
+/* === TrainMei Home refinement · visual-only layer ===
+   Preserves the existing compact Home heatmap and all existing data/behaviour. */
+#home-page .home-shell{max-width:1160px;padding-top:22px}
+#home-page .home-hero{align-items:center;gap:16px;margin-bottom:16px}
+#home-page .home-hero .eyebrow{font-size:9px;letter-spacing:.12em}
+#home-page .home-hero h1{font-size:clamp(29px,3.5vw,38px);line-height:1;letter-spacing:-.045em}
+#home-page .home-date-label{margin:6px 0 0;color:var(--muted);font-size:11px}
+#home-page .home-primary{min-height:38px;padding:9px 13px;border-radius:11px;font-weight:750;letter-spacing:.025em}
+#home-page .home-grid{grid-template-columns:minmax(0,1.08fr) minmax(280px,.92fr)!important;gap:12px}
+#home-page .home-card{min-width:0;padding:15px;border-radius:15px;box-shadow:0 3px 12px rgba(22,22,22,.035)}
+#home-page .home-card-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+#home-page .home-card-head>div{min-width:0}
+#home-page .home-card-head .eyebrow{font-size:9px;letter-spacing:.09em}
+#home-page .home-card h2{font-size:clamp(15px,1.5vw,18px);line-height:1.15;overflow-wrap:anywhere}
+#home-page .home-status{flex:0 0 auto;max-width:45%;white-space:normal;text-align:right;font-size:9px}
+#home-page .home-today-body{min-width:0}
+#home-page .home-today-card .home-actions{margin-top:12px;padding-top:10px;border-top:1px solid var(--line-soft,var(--line))}
+#home-page .home-actions .btn{border-radius:9px;padding:8px 11px;font-size:10px;letter-spacing:.035em}
+#home-page .home-month-overview{
+  grid-column:2;grid-row:1;align-self:start;
+  display:block!important;min-width:0;width:100%!important;max-width:none!important;
+  height:auto!important;min-height:0!important;max-height:none!important;
+  padding:13px 14px!important;border-radius:15px;
+}
+#home-page .home-month-head{margin-bottom:7px;align-items:center}
+#home-page .home-month-title{font-size:12px;font-weight:800;letter-spacing:-.01em}
+#home-page .home-month-note{font-size:9px;white-space:nowrap}
+#home-page .home-heat-labels{grid-template-columns:repeat(7,18px);gap:3px;margin-bottom:4px}
+#home-page .home-heat-labels span{font-size:7px}
+#home-page #home-month-heatmap{
+  display:grid!important;grid-template-columns:repeat(7,18px)!important;
+  grid-auto-rows:18px!important;gap:3px!important;justify-content:start!important;
+  align-content:start!important;min-height:0!important;width:max-content!important;
+  max-width:100%;flex:0 0 auto!important;
+}
+#home-page #home-month-heatmap .home-heat-day{
+  width:18px!important;height:18px!important;min-height:18px!important;
+  border-radius:5px;box-sizing:border-box;transition:transform .12s ease,filter .12s ease;
+}
+#home-page #home-month-heatmap .home-heat-day:not(.empty):hover{transform:scale(1.08);filter:brightness(.96)}
+#home-page .home-insight-grid{gap:12px;margin-top:12px}
+#home-page .home-readiness-panel{
+  border-radius:15px;padding:13px 14px;
+  box-shadow:0 3px 12px rgba(22,22,22,.025);
+}
+#home-page .home-readiness-head{align-items:center;gap:10px;margin-bottom:10px}
+#home-page .home-readiness-head h2{font-size:17px;letter-spacing:-.025em}
+#home-page .home-readiness-save{font-size:9px;padding:5px 8px}
+#home-page .home-readiness-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#home-page .home-readiness-group{padding:10px;border-radius:12px;background:var(--surface-soft,var(--card-bg,var(--surface)))}
+#home-page .home-readiness-group-head{margin-bottom:6px}
+#home-page .home-readiness-group-head h3{font-size:11px}
+#home-page .home-readiness-group-head>span{font-size:8px}
+#home-page .home-readiness-dot-row{gap:6px;padding:6px 0}
+#home-page .home-readiness-dot-row>div:first-child{min-width:0}
+#home-page .home-readiness-dot-row strong,#home-page .home-readiness-choice-block>strong{font-size:10px}
+#home-page .home-readiness-dot-row small{display:none}
+#home-page .home-readiness-dots{gap:2px}
+#home-page .home-readiness-dot{width:24px;height:27px;border-radius:7px;font-size:15px;padding:0}
+#home-page .home-readiness-dot:hover{background:color-mix(in srgb,var(--accent,#6b8afd) 9%,transparent)}
+#home-page .home-readiness-dot.active{background:color-mix(in srgb,var(--accent,#6b8afd) 13%,transparent)}
+#home-page .home-readiness-choice-block{padding:7px 0}
+#home-page .home-readiness-chips{gap:4px;margin-top:5px}
+#home-page .home-readiness-chips button{min-height:28px;padding:5px 7px;font-size:9px;line-height:1.2}
+#home-page .home-readiness-range-head strong{font-size:10px}
+#home-page .home-readiness-range-head output{font-size:10px}
+#home-page .home-readiness-choice-block input[type=range]{margin:10px 0 5px}
+#home-page .home-readiness-range-scale{font-size:8px}
+#home-page .home-readiness-recommendation{margin-top:9px;padding:10px 12px;border-radius:11px;gap:4px}
+#home-page .home-readiness-recommendation>strong{font-size:12px;line-height:1.4}
+#home-page .home-readiness-recommendation-context,#home-page .home-readiness-recommendation ul{font-size:10px}
+#home-page .home-insight-grid>.home-intelligence-section{
+  min-width:0;margin:0;padding:13px;border-radius:15px;
+  box-shadow:0 3px 12px rgba(22,22,22,.025);
+}
+#home-page .home-intelligence-head{gap:8px;align-items:center;margin-bottom:9px}
+#home-page .home-intelligence-head .eyebrow{font-size:9px;letter-spacing:.09em}
+#home-page .home-insight-grid>.home-intelligence-section .home-intelligence-head h2{font-size:16px;line-height:1.15;letter-spacing:-.025em}
+#home-page #home-refresh-intelligence,#home-page #ti-refresh-btn{padding:6px 8px;border-radius:8px;font-size:9px;white-space:nowrap}
+#home-page .home-briefing-body{font-size:11px;line-height:1.45}
+#home-page .home-insights-section .ti-hero{align-items:center;gap:8px;margin-bottom:7px}
+#home-page .home-insights-section .ti-hero h2{font-size:16px!important;line-height:1.15!important}
+#home-page .home-insights-section .ti-status{font-size:10px}
+#home-page .home-insights-section .ti-content{font-size:11px}
+#home-page .home-insights-section .ti-panel{border-radius:11px}
+#home-page .home-brain-details{margin-top:12px;border-radius:14px}
+#home-page .home-brain-details>summary{padding:12px 14px}
+#home-page .home-brain-details>summary strong{font-size:12px}
+#home-page .home-brain-details>summary small{font-size:10px}
+
+/* Keep the Home heatmap deliberately compact; only the full Calendar page uses its own larger grid. */
+@media(min-width:761px){
+  #home-page .home-grid{grid-template-columns:minmax(0,1.08fr) minmax(280px,.92fr)!important}
+  #home-page .home-month-overview{grid-column:2;grid-row:1}
+  #home-page .home-insight-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media(max-width:760px){
+  #home-page .home-shell{padding:16px 12px 28px}
+  #home-page .home-hero{margin-bottom:12px}
+  #home-page .home-grid{grid-template-columns:minmax(0,1fr)!important;gap:10px}
+  #home-page .home-today-card,#home-page .home-month-overview{grid-column:1;grid-row:auto}
+  #home-page .home-insight-grid{grid-template-columns:minmax(0,1fr);gap:10px}
+  #home-page .home-readiness-panel{grid-column:1}
+  #home-page .home-readiness-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #home-page .home-readiness-group:last-child{grid-column:1/-1}
+}
+@media(max-width:560px){
+  #home-page .home-shell{padding:13px 12px 24px}
+  #home-page .home-hero{align-items:center;gap:8px}
+  #home-page .home-hero h1{font-size:30px}
+  #home-page .home-primary{min-height:34px;padding:7px 9px;font-size:9px}
+  #home-page .home-card{padding:12px}
+  #home-page .home-card-head{margin-bottom:8px}
+  #home-page .home-card h2{font-size:15px}
+  #home-page .home-month-overview{padding:11px 12px!important}
+  #home-page .home-readiness-panel{padding:11px}
+  #home-page .home-readiness-grid{grid-template-columns:minmax(0,1fr);gap:7px}
+  #home-page .home-readiness-group:last-child{grid-column:auto}
+  #home-page .home-readiness-group{padding:10px}
+  #home-page .home-readiness-dot{width:28px;height:30px;font-size:17px}
+  #home-page .home-readiness-dot-row{padding:5px 0}
+  #home-page .home-readiness-chips button{min-height:32px;font-size:10px}
+  #home-page .home-insight-grid>.home-intelligence-section{padding:12px}
+  #home-page .home-insight-grid>.home-intelligence-section .home-intelligence-head h2{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){
+  #home-page *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
+
+
+/* Daily readiness: slider values stay visually unselected until the user changes them. */
+.home-readiness-panel [data-pre-context-range].is-unset { opacity: .58; }
+.home-readiness-panel [data-pre-context-range].is-unset::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(120,120,120,.12); }
+.home-readiness-panel [data-pre-context-range].is-unset::-moz-range-thumb { box-shadow: 0 0 0 4px rgba(120,120,120,.12); }

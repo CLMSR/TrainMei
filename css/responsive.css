@@ -345,3 +345,19 @@
 @media (min-width:561px) and (max-width:760px){
   #home-page .home-load-mobile{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px}
 }
+
+
+/* Home-only final responsive guardrails. The small Home heatmap is intentional. */
+@media(max-width:760px){
+  #home-page .home-grid{grid-template-columns:minmax(0,1fr)!important}
+  #home-page .home-today-card,#home-page .home-month-overview{grid-column:1!important;grid-row:auto!important}
+  #home-page .home-insight-grid{grid-template-columns:minmax(0,1fr)!important}
+  #home-page .home-readiness-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #home-page .home-readiness-group:last-child{grid-column:1/-1!important}
+}
+@media(max-width:560px){
+  #home-page .home-readiness-grid{grid-template-columns:minmax(0,1fr)!important}
+  #home-page .home-readiness-group:last-child{grid-column:auto!important}
+  #home-page #home-month-heatmap{grid-template-columns:repeat(7,18px)!important;grid-auto-rows:18px!important;gap:3px!important;min-height:0!important}
+  #home-page #home-month-heatmap .home-heat-day{width:18px!important;height:18px!important;min-height:18px!important}
+}

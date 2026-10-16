@@ -122,23 +122,51 @@
           <div id="home-month-heatmap" class="home-heatmap"></div>
         </section>
       </div>
+      <div class="home-insight-grid">
+      <section class="home-intelligence-section home-readiness-panel" id="home-readiness-panel" aria-labelledby="home-readiness-title">
+        <div class="home-intelligence-head home-readiness-head">
+          <div><div class="eyebrow">BEFORE YOU TRAIN</div><h2 id="home-readiness-title">Pre-workout readiness</h2><p class="home-readiness-subtitle">Tap your current state and today's constraints. No typing required.</p></div>
+          <span class="home-readiness-save" id="home-readiness-save" role="status" aria-live="polite">Loading…</span>
+        </div>
+        <div class="home-readiness-grid">
+          <section class="home-readiness-group" aria-label="Recovery dots">
+            <div class="home-readiness-group-head"><h3>Recovery dots</h3><span>Today</span></div>
+            <div class="home-readiness-dot-row"><div><strong>Sleep</strong><small>1 = poor · 5 = great</small></div><div class="home-readiness-dots" data-pre-recovery-group="sleep" role="group" aria-label="Sleep quality"></div></div>
+            <div class="home-readiness-dot-row"><div><strong>Energy</strong><small>1 = drained · 5 = high</small></div><div class="home-readiness-dots" data-pre-recovery-group="energy" role="group" aria-label="Energy level"></div></div>
+            <div class="home-readiness-dot-row"><div><strong>Soreness</strong><small>1 = none · 5 = severe</small></div><div class="home-readiness-dots" data-pre-recovery-group="soreness" role="group" aria-label="Muscle soreness"></div></div>
+            <div class="home-readiness-dot-row"><div><strong>Stress</strong><small>1 = low · 5 = high</small></div><div class="home-readiness-dots" data-pre-context-dots="stress" role="group" aria-label="Stress level"></div></div>
+          </section>
+          <section class="home-readiness-group" aria-label="Preparation context">
+            <div class="home-readiness-group-head"><h3>Preparation</h3><span>Tap to select</span></div>
+            <div class="home-readiness-choice-block"><strong>Fuel status</strong><div class="home-readiness-chips" data-pre-context-choice="fuelStatus" role="group" aria-label="Fuel status"><button type="button" data-value="low">Under-fuelled</button><button type="button" data-value="okay">Okay</button><button type="button" data-value="good">Well fuelled</button></div></div>
+            <div class="home-readiness-choice-block"><strong>Last meal</strong><div class="home-readiness-chips" data-pre-context-choice="lastMeal" role="group" aria-label="Time since last meal"><button type="button" data-value="lt1h">Under 1 h</button><button type="button" data-value="1to2h">1–2 h</button><button type="button" data-value="2to4h">2–4 h</button><button type="button" data-value="gt4h">4 h+</button></div></div>
+            <div class="home-readiness-choice-block"><strong>Hydration</strong><div class="home-readiness-chips" data-pre-context-choice="hydration" role="group" aria-label="Hydration status"><button type="button" data-value="low">Low</button><button type="button" data-value="okay">Okay</button><button type="button" data-value="good">Good</button></div></div>
+          </section>
+          <section class="home-readiness-group" aria-label="Session constraints">
+            <div class="home-readiness-group-head"><h3>Today's session</h3><span>Adjust as needed</span></div>
+            <div class="home-readiness-choice-block"><div class="home-readiness-range-head"><strong>Time available</strong><output id="pre-time-output">60 min</output></div><input type="range" min="15" max="120" step="15" value="60" data-pre-context-range="availableMinutes" aria-label="Time available in minutes"><div class="home-readiness-range-scale"><span>15 min</span><span>120 min</span></div></div>
+            <div class="home-readiness-choice-block"><div class="home-readiness-range-head"><strong>Planned intensity</strong><output id="pre-intensity-output">3 / 5</output></div><div class="home-readiness-dots home-readiness-intensity" data-pre-context-dots="intensity" role="group" aria-label="Planned intensity"></div><div class="home-readiness-range-scale"><span>Easy</span><span>Very hard</span></div></div>
+            <div class="home-readiness-choice-block"><div class="home-readiness-range-head"><strong>Volume target</strong><output id="pre-volume-output">100%</output></div><input type="range" min="50" max="120" step="10" value="100" data-pre-context-range="volumePercent" aria-label="Planned volume percentage"><div class="home-readiness-range-scale"><span>50%</span><span>120%</span></div></div>
+            <div class="home-readiness-choice-block"><strong>Session focus</strong><div class="home-readiness-chips" data-pre-context-choice="goal" role="group" aria-label="Session focus"><button type="button" data-value="auto">Use plan</button><button type="button" data-value="strength">Strength</button><button type="button" data-value="hypertrophy">Hypertrophy</button><button type="button" data-value="endurance">Endurance</button><button type="button" data-value="recovery">Recovery</button></div></div>
+          </section>
+        </div>
+        <div class="home-readiness-recommendation" id="home-readiness-recommendation" aria-live="polite"><span class="home-readiness-recommendation-kicker">PRE-SESSION GUIDANCE</span><strong>Loading today's recommendation…</strong></div>
+      </section>
       <section class="home-intelligence-section" aria-label="Daily decision support">
-        <div class="home-intelligence-head"><div><div class="eyebrow">YOUR TRAINING SIGNALS</div><h2>Today at a glance</h2></div><button type="button" class="btn" id="home-refresh-intelligence">Refresh</button></div>
+        <div class="home-intelligence-head"><div><div class="eyebrow">TRAINING SIGNALS</div><h2>Today at a glance</h2></div><button type="button" class="btn" id="home-refresh-intelligence">Refresh</button></div>
         <div id="home-briefing-body" class="db-body home-briefing-body" aria-live="polite"><div class="db-loading"><span class="db-loading-ring" aria-hidden="true"></span><span>Preparing your training signals…</span></div></div>
       </section>
       <section class="home-intelligence-section home-insights-section" aria-label="Training trends and insights">
         <div class="ti-shell">
-          <div class="ti-hero"><div><div class="eyebrow">TRAINMEI · YOUR TRENDS</div><h2 class="page-title">Training trends</h2></div><button type="button" class="btn" id="ti-refresh-btn">Refresh</button></div>
-          <div class="ti-tabs" role="tablist" aria-label="Training trend views">
+          <div class="ti-hero"><div><div class="eyebrow">TRAINING TRENDS</div><h2 class="page-title">Your week at a glance</h2></div><button type="button" class="btn" id="ti-refresh-btn">Refresh</button></div>
+          <div class="ti-tabs" role="tablist" aria-label="Training trend views" hidden>
             <button type="button" class="ti-tab active" role="tab" aria-selected="true" data-ti-tab="weekly">Weekly</button>
-            <button type="button" class="ti-tab" role="tab" aria-selected="false" data-ti-tab="adaptive">Progression</button>
-            <button type="button" class="ti-tab" role="tab" aria-selected="false" data-ti-tab="muscles">Muscles</button>
-            <button type="button" class="ti-tab" role="tab" aria-selected="false" data-ti-tab="patterns">Patterns</button>
           </div>
           <div id="ti-status" class="ti-status" aria-live="polite">Loading training trends…</div>
           <div id="ti-content" class="ti-content"></div>
         </div>
       </section>
+      </div>
       <details class="home-intelligence-section home-brain-details">
         <summary><span><strong>Training Brain</strong><small>Personal baselines, feedback and the evidence behind recommendations</small></span><span class="home-brain-summary-icon">＋</span></summary>
         <div class="brain-grid home-brain-grid">
@@ -201,7 +229,7 @@
 
 <section id="user-page" class="page user-page">
   <div class="user-shell">
-    <div class="user-hero"><div><div class="eyebrow">YOUR PROFILE</div><h1 class="page-title">User</h1>></div></div>
+    <div class="user-hero"><div><div class="eyebrow">YOUR PROFILE</div><h1 class="page-title">User</h1><p class="user-subtitle">Body metrics, weight trend and strength progression.</p></div></div>
     <div class="user-profile-grid">
       <section class="user-panel" id="user-metrics-panel"><div class="user-panel-head"><div><div class="eyebrow">PERSONAL METRICS</div><h2>Your metrics</h2></div></div>
         <div class="user-metrics-form">
@@ -214,7 +242,7 @@
         </div><p class="user-metrics-status" id="user-metrics-status" aria-live="polite">Optional profile metrics are stored on this device.</p>
       </section>
       <section class="user-panel user-weight-panel" id="user-weight-slot"><div class="user-panel-head"><div><div class="eyebrow">BODY TREND</div><h2>Weight Tracker</h2></div></div><div id="user-weight-content"></div></section>
-      <section class="user-panel user-strength-panel" id="user-strength-slot"><div class="user-panel-head"><div><div class="eyebrow">STRENGTH</div><h2>RPM %</h2></div></div><div id="user-strength-content"></div></section>
+      <section class="user-panel user-strength-panel" id="user-strength-slot"><div class="user-panel-head"><div><div class="eyebrow">STRENGTH</div><h2>Weight % & progression</h2></div></div><div id="user-strength-content"></div></section>
     </div>
   </div>
 </section>
@@ -281,7 +309,7 @@
         <div class="session-rpe-inline"><span>Session RPE / intensity</span><input class="simple-field" type="number" min="0" max="10" step=0.5 data-metric="rpe" placeholder="0–10" inputmode="decimal"></div>
         <div class="session-load-inline"><span>Total time</span><input class="simple-field" type="number" min=0 step=1 data-metric="timeMin" placeholder="min" inputmode="numeric"></div>
       </div>
-      <div class="run-meta-inline"><div class="caffeine-inline"><span>Caffeine</span><label class="switch-row"><input type="checkbox" id="caffeine-toggle"><span class="switch-ui"></span></label><input class="simple-field caffeine-inline-mg" type="number" min="0" step="1" data-caffeine-mg placeholder="mg"></div><div class="carbohydrates-inline"><span>Carbs</span><input class="simple-field carbohydrates-inline-g" type="number" min="0" step="1" data-carbohydrates-g placeholder="g" inputmode="decimal" aria-label="Carbohydrates consumed in session"></div><div class="recovery-inline"><span class="recovery-title">Recovery</span><div class="recovery-row"><span>Sleep</span><div class="recovery-dots" data-recovery-group="sleep"></div></div><div class="recovery-row"><span>Energy</span><div class="recovery-dots" data-recovery-group="energy"></div></div><div class="recovery-row"><span>Soreness</span><div class="recovery-dots" data-recovery-group="soreness"></div></div></div></div>
+      <div class="run-meta-inline"><div class="caffeine-inline"><span>Caffeine</span><label class="switch-row"><input type="checkbox" id="caffeine-toggle"><span class="switch-ui"></span></label><input class="simple-field caffeine-inline-mg" type="number" min="0" step="1" data-caffeine-mg placeholder="mg"></div><div class="carbohydrates-inline"><span>Carbs</span><input class="simple-field carbohydrates-inline-g" type="number" min="0" step="1" data-carbohydrates-g placeholder="g" inputmode="decimal" aria-label="Carbohydrates consumed in session"></div><div class="recovery-inline"><span class="recovery-title">Pre-session check-in</span><div class="recovery-row"><span>Sleep</span><div class="recovery-dots" data-recovery-group="sleep"></div></div><div class="recovery-row"><span>Energy</span><div class="recovery-dots" data-recovery-group="energy"></div></div><div class="recovery-row"><span>Soreness</span><div class="recovery-dots" data-recovery-group="soreness"></div></div></div></div>
       <div class="section conditioning-section is-collapsed"><div class="section-bar"><span>Conditioning</span> <span class="divider">|</span><select class="section-sub-select" id="conditioning-type"><option>Run</option><option>Row</option><option>Bike</option><option>Other</option></select><button type="button" class="conditioning-collapse" id="conditioning-collapse" aria-label="Expand conditioning">⌄</button></div><div class="conditioning-section-body"><div class="conditioning-editor"><div class="conditioning-phase-grid"><div class="conditioning-phase conditioning-main-only"><div class="conditioning-phase-head"><label>Main</label></div><div id="conditioning-blocks" class="conditioning-blocks"></div><button type="button" class="conditioning-add-block" id="add-conditioning-block">+ Add block</button></div></div></div></div>      <div class="section training-section"><div class="section-bar">Training <span class="divider">|</span><input class="section-sub-input" data-field="trainingCategory" placeholder="Muscle groups / session type"></div><div id="training-blocks" class="training-blocks"></div><button class="add-row-btn" id="add-block-inline">+ Add block</button></div>
 <div class="notes-under-caffeine"><div class="note-label">Workout Notes</div><div class="note-tags" id="note-tags"><button type="button" class="note-tag" data-note-tag="Strong">Strong</button><button type="button" class="note-tag" data-note-tag="Normal">Normal</button><button type="button" class="note-tag" data-note-tag="Hard">Hard</button><button type="button" class="note-tag" data-note-tag="Low energy">Low energy</button><button type="button" class="note-tag" data-note-tag="Great">Great</button><button type="button" class="note-tag" data-note-tag="Adjust next time">Adjust next time</button></div><textarea class="notes-textarea" data-field="notes" placeholder="How it felt, what to adjust next time..."></textarea></div></div>
       </div>
@@ -805,9 +833,10 @@
     <section class="nt-progress-grid" aria-label="Progress and strength calculators">
       <div class="nutri-card nt-progress-card" id="nt-weight-tracker">
         <div class="nt-progress-head"><div class="nutri-card-title">Weight Tracker</div><span id="nt-weight-sync-status" class="nt-sync-state">Checking storage…</span></div>
+        <p class="nt-helper">Log your daily weigh-in and follow the trend, not just day-to-day fluctuations.</p>
         <form id="nt-weight-form" class="nt-inline-form">
           <label>Date<input id="nt-weight-date" type="date" required></label>
-          <label>Weight (kg)<input id="nt-weight-value" type="number" min="20" max="350" step="0.1" inputmode="decimal" placeholder="e.g. 50" required></label>
+          <label>Weight (kg)<input id="nt-weight-value" type="number" min="20" max="350" step="0.1" inputmode="decimal" placeholder="e.g. 54.2" required></label>
           <button class="btn active" type="submit">Save weight</button>
         </form>
         <div class="nt-weight-stats">
@@ -815,9 +844,8 @@
           <div><span>Change since first entry</span><strong id="nt-weight-change">—</strong></div>
           <div><span>7-day average</span><strong id="nt-weight-average">—</strong></div>
         </div>
-        <div class="nt-chart-wrap"><canvas id="nt-weight-chart" aria-label="Weight history and trend chart"></canvas></div>
-        
-<details class="nt-history-details" id="nt-weight-history-details">
+        <div class="nt-chart-wrap"><canvas id="nt-weight-chart" aria-label="Weight history and trend chart"></canvas></div>  
+        <details class="nt-history-details" id="nt-weight-history-details">
   <summary class="nt-history-head">
     <strong>Recent entries</strong>
     <span class="nt-history-summary-right">
@@ -828,7 +856,7 @@
   <div id="nt-weight-history" class="nt-history-list">
     <p class="nt-empty">Your weigh-ins will appear here.</p>
   </div>
-</details>
+        </details>
 
       </div>
 
@@ -1175,6 +1203,7 @@
 <script src="js/cycle-tracker.js"></script>
 <script src="js/training-planner-core.js"></script>
 <script src="js/unified-state.js"></script>
+<script src="js/home-readiness.js"></script>
 <script src="js/data-core.js"></script>
 <script src="js/day-view.js"></script>
 <script src="js/workout-editor.js"></script>
