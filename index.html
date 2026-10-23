@@ -14,6 +14,7 @@
 <title>Training Planner</title>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/stats-dashboard.css">
 
 
 </head>
@@ -181,6 +182,11 @@
           <div class="brain-source" id="brain-baseline-source">Calculated from completed sessions available to the model.</div>
         </section>
         <section class="brain-card full">
+          <div class="brain-card-head"><div><div class="brain-kicker">Rule-based analysis · last 7 days</div><h2>Weekly Intelligence</h2></div><div class="brain-actions"><button type="button" class="btn" id="brain-weekly-refresh">Refresh report</button></div></div>
+          <div id="brain-weekly-intelligence"><div class="brain-empty">Calculating data coverage and trends…</div></div>
+          <div id="brain-deterministic-detail" class="brain-deterministic-detail" aria-live="polite"><div class="brain-empty">Preparing exercise progression and nutrition analysis…</div></div>
+        </section>
+        <section class="brain-card full">
           <div class="brain-card-head"><div><div class="brain-kicker">Personal associations</div><h2>Patterns observed in your data</h2></div><span id="brain-pattern-count" class="home-status">0 patterns</span></div>
           <div class="brain-pattern-list" id="brain-patterns"></div>
           <div class="brain-legend">Associations are descriptive, not proof of causation. The model only promotes a pattern when there is enough data and a meaningful difference between groups.</div>
@@ -229,7 +235,46 @@
 
 <section id="user-page" class="page user-page">
   <div class="user-shell">
-    <div class="user-hero"><div><div class="eyebrow">YOUR PROFILE</div><h1 class="page-title">User</h1><p class="user-subtitle">Body metrics, weight trend and strength progression.</p></div></div>
+    <div class="user-hero"><div><div class="eyebrow">YOUR TRAINING OVERVIEW</div><h1 class="page-title">Stats</h1><p class="user-subtitle">Your training history, progress and body metrics in one place.</p></div></div>
+
+    <section class="stats-dashboard" id="stats-dashboard" aria-label="Training statistics">
+      <div class="opengym-mode-tabs" role="tablist" aria-label="Training analytics mode"><button type="button" class="active" data-stats-mode="muscle" role="tab" aria-selected="true">Muscle balance</button><button type="button" data-stats-mode="fatigue" role="tab" aria-selected="false">Fatigue</button><button type="button" data-stats-mode="strength" role="tab" aria-selected="false">Strength</button></div>
+      <div class="opengym-period-tabs" role="group" aria-label="Muscle analysis period"><button type="button" class="active" data-muscle-period="week">Week</button><button type="button" data-muscle-period="30">30d</button><button type="button" data-muscle-period="90">90d</button><button type="button" data-muscle-period="all">All</button></div>
+      <div class="opengym-week-nav"><button type="button" id="stats-period-prev" aria-label="Previous period">‹</button><strong id="stats-period-label">This week</strong><button type="button" id="stats-period-next" aria-label="Next period">›</button></div>
+      <div class="stats-toolbar">
+        <div><div class="eyebrow">TRAINING ANALYTICS</div><h2>Stats</h2><p>Progress, consistency, training volume and muscle-group distribution.</p></div>
+        <div class="stats-range" role="group" aria-label="Stats date range">
+          <button type="button" data-stats-range="7">7D</button><button type="button" data-stats-range="30" class="active">30D</button><button type="button" data-stats-range="90">90D</button><button type="button" data-stats-range="all">All time</button>
+        </div>
+      </div>
+      <div class="stats-kpis" id="stats-kpis"><div class="stats-loading">Loading your training history…</div></div>
+      <div class="stats-main-grid">
+        <article class="stats-card stats-activity-card">
+          <div class="stats-card-head"><div><span class="eyebrow">CONSISTENCY</span><h3>Training activity</h3></div><span class="stats-muted" id="stats-activity-caption">Last 12 weeks</span></div>
+          <div id="stats-heatmap" class="stats-heatmap" aria-label="Training activity heatmap"></div>
+          <div class="stats-legend"><span>Less</span><i class="level-0"></i><i class="level-1"></i><i class="level-2"></i><i class="level-3"></i><i class="level-4"></i><span>More</span></div>
+          <div class="stats-activity-foot" id="stats-activity-foot"></div>
+        </article>
+        <article class="stats-card">
+          <div class="stats-card-head"><div><span class="eyebrow">WORKLOAD</span><h3>Volume over time</h3></div><span class="stats-muted">kg × reps × sets</span></div>
+          <div class="stats-chart-wrap"><canvas id="stats-volume-chart" aria-label="Training volume chart"></canvas></div>
+          <p class="stats-footnote">Volume is calculated from saved exercise sets with numeric load and reps. Missing values are not treated as zero effort.</p>
+        </article>
+        <article class="stats-card stats-muscles-card">
+          <div class="stats-card-head"><div><span class="eyebrow">MUSCLE MAP</span><h3>Muscle groups trained</h3></div><span class="stats-muted">Based on logged exercises</span></div>
+          <div id="stats-muscle-map" class="stats-muscle-map"></div>
+          <p class="stats-footnote">Exercise-to-muscle matches use TrainMei’s existing classification and manual overrides when available.</p>
+        </article>
+        <article class="stats-card stats-strength-card">
+          <div class="stats-card-head"><div><span class="eyebrow">STRENGTH</span><h3>Exercise progression</h3></div><label class="stats-exercise-select">Exercise<select id="stats-exercise-select"><option value="">Choose an exercise</option></select></label></div>
+          <div class="stats-strength-summary" id="stats-strength-summary"></div>
+          <div class="stats-chart-wrap stats-strength-chart-wrap"><canvas id="stats-strength-chart" aria-label="Estimated one-rep max progression chart"></canvas></div>
+          <p class="stats-footnote">Estimated 1RM uses the Epley formula (load × (1 + reps / 30)) and only comparable, numeric sets. It is an estimate, not a tested max.</p>
+        </article>
+      </div>
+      <div class="stats-status" id="stats-status" aria-live="polite"></div>
+    </section>
+
     <div class="user-profile-grid">
       <section class="user-panel" id="user-metrics-panel"><div class="user-panel-head"><div><div class="eyebrow">PERSONAL METRICS</div><h2>Your metrics</h2></div></div>
         <div class="user-metrics-form">
@@ -241,11 +286,12 @@
           <button class="btn active" id="user-metrics-save" type="button">Save metrics</button>
         </div><p class="user-metrics-status" id="user-metrics-status" aria-live="polite">Optional profile metrics are stored on this device.</p>
       </section>
-      <section class="user-panel user-weight-panel" id="user-weight-slot"><div class="user-panel-head"><div><div class="eyebrow">BODY TREND</div><h2>Weight Tracker</h2></div></div><div id="user-weight-content"></div></section>
-      <section class="user-panel user-strength-panel" id="user-strength-slot"><div class="user-panel-head"><div><div class="eyebrow">STRENGTH</div><h2>Weight % & progression</h2></div></div><div id="user-strength-content"></div></section>
+      <section class="user-panel user-weight-panel" id="user-weight-slot"><div class="user-panel-head"><div><div class="eyebrow">BODY TREND</div><h2>Weight Tracker</h2></div></div><div id="user-weight-content"><article class="stats-card stats-body-card"><div class="stats-card-head"><div><span class="eyebrow">BODY METRICS</span><h3>Weight trend</h3></div><span class="stats-muted" id="stats-weight-caption">Saved weigh-ins</span></div><div class="stats-body-summary" id="stats-body-summary"></div><div class="stats-chart-wrap"><canvas id="stats-weight-chart" aria-label="Body weight trend chart"></canvas></div></article></div></section>
+      <section class="user-panel user-strength-panel" id="user-strength-slot"><div class="user-panel-head"><div><div class="eyebrow">STRENGTH</div><h2>Weight & progression</h2></div></div><div id="user-strength-content"></div></section>
     </div>
   </div>
 </section>
+  <section id="exercise-library-page" class="page"><div class="exercise-library-shell"><div class="user-hero"><div><div class="eyebrow">TRAINING DATABASE</div><h1 class="page-title">Exercise Library</h1><p class="user-subtitle">Browse exercises found in your saved workouts, inspect muscle mappings and improve consistency.</p></div></div><div class="exercise-library-tools"><input id="exercise-library-search" type="search" placeholder="Search exercises or muscles…" aria-label="Search exercises"><select id="exercise-library-muscle" aria-label="Filter by muscle"><option value="">All muscle groups</option><option>Chest</option><option>Back</option><option>Shoulders</option><option>Biceps</option><option>Triceps</option><option>Quadriceps</option><option>Hamstrings</option><option>Glutes</option><option>Calves</option><option>Core</option></select><select id="exercise-library-sort" aria-label="Sort exercises"><option value="name">Name A–Z</option><option value="frequency">Most logged</option></select></div><p id="exercise-library-count" class="stats-muted"></p><div id="exercise-library-grid" class="exercise-library-grid"><div class="stats-loading">Loading exercises from your workout history…</div></div></div></section>
   <section id="calendar-page" class="page active"><div class="calendar-desktop-layout">
       <div class="calendar-main">
         <div class="ios-mobile-header">
@@ -459,6 +505,11 @@
       </svg>
     </span>
     <span class="smart-launch-copy"><strong>FatSecret · Food Source</strong><small>Manage the FatSecret connection used by Nutrition Optimizer and the central nutrition data layer.</small><span class="fatsecret-launch-status" id="fatsecret-launch-status">Checking connection…</span></span>
+    <span class="smart-launch-arrow">→</span>
+  </button>
+  <button type="button" class="smart-launch-card" data-page="exercise-library-tool-page">
+    <span class="smart-launch-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12M6 8h12M6 12h8M6 16h8M4 2h16v20H4z"/></svg></span>
+    <span class="smart-launch-copy"><strong>Exercise Library</strong><small>Browse, classify and match exercises to your workout log.</small></span>
     <span class="smart-launch-arrow">→</span>
   </button>
 </div>
@@ -778,6 +829,32 @@
   </div>
 </section>
 
+<section id="exercise-library-tool-page" class="page smart-tool-page" data-tool="exercise-library">
+  <div class="smart-tool-shell">
+    <div class="smart-tool-topbar">
+      <button type="button" class="btn smart-tool-back" data-smart-back>← Smart Integrations</button>
+      <div><h1 class="page-title">Exercise Library</h1><p>Exercise catalogue, muscle mapping and reliable name matching for workout entries.</p></div>
+    </div>
+    <div class="exercise-catalog-panel">
+      <div class="exercise-catalog-toolbar">
+        <input id="tm-exlib-search" type="search" placeholder="Search exercise, alias, muscle…" aria-label="Search exercise library">
+        <select id="tm-exlib-muscle" aria-label="Filter by muscle"><option value="">All muscles</option><option>Chest</option><option>Back</option><option>Shoulders</option><option>Biceps</option><option>Triceps</option><option>Quadriceps</option><option>Hamstrings</option><option>Glutes</option><option>Calves</option><option>Core</option><option>Forearms</option><option>Full body</option></select>
+        <select id="tm-exlib-kind" aria-label="Filter by source"><option value="">All sources</option><option value="catalog">Built-in catalogue</option><option value="history">From workout history</option><option value="custom">My exercises</option></select>
+      </div>
+      <form id="tm-exlib-add-form" class="exercise-catalog-add">
+        <input id="tm-exlib-new-name" required maxlength="100" placeholder="Add exercise name (e.g. Bulgarian split squat)">
+        <input id="tm-exlib-new-aliases" maxlength="240" placeholder="Aliases, comma-separated (optional)">
+        <select id="tm-exlib-new-muscle" aria-label="Primary muscle"><option value="Chest">Chest</option><option value="Back">Back</option><option value="Shoulders">Shoulders</option><option value="Biceps">Biceps</option><option value="Triceps">Triceps</option><option value="Quadriceps">Quadriceps</option><option value="Hamstrings">Hamstrings</option><option value="Glutes">Glutes</option><option value="Calves">Calves</option><option value="Core">Core</option><option value="Forearms">Forearms</option><option value="Full body">Full body</option></select>
+        <button class="btn" type="submit">Add exercise</button>
+      </form>
+      <p id="tm-exlib-summary" class="stats-muted">Loading exercise catalogue…</p>
+      <div id="tm-exlib-results" class="exercise-catalog-results"></div>
+      <datalist id="tm-exercise-name-suggestions"></datalist>
+      <p class="exercise-catalog-note">Name matching suggests likely exercises and attaches muscle metadata only when the match is confident. Your original exercise name and historical workout records are retained.</p>
+    </div>
+  </div>
+</section>
+
 <section id="ocr-page" class="page smart-tool-page" data-tool="ocr">
   <div class="smart-tool-shell">
     <div class="smart-tool-topbar">
@@ -844,6 +921,7 @@
           <div><span>Change since first entry</span><strong id="nt-weight-change">—</strong></div>
           <div><span>7-day average</span><strong id="nt-weight-average">—</strong></div>
         </div>
+        <div id="nt-weight-insight" class="nt-weight-insight" aria-live="polite"><strong>Learning from your trend</strong><span>Log weigh-ins across two weeks to compare weekly averages.</span></div>
         <div class="nt-chart-wrap"><canvas id="nt-weight-chart" aria-label="Weight history and trend chart"></canvas></div>  
         <details class="nt-history-details" id="nt-weight-history-details">
   <summary class="nt-history-head">
@@ -875,13 +953,17 @@
       <div><span class="wp-eyebrow">STRENGTH REFERENCE</span><h2>Your exercise library</h2><p>Add an exercise and its reference 1RM. TrainMei will calculate the percentage table and compare future sessions using the loads, reps and sets you record.</p></div>
       <button type="button" class="btn active" id="wp-add-exercise-top">＋ Add exercise</button>
     </section>
-    <form id="wp-exercise-form" class="wp-exercise-form" hidden>
-      <label>Exercise name<input id="wp-exercise-name" type="text" maxlength="80" placeholder="e.g. BB Squat" required></label>
-      <label>Reference 1RM (kg)<input id="wp-exercise-rm" type="number" min="0.1" max="1000" step="0.1" inputmode="decimal" placeholder="100" required></label>
-      <label>RM source<select id="wp-exercise-type"><option value="tested">Tested 1RM</option><option value="estimated">Estimated 1RM</option></select></label>
-      <label>Load increment<select id="wp-exercise-increment"><option value="0.5">0.5 kg</option><option value="1">1 kg</option><option value="1.25">1.25 kg</option><option value="2.5" selected>2.5 kg</option><option value="5">5 kg</option></select></label>
-      <div class="wp-form-actions"><button type="submit" class="btn active" id="wp-save-exercise">Save exercise</button><button type="button" class="btn" id="wp-cancel-exercise">Cancel</button></div>
-    </form>
+    <dialog id="wp-edit-dialog" class="wp-edit-dialog" aria-labelledby="wp-edit-dialog-title">
+      <div class="wp-dialog-head"><div><span class="wp-eyebrow">EXERCISE LIBRARY</span><h2 id="wp-edit-dialog-title">Add exercise</h2></div><button type="button" id="wp-modal-close" class="wp-modal-close" aria-label="Close edit dialog">×</button></div>
+      <p class="wp-dialog-description">Set the reference 1RM and load increment used for your percentage table.</p>
+      <form id="wp-exercise-form" class="wp-exercise-form" hidden>
+        <label>Exercise name<input id="wp-exercise-name" type="text" maxlength="80" placeholder="e.g. BB Squat" required></label>
+        <label>Reference 1RM (kg)<input id="wp-exercise-rm" type="number" min="0.1" max="1000" step="0.1" inputmode="decimal" placeholder="100" required></label>
+        <label>RM source<select id="wp-exercise-type"><option value="tested">Tested 1RM</option><option value="estimated">Estimated 1RM</option></select></label>
+        <label>Load increment<select id="wp-exercise-increment"><option value="0.5">0.5 kg</option><option value="1">1 kg</option><option value="1.25">1.25 kg</option><option value="2.5" selected>2.5 kg</option><option value="5">5 kg</option></select></label>
+        <div class="wp-form-actions"><button type="submit" class="btn active" id="wp-save-exercise">Save exercise</button><button type="button" class="btn" id="wp-cancel-exercise">Cancel</button></div>
+      </form>
+    </dialog>
     <div id="wp-status" class="wp-status" aria-live="polite">Loading your exercise history…</div>
     <div id="wp-exercise-grid" class="wp-exercise-grid"><div class="wp-empty">Add your first exercise to build your Weight % library.</div></div>
     <p class="wp-footnote">Progression is descriptive, not a diagnosis. Estimates use recorded sets where load and repetitions are numeric; comparisons may be unavailable when sessions use different exercise variants or incomplete set data.</p>
@@ -1173,7 +1255,7 @@
               <div class="shortcut-row" data-shortcut-row="integrations"><span class="shortcut-label">Smart Integrations</span><div class="shortcut-key"><button type="button" class="shortcut-capture" data-shortcut-edit="integrations" aria-label="Edit Smart Integrations shortcut">I</button></div><span></span></div>
               <div class="shortcut-row" data-shortcut-row="today"><span class="shortcut-label">Today</span><div class="shortcut-key"><button type="button" class="shortcut-capture" data-shortcut-edit="today" aria-label="Edit Today shortcut">T</button></div><span></span></div>
               <div class="shortcut-row" data-shortcut-row="dayPrev"><span class="shortcut-label">Previous day</span><div class="shortcut-key"><button type="button" class="shortcut-capture" data-shortcut-edit="dayPrev" aria-label="Edit Previous day shortcut">⌘ ⇧ ←</button></div><span></span></div>
-              <div class="shortcut-row" data-shortcut-row="dayNext"><span class="shortcut-label">Next day</span><div class="shortcut-key"><button type="button" class="shortcut-capture" data-shortcut-edit="dayNext" aria-label="Edit Next day shortcut">⌘ ⇧ →</button></div><span></span><div class="shortcut-row" data-shortcut-row="dayPrevAlt"><span class="shortcut-label">Previous day (quick)</span><div class="shortcut-key"><button type="button" class="shortcut-capture" data-shortcut-edit="dayPrevAlt" aria-label="Edit Previous day quick shortcut">⌘ ↑</button></div><span></span></div>
+              <div class="shortcut-row" data-shortcut-row="dayNext"><span class="shortcut-label">Next day</span><div class="shortcut-key"><button type="button" class="shortcut-capture" data-shortcut-edit="dayNext" aria-label="Edit Next day shortcut">⌘ ⇧ →</button></div><span></span></div><div class="shortcut-row" data-shortcut-row="dayPrevAlt"><span class="shortcut-label">Previous day (quick)</span><div class="shortcut-key"><button type="button" class="shortcut-capture" data-shortcut-edit="dayPrevAlt" aria-label="Edit Previous day quick shortcut">⌘ ↑</button></div><span></span></div>
               <div class="shortcut-row" data-shortcut-row="dayNextAlt"><span class="shortcut-label">Next day (quick)</span><div class="shortcut-key"><button type="button" class="shortcut-capture" data-shortcut-edit="dayNextAlt" aria-label="Edit Next day quick shortcut">⌘ ↓</button></div><span></span></div>
 
               </div>
@@ -1218,11 +1300,12 @@
 <script src="js/settings-theme.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script src="js/smart-workout.js"></script>
-<script src="js/smart-integrations-router.js"></script>
+<script src="js/smart-integrations-router.js"></script>\n<script src="js/exercise-library-integration.js"></script>
 <script src="js/integration-health.js"></script>
 <div class="ios-tabbar" id="ios-tabbar">
   <button class="ios-tab" data-ios-page="home-page" aria-label="Home"><span class="tab-icon">⌂</span><span>Home</span></button>
   <button class="ios-tab" data-ios-page="user-page" aria-label="User"><span class="tab-icon">◉</span><span>User</span></button>
+  <button class="ios-tab" data-ios-page="exercise-library-page" aria-label="Exercise Library"><span class="tab-icon">⚒</span><span>Exercises</span></button>
   <button class="ios-tab active" data-ios-page="calendar-page">
     <span class="tab-icon">▦</span><span>Calendar</span>
   </button>
@@ -1236,6 +1319,7 @@
 <script src="js/nutrition-optimizer.js"></script>
 
 <script src="js/training-brain.js"></script>
+<script src="js/deterministic-brains.js"></script>
 <script src="js/training-insights.js"></script>
 <script src="js/decision-assistant.js"></script>
 
@@ -1248,4 +1332,5 @@
 
 <script src="js/integrated-logic.js"></script>
 <script src="js/app-bootstrap.js"></script>
+<script src="js/stats-dashboard.js"></script>
 </body></html>

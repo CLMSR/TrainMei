@@ -1002,7 +1002,8 @@
     'trainmei:nutrition-sync-complete',
     'trainmei:core-learning',
     'trainmei:data-core-refreshed',
-    'trainmei:day-saved'
+    'trainmei:day-saved',
+    'trainmei:pre-session-updated'
   ].forEach(name => {
     document.addEventListener(name, () => {
       if ($('#home-page')?.classList.contains('active') || isOpen) refresh();

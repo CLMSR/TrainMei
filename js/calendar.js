@@ -51,10 +51,10 @@
     for(let d=1;d<=days;d++){const k=dateKey(y,m,d),e=indicators[k],is=k===todayKey(),isRest=!!e?.restDay,title=isRest?'Rest day':(e?.focus||e?.trainingCategory||''),dist=e?.metrics?.distanceKm?e.metrics.distanceKm+' km':'';h+=`<div class="cal-cell${is?' today':''}${isRest?' rest-day':''}" data-key="${k}"><div class="cal-daynum">${d}</div><div class="cal-focus"><strong>${esc(title)}</strong></div>${isRest?'<span class="rest-day-badge">Rest</span>':(e?.color?`<span class="cal-color-dot c-${e.color}"></span>`:'')}<div class="cal-metric">${esc(isRest?'No training':dist)}</div></div>`}
     $('#cal-grid').innerHTML=h;
     const initial=TP.selectedDateKey&&indicators[TP.selectedDateKey]?TP.selectedDateKey:(indicators[todayKey()]?todayKey():Object.keys(indicators).find(k=>indicators[k])||dateKey(y,m,1));
-    TP.selectedDateKey=initial;renderCalendarQuickView(initial);
+    renderCalendarQuickView(initial);
     $$('#cal-grid .cal-cell[data-key]').forEach(c=>{
       if(c.dataset.key===initial)c.classList.add('selected');
-      c.onclick=()=>{TP.selectedDateKey=c.dataset.key;$$('#cal-grid .cal-cell.selected').forEach(x=>x.classList.remove('selected'));c.classList.add('selected');const mobileLandscape=window.matchMedia('(min-width:561px) and (max-width:950px) and (orientation:landscape)').matches,mobilePortrait=window.matchMedia('(max-width:560px) and (orientation:portrait)').matches;if(mobileLandscape||mobilePortrait){TP.openDay(c.dataset.key);return}renderCalendarQuickView(c.dataset.key);TP.setStatus('')}});
+      c.onclick=()=>{$$('#cal-grid .cal-cell.selected').forEach(x=>x.classList.remove('selected'));c.classList.add('selected');const mobileLandscape=window.matchMedia('(min-width:561px) and (max-width:950px) and (orientation:landscape)').matches,mobilePortrait=window.matchMedia('(max-width:560px) and (orientation:portrait)').matches;if(mobileLandscape||mobilePortrait){TP.openDay(c.dataset.key);return}renderCalendarQuickView(c.dataset.key);TP.setStatus('')}});
     TP.setStatus('');document.dispatchEvent(new CustomEvent('trainmei:month-rendered',{detail:{monthCursor:new Date(cursor),selectedDateKey:initial}}));
   }
   /* FIX #8: event delegation for the "Open workout" button injected by

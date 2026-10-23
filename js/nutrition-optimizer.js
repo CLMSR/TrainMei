@@ -1320,7 +1320,8 @@ async function saveFB({auto=false}={}){const v={tolerance:+document.getElementBy
 function scheduleFeedbackAutoSave(){clearTimeout(feedbackSaveTimer);if(!feedbackComplete())return;feedbackSaveTimer=setTimeout(()=>saveFB({auto:true}),800)}
 
 ['no-feedback-tolerance','no-feedback-energy','no-feedback-hunger','no-feedback-performance'].forEach(id=>document.getElementById(id)?.addEventListener('change',scheduleFeedbackAutoSave));
-document.addEventListener('trainmei:nutrition-updated',()=>{if(document.querySelector('#nutri-page.active'))render().catch?.(()=>{});});
+document.addEventListener('trainmei:nutrition-updated',()=>{if(document.querySelector('#nutri-page.active'))Promise.resolve(render()).catch(()=>{});if(document.querySelector('#home-page.active'))home();});
+['trainmei:core-learning','trainmei:body-progress-updated','trainmei:performance-fuel-updated'].forEach(name=>document.addEventListener(name,()=>{if(document.querySelector('#nutri-page.active'))Promise.resolve(render()).catch(()=>{});if(document.querySelector('#home-page.active'))home();}));
 document.addEventListener('click',e=>{const t=e.target.closest('[data-nutrition-time]');if(t){
   timing=+t.dataset.nutritionTime;
   variant=0;

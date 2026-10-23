@@ -40,8 +40,7 @@
   .brain-metric span{font-size:8px!important;line-height:1.2!important;overflow-wrap:anywhere}
   .day-status-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;align-items:stretch!important}
   .day-status-row>*{min-width:0!important;width:auto!important}
-  .rest-day-inline,.session-load-inline,.caffeine-inline,.carbohydrates-inline,.recovery-inline{min-width:0!important;max-width:100%!important}
-  .recovery-inline{grid-column:1 / -1!important}
+  .rest-day-inline,.session-load-inline,.caffeine-inline,.carbohydrates-inline,.recovery-inline{min-width:0!important;max-width:100%!importantgrid-column:1 / -1!important}
   .run-meta-inline{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
   .run-meta-inline>*{min-width:0!important}
   .recovery-row{min-width:0!important;flex-wrap:wrap}
@@ -138,10 +137,8 @@
     box-sizing:border-box;
     overflow-x:hidden;
   }
-  .smart-tool-page{
 
-  }
-  .smart-tool-page .smart-tool-shell{
+.smart-tool-page .smart-tool-shell{
     width:100%!important;
     max-width:none!important;
     min-width:0!important;

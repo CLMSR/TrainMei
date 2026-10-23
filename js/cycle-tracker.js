@@ -198,8 +198,13 @@
   const $$ = s => Array.from(root.querySelectorAll(s));
 
   const KEY = "cycle_tracker_records_v3";
+  const UPDATED_KEY = KEY + "_updated_at";
+  const SYNCED_KEY = KEY + "_synced_at";
+  const DELETED_DATES_KEY = KEY + "_deleted_dates";
   let records = [];
   let editingId = null;
+  let cycleSyncPromise = null;
+  let cycleCloudStatus = 'local';
 
   function todayMid(){ const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
   function toISO(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
@@ -233,7 +238,70 @@
       localStorage.setItem(KEY,JSON.stringify(records));
     }catch(e){ records=[]; }
   }
-  function save(){ try{localStorage.setItem(KEY, JSON.stringify(records));}catch(e){ toast("Cycle log could not be saved"); } }
+  function save(options={}){
+    try{
+      localStorage.setItem(KEY, JSON.stringify(records));
+      if(!options.remote){localStorage.setItem(UPDATED_KEY, new Date().toISOString());}
+      if(!options.skipCloud) syncCycleCloud().catch(e=>console.warn('[CycleTracker] Cloud sync deferred:',e));
+      return true;
+    }catch(e){ toast("Cycle log could not be saved"); return false; }
+  }
+
+  function currentCycleUserId(){
+    return window.TrainMeiState?.currentUser?.id || window.__tp?.currentUser?.id || null;
+  }
+  function markCycleDateDeleted(date){
+    if(!date)return;
+    try{const pending=JSON.parse(localStorage.getItem(DELETED_DATES_KEY)||'[]');if(!pending.includes(date))localStorage.setItem(DELETED_DATES_KEY,JSON.stringify([...pending,date]));}catch(_){ }
+  }
+  async function syncCycleCloud(){
+    if(cycleSyncPromise)return cycleSyncPromise;
+    cycleSyncPromise=(async()=>{
+      const sb=window.supabaseClient; let userId=currentCycleUserId();
+      if(!userId&&sb?.auth?.getUser){try{const {data}=await sb.auth.getUser();userId=data?.user?.id||null;}catch(_){}}
+      if(!sb||!userId){cycleCloudStatus='local';return false;}
+      try{
+        const {data:remote,error}=await sb.from('cycle_tracker_records').select('records,updated_at').eq('user_id',userId).maybeSingle();
+        if(error)throw error;
+        const localModified=Date.parse(localStorage.getItem(UPDATED_KEY)||'')||0;
+        const lastSynced=Date.parse(localStorage.getItem(SYNCED_KEY)||'')||0;
+        const remoteModified=Date.parse(remote?.updated_at||'')||0;
+        const pendingDeletes=(()=>{try{return new Set(JSON.parse(localStorage.getItem(DELETED_DATES_KEY)||'[]').map(String));}catch(_){return new Set();}})();
+        let nextRecords;
+        // On later syncs, prefer cloud if this device has no unsynced edits and cloud is newer.
+        if(remote&&lastSynced&&localModified<=lastSynced&&remoteModified>lastSynced){
+          nextRecords=Array.isArray(remote.records)?remote.records:[];
+        }else{
+          const byDate=new Map();
+          (Array.isArray(remote?.records)?remote.records:[]).forEach(r=>{if(r&&/^\d{4}-\d{2}-\d{2}$/.test(String(r.date||'')))byDate.set(String(r.date),r);});
+          records.forEach(r=>{if(r&&/^\d{4}-\d{2}-\d{2}$/.test(String(r.date||'')))byDate.set(String(r.date),r);});
+          pendingDeletes.forEach(date=>byDate.delete(date));
+          nextRecords=[...byDate.values()].sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+        }
+        records=nextRecords.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+        localStorage.setItem(KEY,JSON.stringify(records));
+        const remoteRecords=Array.isArray(remote?.records)?[...remote.records].sort((a,b)=>String(a?.date||'').localeCompare(String(b?.date||''))):[];
+        const unchanged=!!remote&&JSON.stringify(records)===JSON.stringify(remoteRecords)&&pendingDeletes.size===0;
+        // Avoid writing a fresh updated_at on every startup/auth event when data did not change.
+        if(unchanged){
+          const syncedAt=remote.updated_at||new Date().toISOString();
+          localStorage.setItem(UPDATED_KEY,syncedAt);localStorage.setItem(SYNCED_KEY,syncedAt);
+          cycleCloudStatus='cloud';refreshAll();
+          document.dispatchEvent(new CustomEvent('trainmei:cycle-sync-complete',{detail:{synced:true,unchanged:true,records:records.length,updatedAt:syncedAt}}));
+          return true;
+        }
+        const stamp=new Date().toISOString();
+        const {error:upsertError}=await sb.from('cycle_tracker_records').upsert({user_id:userId,records,updated_at:stamp},{onConflict:'user_id'});
+        if(upsertError)throw upsertError;
+        localStorage.setItem(UPDATED_KEY,stamp);localStorage.setItem(SYNCED_KEY,stamp);localStorage.setItem(DELETED_DATES_KEY,'[]');
+        cycleCloudStatus='cloud';
+        refreshAll();
+        document.dispatchEvent(new CustomEvent('trainmei:cycle-sync-complete',{detail:{synced:true,unchanged:false,records:records.length,updatedAt:stamp}}));
+        return true;
+      }catch(error){cycleCloudStatus='local';console.warn('[CycleTracker] Cloud sync unavailable; local records retained:',error?.message||error);document.dispatchEvent(new CustomEvent('trainmei:cycle-sync-complete',{detail:{synced:false,error:String(error?.message||error)}}));return false;}
+    })().finally(()=>{cycleSyncPromise=null;});
+    return cycleSyncPromise;
+  }
 
   function analyze(){
     const today = todayMid();
@@ -678,6 +746,8 @@
   }
   function deleteRec(id){
     if(!confirm("Delete this entry?")) return;
+    const removed=records.find(r=>r.id===id);
+    if(removed?.date)markCycleDateDeleted(removed.date);
     records = records.filter(r=> r.id !== id);
     save(); refreshAll();
     toast("Entry deleted");
@@ -700,7 +770,9 @@
     const id = $("#ct-editId").value;
     const r = records.find(x=> x.id === id);
     if(!r) return;
+    const previousDate=r.date;
     r.date = $("#ct-editDate").value;
+    if(previousDate&&previousDate!==r.date)markCycleDateDeleted(previousDate);
     r.duration = Number($("#ct-editDuration").value)||5;
     r.flow = $("#ct-editFlow").value;
     r.mood = $("#ct-editMood").value.trim();
@@ -787,9 +859,12 @@
     $("#ct-calPrev").addEventListener('click',()=>{ calRef.setMonth(calRef.getMonth()-1); renderCal(); });
     $("#ct-calNext").addEventListener('click',()=>{ calRef.setMonth(calRef.getMonth()+1); renderCal(); });
 
-    $("#ct-clearAll").addEventListener('click',()=>{
+    $("#ct-clearAll").addEventListener('click',async()=>{
+      // Fetch/merge the cloud copy before clearing, so entries from another device are included.
+      await syncCycleCloud();
       if(records.length===0){ toast("No data to clear"); return; }
       if(confirm("Delete ALL entries? This cannot be undone.")){
+        records.forEach(r=>markCycleDateDeleted(r.date));
         records=[]; save(); refreshAll(); toast("Data cleared");
       }
     });
@@ -800,11 +875,15 @@
 
     setupChips();
     refreshAll();
+    syncCycleCloud().catch(e=>console.warn('[CycleTracker] Initial cloud sync deferred:',e));
   }
 
   // Wait for DOM to be ready if needed
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
+
+  // Reconcile again after login/logout; local data remains usable while offline.
+  try{window.supabaseClient?.auth?.onAuthStateChange?.(()=>{syncCycleCloud().catch(e=>console.warn('[CycleTracker] Auth sync deferred:',e));});}catch(_){ }
 
   document.addEventListener('trainmei:nutrition-updated',()=>{
     if(document.querySelector('#cycle-page.active')){try{renderToday()}catch(e){console.warn('Cycle nutrition refresh:',e)}}

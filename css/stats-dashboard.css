@@ -1,0 +1,74 @@
+
+/* Stats 2.0 — dashboard */
+.stats-dashboard{margin:0 0 28px;min-width:0}
+.stats-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:4px 0 18px}
+.stats-toolbar h2{font-size:clamp(1.45rem,2.5vw,2rem);letter-spacing:-.04em;margin:4px 0}
+.stats-toolbar p{color:var(--muted,#777);font-size:.9rem;margin:0}
+.stats-range{display:flex;gap:4px;padding:4px;border:1px solid var(--line,#ddd8ce);border-radius:12px;background:var(--surface,#f7f5f0);flex-shrink:0}
+.stats-range button{border:0;background:transparent;color:var(--muted,#777);font:inherit;font-size:.78rem;font-weight:700;padding:8px 11px;border-radius:8px;cursor:pointer}
+.stats-range button.active{background:var(--ink,#242720);color:var(--paper,#fff)}
+.stats-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.stats-kpi{min-width:0;border:1px solid var(--line,#ddd8ce);background:var(--panel,#fff);border-radius:15px;padding:15px 14px;display:flex;flex-direction:column;gap:6px}
+.stats-kpi-label{font-size:.76rem;color:var(--muted,#777);font-weight:650}
+.stats-kpi strong{font-size:clamp(1.25rem,2vw,1.8rem);letter-spacing:-.04em;line-height:1.1;overflow-wrap:anywhere}
+.stats-kpi small{font-size:.69rem;line-height:1.4;color:var(--muted,#777)}
+.stats-main-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.stats-card{min-width:0;border:1px solid var(--line,#ddd8ce);background:var(--panel,#fff);border-radius:17px;padding:18px}
+.stats-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.stats-card-head h3{font-size:1.05rem;letter-spacing:-.025em;margin:4px 0 0}
+.stats-muted{font-size:.72rem;color:var(--muted,#777);text-align:right}
+.stats-card .eyebrow{font-size:.64rem;letter-spacing:.11em}
+.stats-heatmap{display:grid;grid-template-rows:repeat(7,11px);grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px;overflow:hidden;padding:2px 0 8px}
+.stats-heat-cell{height:11px;min-width:0;border-radius:3px;background:#e9e7e0}
+.stats-heat-cell.level-1,.stats-legend .level-1{background:#d7e1d1}
+.stats-heat-cell.level-2,.stats-legend .level-2{background:#b5c9aa}
+.stats-heat-cell.level-3,.stats-legend .level-3{background:#8caa7e}
+.stats-heat-cell.level-4,.stats-legend .level-4{background:#55764c}
+.stats-legend{display:flex;align-items:center;justify-content:flex-end;gap:4px;font-size:.67rem;color:var(--muted,#777);margin:6px 0 14px}
+.stats-legend i{width:10px;height:10px;border-radius:3px;background:#e9e7e0;display:block}
+.stats-legend span:first-child{margin-right:3px}.stats-legend span:last-child{margin-left:3px}
+.stats-activity-foot{border-top:1px solid var(--line,#e5e1d8);padding-top:12px;font-size:.78rem;color:var(--muted,#777)}
+.stats-activity-foot strong{color:var(--ink,#242720);font-size:1rem}.stats-activity-foot span{padding:0 5px}
+.stats-chart-wrap{height:220px;position:relative;width:100%;min-width:0}
+.stats-footnote{font-size:.72rem;line-height:1.5;color:var(--muted,#777);margin:12px 0 0}
+.stats-muscle-map{display:flex;flex-direction:column;gap:12px}
+.stats-muscle-row{display:grid;grid-template-columns:95px minmax(0,1fr) 34px;align-items:center;gap:10px;font-size:.78rem}
+.stats-muscle-row>span{color:var(--ink,#242720)}
+.stats-muscle-row>strong{text-align:right;font-size:.72rem}
+.stats-muscle-track{height:8px;border-radius:999px;background:var(--surface,#f0eee8);overflow:hidden}
+.stats-muscle-track i{height:100%;display:block;border-radius:999px;min-width:2px}
+.stats-exercise-select{display:flex;flex-direction:column;gap:4px;font-size:.7rem;color:var(--muted,#777);min-width:130px}
+.stats-exercise-select select{max-width:210px;min-width:0;border:1px solid var(--line,#ddd8ce);border-radius:8px;padding:7px 9px;background:var(--surface,#f7f5f0);color:var(--ink,#242720);font:inherit;font-size:.76rem}
+.stats-strength-summary,.stats-body-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:-3px 0 10px}
+.stats-strength-summary>div,.stats-body-summary>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.stats-strength-summary span,.stats-body-summary span{font-size:.68rem;color:var(--muted,#777);line-height:1.3}
+.stats-strength-summary strong,.stats-body-summary strong{font-size:1rem;letter-spacing:-.02em;overflow-wrap:anywhere}
+.stats-strength-summary .is-up{color:#4e8050}.stats-strength-summary .is-down{color:#b56c60}
+.stats-strength-chart-wrap{height:190px}
+.stats-empty,.stats-loading{grid-column:1/-1;border:1px dashed var(--line,#d6d1c7);border-radius:12px;padding:18px;color:var(--muted,#777);font-size:.82rem;line-height:1.5}
+.stats-status{font-size:.7rem;color:var(--muted,#777);text-align:right;padding:10px 2px 0}
+@media(max-width:1050px){.stats-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.stats-main-grid{gap:10px}.stats-card{padding:15px}}
+@media(max-width:700px){.stats-toolbar{align-items:flex-start;flex-direction:column;gap:12px}.stats-range{width:100%;box-sizing:border-box}.stats-range button{flex:1;padding:8px 5px}.stats-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stats-kpi{padding:13px 11px}.stats-main-grid{grid-template-columns:minmax(0,1fr);gap:10px}.stats-card{padding:15px;border-radius:14px}.stats-card-head{margin-bottom:14px}.stats-heatmap{grid-template-rows:repeat(7,10px);gap:3px}.stats-heat-cell{height:10px}.stats-muscle-row{grid-template-columns:85px minmax(0,1fr) 30px}.stats-strength-summary,.stats-body-summary{gap:6px}.stats-strength-summary strong,.stats-body-summary strong{font-size:.9rem}.stats-exercise-select{min-width:100px;max-width:48%}.stats-exercise-select select{max-width:100%}.stats-chart-wrap{height:205px}}
+@media(prefers-color-scheme:dark){.stats-kpi,.stats-card{background:var(--panel,#20211f)}.stats-range{background:var(--surface,#252622)}.stats-range button.active{background:var(--ink,#f2efe6);color:var(--paper,#242720)}.stats-heat-cell.level-0{background:#32352f}.stats-muscle-track{background:#30322d}.stats-exercise-select select{background:var(--surface,#252622)}}
+
+/* OpenGym-inspired analysis controls and exercise catalogue */
+.opengym-mode-tabs,.opengym-period-tabs{display:flex;gap:4px;padding:4px;border-radius:16px;background:var(--surface,#373739);margin:0 0 12px;min-width:0}
+.opengym-mode-tabs button,.opengym-period-tabs button{border:0;border-radius:12px;background:transparent;color:var(--muted,#a3a3aa);font:inherit;cursor:pointer;min-height:44px;padding:9px 14px;flex:1;min-width:0}
+.opengym-mode-tabs button{font-size:clamp(.85rem,2.5vw,1.1rem)}
+.opengym-mode-tabs button.active,.opengym-period-tabs button.active{background:var(--ink,#202022);color:var(--paper,#fff);box-shadow:0 1px 4px #0002}
+.opengym-period-tabs{margin-bottom:12px;border-radius:12px}.opengym-period-tabs button{min-height:38px;padding:6px 10px}
+.opengym-week-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 20px}
+.opengym-week-nav strong{font-size:1rem;text-align:center}.opengym-week-nav button{border:0;background:transparent;color:var(--ink,#252525);font-size:1.8rem;line-height:1;padding:4px 12px;cursor:pointer}.opengym-week-nav button:disabled{opacity:.3;cursor:default}
+.stats-weight-relocated{margin:0 0 18px}.stats-weight-relocated .stats-chart-wrap{height:230px}.stats-weight-relocated .stats-card-head{margin-bottom:14px}
+#user-weight-content>.stats-body-card{border:0;padding:0;background:transparent;border-radius:0}
+.exercise-library-shell{max-width:1200px;margin:0 auto;padding:20px 0}.exercise-library-tools{display:grid;grid-template-columns:minmax(0,2fr) minmax(150px,1fr) minmax(130px,.8fr);gap:10px;margin:20px 0 10px}.exercise-library-tools input,.exercise-library-tools select{width:100%;min-width:0;border:1px solid var(--line,#ddd8ce);border-radius:12px;padding:12px;background:var(--panel,#fff);color:var(--ink,#222);font:inherit}.exercise-library-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.exercise-library-card{border:1px solid var(--line,#ddd8ce);border-radius:16px;padding:16px;background:var(--panel,#fff);min-width:0}.exercise-library-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.exercise-library-card h3{font-size:1rem;margin:0;overflow-wrap:anywhere}.exercise-library-card-top>span{font-size:.72rem;color:var(--muted,#777);white-space:nowrap}.exercise-library-tags{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.exercise-library-tags span{font-size:.7rem;padding:4px 8px;border-radius:999px;background:var(--surface,#f1f0eb);color:var(--ink,#333)}.exercise-library-stats{display:flex;gap:16px;flex-wrap:wrap;font-size:.75rem;color:var(--muted,#777)}.exercise-library-stats strong{color:var(--ink,#222)}.exercise-library-card p{font-size:.75rem;line-height:1.5;color:var(--muted,#777);margin:12px 0 0}
+@media(max-width:700px){.opengym-mode-tabs{gap:3px;padding:3px;border-radius:13px}.opengym-mode-tabs button{padding:8px 5px;min-height:48px}.opengym-period-tabs button{padding:6px 4px}.exercise-library-tools{grid-template-columns:1fr 1fr}.exercise-library-tools input{grid-column:1/-1}.exercise-library-grid{grid-template-columns:1fr}.exercise-library-shell{padding-top:10px}}
+@media(prefers-color-scheme:dark){.opengym-mode-tabs,.opengym-period-tabs{background:#373739}.opengym-mode-tabs button.active,.opengym-period-tabs button.active{background:#1e1e20;color:#fff}.opengym-week-nav button{color:#f5f5f5}.exercise-library-tools input,.exercise-library-tools select,.exercise-library-card{background:#242426;color:#f3f3f3;border-color:#3c3c3f}.exercise-library-tags span{background:#38383b;color:#ededed}.exercise-library-stats strong{color:#f3f3f3}}
+
+
+/* Exercise Library editing and alias consolidation */
+.exercise-catalog-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.exercise-catalog-editor{display:grid;gap:10px;margin-top:14px;padding:14px;border:1px solid var(--border-color,rgba(255,255,255,.14));border-radius:12px;background:var(--surface-2,rgba(255,255,255,.035))}
+.exercise-catalog-editor label{display:grid;gap:6px;font-size:.88rem;color:var(--text-secondary,#aaa)}
+.exercise-catalog-editor input,.exercise-catalog-editor textarea,.exercise-catalog-editor select{width:100%;min-width:0;box-sizing:border-box;border:1px solid var(--border-color,rgba(255,255,255,.16));border-radius:8px;padding:10px;background:var(--surface-1,#222);color:var(--text-primary,#fff);font:inherit}
+.exercise-catalog-editor small{color:var(--text-secondary,#aaa);line-height:1.45}

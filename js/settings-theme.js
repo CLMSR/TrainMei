@@ -31,6 +31,11 @@
   applyTheme(localStorage.getItem(STORAGE_KEY)||'original',false);
   document.getElementById('settings-btn')?.addEventListener('click',openSettings);
   document.getElementById('close-settings')?.addEventListener('click',closeSettings);
+  document.addEventListener('click',e=>{
+    if(!modal.classList.contains('show'))return;
+    if(modal.contains(e.target)||e.target.closest('#settings-btn'))return;
+    closeSettings();
+  });
   modal.addEventListener('click',e=>{
     if(e.target===modal)closeSettings();
     const option=e.target.closest('[data-theme-choice]');
