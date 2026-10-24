@@ -1,10 +1,12 @@
 {
-  "name": "TrainMei Training Planner",
+  "name": "TrainMei",
   "short_name": "TrainMei",
-  "description": "Personal training planner with a unified Home decision dashboard and User profile workspace.",
+  "description": "Personal training planner and training insights.",
+  "id": "./index.html",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#EEEAE1",
   "theme_color": "#EEEAE1",
   "icons": [
@@ -13,21 +15,12 @@
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "icons/trainmei-pwa.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
-  ],
-  "version": "v13",
-  "updated": "2026-10-11",
-  "changes": [
-    "Unified Home, Daily Briefing, Training Insights and Training Brain into one dashboard using the existing TrainingDataCore.",
-    "Retained Daily Briefing visual summaries and Training Insights weekly, progression, muscle-group and pattern views inside Home.",
-    "Removed standalone Daily Briefing and Insights navigation entries on desktop and mobile.",
-    "Added User workspace for body metrics, weight history and exercise Weight % progression.",
-    "Combined Nutri Tracker and Meal Planner in one workspace with distinct sections; planned meals remain proposals and are never added to real intake automatically.",
-    "Removed redundant permanent explanatory copy and consolidated responsive layout rules.",
-    "Moved User navigation beside Settings, immediately before Settings.",
-    "Simplified Home to Today and the monthly heatmap side-by-side, followed directly by Today at a glance; hid This week, Fuel for today and Next up cards.",
-    "Merged the pre-workout Nutrition Optimizer into Nutri Tracker as a Meal Planner tab beside My craving; removed the separate Nutrition Optimizer launcher and route.",
-    "Compressed the calorie calculator into a single compact visual panel and tightened the User personal metrics layout on desktop and landscape.",
-    "Left OCR, FatSecret and other non-nutrition integrations intact."
   ]
 }

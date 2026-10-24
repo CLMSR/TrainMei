@@ -190,3 +190,68 @@ Theme selection persists per browser/device through `localStorage`. Theme-specif
 - Legacy saved selections for removed themes safely fall back to Original.
 - Removed the orange-highlight workflow hint strips above Calendar and Plan 2.0.
 - Insights shell uses 15px margins; session journal label is now English.
+
+
+## TrainMei Home + User workspace — v12 (2026-10-11)
+
+- Home now hosts the Daily Briefing decision signals, visual summary, recovery/fuel indicators and Training Insights views (weekly review, progression, muscle-group distribution and personal patterns).
+- Daily Briefing and Insights are no longer standalone navigation destinations. Training Brain's personal baselines and session feedback are available in a compact Home disclosure.
+- User contains the existing Weight Tracker, the Weight % exercise library/progression and optional profile metrics. Weight/RM history retains its existing persistence mechanisms; profile metrics are stored locally in this browser.
+- Nutri Tracker and Meal Planner share a screen but have separate visual sections. Meal Planner ideas and custom portions are proposals only; nothing is written to the real food diary automatically.
+- Validation: all JavaScript files pass `node --check`; HTML IDs are unique; local script/style references resolve; manifest JSON parses. A browser end-to-end run could not be completed in this environment, so authenticated Supabase/FatSecret flows and mobile visual layout still need real-device/runtime verification.
+
+
+## v13 refinement — 2026-10-11
+
+- User navigation now sits immediately before Settings.
+- Home shows Today and the monthly heatmap side by side, followed directly by Today at a glance; This week, Fuel for today, and Next up are hidden from the Home interface.
+- Nutrition Optimizer is no longer a separate integration destination. Its pre-workout recommendation is available as a Meal Planner tab inside Nutri Tracker, beside My craving. The daily target calculator is visually consolidated into one compact panel.
+- OCR, FatSecret, and the other integrations are retained.
+- Validation: JavaScript syntax, duplicate IDs, local script/style references, and ZIP integrity checked. Browser interaction and authenticated service flows still require runtime testing.
+
+## TrainingDataCore repair — 2026-10-15
+
+- `Before You Train` now stores a date-keyed readiness check-in independently from the `workouts` table. Check-ins no longer create or overwrite workout records.
+- Unselected sleep, energy, soreness, stress, available time, intensity and volume remain `null`; UI placeholder values are display-only and are not saved as selected answers.
+- `decisionSupport(date, workout, checkin)` uses the check-in as current context while retaining the actual planned/completed workout state. Stress, self-reported fuel, hydration, last meal, time available, intensity and volume are surfaced to decision support; no workout is fabricated when none exists.
+- Session-learning events now use the saved event's own date/day and are emitted only for completed sessions or explicit adjustment feedback. A readiness-only save is not treated as a completed workout.
+- Learning events are stored locally and synced to `training_brain_events` when the migration is installed and a user is authenticated. Existing local events are backfilled on first successful sync per user/session.
+- Readiness check-ins are synced to `training_readiness_checkins`; the same records remain available locally if the cloud is unavailable.
+- `learningProfile()` joins check-ins with same-day completed-session outcomes and reports descriptive associations only after a minimum sample. These are not causal claims and do not autonomously rewrite workouts.
+
+### Required Supabase migration
+
+Run `supabase/migrations/20261015_training_brain_readiness.sql` once in the Supabase SQL Editor. Without it, local storage works, but cross-device readiness/event persistence remains unavailable until the tables exist.
+
+### Verification performed for this repair
+
+- `node --check` passes for all JavaScript files.
+- HTML parser found no duplicate IDs and no missing local `src`/`href` references.
+- CSS brace counts are balanced.
+- Browser end-to-end and authenticated Supabase tests remain unverified in this environment; no claim of production runtime success is made.
+
+## Phase 1 — Data consolidation and deterministic Weekly Intelligence (2026-10-17)
+
+- `TrainingDataCore` is still the single deterministic data/decision source. `weeklyIntelligence(from, to)` now emits a versioned, read-only structured summary for weight trend, logged nutrition means, completed sessions, explicit-plan adherence when a plan exists, recent exercise progression, recorded recovery, data-quality flags and supported observations.
+- Missing values remain unavailable. Nutrition averages use only days with logged values for each metric; sparse coverage is flagged. Weight-trend interpretation continues to require enough valid weigh-ins in both comparison weeks. The report explicitly avoids inferring causality, diagnosing a plateau from weight alone, or changing nutrition targets / workout loads.
+- Fixed a data-source guard in `nutritionHistory()`: the NutritionDataLayer history is now read even when Supabase is not initialized, with Supabase as fallback when appropriate. Historical rows are normalized and cached centrally.
+- Tightened body-weight input validation in the analysis layer so blank weights cannot be coerced into `0 kg` and malformed dates / non-positive values do not enter the trend calculation.
+- Added a Weekly Intelligence section to Training Brain with data quality, source coverage, and evidence-labelled observations.
+- Recommendation feedback now records the actual recommendation text and a stable day-scoped recommendation key with the response (`accepted`, `modified`, or `rejected`). This is a capture foundation for personalized learning; it does not yet claim to have learned a causal or effective recommendation.
+- Validation performed: `node --check` on all 30 JavaScript files; HTML parser found 0 duplicate IDs and 0 missing local `src`/`href` references; `manifest.json` parses; CSS braces are balanced; Node VM tests passed for NutritionDataLayer history without Supabase, blank-weight exclusion, weekly metrics, unavailable adherence without an explicit plan, and recovery/progression summaries.
+- Not verified in this environment: browser end-to-end behavior, actual authenticated Supabase reads/writes, live FatSecret synchronization, and mobile visual layout. The generative AI interpretation layer is intentionally not connected yet; it should consume this structured summary only after runtime data flows are verified.
+
+## Phase 2 — Optional Weekly Intelligence AI (2026-10-18)
+
+- Added an opt-in `Explain with AI` action that sends only the deterministic, versioned weekly summary to an authenticated Supabase Edge Function.
+- Added `js/weekly-ai.js` to validate the response contract and render model text as escaped text. The existing deterministic report is preserved if the endpoint is unavailable or returns invalid data.
+- Added `supabase/functions/weekly-intelligence-ai/index.ts`. The OpenAI API key stays in server-side Supabase secrets; the function requires an authenticated user, bounds request size, checks the report contract/period, requests strict structured output and sets `store: false`.
+- No training, nutrition, weight, target or workout data are written or modified by the AI layer.
+- To enable live AI, deploy the Edge Function and configure `OPENAI_API_KEY` server-side as documented in `AI_PHASE2_SETUP.md`. This package does not deploy the function or configure secrets automatically.
+- Validation performed: `node --check js/weekly-ai.js`; existing Weekly Intelligence / recommendation-learning tests; HTML duplicate-ID scan (382 IDs, no duplicates); local asset reference scan; manifest JSON parse.
+- Not verified: Edge Function deployment, live OpenAI response, auth/RLS against the remote project, rate/cost limits, production CORS allowlist, privacy/retention workflow, or desktop/mobile end-to-end behavior.
+
+
+## Deterministic intelligence (no OpenAI API required)
+
+The Weekly Intelligence, Exercise Progression, and Nutrition/Weight panels use the existing `TrainingDataCore` and nutrition data layer. They do not call OpenAI and do not require an OpenAI API key or an Edge Function deployment. The optional `weekly-intelligence-ai` Edge Function is not invoked by the app UI in this build.

@@ -11,9 +11,22 @@
   async function fetchMonth(year,month){
     const days=new Date(year,month+1,0).getDate(),from=dateKey(year,month,1),to=dateKey(year,month,days);
     const user=TP.currentUser;if(!user)return fetchMonthLocal(year,month);
-    const {data,error}=await TP.supabaseClient().from('workouts').select('date,data').eq('user_id',user.id).gte('date',from).lte('date',to);
+    const {data,error}=await TP.supabaseClient().from('workouts').select('date,data,updated_at').eq('user_id',user.id).gte('date',from).lte('date',to);
     if(error){console.warn(error);return fetchMonthLocal(year,month)}
-    const out={};(data||[]).forEach(r=>out[r.date]=TP.normalizeDay(r.data));return out;
+    // Merge cloud and local month without hiding offline edits. For dates present
+    // in both stores, compare the local metadata timestamp against cloud updated_at.
+    // If timestamps are absent/equal, preserve the existing cloud-authoritative rule;
+    // the workout sync layer remains responsible for uploading reconciled records.
+    const out=fetchMonthLocal(year,month), remoteMap=new Map();
+    (data||[]).forEach(r=>{if(r?.date)remoteMap.set(String(r.date).slice(0,10),r)});
+    for(const [date,r] of remoteMap){
+      const localKey=`training-planner:workout:${date}`;
+      let localStamp=0;
+      try{const meta=JSON.parse(localStorage.getItem(`training-planner:workout-meta:${date}`)||'null');localStamp=Date.parse(meta?.updatedAt||'')||0}catch{}
+      const remoteStamp=Date.parse(r.updated_at||'')||0;
+      if(!out[date]||!(localStamp>0&&remoteStamp>0&&localStamp>remoteStamp))out[date]=TP.normalizeDay(r.data);
+    }
+    return out;
   }
   function fetchMonthLocal(year,month){
     const out={},prefix=`training-planner:workout:${year}-${pad(month+1)}`;
