@@ -145,10 +145,7 @@
     list.innerHTML=entries.map(e=>`<option value="${esc(e.name)}"></option>`).join('');
     document.querySelectorAll('.exercise-name-input').forEach(input=>input.setAttribute('list','tm-exercise-name-suggestions'));
   }
-  function exerciseThumb(muscle,name){
-    const color=({'Chest':'#d7a28c','Back':'#8fa7b7','Shoulders':'#b7a3d3','Biceps':'#d9bd7c','Triceps':'#92b7a4','Quadriceps':'#c99a8a','Hamstrings':'#a5a9d2','Glutes':'#d69ab2','Calves':'#9dbbb6','Core':'#d2b27d','Forearms':'#a9b9c8','Full body':'#a6b69b'})[muscle]||'#a6b69b';
-    return `<div class="exercise-catalog-thumb" aria-label="Illustration for ${esc(name)}"><svg viewBox="0 0 140 78" aria-hidden="true"><rect width="140" height="78" rx="10" fill="${color}" fill-opacity=".22"/><circle cx="70" cy="17" r="6" fill="#8a8e8b"/><path d="M65 26 Q70 23 75 26 L80 45 L73 49 L71 36 L68 36 L66 49 L60 46 Z" fill="${color}" stroke="#6f7772" stroke-width="1.5"/><path d="M64 28 L49 39 L44 35 M76 28 L90 38 L95 34 M64 48 L57 65 M74 48 L82 65" fill="none" stroke="#747b77" stroke-width="5" stroke-linecap="round"/><path d="M24 66 H116" stroke="#9ba39d" stroke-width="2"/></svg></div>`;
-  }
+
   function render() {
     const grid=$('#tm-exlib-results'); if(!grid)return;
     const q=norm($('#tm-exlib-search')?.value), muscle=$('#tm-exlib-muscle')?.value||'', kind=$('#tm-exlib-kind')?.value||'';
@@ -157,16 +154,20 @@
       return (!q||hay.includes(q))&&(!muscle||e.muscle===muscle)&&(!kind||e.sources.includes(kind)||(kind==='custom'&&e.custom));
     });
     const summary=$('#tm-exlib-summary'); if(summary)summary.textContent=`${filtered.length} exercises · ${entries.length} total · ${entries.filter(e=>e.sources.includes('history')).length} found in your workout history`;
-    grid.innerHTML=filtered.map(e=>`<article class="exercise-catalog-item" data-exlib-id="${esc(e.id)}">${exerciseThumb(e.muscle,e.name)}<div class="exercise-catalog-item-top"><strong>${esc(e.name)}</strong><span class="exercise-catalog-muscle">${esc(e.muscle||'Muscle not classified')}</span></div><small>${e.sources.includes('catalog')?'Catalogue':e.sources.includes('custom')?'Your exercise':'Workout history'}${e.count?` · ${e.count} logged occurrence(s)`:''}</small><div class="exercise-catalog-aliases">${e.aliases.filter(a=>norm(a)!==norm(e.name)).map(esc).join(' · ')||'No aliases'}</div><div class="exercise-catalog-actions"><button type="button" class="btn" data-exlib-edit="${esc(e.id)}">Edit / merge names</button></div></article>`).join('')||'<p class="stats-muted">No exercises match these filters.</p>';
+    grid.innerHTML=filtered.map(e=>`<article class="exercise-catalog-item" data-exlib-id="${esc(e.id)}"><div class="exercise-catalog-item-top"><strong>${esc(e.name)}</strong><span class="exercise-catalog-muscle">${esc(e.muscle||'Muscle not classified')}</span></div><small>${e.sources.includes('catalog')?'Catalogue':e.sources.includes('custom')?'Your exercise':'Workout history'}${e.count?` · ${e.count} logged occurrence(s)`:''}</small><div class="exercise-catalog-aliases">${e.aliases.filter(a=>norm(a)!==norm(e.name)).map(esc).join(' · ')||'No aliases'}</div><div class="exercise-catalog-actions"><button type="button" class="btn" data-exlib-edit="${esc(e.id)}">Edit / merge names</button></div></article>`).join('')||'<p class="stats-muted">No exercises match these filters.</p>';
   }
 
   function editEntry(id) {
     const e=entries.find(x=>String(x.id)===String(id)); if(!e)return;
-    const card=document.querySelector(`[data-exlib-id="${CSS.escape(String(id))}"]`); if(!card)return;
-    card.querySelector('.exercise-catalog-editor')?.remove();
-    const form=document.createElement('form'); form.className='exercise-catalog-editor';
-    form.innerHTML=`<label>Canonical name<input name="name" required maxlength="100" value="${esc(e.name)}"></label><label>Aliases / other names<textarea name="aliases" rows="3" maxlength="1200">${esc([...new Set([...(e.aliases||[]).filter(a=>norm(a)!==norm(e.name))])].join(', '))}</textarea><small>Put every alternate name you have used here, separated by commas. This lets TrainMei recognise them as one exercise.</small></label><label>Primary muscle<select name="muscle">${MUSCLES.map(m=>`<option value="${esc(m)}" ${m===e.muscle?'selected':''}>${esc(m)}</option>`).join('')}<option value="" ${!e.muscle?'selected':''}>Unclassified</option></select></label><div class="exercise-catalog-actions"><button class="btn" type="submit">Save changes</button><button class="btn" type="button" data-exlib-cancel>Cancel</button></div>`;
-    card.appendChild(form);
+    document.querySelector('#exercise-catalog-edit-modal')?.remove();
+    const overlay=document.createElement('div'); overlay.id='exercise-catalog-edit-modal'; overlay.className='exercise-edit-modal-overlay';
+    overlay.innerHTML=`<section class="exercise-edit-modal" role="dialog" aria-modal="true" aria-labelledby="exercise-edit-title"><header class="exercise-edit-modal-head"><div><span class="eyebrow">EXERCISE LIBRARY</span><h2 id="exercise-edit-title">Edit exercise</h2><p>Update its canonical name, aliases and primary muscle.</p></div><button type="button" class="exercise-edit-close" aria-label="Close editor" data-exlib-cancel>×</button></header><form class="exercise-catalog-editor"><label>Canonical name<input name="name" required maxlength="100" value="${esc(e.name)}"></label><label>Aliases / other names<textarea name="aliases" rows="3" maxlength="1200">${esc([...new Set([...(e.aliases||[]).filter(a=>norm(a)!==norm(e.name))])].join(', '))}</textarea><small>Separate alternate names with commas. TrainMei uses these to recognise the same exercise across workout logs.</small></label><label>Primary muscle<select name="muscle">${MUSCLES.map(m=>`<option value="${esc(m)}" ${m===e.muscle?'selected':''}>${esc(m)}</option>`).join('')}<option value="" ${!e.muscle?'selected':''}>Unclassified</option></select></label><div class="exercise-catalog-actions"><button class="btn active" type="submit">Save changes</button><button class="btn" type="button" data-exlib-cancel>Cancel</button></div></form></section>`;
+    document.body.appendChild(overlay);
+    const form=overlay.querySelector('form'); form.elements.name.focus();
+    const onKey=ev=>{if(ev.key==='Escape')close();};
+    const close=()=>{overlay.remove();document.removeEventListener('keydown',onKey);};
+    overlay.addEventListener('click',ev=>{if(ev.target===overlay||ev.target.closest('[data-exlib-cancel]'))close();});
+    document.addEventListener('keydown',onKey);
     form.addEventListener('submit',ev=>{
       ev.preventDefault();
       const name=form.elements.name.value.trim(); if(!name)return;
@@ -176,11 +177,10 @@
       const idx=custom.findIndex(x=>String(x.id)===String(e.id)||norm(x.name)===norm(e.name));
       const record={id:e.id,name,aliases:[...new Set(aliases.filter(a=>norm(a)!==norm(name)))],muscle:form.elements.muscle.value,custom:true};
       if(idx>=0)custom[idx]=record;else custom.push(record);
-      writeCustom(custom);
-      build();
+      writeCustom(custom); document.removeEventListener('keydown',onKey); close(); build();
     });
-    form.querySelector('[data-exlib-cancel]').addEventListener('click',()=>form.remove());
   }
+
   document.addEventListener('click',e=>{
     const edit=e.target.closest('[data-exlib-edit]'); if(edit){editEntry(edit.dataset.exlibEdit);return;}
     if(e.target.closest('[data-exlib-cancel]'))return;

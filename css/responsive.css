@@ -266,7 +266,7 @@
   .wp-progress-summary{grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,.75fr));gap:5px}
   .wp-progress-status,.wp-progress-stat{padding:7px 5px}.wp-progress-status{gap:4px}.wp-progress-status strong{font-size:9px}.wp-progress-stat small{font-size:8px}.wp-progress-stat strong{font-size:12px}
   .wp-percent-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
-  .wp-percent-cell{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;padding:9px 10px}
+  .wp-percent-cell{text-align:center}
   .wp-percent-cell>span{font-size:10px;margin:0;flex:0 0 34px}.wp-percent-cell>strong{font-size:13px;text-align:right}.wp-percent-cell .wp-exact{display:none}
   #user-weight-content .nt-progress-grid{display:block}
   #user-weight-content .nt-progress-card{width:100%;min-width:0;padding:12px}
@@ -283,7 +283,6 @@
   #user-weight-content .nt-history-row-actions button{padding:5px 6px;font-size:9px}
 }
 @media(max-width:560px) and (orientation:portrait){
-  .wp-percent-cell{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:3px 8px}
   .wp-percent-cell>span{grid-column:1;grid-row:1/3;flex:none}
   .wp-percent-cell>strong{grid-column:2;grid-row:1;text-align:right}
   .wp-percent-cell .wp-exact{display:block;grid-column:2;grid-row:2;text-align:right;font-size:8px}

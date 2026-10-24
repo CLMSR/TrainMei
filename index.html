@@ -239,10 +239,8 @@
 
     <section class="stats-dashboard" id="stats-dashboard" aria-label="Training statistics">
       <div class="opengym-mode-tabs" role="tablist" aria-label="Training analytics mode"><button type="button" class="active" data-stats-mode="muscle" role="tab" aria-selected="true">Muscle balance</button><button type="button" data-stats-mode="fatigue" role="tab" aria-selected="false">Fatigue</button><button type="button" data-stats-mode="strength" role="tab" aria-selected="false">Strength</button></div>
-      <div class="opengym-period-tabs" role="group" aria-label="Muscle analysis period"><button type="button" class="active" data-muscle-period="week">Week</button><button type="button" data-muscle-period="30">30d</button><button type="button" data-muscle-period="90">90d</button><button type="button" data-muscle-period="all">All</button></div>
       <div class="opengym-week-nav"><button type="button" id="stats-period-prev" aria-label="Previous period">‹</button><strong id="stats-period-label">This week</strong><button type="button" id="stats-period-next" aria-label="Next period">›</button></div>
-      <div class="stats-toolbar">
-        <div><div class="eyebrow">TRAINING ANALYTICS</div><h2>Stats</h2><p>Progress, consistency, training volume and muscle-group distribution.</p></div>
+      <div class="stats-toolbar stats-toolbar-controls-only">
         <div class="stats-range" role="group" aria-label="Stats date range">
           <button type="button" data-stats-range="7">7D</button><button type="button" data-stats-range="30" class="active">30D</button><button type="button" data-stats-range="90">90D</button><button type="button" data-stats-range="all">All time</button>
         </div>
@@ -276,16 +274,6 @@
     </section>
 
     <div class="user-profile-grid">
-      <section class="user-panel" id="user-metrics-panel"><div class="user-panel-head"><div><div class="eyebrow">PERSONAL METRICS</div><h2>Your metrics</h2></div></div>
-        <div class="user-metrics-form">
-          <label>Name / label<input id="user-metric-label" type="text" maxlength="40" placeholder="Optional"></label>
-          <label>Sex<select id="user-metric-sex"><option value="">Not specified</option><option value="female">Female</option><option value="male">Male</option><option value="other">Other / prefer not to say</option></select></label>
-          <label>Age<input id="user-metric-age" type="number" min="13" max="110" placeholder="—"></label>
-          <label>Height (cm)<input id="user-metric-height" type="number" min="100" max="250" step="0.1" placeholder="—"></label>
-          <label>Body fat (%)<input id="user-metric-bodyfat" type="number" min="1" max="70" step="0.1" placeholder="Optional"></label>
-          <button class="btn active" id="user-metrics-save" type="button">Save metrics</button>
-        </div><p class="user-metrics-status" id="user-metrics-status" aria-live="polite">Optional profile metrics are stored on this device.</p>
-      </section>
       <section class="user-panel user-weight-panel" id="user-weight-slot"><div class="user-panel-head"><div><div class="eyebrow">BODY TREND</div><h2>Weight Tracker</h2></div></div><div id="user-weight-content"><article class="stats-card stats-body-card"><div class="stats-card-head"><div><span class="eyebrow">BODY METRICS</span><h3>Weight trend</h3></div><span class="stats-muted" id="stats-weight-caption">Saved weigh-ins</span></div><div class="stats-body-summary" id="stats-body-summary"></div><div class="stats-chart-wrap"><canvas id="stats-weight-chart" aria-label="Body weight trend chart"></canvas></div></article></div></section>
       <section class="user-panel user-strength-panel" id="user-strength-slot"><div class="user-panel-head"><div><div class="eyebrow">STRENGTH</div><h2>Weight & progression</h2></div></div><div id="user-strength-content"></div></section>
     </div>
@@ -303,30 +291,7 @@
         <div class="month-head"><div class="month-title page-title" id="month-title">—</div><div class="month-nav"><button class="nav-btn" id="prev-month">‹</button><button class="nav-btn" id="next-month">›</button><button class="btn" id="today-btn">Today</button></div></div>
         <div class="cal-weekdays"><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div></div>
         <div class="cal-grid" id="cal-grid"></div>
-        <div class="ios-week-month-summary is-collapsed" id="ios-week-month-summary">
-          <button type="button" class="ios-summary-head" id="ios-week-month-toggle" aria-expanded="false" aria-controls="ios-week-month-content"><span>Week &amp; Month</span><span class="ios-summary-chevron" aria-hidden="true">▼</span></button>
-          <div class="ios-summary-content" id="ios-week-month-content">
-          <div class="ios-week-month-row">
-            <div class="ios-week-month-label">Week</div>
-            <div class="ios-summary-stats">
-              <div class="ios-stat"><strong id="ios-week-workouts">—</strong><span>Workouts</span></div>
-              <div class="ios-stat"><strong id="ios-week-distance">—</strong><span>km</span></div>
-              <div class="ios-stat"><strong id="ios-week-time">—</strong><span>Minutes</span></div>
-            </div>
-          </div>
-          <div class="ios-summary-note" id="ios-week-note">Your week at a glance.</div>
-          <div class="ios-week-chart" id="ios-week-chart" aria-label="Week session analysis"></div>
-          <div class="ios-week-month-row ios-week-month-month">
-            <div class="ios-week-month-label">Month</div>
-            <div class="ios-summary-stats">
-              <div class="ios-stat"><strong id="ios-month-workouts">—</strong><span>Workouts</span></div>
-              <div class="ios-stat"><strong id="ios-month-distance">—</strong><span>km</span></div>
-              <div class="ios-stat"><strong id="ios-month-time">—</strong><span>Total time</span></div>
-            </div>
-          </div>
-          <div class="ios-month-chart" id="ios-month-chart" aria-label="Month session analysis"></div>
-          </div>
-        </div>
+
       </div>
       <aside id="calendar-sidebar" class="calendar-sidebar" aria-label="Calendar insights">
         <div id="calendar-quick-view" class="calendar-quick-view" aria-label="Quick workout view"></div>
@@ -1300,7 +1265,8 @@
 <script src="js/settings-theme.js"></script>
 <script src="js/keyboard-shortcuts.js"></script>
 <script src="js/smart-workout.js"></script>
-<script src="js/smart-integrations-router.js"></script>\n<script src="js/exercise-library-integration.js"></script>
+<script src="js/smart-integrations-router.js"></script>
+<script src="js/exercise-library-integration.js"></script>
 <script src="js/integration-health.js"></script>
 <div class="ios-tabbar" id="ios-tabbar">
   <button class="ios-tab" data-ios-page="home-page" aria-label="Home"><span class="tab-icon">⌂</span><span>Home</span></button>

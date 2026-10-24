@@ -49,7 +49,7 @@
 .stats-status{font-size:.7rem;color:var(--muted,#777);text-align:right;padding:10px 2px 0}
 @media(max-width:1050px){.stats-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.stats-main-grid{gap:10px}.stats-card{padding:15px}}
 @media(max-width:700px){.stats-toolbar{align-items:flex-start;flex-direction:column;gap:12px}.stats-range{width:100%;box-sizing:border-box}.stats-range button{flex:1;padding:8px 5px}.stats-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stats-kpi{padding:13px 11px}.stats-main-grid{grid-template-columns:minmax(0,1fr);gap:10px}.stats-card{padding:15px;border-radius:14px}.stats-card-head{margin-bottom:14px}.stats-heatmap{grid-template-rows:repeat(7,10px);gap:3px}.stats-heat-cell{height:10px}.stats-muscle-row{grid-template-columns:85px minmax(0,1fr) 30px}.stats-strength-summary,.stats-body-summary{gap:6px}.stats-strength-summary strong,.stats-body-summary strong{font-size:.9rem}.stats-exercise-select{min-width:100px;max-width:48%}.stats-exercise-select select{max-width:100%}.stats-chart-wrap{height:205px}}
-@media(prefers-color-scheme:dark){.stats-kpi,.stats-card{background:var(--panel,#20211f)}.stats-range{background:var(--surface,#252622)}.stats-range button.active{background:var(--ink,#f2efe6);color:var(--paper,#242720)}.stats-heat-cell.level-0{background:#32352f}.stats-muscle-track{background:#30322d}.stats-exercise-select select{background:var(--surface,#252622)}}
+
 
 /* OpenGym-inspired analysis controls and exercise catalogue */
 .opengym-mode-tabs,.opengym-period-tabs{display:flex;gap:4px;padding:4px;border-radius:16px;background:var(--surface,#373739);margin:0 0 12px;min-width:0}
@@ -63,7 +63,7 @@
 #user-weight-content>.stats-body-card{border:0;padding:0;background:transparent;border-radius:0}
 .exercise-library-shell{max-width:1200px;margin:0 auto;padding:20px 0}.exercise-library-tools{display:grid;grid-template-columns:minmax(0,2fr) minmax(150px,1fr) minmax(130px,.8fr);gap:10px;margin:20px 0 10px}.exercise-library-tools input,.exercise-library-tools select{width:100%;min-width:0;border:1px solid var(--line,#ddd8ce);border-radius:12px;padding:12px;background:var(--panel,#fff);color:var(--ink,#222);font:inherit}.exercise-library-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.exercise-library-card{border:1px solid var(--line,#ddd8ce);border-radius:16px;padding:16px;background:var(--panel,#fff);min-width:0}.exercise-library-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.exercise-library-card h3{font-size:1rem;margin:0;overflow-wrap:anywhere}.exercise-library-card-top>span{font-size:.72rem;color:var(--muted,#777);white-space:nowrap}.exercise-library-tags{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.exercise-library-tags span{font-size:.7rem;padding:4px 8px;border-radius:999px;background:var(--surface,#f1f0eb);color:var(--ink,#333)}.exercise-library-stats{display:flex;gap:16px;flex-wrap:wrap;font-size:.75rem;color:var(--muted,#777)}.exercise-library-stats strong{color:var(--ink,#222)}.exercise-library-card p{font-size:.75rem;line-height:1.5;color:var(--muted,#777);margin:12px 0 0}
 @media(max-width:700px){.opengym-mode-tabs{gap:3px;padding:3px;border-radius:13px}.opengym-mode-tabs button{padding:8px 5px;min-height:48px}.opengym-period-tabs button{padding:6px 4px}.exercise-library-tools{grid-template-columns:1fr 1fr}.exercise-library-tools input{grid-column:1/-1}.exercise-library-grid{grid-template-columns:1fr}.exercise-library-shell{padding-top:10px}}
-@media(prefers-color-scheme:dark){.opengym-mode-tabs,.opengym-period-tabs{background:#373739}.opengym-mode-tabs button.active,.opengym-period-tabs button.active{background:#1e1e20;color:#fff}.opengym-week-nav button{color:#f5f5f5}.exercise-library-tools input,.exercise-library-tools select,.exercise-library-card{background:#242426;color:#f3f3f3;border-color:#3c3c3f}.exercise-library-tags span{background:#38383b;color:#ededed}.exercise-library-stats strong{color:#f3f3f3}}
+
 
 
 /* Exercise Library editing and alias consolidation */
@@ -72,3 +72,17 @@
 .exercise-catalog-editor label{display:grid;gap:6px;font-size:.88rem;color:var(--text-secondary,#aaa)}
 .exercise-catalog-editor input,.exercise-catalog-editor textarea,.exercise-catalog-editor select{width:100%;min-width:0;box-sizing:border-box;border:1px solid var(--border-color,rgba(255,255,255,.16));border-radius:8px;padding:10px;background:var(--surface-1,#222);color:var(--text-primary,#fff);font:inherit}
 .exercise-catalog-editor small{color:var(--text-secondary,#aaa);line-height:1.45}
+
+/* Stats controls follow the selected TrainMei theme, not the operating-system dark preference. */
+.stats-dashboard .stats-card,.stats-dashboard .stats-kpi{background:var(--card-bg,var(--white,var(--paper)));color:var(--ink);border-color:var(--line)}
+.stats-dashboard .stats-range,.stats-dashboard .opengym-mode-tabs,.stats-dashboard .opengym-period-tabs{background:var(--surface);border:1px solid var(--line);}
+.stats-dashboard .opengym-mode-tabs button,.stats-dashboard .opengym-period-tabs button{color:var(--muted);font-size:clamp(.68rem,1vw,.82rem);font-weight:700;min-height:34px;padding:6px 9px;border-radius:9px;}
+.stats-dashboard .opengym-mode-tabs button.active,.stats-dashboard .opengym-period-tabs button.active,.stats-dashboard .stats-range button.active{background:var(--primary,var(--ink));color:var(--on-primary,var(--paper));box-shadow:none;}
+.stats-dashboard .stats-exercise-select select,.stats-dashboard .exercise-library-tools input,.stats-dashboard .exercise-library-tools select{background:var(--input-bg,var(--card-bg,var(--white)));color:var(--ink);border-color:var(--line);}
+.stats-dashboard .stats-muscle-track,.stats-dashboard .stats-heat-cell.level-0{background:var(--surface-soft,var(--surface));}
+.stats-dashboard .exercise-library-tags span{background:var(--surface);color:var(--ink);}
+.stats-dashboard .exercise-library-stats strong{color:var(--ink);}
+@media(max-width:700px){.stats-dashboard>.opengym-mode-tabs{gap:3px;padding:3px;margin-bottom:7px}.stats-dashboard .opengym-mode-tabs button{font-size:11px;min-height:30px;padding:5px 3px}.stats-dashboard>.opengym-period-tabs button{font-size:10px;min-height:28px;padding:4px 3px}.stats-dashboard .opengym-week-nav{margin:5px 0 8px}.stats-dashboard .stats-card{padding:11px;border-radius:12px}.stats-dashboard .stats-card-head{margin-bottom:9px}.stats-dashboard .stats-card-head h3{font-size:.92rem}.stats-dashboard .stats-toolbar p{font-size:.76rem}.stats-dashboard .stats-kpi{padding:10px 8px}.stats-dashboard .stats-kpi strong{font-size:1.2rem}}
+
+.stats-toolbar-controls-only{justify-content:flex-end;align-items:center;margin:0 0 10px;gap:8px}.stats-toolbar-controls-only .stats-range{margin-left:auto}
+@media(max-width:700px){.stats-toolbar-controls-only{margin:0 0 7px}.stats-toolbar-controls-only .stats-range{width:auto;max-width:100%}.stats-toolbar-controls-only .stats-range button{flex:0 1 auto;font-size:10px;padding:5px 8px;min-height:28px}}

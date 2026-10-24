@@ -29,17 +29,7 @@
     const dist=parseFloat(d.metrics?.distanceKm)||0,notes=String(d.notes||'').trim();
     box.innerHTML=`<div class="quick-view-kicker">Quick view · select a day to preview</div><div class="quick-view-date">${WEEKDAYS[(dt.getDay()+6)%7]} · ${MONTHS[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}</div><div class="quick-view-title">${esc(title)}</div><div class="quick-view-focus">${esc(d.restDay?'No training':(d.trainingCategory||'Training session'))}</div><div class="quick-view-stats"><div class="quick-view-stat"><strong>${blocks.length}</strong><span>Blocks</span></div><div class="quick-view-stat"><strong>${sets}</strong><span>Sets</span></div><div class="quick-view-stat"><strong>${dist?dist.toFixed(1)+' km':'—'}</strong><span>Distance</span></div></div>${blocks.slice(0,4).map(b=>`<div class="quick-view-block"><div class="quick-view-block-head"><strong>${esc(b.name||'Block')}</strong><span>${esc(b.category||'')}</span></div><div class="quick-view-exercises">${(b.exercises||[]).filter(e=>String(e.name||'').trim()).slice(0,5).map(e=>`<div class="quick-view-exercise"><strong>${esc(e.name)}</strong><span>${esc(TP.exerciseSetText(e)||'—')}</span></div>`).join('')}</div></div>`).join('')}${notes?`<div class="quick-view-notes">${esc(notes).slice(0,220)}</div>`:''}<div class="quick-view-actions"><button class="btn" data-quick-open="${key}">Open workout</button></div>`;
   }
-  function initWeekMonthSummary(){
-    const summary=document.getElementById('ios-week-month-summary'),toggle=document.getElementById('ios-week-month-toggle');
-    if(!summary||!toggle||toggle.dataset.initialized==='true')return;
-    toggle.dataset.initialized='true';
-    let collapsed=true;
-    try{const saved=localStorage.getItem('trainmei:calendar-summary-collapsed');if(saved!==null)collapsed=saved!=='false'}catch{}
-    const apply=()=>{summary.classList.toggle('is-collapsed',collapsed);toggle.setAttribute('aria-expanded',String(!collapsed));};
-    toggle.addEventListener('click',()=>{collapsed=!collapsed;try{localStorage.setItem('trainmei:calendar-summary-collapsed',String(collapsed))}catch{};apply()});
-    apply();
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initWeekMonthSummary,{once:true});else initWeekMonthSummary();
+
 
   async function renderMonth(){
     const cursor=TP.monthCursor();TP.showPage('calendar-page');const y=cursor.getFullYear(),m=cursor.getMonth();

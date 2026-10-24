@@ -12,7 +12,7 @@
   <div class="cycle-app">
     <div class="header">
       <div class="logo">🌸 Cycle <small>tracker</small></div>
-      <div class="today-pill" id="ct-todayPill">—<b>—</b></div>
+      <div class="ct-header-actions"><span class="ct-cloud-status" id="ct-cloud-status" role="status" aria-live="polite">Checking sync…</span><div class="today-pill" id="ct-todayPill">—<b>—</b></div></div>
     </div>
     <div class="tabs" id="ct-tabs">
       <button class="tab active" data-tab="today">🏠 Today</button>
@@ -229,7 +229,16 @@
   function load(){
     try{
       let raw = localStorage.getItem(KEY);
-      if(!raw) raw = localStorage.getItem("cycle_tracker_records_v2");
+      let parsedCurrent=[];
+      try{parsedCurrent=raw?JSON.parse(raw):[]}catch(_){parsedCurrent=[]}
+      // Import older key variants when the current key is absent OR empty.
+      if(!Array.isArray(parsedCurrent)||parsedCurrent.length===0){
+        for(const legacyKey of ["cycle_tracker_records_v2","cycle_tracker_records","cycleTrackerRecords","cycle-tracker-records"]){
+          const legacyRaw=localStorage.getItem(legacyKey);
+          if(!legacyRaw) continue;
+          try{const legacyParsed=JSON.parse(legacyRaw);if(Array.isArray(legacyParsed)&&legacyParsed.length){raw=legacyRaw;break;}}catch(_){ }
+        }
+      }
       records = raw ? JSON.parse(raw) : [];
       if(!Array.isArray(records)) records=[];
       const byDate=new Map();
@@ -248,7 +257,12 @@
   }
 
   function currentCycleUserId(){
-    return window.TrainMeiState?.currentUser?.id || window.__tp?.currentUser?.id || null;
+    return window.__trainmeiCycleAuthUserId || window.TrainMeiState?.currentUser?.id || window.__tp?.currentUser?.id || window.TrainMeiState?.user?.id || null;
+  }
+  function setCycleCloudStatus(label, state='local'){
+    cycleCloudStatus=state;
+    const el=$('#ct-cloud-status');
+    if(el){el.textContent=label;el.dataset.state=state;}
   }
   function markCycleDateDeleted(date){
     if(!date)return;
@@ -259,7 +273,7 @@
     cycleSyncPromise=(async()=>{
       const sb=window.supabaseClient; let userId=currentCycleUserId();
       if(!userId&&sb?.auth?.getUser){try{const {data}=await sb.auth.getUser();userId=data?.user?.id||null;}catch(_){}}
-      if(!sb||!userId){cycleCloudStatus='local';return false;}
+      if(!sb||!userId){setCycleCloudStatus('Not signed in · saved on this device','local');return false;}
       try{
         const {data:remote,error}=await sb.from('cycle_tracker_records').select('records,updated_at').eq('user_id',userId).maybeSingle();
         if(error)throw error;
@@ -286,19 +300,26 @@
         if(unchanged){
           const syncedAt=remote.updated_at||new Date().toISOString();
           localStorage.setItem(UPDATED_KEY,syncedAt);localStorage.setItem(SYNCED_KEY,syncedAt);
-          cycleCloudStatus='cloud';refreshAll();
+          setCycleCloudStatus(`Synced · ${records.length} records`,'cloud');refreshAll();
           document.dispatchEvent(new CustomEvent('trainmei:cycle-sync-complete',{detail:{synced:true,unchanged:true,records:records.length,updatedAt:syncedAt}}));
           return true;
+        }
+        // Never create an empty cloud row when this device has no records and the cloud is empty.
+        // This avoids a misleading 'successful sync' before the source device has uploaded its history.
+        if(!remote && records.length===0){
+          setCycleCloudStatus('Cloud is empty · no local records','local');
+          document.dispatchEvent(new CustomEvent('trainmei:cycle-sync-complete',{detail:{synced:false,empty:true,records:0}}));
+          return false;
         }
         const stamp=new Date().toISOString();
         const {error:upsertError}=await sb.from('cycle_tracker_records').upsert({user_id:userId,records,updated_at:stamp},{onConflict:'user_id'});
         if(upsertError)throw upsertError;
         localStorage.setItem(UPDATED_KEY,stamp);localStorage.setItem(SYNCED_KEY,stamp);localStorage.setItem(DELETED_DATES_KEY,'[]');
-        cycleCloudStatus='cloud';
+        setCycleCloudStatus(`Synced · ${records.length} records`,'cloud');
         refreshAll();
         document.dispatchEvent(new CustomEvent('trainmei:cycle-sync-complete',{detail:{synced:true,unchanged:false,records:records.length,updatedAt:stamp}}));
         return true;
-      }catch(error){cycleCloudStatus='local';console.warn('[CycleTracker] Cloud sync unavailable; local records retained:',error?.message||error);document.dispatchEvent(new CustomEvent('trainmei:cycle-sync-complete',{detail:{synced:false,error:String(error?.message||error)}}));return false;}
+      }catch(error){setCycleCloudStatus('Sync failed · tap to retry','error');console.warn('[CycleTracker] Cloud sync unavailable; local records retained:',error?.message||error);document.dispatchEvent(new CustomEvent('trainmei:cycle-sync-complete',{detail:{synced:false,error:String(error?.message||error)}}));return false;}
     })().finally(()=>{cycleSyncPromise=null;});
     return cycleSyncPromise;
   }
@@ -875,6 +896,7 @@
 
     setupChips();
     refreshAll();
+    $('#ct-cloud-status')?.addEventListener('click',()=>syncCycleCloud().catch(e=>console.warn('[CycleTracker] Manual cloud sync deferred:',e)));
     syncCycleCloud().catch(e=>console.warn('[CycleTracker] Initial cloud sync deferred:',e));
   }
 
@@ -882,8 +904,32 @@
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 
-  // Reconcile again after login/logout; local data remains usable while offline.
-  try{window.supabaseClient?.auth?.onAuthStateChange?.(()=>{syncCycleCloud().catch(e=>console.warn('[CycleTracker] Auth sync deferred:',e));});}catch(_){ }
+  // Bind only after the shared Supabase client exists. This module is loaded
+  // before training-planner-core.js creates window.supabaseClient in index.html.
+  // Registering onAuthStateChange too early silently skipped auth-driven sync.
+  let cycleAuthClient = null;
+  function bindCycleSupabaseLifecycle(){
+    const sb = window.supabaseClient;
+    if(!sb?.auth?.onAuthStateChange || sb === cycleAuthClient) return;
+    cycleAuthClient = sb;
+    try{
+      sb.auth.onAuthStateChange((_event, session)=>{
+        // Session is the authoritative identity during auth callbacks; retain a fallback for builds without exposed app state.
+        if(session?.user?.id) window.__trainmeiCycleAuthUserId=session.user.id;
+        else if(_event==='SIGNED_OUT') window.__trainmeiCycleAuthUserId=null;
+        Promise.resolve().then(()=>syncCycleCloud()).catch(e=>console.warn('[CycleTracker] Auth sync deferred:',e));
+      });
+      syncCycleCloud().catch(e=>console.warn('[CycleTracker] Client-ready sync deferred:',e));
+    }catch(e){ console.warn('[CycleTracker] Could not bind Supabase auth listener:',e); }
+  }
+  document.addEventListener('trainmei:supabase-ready', bindCycleSupabaseLifecycle);
+  // Also handle cases where another build or future refactor changes script order.
+  bindCycleSupabaseLifecycle();
+
+  // Retry after the app returns online or becomes visible, and after auth has settled.
+  window.addEventListener('online',()=>syncCycleCloud().catch(()=>{}));
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncCycleCloud().catch(()=>{});});
+  window.addEventListener('focus',()=>syncCycleCloud().catch(()=>{}));
 
   document.addEventListener('trainmei:nutrition-updated',()=>{
     if(document.querySelector('#cycle-page.active')){try{renderToday()}catch(e){console.warn('Cycle nutrition refresh:',e)}}
