@@ -1,26 +1,23 @@
 {
-  "name": "TrainMei",
+  "name": "TrainMei — Training Planner",
   "short_name": "TrainMei",
-  "description": "Personal training planner and training insights.",
-  "id": "./index.html",
+  "description": "Personal training planner with a unified Home decision dashboard and User profile workspace.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "any",
   "background_color": "#EEEAE1",
   "theme_color": "#EEEAE1",
   "icons": [
-    {
-      "src": "icons/trainmei-icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/trainmei-pwa.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+  {
+  "src": "icons/trainmei-icon.png",
+  "sizes": "180x180",
+  "type": "image/png",
+  "purpose": "any"
+  }
+  ],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any"
 }

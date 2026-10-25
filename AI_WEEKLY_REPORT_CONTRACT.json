@@ -1,0 +1,26 @@
+{
+  "contractVersion": 1,
+  "feature": "training_brain_weekly_interpretation",
+  "source": "TrainingDataCore.weeklyIntelligence(from, to)",
+  "inputPolicy": {
+    "allowOnlyStructuredSummary": true,
+    "allowRawDatabaseRows": false,
+    "allowCredentials": false,
+    "allowUnboundedUserHistory": false
+  },
+  "outputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["summary", "observations", "hypotheses", "watchItems", "dataLimitations", "disclaimer"],
+    "properties": {
+      "summary": {"type": "string", "maxLength": 1200},
+      "observations": {"type": "array", "maxItems": 5, "items": {"type": "object", "additionalProperties": false, "required": ["metric", "statement", "evidenceRef"], "properties": {"metric": {"type": "string", "maxLength": 80}, "statement": {"type": "string", "maxLength": 500}, "evidenceRef": {"type": "string", "maxLength": 80}}}},
+      "hypotheses": {"type": "array", "maxItems": 3, "items": {"type": "object", "additionalProperties": false, "required": ["statement", "whyItMightFit", "confidence"], "properties": {"statement": {"type": "string", "maxLength": 400}, "whyItMightFit": {"type": "string", "maxLength": 400}, "confidence": {"type": "string", "enum": ["low", "moderate"]}}}},
+      "watchItems": {"type": "array", "maxItems": 4, "items": {"type": "string", "maxLength": 240}},
+      "dataLimitations": {"type": "array", "maxItems": 8, "items": {"type": "string", "maxLength": 240}},
+      "disclaimer": {"type": "string", "maxLength": 240}
+    }
+  },
+  "forbiddenActions": ["change_calorie_targets", "change_body_weight_goal", "change_exercise_load", "edit_workout", "write_training_data", "invent_missing_metrics", "claim_causation_from_correlation"],
+  "fallback": "If the API is unavailable or output validation fails, show the deterministic weekly report without AI interpretation."
+}

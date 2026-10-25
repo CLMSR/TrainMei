@@ -5277,7 +5277,7 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 @media(max-width:560px){.brain-page{padding:0 16px 20px}.brain-hero{display:block}.brain-hero .btn{margin-top:10px;width:100%}.brain-card{border:0;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:13px}.brain-feedback{grid-template-columns:1fr}.brain-score{align-items:flex-start}.brain-metric-grid{grid-template-columns:repeat(2,1fr)}}
 
 /* Requested responsive refinements: vertical + horizontal training layouts. */
-.day-status-row{display:grid;grid-template-columns:auto auto minmax(120px,1fr) minmax(120px,1fr) auto auto;align-items:center;gap:12px;padding:6px 0}
+.day-status-row{display:inline-flex;align-items:center;gap:12px;padding:6px 0}
 .day-status-row .day-completion-row,.day-status-row .day-color-row{padding:0}
 .day-status-row .day-completion-row{order:3}
 .day-status-row .day-color-row{order:1}

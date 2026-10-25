@@ -482,7 +482,7 @@ async function loadPlanCloud(){
   renderPlan();
 }
 function showAuth(msg=''){if(msg)$('#auth-msg').textContent=msg;$('#auth-overlay').style.display='flex'}
-let appStartPromise=null;
+let appStartPromise=null, appInitializedUserId=null;
 function ensureWorkoutRealtime(){
   if (!currentUser || !supabaseClient?.channel) return;
   if (workoutRealtimeChannel) {
@@ -513,11 +513,19 @@ async function startApp() {
     currentUser = data.session?.user || null;
 
     if (!currentUser) {
+      appInitializedUserId = null;
       if (workoutRealtimeChannel) {
         try { supabaseClient.removeChannel(workoutRealtimeChannel); } catch (_) {}
         workoutRealtimeChannel = null;
       }
       showAuth();
+      return;
+    }
+
+    // Auth emits INITIAL_SESSION and TOKEN_REFRESHED in addition to sign-in.
+    // Do not repeat the full cloud bootstrap for the same already-initialized user.
+    if (appInitializedUserId === currentUser.id && document.querySelector('.page.active')) {
+      $('#auth-overlay').style.display = 'none';
       return;
     }
 
@@ -527,6 +535,7 @@ async function startApp() {
     await syncWorkoutRecords({quiet:true});
     await Promise.all([loadTemplates(), loadPlanCloud(), renderMonth()]);
     if (!restoreLastNavigation()) showPage('home-page');
+    appInitializedUserId = currentUser.id;
 
     setTimeout(() => window.TrainMeiProgressTools?.syncCloudData?.(), 150);
     setTimeout(() => {
@@ -542,7 +551,18 @@ async function startApp() {
     appStartPromise = null;
   }
 }
-$('#login-btn').onclick=async()=>{const {error}=await supabaseClient.auth.signInWithPassword({email:$('#auth-email').value.trim(),password:$('#auth-password').value});if(error)showAuth(error.message);else startApp()};$('#signup-btn').onclick=async()=>{const {error}=await supabaseClient.auth.signUp({email:$('#auth-email').value.trim(),password:$('#auth-password').value});if(error)showAuth(error.message);else showAuth('Account created. Check your email if confirmation is enabled.');};$('#logout-btn').onclick=()=>supabaseClient.auth.signOut();supabaseClient.auth.onAuthStateChange(()=>startApp());
+$('#login-btn').onclick=async()=>{const {error}=await supabaseClient.auth.signInWithPassword({email:$('#auth-email').value.trim(),password:$('#auth-password').value});if(error)showAuth(error.message);else startApp()};$('#signup-btn').onclick=async()=>{const {error}=await supabaseClient.auth.signUp({email:$('#auth-email').value.trim(),password:$('#auth-password').value});if(error)showAuth(error.message);else showAuth('Account created. Check your email if confirmation is enabled.');};$('#logout-btn').onclick=()=>supabaseClient.auth.signOut();
+supabaseClient.auth.onAuthStateChange((event, session)=>{
+  // Initial session restoration is handled by app-bootstrap. Token refreshes
+  // must not reopen the last page or rerun the whole app initialization.
+  if(event==='SIGNED_OUT'){
+    appInitializedUserId=null;
+    currentUser=null;
+    startApp();
+    return;
+  }
+  if(event==='SIGNED_IN' && session?.user?.id!==appInitializedUserId) startApp();
+});
 window.addEventListener('online',()=>{if(currentUser)syncWorkoutRecords({quiet:true}).then(result=>{if(result.ok)renderMonth();else scheduleWorkoutSyncRetry()})});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&currentUser)syncWorkoutRecords({quiet:true}).then(result=>{if(result.ok)renderMonth();else scheduleWorkoutSyncRetry()})});window.addEventListener('focus',()=>{if(currentUser&&navigator.onLine)syncWorkoutRecords({quiet:true}).then(result=>{if(result.ok)renderMonth()})});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-home-page]');if(b){const id=b.dataset.homePage;if(id==='templates-modal'){loadTemplates().then(()=>(document.getElementById('templates-modal')?.__openTemplatesModal||(()=>document.getElementById('templates-modal')?.classList.add('show')))());}else showPage(id);return}const d=e.target.closest('[data-home-open-day]');if(d){openDay(d.dataset.homeOpenDay);return}const a=e.target.closest('[data-home-action]');if(!a)return;const act=a.dataset.homeAction;if(act==='open-today')openDay(todayKey());else if(act==='quick-add')openDay(todayKey());else if(act==='scan')showPage('integrations-page');else if(act==='templates'){loadTemplates().then(()=>(document.getElementById('templates-modal')?.__openTemplatesModal||(()=>document.getElementById('templates-modal')?.classList.add('show')))());}else if(act==='open-next'){const d=new Date();d.setDate(d.getDate()+1);openDay(dateKey(d.getFullYear(),d.getMonth(),d.getDate()))}});
 $('#main-nav').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)showPage(b.dataset.page)});
@@ -965,6 +985,10 @@ document.addEventListener('trainmei:nutrition-updated',e=>{const s=e.detail?.sum
 async function renderDayContext(){return window.TrainMeiDayView?.renderDayContext?.()}
 
 window.__tpStartApp=()=>startApp();
-if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+  navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' })
+    .then(registration => console.info('[TrainMei PWA] Service worker registered:', registration.scope))
+    .catch(error => console.warn('[TrainMei PWA] Service worker registration failed:', error));
+}
 })();
 
