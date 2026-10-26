@@ -621,7 +621,7 @@ table.plan-table td input{width:100%;border:none;background:transparent;padding:
   .footer-row{margin-top:20px;padding-top:12px;border-top:0}
   .footer-label{font-size:9px}
   .footer-row .btn{border:0;background:var(--danger-soft);border-radius:10px;padding:9px 11px}
-  .ios-tabbar{position:fixed;display:grid;grid-template-columns:repeat(4,1fr);left:0;right:0;bottom:0;z-index:50;height:82px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(250,250,252,.92);border-top:1px solid var(--line);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px)}
+  .ios-tabbar{position:fixed;display:grid;grid-template-columns:repeat(4,1fr);left: 50%;right: auto;width: 100vw;transform: translateX(-50%);box-sizing: border-box;;bottom:0;z-index:50;height:82px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(250,250,252,.92);border-top:1px solid var(--line);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px)}
   .ios-tab{border:0;background:transparent;color:var(--muted-ui);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;font-weight:600}
   .ios-tab .tab-icon{font-size:21px;line-height:1;font-weight:400}
   .ios-tab.active{color:var(--accent)}
