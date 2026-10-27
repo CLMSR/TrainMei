@@ -251,17 +251,8 @@ function renderHomeReadinessAndLoad(todayData){
   const loadStatus=$('#home-load-status');if(loadStatus)loadStatus.textContent=total===0?'—':`${Math.round(total)} MIN`;
   const recVals=days.map(x=>TrainingDataCore.recoveryScore(x.data)).filter(v=>v!==null);
   const recPct=$('#home-load-recovery-pct');if(recPct)recPct.textContent=recVals.length?Math.round(recVals.reduce((a,b)=>a+b,0)/recVals.length/5*100)+'%':'—';
-  const cyclePhase=TrainingDataCore.cycle()?.phase||null;
-  const readiness=TrainingDataCore.readiness(todayData,{loadRatio:total?ratio:null,cyclePhase});
-  const scoreEl=$('#home-readiness-score'),statusEl=$('#home-readiness-status'),barsEl=$('#home-readiness-bars');
-  if(readiness.score!==null){
-    scoreEl.textContent=readiness.score;
-    statusEl.textContent=`${readiness.status} · ${readiness.confidence}`;
-    barsEl.innerHTML=readiness.factors.map(f=>`<div class="home-readiness-row"><span>${f.label}</span><div class="home-readiness-track"><i style="width:${f.value}%"></i></div><b>${Math.round(f.value)}</b></div>`).join('');
-  }else{
-    scoreEl.textContent='—';statusEl.textContent='No data yet';
-    barsEl.innerHTML='<div class="home-empty">Rate sleep, energy and soreness today to see your readiness.</div>';
-  }
+  // The current pre-workout readiness panel is rendered by js/home-readiness.js.
+  // Do not update the removed legacy #home-readiness-score/status/bars elements here.
 }
 async function createSmartTemplate(){
   if(!smartWorkout) return;

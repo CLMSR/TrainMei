@@ -3,7 +3,7 @@
  * Update CACHE_VERSION when changing this file's cache strategy or shell.
  */
 'use strict';
-const CACHE_VERSION = 'trainmei-pwa-shell-v15';
+const CACHE_VERSION = 'trainmei-pwa-shell-v16';
 const SHELL_CACHE = CACHE_VERSION;
 const APP_SHELL = [
   './',
