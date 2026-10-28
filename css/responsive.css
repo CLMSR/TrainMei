@@ -40,7 +40,7 @@
   .brain-metric span{font-size:8px!important;line-height:1.2!important;overflow-wrap:anywhere}
   .day-status-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;align-items:stretch!important}
   .day-status-row>*{min-width:0!important;width:auto!important}
-  .rest-day-inline,.session-load-inline,.caffeine-inline,.carbohydrates-inline,.recovery-inline{min-width:0!important;max-width:100%!important;grid-column:1 / -1!important;}
+  .rest-day-inline,.session-load-inline,.caffeine-inline,.carbohydrates-inline,.recovery-inline{min-width:0!important;max-width:100%!important}
   .run-meta-inline{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
   .run-meta-inline>*{min-width:0!important}
   .recovery-row{min-width:0!important;flex-wrap:wrap}
@@ -53,7 +53,7 @@
   .plan-table{width:100%!important;table-layout:fixed}
   .plan-table td,.plan-table th{overflow-wrap:anywhere}
   .top-actions .btn[data-page],#templates-btn,#settings-btn{border-radius:9px!important}
-.topbar{position:relative;width:100%;box-sizing:border-box;overflow:hidden;display:flex!important;align-items:center!important;justify-content:space-between!important}
+.topbar{position:relative;width:100%;box-sizing:border-box;overflow:hidden;display:flex!important;align-items:center!important}
 .topbar .brand{flex:0 0 auto;min-width:0;max-width:82px;white-space:nowrap;font-size:11px!important;overflow:hidden;text-overflow:ellipsis}
 .top-actions {position: static !important;left: auto !important;transform: none !important;flex: 1 1 auto !important;width: auto !important;max-width: calc(100% - 90px) !important;min-width: 0 !important;display: flex !important;align-items: center !important;justify-content: flex-start !important;gap: 4px !important;overflow-x: auto !important;overflow-y: hidden !important;-webkit-overflow-scrolling: touch;box-sizing: border-box !important;}
 .topbar .top-actions {margin-left: 8px !important;}

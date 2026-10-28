@@ -6535,34 +6535,3 @@ body[data-theme="memphis"] .smart-panel-kicker,body[data-theme="memphis"] .chart
 .cycle-app .ct-cloud-status[data-state="cloud"]{color:var(--success);border-color:var(--success)}
 .cycle-app .ct-cloud-status[data-state="error"]{color:var(--danger);border-color:var(--danger)}
 @media(max-width:520px){.cycle-app .ct-header-actions{width:100%;justify-content:space-between}.cycle-app .ct-cloud-status{max-width:calc(100% - 100px);font-size:9px}}
-
-/* TrainMei mobile navigation hardening: six tabs, viewport-centred, safe-area aware. */
-@media (max-width: 560px) {
-  #ios-tabbar.ios-tabbar {
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    position: fixed;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-width: 100%;
-    bottom: 0;
-    transform: none;
-    box-sizing: border-box;
-    padding: 7px 4px calc(7px + env(safe-area-inset-bottom));
-    min-width: 0;
-  }
-  #ios-tabbar .ios-tab {
-    min-width: 0;
-    padding: 0 1px;
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 9px;
-  }
-  #ios-tabbar .ios-tab .tab-icon {
-    flex: 0 0 auto;
-  }
-  #app {
-    padding-bottom: calc(90px + env(safe-area-inset-bottom)) !important;
-  }
-}

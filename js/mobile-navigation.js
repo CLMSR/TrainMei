@@ -2,17 +2,8 @@
 (()=>{
   const TP=window.TrainMeiState||window.__tp;const isMobile=()=>window.matchMedia('(max-width: 560px)').matches;const $$=s=>Array.from(document.querySelectorAll(s));
 
-  /* FIX #4: TP.dateKey signature is ambiguous (unified-state may expose it with
-     a different signature than mobile-nav expects). Define a local dateKey that
-     mirrors the exact same logic as calendar.js — always safe regardless of what
-     TP exposes. Accepts (year, month-0-indexed, day) and returns 'YYYY-MM-DD'. */
   const pad=n=>String(n).padStart(2,'0');
   const localDateKey=(y,m,d)=>`${y}-${pad(m+1)}-${pad(d)}`;
-
-  function updateIOSNav(activePage){if(!isMobile())return;$$('.ios-tab').forEach(b=>b.classList.remove('active'));const target=$$('.ios-tab[data-ios-page="'+activePage+'"]')[0];if(target)target.classList.add('active')}
-  $$('.ios-tab[data-ios-page]').forEach(btn=>btn.addEventListener('click',()=>{TP.showPage(btn.dataset.iosPage);updateIOSNav(btn.dataset.iosPage)}));
-  const addTab=document.getElementById('ios-add-tab');if(addTab)addTab.addEventListener('click',()=>{TP.openDay(TP.todayKey());updateIOSNav('calendar-page')});
-  const templatesTab=document.getElementById('ios-templates-tab');if(templatesTab)templatesTab.addEventListener('click',async()=>{const modal=document.getElementById('templates-modal');if(modal)(modal?.__openTemplatesModal||(()=>modal?.classList.add('show')))();await TP.loadTemplates()});
 
   function updateIOSSummary(){
     if(!isMobile())return;
