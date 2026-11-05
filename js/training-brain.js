@@ -5,8 +5,8 @@
 (()=>{
   'use strict';
   const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  let model=null,weekly=null;
-  async function refresh(){
+  let model=null,weekly=null,refreshInFlight=null,refreshQueued=false;
+  async function refreshOnce(){
   if(!window.TrainingDataCore)return;
 
   const from=TrainingDataCore.dayKey(Date.now()-365*86400000);
@@ -31,6 +31,14 @@
 
   render();
 }
+  async function refresh(){
+    if(refreshInFlight){refreshQueued=true;return refreshInFlight;}
+    refreshInFlight=(async()=>{
+      do{refreshQueued=false;await refreshOnce()}while(refreshQueued);
+    })();
+    try{return await refreshInFlight}
+    finally{refreshInFlight=null}
+  }
 
   function render(){
     if(!model)return;

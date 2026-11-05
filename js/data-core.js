@@ -2,6 +2,8 @@
 const TrainingDataCore={
   VERSION:'4.6.0',
   _nutritionCache:Object.create(null),
+  _learningProfileCache:Object.create(null),
+  _learningProfileInflight:Object.create(null),
   _learningEventsBackfilledUser:null,
   _nullableNumber(v){if(v===null||v===undefined||v==='')return null;const n=Number(v);return Number.isFinite(n)?n:null},
   _cacheNutritionRow(r){if(!r)return;const date=String(r.summary_date||r.date||'').slice(0,10);if(!date)return;this._nutritionCache[date]={date,kcal:this._nullableNumber(r.calories_kcal??r.kcal??r.total_calories),prot:this._nullableNumber(r.protein_g??r.protein),carb:this._nullableNumber(r.carbohydrate_g??r.carbs_g??r.carb_g),fat:this._nullableNumber(r.fat_g??r.fat),fiber:this._nullableNumber(r.fiber_g??r.fiber),source:'fatsecret'}},
@@ -47,14 +49,29 @@ const TrainingDataCore={
         const h=await window.TrainMeiNutritionData.loadHistory(from,to);
         const rows=(h?.summaries||[]).map(normalize).filter(r=>/^\d{4}-\d{2}-\d{2}$/.test(r.date));
         rows.forEach(r=>this._cacheNutritionRow(r));
-        if(rows.length||!window.supabaseClient)return rows;
+        if(h?.loaded)return rows;
       }
       const sb=window.supabaseClient;if(!sb)return[];
       const {data,error}=await sb.from('nutrition_daily_summaries').select('*').gte('summary_date',from).lte('summary_date',to).order('summary_date',{ascending:true});
       if(error)return[];const rows=(data||[]).map(normalize).filter(r=>/^\d{4}-\d{2}-\d{2}$/.test(r.date));rows.forEach(r=>this._cacheNutritionRow(r));return rows;
     }catch(e){console.warn('[TrainingDataCore] Nutrition history unavailable:',e);return[]}
   },
-  async nutritionEntriesHistory(from,to){const sb=window.supabaseClient;if(!sb)return[];try{const {data,error}=await sb.from('nutrition_entries').select('*').gte('entry_date',from).lte('entry_date',to).order('entry_date',{ascending:true});if(error)return[];const normalize=window.TrainMeiNutritionData?.normalizeNutritionEntry;return(data||[]).map(r=>normalize?normalize(r):({...r,consumptionTime:r.consumption_time??r.meal_time??r.entry_time??r.consumed_at??r.time??null}));}catch(e){return[]}},
+  async nutritionEntriesHistory(from,to){
+    try{
+      const source=window.TrainMeiNutritionData;
+      if(source?.loadHistory){
+        const history=await source.loadHistory(from,to);
+        if(history?.loaded)return Array.isArray(history.entries)?history.entries:[];
+      }
+      const sb=window.supabaseClient;if(!sb)return[];
+      const {data,error}=await sb.from('nutrition_entries')
+        .select('id,entry_date,meal,fatsecret_food_entry_id,food_name,serving_description,quantity,calories_kcal,protein_g,carbohydrate_g,fat_g,fiber_g')
+        .gte('entry_date',from).lte('entry_date',to).order('entry_date',{ascending:true});
+      if(error)return[];
+      const normalize=source?.normalizeNutritionEntry;
+      return(data||[]).map(r=>normalize?normalize(r):({...r,consumptionTime:null}));
+    }catch(e){console.warn('[TrainingDataCore] Nutrition entries history unavailable:',e);return[]}
+  },
   fuelRequirement(date,workout){
     const w=workout||null,d=this.trainingDemand(date,w);
     if(w?.restDay||d.restDay)return{date,restDay:true,carbs:0,preWorkoutCarbs:0,gramsPerKg:null,confidence:'High',basis:'rest-day'};
@@ -126,12 +143,29 @@ const TrainingDataCore={
     }
     document.dispatchEvent(new CustomEvent('trainmei:pre-session-updated',{detail:{date:key,checkin:clean,synced}}));return{ok:true,synced,checkin:clean};
   },
-  async learningEvents(){
+  async learningEvents(from=null,to=null){
+    const end=to||this.dayKey(),start=from||this.dayKey(Date.now()-364*86400000);
     const byId=new Map();let localEvents=[];try{const raw=JSON.parse(localStorage.getItem('training-planner:brain:v1')||'{}');if(Array.isArray(raw.events)){localEvents=raw.events;localEvents.forEach(e=>byId.set(e.id||`${e.type}:${e.date}:${e.createdAt}`,e))}}catch{}
     const sb=window.supabaseClient,user=this.user();if(sb&&user){try{
       // Backfill existing local-only events after sign-in so older feedback is not stranded on one device.
       if(this._learningEventsBackfilledUser!==user.id){const legacy=localEvents.filter(e=>e&&e.id&&e.type).map(e=>({id:String(e.id),user_id:user.id,event_type:String(e.type),event_date:/^\d{4}-\d{2}-\d{2}$/.test(String(e.date||''))?e.date:null,payload:e,created_at:e.createdAt||new Date().toISOString()}));if(legacy.length){const {error:backfillError}=await sb.from('training_brain_events').upsert(legacy,{onConflict:'id'});if(backfillError)console.warn('[TrainingDataCore] Legacy event backfill deferred:',backfillError.message);else this._learningEventsBackfilledUser=user.id}else this._learningEventsBackfilledUser=user.id}
-      const {data,error}=await sb.from('training_brain_events').select('id,event_type,event_date,payload,created_at').eq('user_id',user.id).order('created_at',{ascending:true}).limit(2000);if(!error)(data||[]).forEach(r=>{const e=r.payload&&typeof r.payload==='object'?r.payload:{type:r.event_type,date:r.event_date,createdAt:r.created_at};byId.set(e.id||r.id,e)})
+      let offset=0;while(true){
+        const {data,error}=await sb.from('training_brain_events')
+          .select('id,event_type,event_date,payload,created_at')
+          .eq('user_id',user.id)
+          .or(`and(event_date.gte.${start},event_date.lte.${end}),event_date.is.null`)
+          .order('created_at',{ascending:true})
+          .range(offset,offset+999);
+        if(error)throw error;
+        const page=data||[];
+        page.forEach(r=>{
+          const e=r.payload&&typeof r.payload==='object'?r.payload:{type:r.event_type,date:r.event_date,createdAt:r.created_at};
+          const eventDate=String(e.date||r.event_date||'').slice(0,10);
+          if(!eventDate||(eventDate>=start&&eventDate<=end))byId.set(e.id||r.id,e);
+        });
+        if(page.length<1000)break;
+        offset+=1000;
+      }
     }catch(e){console.warn('[TrainingDataCore] Remote learning events unavailable',e)}}
     return [...byId.values()].sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
   },
@@ -146,7 +180,7 @@ const TrainingDataCore={
     return this.recordEvent({type:'recommendation_outcome',date:observedAt,status:outcome,note:String(note||'').slice(0,1000),payload:{schemaVersion:1,recommendationId:String(recommendationId),outcome,note:String(note||'').slice(0,1000),evidence:evidence&&typeof evidence==='object'?evidence:null}});
   },
   async recommendationLearningSummary(from=null,to=null){
-    const end=to||this.dayKey(),start=from||this.dayKey(Date.parse(end+'T12:00:00')-89*86400000),events=await this.learningEvents();
+    const end=to||this.dayKey(),start=from||this.dayKey(Date.parse(end+'T12:00:00')-89*86400000),events=await this.learningEvents(start,end);
     const inRange=e=>{const d=String(e.date||e.payload?.date||'').slice(0,10);return /^\d{4}-\d{2}-\d{2}$/.test(d)&&d>=start&&d<=end};
     const responses=events.filter(e=>e.type==='recommendation_response'&&inRange(e)).map(e=>({id:e.payload?.recommendationId||null,recommendation:e.payload?.recommendation||'',response:e.payload?.response||e.status||null,date:e.date||null}));
     const outcomes=events.filter(e=>e.type==='recommendation_outcome'&&inRange(e)).map(e=>({id:e.payload?.recommendationId||null,outcome:e.payload?.outcome||e.status||null,date:e.date||null}));
@@ -160,8 +194,8 @@ const TrainingDataCore={
   dataConfidence(profile){const p=profile||{},sample=Number(p.sample)||0,recent=Number(p.recentSample)||0,nut=Number(p.nutritionSample)||0,complete=Number(p.completeFeedbackSample)||0;const sampleScore=this.clamp(sample/12*40),recentScore=this.clamp(recent/6*20),nutritionScore=this.clamp(nut/14*15),feedbackScore=this.clamp(complete/6*15),consistency=Number(p.baseline?.consistency)||0,score=Math.round(this.clamp(sampleScore+recentScore+nutritionScore+feedbackScore+consistency*10));return{score,status:score>=80?'High':score>=55?'Moderate':score>=30?'Building':'Low',components:{sessions:sample,recentSessions:recent,nutritionDays:nut,feedbackSessions:complete}}},
   personalBaseline(sessions){const arr=(sessions||[]).filter(s=>s?.rpe>0);if(!arr.length)return{sample:0,rpe:null,duration:null,recovery:null,performance:null,consistency:0};const med=a=>{const x=a.filter(Number.isFinite).sort((m,n)=>m-n);return x.length?x[Math.floor(x.length/2)]:null},avg=a=>a.length?this.avg(a):null,rpes=arr.map(x=>Number(x.rpe)).filter(Number.isFinite),durations=arr.map(x=>Number(x.duration||x.data?.metrics?.timeMin)).filter(x=>x>0),recoveries=arr.map(x=>this.recoveryPercent(x.data)).filter(x=>x!=null),performances=arr.map(x=>Number(x.performance)).filter(x=>x>0),meanR=avg(rpes),sd=rpes.length>1?Math.sqrt(this.avg(rpes.map(x=>(x-meanR)**2))):0,consistency=rpes.length?this.clamp(1-sd/3,0,1):0;return{sample:arr.length,rpe:med(rpes),duration:med(durations),recovery:med(recoveries),performance:med(performances),consistency}},
   recoveryLagProfile(sessions,rows){const by=new Map((rows||[]).map(r=>[r.date,r.data||{}]));const lags={24:[],48:[],72:[]};for(const s of sessions||[]){const base=new Date(s.date+'T12:00:00');[24,48,72].forEach(h=>{const d=new Date(base);d.setHours(d.getHours()+h);const key=this.dayKey(d),v=this.recoveryPercent(by.get(key));if(v!=null)lags[h].push(v)});}return Object.fromEntries(Object.entries(lags).map(([h,a])=>[h,{sample:a.length,average:a.length?Math.round(this.avg(a)):null}]));},
-  async learningProfile(from,to){
-    const [rows,nutrition,entries,allEvents]=await Promise.all([this.training(from,to),this.nutritionHistory(from,to),this.nutritionEntriesHistory(from,to),this.learningEvents()]);
+  async _buildLearningProfile(from,to){
+    const [rows,nutrition,entries,allEvents]=await Promise.all([this.training(from,to),this.nutritionHistory(from,to),this.nutritionEntriesHistory(from,to),this.learningEvents(from,to)]);
     const events=allEvents.filter(e=>{const d=String(e.date||e.payload?.date||'').slice(0,10);return !d||(d>=from&&d<=to)});
     const nm=new Map(nutrition.map(x=>[x.date,x]));
     const sessions=rows.filter(r=>r.data?.completed).map(r=>{const d=r.data||{},rv=this.recovery(d)||{},n=nm.get(r.date)||null,f=this.performanceFuel(r.date,d,n),sf=d.sessionFeedback||{};return{date:r.date,data:d,rpe:Number(d.metrics?.rpe)||0,load:this.trainingLoad(d),volume:Number(d.metrics?.volume)||0,sets:this.trainingDemand(r.date,d).sets,duration:Number(d.metrics?.timeMin)||0,sleep:Number(rv.sleep)||0,energy:Number(rv.energy)||0,soreness:Number(rv.soreness)||0,carb:n?.carb??null,kcal:n?.kcal??null,prot:n?.prot??null,fuel:f.score,performance:Number(sf.performance)||null,technique:Number(sf.technique)||null,feelings:sf.feelings||'',adjustNextTime:sf.adjustNextTime||'',adjustmentOutcome:sf.adjustmentOutcome||'',cyclePhase:sf.cyclePhase||null,feedback:sf}});
@@ -189,6 +223,17 @@ const TrainingDataCore={
     const fuelGroups=linked.filter(x=>['low','okay','good'].includes(x.checkin?.context?.fuelStatus)&&x.rpe>0);if(fuelGroups.length>=4){const groups=['low','okay','good'].map(k=>({key:k,rows:fuelGroups.filter(x=>x.checkin.context.fuelStatus===k)})).filter(g=>g.rows.length>=2);if(groups.length>=2)add('Pre-session fuel status ↔ RPE',groups.map(g=>`${g.key}: ${this.avg(g.rows.map(x=>x.rpe)).toFixed(1)} RPE (n=${g.rows.length})`).join(' · '),groups.reduce((n,g)=>n+g.rows.length,0),60)}
     const bodyProgress=this.bodyProgress();if(bodyProgress.trend!=='insufficient-data'){const phaseLabel=bodyProgress.phase==='deficit'?'during the configured deficit phase':bodyProgress.phase==='surplus'?'during the configured surplus phase':bodyProgress.phase==='maintenance'?'during the configured maintenance phase':'in the current logged phase';add('Body-weight trend',`${bodyProgress.message} This is a trend, not proof of energy deficit/surplus; interpret it alongside logged intake and exercise progression ${phaseLabel}.`,bodyProgress.recentCount+bodyProgress.previousCount,bodyProgress.confidence==='moderate'?72:45)}
     const baseline=this.personalBaseline(sessions),recentSample=sessions.filter(s=>s.date>=this.dayKey(Date.now()-42*86400000)).length,recoveryLag=this.recoveryLagProfile(sessions,rows),completeFeedbackSample=sessions.filter(s=>{const f=s.feedback||{};return Number(f.performance)>0||Number(f.energyRating)>0||Number(f.technique)>0||String(f.feelings||'').trim()||String(f.adjustNextTime||'').trim()}).length;const rpePerformance=sessions.filter(s=>s.rpe>0&&s.performance!=null);if(rpePerformance.length>=4){const high=rpePerformance.filter(s=>s.rpe>=8),low=rpePerformance.filter(s=>s.rpe<=5);if(high.length>=2&&low.length>=2){const hp=this.avg(high.map(s=>s.performance)),lp=this.avg(low.map(s=>s.performance));if(hp<lp-.5)patterns.push({kind:'RPE ↔ Performance calibration',text:`Higher-RPE sessions averaged ${hp.toFixed(1)}/10 performance vs ${lp.toFixed(1)}/10 at RPE ≤5. Use RPE as a progression gate, not only a target.`,n:rpePerformance.length,confidence:this.clamp(55+Math.abs(hp-lp)*12,55,92)});else if(hp>lp+.5)patterns.push({kind:'RPE ↔ Performance calibration',text:`Higher-RPE sessions averaged ${hp.toFixed(1)}/10 performance vs ${lp.toFixed(1)}/10 at RPE ≤5. Your higher effort has sometimes been productive; keep monitoring recovery.`,n:rpePerformance.length,confidence:this.clamp(55+Math.abs(hp-lp)*12,55,92)});}}const mealTimes=entries.map(e=>e.consumptionTime).filter(Boolean);if(mealTimes.length){const hourOf=v=>{const m=String(v).match(/(?:T|\s)(\d{1,2}):/);return m?Number(m[1]):null};const hours=mealTimes.map(hourOf).filter(h=>h!=null&&h>=0&&h<24);if(hours.length>=3)patterns.push({kind:'FatSecret meal timing',text:`${hours.length} imported meals include a consumption time; Nutrition Optimizer can use the timing alongside training demand when available.`,n:hours.length,confidence:this.clamp(50+hours.length*4,50,90)})}for(const [h,v] of Object.entries(recoveryLag)){if(v.sample>=3)patterns.push({kind:`Recovery +${h}h`,text:`Average logged recovery ${h}h after sessions: ${v.average}%.`,n:v.sample,confidence:this.clamp(55+v.sample*5,55,90)})}const progression=await this.exerciseProgression(from,to,rows);progression.filter(x=>x.records.length>=3&&x.latest.weight!=null&&x.records[0].weight!=null).slice(0,5).forEach(x=>{const first=x.records[0],last=x.latest,delta=Number(last.weight)-Number(first.weight);if(delta!==0)patterns.push({kind:`Exercise progression · ${x.name}`,text:`Logged load changed from ${first.weight} to ${last.weight} across ${x.records.length} completed appearances. Latest guidance: ${x.recommendation}.`,n:x.records.length,confidence:this.clamp(48+x.records.length*5,48,82)});});return{generatedAt:new Date().toISOString(),sample:sessions.length,recentSample,nutritionSample:nutrition.length,nutritionEntrySample:entries.length,completeFeedbackSample,baseline,recoveryLag,patterns,events:events.filter(e=>/feedback|adjustment|cycle|session|nutrition|weekly_review|body_weight/i.test(e.type||'')),sessions,nutrition,foodPreferences,bodyProgress,dataConfidence:this.dataConfidence({sample:sessions.length,recentSample,nutritionSample:nutrition.length,completeFeedbackSample,baseline})};
+  },
+  async learningProfile(from,to){
+    const key=String(from)+'|'+String(to),now=Date.now(),cached=this._learningProfileCache[key];
+    if(cached&&cached.expiresAt>now)return cached.value;
+    if(this._learningProfileInflight[key])return this._learningProfileInflight[key];
+    const task=this._buildLearningProfile(from,to).then(value=>{
+      this._learningProfileCache[key]={value,expiresAt:Date.now()+30000};
+      return value;
+    }).finally(()=>{delete this._learningProfileInflight[key]});
+    this._learningProfileInflight[key]=task;
+    return task;
   },
   async refreshWeeklyLearningSnapshot(){
     const to=this.dayKey(),date=new Date(to+'T12:00:00');const monday=new Date(date);monday.setDate(monday.getDate()-((monday.getDay()+6)%7));const from=this.dayKey(monday),prevStartDate=new Date(monday);prevStartDate.setDate(prevStartDate.getDate()-7);const prevFrom=this.dayKey(prevStartDate),prevEnd=this.dayKey(new Date(monday.getTime()-86400000));

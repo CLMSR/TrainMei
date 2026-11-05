@@ -33,7 +33,7 @@ const readyPromise=new Promise(resolve=>{
       maybe('nutrition_daily_summaries',q=>q.select('*').eq('summary_date',date).maybeSingle()),
       maybe('nutrition_entries',q=>q.select('*').eq('entry_date',date).order('meal',{ascending:true}).order('food_name',{ascending:true}))
     ]);
-    console.log('[NutritionData] LOAD', {date,connection: conn,summary,entriesCount: Array.isArray(entries) ? entries.length : null,entries});
+    console.log('[NutritionData] LOAD', {date,connection: conn,summary,entriesCount: Array.isArray(entries) ? entries.length : null});
     state.connection=conn;state.entries=window.TrainMeiNutritionUtils.dedupeNutritionEntries(entries||[]);state.summary=mergeSummaryWithEntries(summary,state.entries,date);state.lastRefreshAt=new Date().toISOString();
     // Every date loaded from the FatSecret Data Layer also warms the shared Core cache.
     try{if(window.TrainingDataCore&&typeof window.TrainingDataCore._cacheNutritionRow==='function')window.TrainingDataCore._cacheNutritionRow(state.summary)}catch(e){}
@@ -124,25 +124,51 @@ return getSnapshot();
   });
 });
   document.addEventListener('trainmei:nutrition-sync-request',e=>{sync(e.detail?.date||today()).catch(console.error)});
-  async function loadHistory(from,to){
-    if(!SB)return {summaries:[],entries:[]};
-    const [summaryResult,entriesResult]=await Promise.all([
-      SB.from('nutrition_daily_summaries').select('*').gte('summary_date',from).lte('summary_date',to).order('summary_date',{ascending:true}),
-      SB.from('nutrition_entries').select('*').gte('entry_date',from).lte('entry_date',to).order('entry_date',{ascending:true})
-    ]);
-    if(summaryResult.error)throw summaryResult.error;
-    if(entriesResult.error)throw entriesResult.error;
-    const entries=window.TrainMeiNutritionUtils.dedupeNutritionEntries(entriesResult.data||[]);
-    const byDate=Object.create(null);
-    entries.forEach(e=>{const d=String(e.entry_date||e.date||'').slice(0,10);if(d)(byDate[d]||(byDate[d]=[])).push(e)});
-    const summaryRows=summaryResult.data||[];
-    const dates=new Set(summaryRows.map(r=>String(r.summary_date||'').slice(0,10)).filter(Boolean));
-    entries.forEach(e=>{const d=String(e.entry_date||e.date||'').slice(0,10);if(d)dates.add(d)});
-    const rowByDate=Object.create(null);
-    summaryRows.forEach(r=>{rowByDate[String(r.summary_date||'').slice(0,10)]=r});
-    const summaries=[...dates].sort().map(date=>mergeSummaryWithEntries(rowByDate[date]||null,byDate[date]||[],date)).filter(Boolean);
-    summaries.forEach(row=>window.TrainingDataCore?._cacheNutritionRow?.(row));
-    return {summaries,entries,source:'fatsecret',from,to};
+  const HISTORY_PAGE_SIZE=1000,HISTORY_CACHE_TTL=120000;
+  const historyCache=new Map(),historyInflight=new Map();
+  async function fetchHistoryPages(table,columns,dateColumn,from,to){
+    const rows=[];let offset=0;
+    while(true){
+      const {data,error}=await SB.from(table).select(columns)
+        .gte(dateColumn,from).lte(dateColumn,to)
+        .order(dateColumn,{ascending:true})
+        .range(offset,offset+HISTORY_PAGE_SIZE-1);
+      if(error)throw error;
+      const page=data||[];rows.push(...page);
+      if(page.length<HISTORY_PAGE_SIZE)break;
+      offset+=HISTORY_PAGE_SIZE;
+    }
+    return rows;
+  }
+  async function loadHistory(from,to,{force=false}={}){
+    if(!SB)return {summaries:[],entries:[],source:'fatsecret',from,to,loaded:true};
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(String(from||''))||!/^\d{4}-\d{2}-\d{2}$/.test(String(to||''))||from>to)throw new Error('Invalid nutrition history range');
+    const key=from+'|'+to,now=Date.now(),cached=historyCache.get(key);
+    if(!force&&cached&&cached.expiresAt>now)return cached.value;
+    if(!force&&historyInflight.has(key))return historyInflight.get(key);
+    const task=(async()=>{
+      const [summaryRows,entryRows]=await Promise.all([
+        fetchHistoryPages('nutrition_daily_summaries','summary_date,calories_kcal,protein_g,carbohydrate_g,fat_g,fiber_g','summary_date',from,to),
+        fetchHistoryPages('nutrition_entries','id,entry_date,meal,fatsecret_food_entry_id,food_name,serving_description,quantity,calories_kcal,protein_g,carbohydrate_g,fat_g,fiber_g','entry_date',from,to)
+      ]);
+      const entries=window.TrainMeiNutritionUtils.dedupeNutritionEntries(entryRows);
+      const byDate=Object.create(null);
+      entries.forEach(e=>{const d=String(e.entry_date||e.date||'').slice(0,10);if(d)(byDate[d]||(byDate[d]=[])).push(e)});
+      const dates=new Set(summaryRows.map(r=>String(r.summary_date||'').slice(0,10)).filter(Boolean));
+      entries.forEach(e=>{const d=String(e.entry_date||e.date||'').slice(0,10);if(d)dates.add(d)});
+      const rowByDate=Object.create(null);
+      summaryRows.forEach(r=>{rowByDate[String(r.summary_date||'').slice(0,10)]=r});
+      const summaries=[...dates].sort().map(date=>mergeSummaryWithEntries(rowByDate[date]||null,byDate[date]||[],date)).filter(Boolean);
+      summaries.forEach(row=>window.TrainingDataCore?._cacheNutritionRow?.(row));
+      return {summaries,entries,source:'fatsecret',from,to,loaded:true};
+    })();
+    historyInflight.set(key,task);
+    try{
+      const value=await task;
+      historyCache.set(key,{value,expiresAt:Date.now()+HISTORY_CACHE_TTL});
+      while(historyCache.size>8)historyCache.delete(historyCache.keys().next().value);
+      return value;
+    }finally{historyInflight.delete(key)}
   }
 
   const rangeState={
@@ -163,7 +189,7 @@ const daySync=date=>window.TrainMeiFatSecret?.sync?.(date);
     const results=await Promise.allSettled(queue.map(date=>daySync(date)));
     const failed=results.filter(r=>r.status==='rejected').length;
     const processed=results.filter(r=>r.status==='fulfilled').reduce((n,r)=>n+Number(r.value?.synced||r.value?.upsertCount||0),0);
-    try{await loadHistory(from,to)}catch{}
+    try{await loadHistory(from,to,{force:true})}catch{}
     const activeBeforeSync=state.date;
     const activeDate=activeBeforeSync&&activeBeforeSync>=from&&activeBeforeSync<=to?activeBeforeSync:to;
     await load(activeDate);
